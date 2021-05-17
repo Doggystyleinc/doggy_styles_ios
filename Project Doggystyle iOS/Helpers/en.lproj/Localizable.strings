@@ -1,0 +1,31 @@
+/* 
+  Localizable.strings
+  Project Doggystyle
+
+  Created by Stanley Miller on 5/17/21.
+  
+*/
+
+//MARK: - English Translations
+
+//MARK: - A
+"AlreadyHave" = "Already have an account?";
+"apple" = "apple";
+
+//MARK: - E
+"email" = "email";
+
+//MARK: - F
+"facebook" = "facebook";
+
+//MARK: - L
+"LogOut" = "Log Out";
+
+//MARK: - S
+"SignIn" = "SIGN IN";
+"SignUpWith" = "Please sign up with:";
+
+//MARK: - W
+"Welcome" = "Welcome!";
+
+
