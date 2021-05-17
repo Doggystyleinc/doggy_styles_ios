@@ -1,0 +1,6 @@
+framework module Pods_Project_Doggystyle_iOS {
+  umbrella header "Pods-Project Doggystyle iOS-umbrella.h"
+
+  export *
+  module * { export * }
+}
