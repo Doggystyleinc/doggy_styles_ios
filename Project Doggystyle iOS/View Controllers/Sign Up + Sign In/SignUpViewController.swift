@@ -62,15 +62,15 @@ final class SignUpViewController: UIViewController, GIDSignInDelegate {
         gb.backgroundColor = .white
         gb.layer.masksToBounds = true
         gb.layer.cornerRadius = 0
-       return gb
+        return gb
     }()
-
+    
     
     private let signUpButton: UIButton = {
         let button = UIButton(type: .system)
         return button
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureVC()
@@ -114,18 +114,19 @@ extension SignUpViewController {
 extension SignUpViewController {
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
-      
-      if let error = error {
-         print("error occured here signing in with google sign in. \(error)")
-        return
-      }
-
-      guard let authentication = user.authentication else {
-        print("Authentication error. \(error?.localizedDescription as Any)")
-        return
-      }
         
-      let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken, accessToken: authentication.accessToken)
+        if let error = error {
+            self.presentAlertOnMainThread(title: "Something went wrong...", message: "An error occured with your Google Sign In.\nError: \(error)", buttonTitle: "Ok")
+            print("error occured here signing in with google sign in. \(error)")
+            return
+        }
+        
+        guard let authentication = user.authentication else {
+            print("Authentication error. \(error?.localizedDescription as Any)")
+            return
+        }
+        
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken, accessToken: authentication.accessToken)
         
         let referralCode = "Need to figure this one out"
         
@@ -134,11 +135,12 @@ extension SignUpViewController {
             if hasSuccess {
                 self.presentHomeController()
             } else {
+                self.presentAlertOnMainThread(title: "Something went wrong...", message: "Failed to authenticate.\nError: \(response)", buttonTitle: "Ok")
                 print("Failed to authenticate with error: \(response)")
             }
         }
     }
-
+    
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
         print("bailed from the google sign in process")
     }

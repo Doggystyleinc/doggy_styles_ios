@@ -9,7 +9,7 @@ import UIKit
 
 final class EmailSignInViewController: UIViewController {
     private let verticalPadding: CGFloat = 30.0
-    private var rememberUser = false
+    private var rememberUser = true
     private var forgotPassword = false
     private var scrollView = UIScrollView(frame: .zero)
     private let containerView = UIView(frame: .zero)
@@ -34,6 +34,7 @@ final class EmailSignInViewController: UIViewController {
         textField.keyboardType = .emailAddress
         textField.returnKeyType = .next
         textField.tag = 0
+        textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
         return textField
     }()
     
@@ -48,7 +49,22 @@ final class EmailSignInViewController: UIViewController {
         textField.textContentType = .oneTimeCode
         textField.returnKeyType = .go
         textField.tag = 1
+        textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
         return textField
+    }()
+    
+    private let emailErrorLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.textColor = .errorColor
+        label.font = UIFont.robotoRegular(size: 14)
+        return label
+    }()
+    
+    private let passwordErrorLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.textColor = .errorColor
+        label.font = UIFont.robotoRegular(size: 14)
+        return label
     }()
     
     private let rememberTitle: UIButton = {
@@ -64,7 +80,7 @@ final class EmailSignInViewController: UIViewController {
         let button = UIButton(type: .system)
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
         button.tintColor = .white
-        button.backgroundColor = .textFieldBackground
+        button.backgroundColor = .systemGreen
         button.setImage(UIImage(systemName: "checkmark", withConfiguration: imageConfig), for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 3, bottom: 5, right: 4)
         button.addTarget(self, action: #selector(keepUserLoggedIn(_:)), for: .touchUpInside)
@@ -200,13 +216,22 @@ extension EmailSignInViewController {
         emailTextField.left(to: self.containerView)
         emailTextField.right(to: self.containerView)
         
+        self.containerView.addSubview(emailErrorLabel)
+        emailErrorLabel.topToBottom(of: emailTextField, offset: 5)
+        emailErrorLabel.left(to: self.containerView, offset: 5)
+        
         self.containerView.addSubview(passwordTextField)
         self.passwordTextField.enablePasswordToggle()
         
-        passwordTextField.topToBottom(of: self.emailTextField, offset: 20.0)
+        passwordTextField.topToBottom(of: self.emailErrorLabel, offset: 20.0)
         passwordTextField.height(44.0)
         passwordTextField.left(to: self.containerView)
         passwordTextField.right(to: self.containerView)
+        
+        self.containerView.addSubview(passwordErrorLabel)
+        passwordErrorLabel.topToBottom(of: passwordTextField, offset: 5)
+        passwordErrorLabel.left(to: self.containerView, offset: 5)
+        passwordErrorLabel.right(to: self.containerView, offset: -5)
     }
 }
 
@@ -214,7 +239,7 @@ extension EmailSignInViewController {
 extension EmailSignInViewController {
     private func addFooterViews() {
         self.containerView.addSubview(rememberTitle)
-        rememberTitle.topToBottom(of: self.passwordTextField, offset: 20.0)
+        rememberTitle.topToBottom(of: self.passwordErrorLabel, offset: 20.0)
         rememberTitle.height(44.0)
         rememberTitle.left(to: self.containerView, offset: 11)
         
@@ -268,11 +293,17 @@ extension EmailSignInViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             guard let emailText = self.emailTextField.text, let password = self.passwordTextField.text else {
-                //Invalid Email or password.
                 return
             }
             
             Service.shared.FirebaseLogin(usersEmailAddress: emailText, usersPassword: password) { loginSuccess, response, responseCode in
+                
+                guard loginSuccess == true else {
+                    self.dismissLoadingView()
+                    self.presentAlertOnMainThread(title: "Something went wrong...", message: response, buttonTitle: "Ok")
+                    return
+                }
+                
                 let homeVC = HomeViewController()
                 homeVC.modalPresentationStyle = .fullScreen
                 
@@ -332,6 +363,23 @@ extension EmailSignInViewController: UITextFieldDelegate {
             scrollView.setContentOffset(.zero, animated: true)
         }
         return false
+    }
+    
+    @objc private func textDidChange(_ sender: UITextField) {
+        
+        guard let emailText = emailTextField.text else { return }
+        emailErrorLabel.text = emailText.isValidEmail ? "" : "Invalid Email"
+        emailErrorLabel.isHidden = emailText.isValidEmail ? true : false
+        
+        guard let passwordText = passwordTextField.text else { return }
+        passwordErrorLabel.text = passwordText.isValidPassword ? "" : "Password must be 8 characters"
+        passwordErrorLabel.isHidden = passwordText.isValidPassword ? true : false
+        
+        guard emailText.isValidEmail, passwordText.isValidPassword else {
+            self.signInButton.enable(false)
+            return
+        }
+        self.signInButton.enable(true)
     }
 }
 

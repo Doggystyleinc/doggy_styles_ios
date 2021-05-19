@@ -6,8 +6,10 @@
 //
 
 import UIKit
+import GoogleSignIn
+import Firebase
 
-final class SignInViewController: UIViewController {
+final class SignInViewController: UIViewController, GIDSignInDelegate  {
     private let verticalPadding: CGFloat = 30.0
     
     private let welcomeTitle: UILabel = {
@@ -50,10 +52,18 @@ final class SignInViewController: UIViewController {
     private let dividerView = DividerView()
     
     private let emailButton = DSButton(titleText: "email", backgroundColor: .dsGrey, titleColor: .white)
-    private let googleButton = DSButton(text: "google")
     private let facebookButton = DSButton(text: "facebook")
     private let appleButton = DSButton(text: "apple")
-
+    
+    private let googleButton : GIDSignInButton = {
+        let gb = GIDSignInButton()
+        gb.translatesAutoresizingMaskIntoConstraints = false
+        gb.backgroundColor = .white
+        gb.layer.masksToBounds = true
+        gb.layer.cornerRadius = 0
+        return gb
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureVC()
@@ -67,6 +77,8 @@ final class SignInViewController: UIViewController {
 extension SignInViewController {
     private func configureVC() {
         self.view.backgroundColor = .white
+        GIDSignIn.sharedInstance().presentingViewController = self
+        GIDSignIn.sharedInstance()?.delegate = self
         
         let closeButton = UIBarButtonItem(image: UIImage(systemName: "xmark.circle.fill"), style: .done, target: self, action: #selector(dismissVC(_:)))
         self.navigationItem.rightBarButtonItem = closeButton
@@ -131,6 +143,42 @@ extension SignInViewController {
     }
 }
 
+//MARK: - Configure Google Sign In
+extension SignInViewController {
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+        
+        if let error = error {
+            self.presentAlertOnMainThread(title: "Something went wrong...", message: "An error occured with your Google Sign In.\nError: \(error)", buttonTitle: "Ok")
+            print("error occured here signing in with google sign in. \(error)")
+            return
+        }
+        
+        guard let authentication = user.authentication else {
+            print("Authentication error. \(error?.localizedDescription as Any)")
+            return
+        }
+        
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken, accessToken: authentication.accessToken)
+        
+        let referralCode = "Need to figure this one out"
+        
+        Service.shared.firebaseGoogleSignIn(credentials: credential, referralCode: referralCode) { (hasSuccess, response) in
+            
+            if hasSuccess {
+                self.presentHomeController()
+            } else {
+                self.presentAlertOnMainThread(title: "Something went wrong...", message: "Failed to authenticate.\nError: \(response)", buttonTitle: "Ok")
+                print("Failed to authenticate with error: \(response)")
+            }
+        }
+    }
+    
+    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
+        print("bailed from the google sign in process")
+    }
+}
+
 //MARK: - Add Button Targets
 extension SignInViewController {
     private func addTargets() {
@@ -162,5 +210,14 @@ extension SignInViewController {
     
     @objc private func dismissVC(_ sender: UIButton) {
         self.dismiss(animated: true)
+    }
+    
+    @objc func presentHomeController() {
+        let homeVC = HomeViewController()
+        let navVC = UINavigationController(rootViewController: homeVC)
+        
+        navVC.navigationBar.isHidden = true
+        navVC.modalPresentationStyle = .fullScreen
+        self.navigationController?.present(navVC, animated: true)
     }
 }

@@ -119,7 +119,7 @@ class Service : NSObject {
         Auth.auth().signIn(withEmail: usersEmailAddress, password: usersPassword) { (user, error) in
             
             if error != nil {
-                completion(false, "Login Error: \(error?.localizedDescription as Any).", 500)
+                completion(false, "Login Error: \(error!.localizedDescription as Any).", 500)
                 return
             }
             completion(true, "Success", 200)

@@ -86,9 +86,6 @@ extension InstructionsViewController {
 extension InstructionsViewController {
     @objc private func didTapOpenEmail(_ sender: UIButton) {
         print(#function)
-        
-        //Open Mail App
-        //TODO: - Test on device
         let mailURL = URL(string: "message://")!
         if UIApplication.shared.canOpenURL(mailURL) {
             UIApplication.shared.open(mailURL, options: [:])

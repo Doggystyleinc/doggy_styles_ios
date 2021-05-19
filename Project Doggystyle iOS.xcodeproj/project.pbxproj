@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		B9C4113B2E4DED8ACF4B9F44 /* Pods_Project_Doggystyle_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41D14D6AC9CE858765BD6462 /* Pods_Project_Doggystyle_iOS.framework */; };
+		CD686882265412BB0064ADFE /* DSAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD686881265412BB0064ADFE /* DSAlertViewController.swift */; };
+		CD6868842654373A0064ADFE /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6868832654373A0064ADFE /* UIButton+Ext.swift */; };
 		CDE870DE2652E1610082551B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE870DD2652E1610082551B /* AppDelegate.swift */; };
 		CDE870E02652E1610082551B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE870DF2652E1610082551B /* SceneDelegate.swift */; };
 		CDE870E72652E1640082551B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDE870E62652E1640082551B /* Assets.xcassets */; };
@@ -72,6 +74,8 @@
 		009E7669434EEDF1549DCECF /* Pods-Project Doggystyle iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Project Doggystyle iOS.debug.xcconfig"; path = "Target Support Files/Pods-Project Doggystyle iOS/Pods-Project Doggystyle iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		41D14D6AC9CE858765BD6462 /* Pods_Project_Doggystyle_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Project_Doggystyle_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB384B464E20B6C31281433B /* Pods-Project Doggystyle iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Project Doggystyle iOS.release.xcconfig"; path = "Target Support Files/Pods-Project Doggystyle iOS/Pods-Project Doggystyle iOS.release.xcconfig"; sourceTree = "<group>"; };
+		CD686881265412BB0064ADFE /* DSAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAlertViewController.swift; sourceTree = "<group>"; };
+		CD6868832654373A0064ADFE /* UIButton+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Ext.swift"; sourceTree = "<group>"; };
 		CDE870DA2652E1610082551B /* Project Doggystyle iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Project Doggystyle iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDE870DD2652E1610082551B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CDE870DF2652E1610082551B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -159,6 +163,14 @@
 				AB384B464E20B6C31281433B /* Pods-Project Doggystyle iOS.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		CD686880265412A20064ADFE /* Alerts */ = {
+			isa = PBXGroup;
+			children = (
+				CD686881265412BB0064ADFE /* DSAlertViewController.swift */,
+			);
+			path = Alerts;
 			sourceTree = "<group>";
 		};
 		CDE870D12652E1610082551B = {
@@ -262,6 +274,7 @@
 				CDE871152652E3030082551B /* UIColor+Ext.swift */,
 				CDE8711B2652E3030082551B /* UIFont+Ext.swift */,
 				CDE871192652E3030082551B /* UIViewController+Ext.swift */,
+				CD6868832654373A0064ADFE /* UIButton+Ext.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -269,6 +282,7 @@
 		CDE8714D2652E65A0082551B /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CD686880265412A20064ADFE /* Alerts */,
 				CDE8715D2652E68D0082551B /* Resetting Password */,
 				CDE871522652E66F0082551B /* Sign Up + Sign In */,
 				CDE8714E2652E66A0082551B /* DecisionController.swift */,
@@ -547,11 +561,13 @@
 				CDE871652652E6E60082551B /* DSButton.swift in Sources */,
 				CDE871232652E3030082551B /* String + Ext.swift in Sources */,
 				CDE870DE2652E1610082551B /* AppDelegate.swift in Sources */,
+				CD6868842654373A0064ADFE /* UIButton+Ext.swift in Sources */,
 				CDE8711D2652E3030082551B /* LoadingScreen.swift in Sources */,
 				CDE8711C2652E3030082551B /* TextField+Ext.swift in Sources */,
 				CDE871632652E69B0082551B /* InstructionsViewController.swift in Sources */,
 				CDE871112652E2DC0082551B /* DividerView.swift in Sources */,
 				CDE871502652E66A0082551B /* DecisionController.swift in Sources */,
+				CD686882265412BB0064ADFE /* DSAlertViewController.swift in Sources */,
 				CDE871202652E3030082551B /* NetworkMonitor.swift in Sources */,
 				CDE871612652E69B0082551B /* SuccessfulPasswordResetViewController.swift in Sources */,
 				CDE8715A2652E6850082551B /* SignInViewController.swift in Sources */,

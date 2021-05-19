@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import PhoneNumberKit
 
 final class EmailSignUpViewController: UIViewController {
-    private var didAgreeToTerms = false
+    private var didAgreeToTerms = true
     private let verticalPadding: CGFloat = 30.0
     private var scrollView = UIScrollView(frame: .zero)
     private let containerView = UIView(frame: .zero)
+    private let phoneNumberKit = PhoneNumberKit()
     
     private let signUpTitle: UILabel = {
         let label = UILabel(frame: .zero)
@@ -35,16 +37,18 @@ final class EmailSignUpViewController: UIViewController {
         return textField
     }()
     
-    private let mobileTextField: UITextField = {
-        let textField = UITextField(frame: .zero)
+    private let mobileTextField: PhoneNumberTextField = {
+        let textField = PhoneNumberTextField(frame: .zero)
         textField.borderStyle = .none
         textField.layer.cornerRadius = 10.0
-        textField.setLeftPaddingPoints(10)
         textField.backgroundColor = .textFieldBackground
-        textField.placeholder = "Mobile Number"
         textField.keyboardType = .numbersAndPunctuation
         textField.returnKeyType = .next
         textField.tag = 1
+        textField.withPrefix = true
+        textField.withExamplePlaceholder = true
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        textField.leftViewMode = .always
         textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
         return textField
     }()
@@ -140,7 +144,7 @@ final class EmailSignUpViewController: UIViewController {
         let button = UIButton(type: .system)
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
         button.tintColor = .white
-        button.backgroundColor = .textFieldBackground
+        button.backgroundColor = .systemGreen
         button.setImage(UIImage(systemName: "checkmark", withConfiguration: imageConfig), for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 3, bottom: 5, right: 4)
         button.addTarget(self, action: #selector(agreeToTerms(_:)), for: .touchUpInside)
@@ -151,6 +155,7 @@ final class EmailSignUpViewController: UIViewController {
     private let signUpButton: DSButton = {
        let button = DSButton(titleText: "sign up", backgroundColor: .dsGrey, titleColor: .white)
         button.addTarget(self, action: #selector(didTapSignUp(_:)), for: .touchUpInside)
+        button.isEnabled = false
         return button
     }()
     
@@ -335,7 +340,7 @@ extension EmailSignUpViewController {
             //Empty Text Fields
             return
         }
-        guard emailText.isValidEmail, passwordText.isValidPassword, mobileNumber.isValidPhoneNumber else {
+        guard emailText.isValidEmail, passwordText.isValidPassword, phoneNumberKit.isValidPhoneNumber(mobileNumber) else {
             //Invalid Fields. Present some type of alert.
             return
         }
@@ -383,8 +388,11 @@ extension EmailSignUpViewController: UITextFieldDelegate {
         emailErrorLabel.isHidden = emailText.isValidEmail ? true : false
         
         guard let mobileNumber = mobileTextField.text else { return }
-        mobileErrorLabel.text = mobileNumber.isValidPhoneNumber ? "" : "Required Field"
-        mobileErrorLabel.isHidden = mobileNumber.isValidPhoneNumber ? true : false
+        
+        let isValid = phoneNumberKit.isValidPhoneNumber(mobileNumber)
+        
+        mobileErrorLabel.text = isValid ? "" : "Required Field"
+        mobileErrorLabel.isHidden = isValid ? true : false
         
         guard let passwordText = passwordTextField.text else { return }
         passwordErrorLabel.text = passwordText.isValidPassword ? "" : "Password must be 8 characters"
@@ -397,5 +405,12 @@ extension EmailSignUpViewController: UITextFieldDelegate {
             confirmPWErrorLabel.isHidden = true
             confirmPWErrorLabel.text = ""
         }
+        
+        guard emailText.isValidEmail, passwordText.isValidPassword, isValid, passwordText == confirmPWTextField.text else {
+            self.signUpButton.enable(false)
+            return
+        }
+        self.signUpButton.enable(true)
     }
 }
+
