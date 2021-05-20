@@ -175,23 +175,13 @@ class Service : NSObject {
     
     //MARK:- PASSWORD RESET WITH EMAIL VALIDATION (WEBVIEW)
     func firebaseForgotPassword(validatedEmail : String, completion : @escaping (_ success : Bool, _ response : String)->()) {
-        
-        let emailTrimmedString = validatedEmail.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        if emailTrimmedString.count > 2 && emailTrimmedString.contains("@") && emailTrimmedString.contains(".") {
-            
-            Auth.auth().sendPasswordReset(withEmail: emailTrimmedString, completion: { (error) in
-                
+            Auth.auth().sendPasswordReset(withEmail: validatedEmail, completion: { (error) in
                 if error != nil {
-                    completion(false, "Failed: \(error?.localizedDescription as Any))")
+                    completion(false, "Failed: \(error!.localizedDescription as Any)")
                     return
                 }
                 completion(true, "Success")
             })
-            
-        } else {
-            completion(false, "Failed: Invalid Email Format")
-        }
     }
     
     func firebaseGoogleSignIn(credentials : AuthCredential, referralCode : String?, completion : @escaping (_ success : Bool, _ response : String)->()) {

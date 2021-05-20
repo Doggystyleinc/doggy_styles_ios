@@ -34,6 +34,7 @@ final class EmailSignInViewController: UIViewController {
         textField.keyboardType = .emailAddress
         textField.returnKeyType = .next
         textField.tag = 0
+        textField.spellCheckingType = .no
         textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
         return textField
     }()
@@ -126,6 +127,7 @@ final class EmailSignInViewController: UIViewController {
         textField.returnKeyType = .done
         textField.layer.opacity = 0.0
         textField.tag = 3
+        textField.spellCheckingType = .no
         return textField
     }()
     
@@ -318,9 +320,25 @@ extension EmailSignInViewController {
     @objc private func didTapSubmit(_ sender: UIButton) {
         print(#function)
         showLoadingView()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        
+        guard let email = self.forgotPasswordEmailTextField.text, email.isValidEmail else {
+            self.presentAlertOnMainThread(title: "Something went wrong...", message: "Please check your email address.", buttonTitle: "Ok")
             self.dismissLoadingView()
-            self.navigationController?.pushViewController(InstructionsViewController(), animated: true)
+            return
+        }
+        
+        Service.shared.firebaseForgotPassword(validatedEmail: email) { success, response in
+            guard success == true else {
+                self.presentAlertOnMainThread(title: "Something went wrong...", message: response, buttonTitle: "Ok")
+                self.dismissLoadingView()
+                return
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.dismissLoadingView()
+                let instructionsVC = InstructionsViewController()
+                self.navigationController?.pushViewController(instructionsVC, animated: true)
+            }
         }
     }
     
