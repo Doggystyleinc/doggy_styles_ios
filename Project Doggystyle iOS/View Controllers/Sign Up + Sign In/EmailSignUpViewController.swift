@@ -11,6 +11,7 @@ import PhoneNumberKit
 final class EmailSignUpViewController: UIViewController {
     private var didAgreeToTerms = true
     private let verticalPadding: CGFloat = 30.0
+    private var errorCounter = 0
     private var scrollView = UIScrollView(frame: .zero)
     private let containerView = UIView(frame: .zero)
     private let phoneNumberKit = PhoneNumberKit()
@@ -33,6 +34,7 @@ final class EmailSignUpViewController: UIViewController {
         textField.keyboardType = .emailAddress
         textField.returnKeyType = .next
         textField.tag = 0
+        textField.autocapitalizationType = .none
         textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
         return textField
     }()
@@ -144,6 +146,7 @@ final class EmailSignUpViewController: UIViewController {
         let button = UIButton(type: .system)
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
         button.tintColor = .white
+        button.isEnabled = false
         button.backgroundColor = .systemGreen
         button.setImage(UIImage(systemName: "checkmark", withConfiguration: imageConfig), for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 3, bottom: 5, right: 4)
@@ -154,7 +157,7 @@ final class EmailSignUpViewController: UIViewController {
     private let dividerView = DividerView()
     private let signUpButton: DSButton = {
        let button = DSButton(titleText: "sign up", backgroundColor: .dsGrey, titleColor: .white)
-        button.addTarget(self, action: #selector(didTapSignUp(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
         button.isEnabled = false
         return button
     }()
@@ -333,26 +336,48 @@ extension EmailSignUpViewController {
         print(#function)
     }
     
-    @objc private func didTapSignUp(_ sender: UIButton) {
-        print(#function)
-        //TODO: - Disable until agree to terms is selected or default to auto agreement
+    @objc private func didTapSignUp() {
         guard let emailText = self.emailTextField.text, let passwordText = self.passwordTextField.text, let mobileNumber = self.mobileTextField.text, let referralCode = self.referralTextField.text else {
-            //Empty Text Fields
             return
         }
-        guard emailText.isValidEmail, passwordText.isValidPassword, phoneNumberKit.isValidPhoneNumber(mobileNumber) else {
-            //Invalid Fields. Present some type of alert.
+        
+        let safeEmail = emailText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), safePassword = passwordText.trimmingCharacters(in: .whitespacesAndNewlines), safeMobile = mobileNumber.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard safeEmail.isValidEmail, safePassword.isValidPassword, phoneNumberKit.isValidPhoneNumber(safeMobile) else {
             return
         }
-        Service.shared.FirebaseRegistrationAndLogin(usersEmailAddress: emailText, usersPassword: passwordText, mobileNumber: mobileNumber, referralCode: referralCode, signInMethod: "email") { registrationSucces, response, responseCode in
-            self.showLoadingView()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                let homeVC = HomeViewController()
-                homeVC.modalTransitionStyle = .crossDissolve
-                homeVC.modalPresentationStyle = .fullScreen
-                
-                self.dismissLoadingView()
-                self.present(homeVC, animated: true)
+        
+        Service.shared.FirebaseRegistrationAndLogin(usersEmailAddress: safeEmail, usersPassword: safePassword, mobileNumber: safeMobile, referralCode: referralCode, signInMethod: Statics.EMAIL) { registrationSucces, response, responseCode in
+            
+            if registrationSucces == true {
+                self.presentHomeViewController()
+            } else  {
+                switch responseCode {
+                case 200:
+                    Service.shared.FirebaseLogin(usersEmailAddress: safeEmail, usersPassword: safePassword) { success, response, responseCode in
+                        if success == true {
+                            self.presentHomeViewController()
+                        } else {
+                            //Firebase error. User is registered but unable to login.
+                            self.presentAlertOnMainThread(title: "Something went wrong...", message: "Unable to login. Please try again later.", buttonTitle: "Ok")
+                        }
+                    }
+                case 500:
+                    self.errorCounter += 1
+                    if self.errorCounter < 2 {
+                        self.didTapSignUp()
+                    } else {
+                        //Firebase error. Clear text fields. Prompt user to try again.
+                        self.presentAlertOnMainThread(title: "Something went wrong...", message: "Unable to register. Please try again.", buttonTitle: "Ok")
+                        self.emailTextField.text = nil
+                        self.passwordTextField.text = nil
+                        self.confirmPWTextField.text = nil
+                        self.mobileTextField.text = nil
+                        self.referralTextField.text = nil
+                    }
+                default:
+                    break
+                }
             }
         }
     }
@@ -405,7 +430,7 @@ extension EmailSignUpViewController: UITextFieldDelegate {
             confirmPWErrorLabel.isHidden = true
             confirmPWErrorLabel.text = ""
         }
-        
+        //Sign Up Button disabled until validation is correct
         guard emailText.isValidEmail, passwordText.isValidPassword, isValid, passwordText == confirmPWTextField.text else {
             self.signUpButton.enable(false)
             return
@@ -414,3 +439,18 @@ extension EmailSignUpViewController: UITextFieldDelegate {
     }
 }
 
+//MARK: - Helpers
+extension EmailSignUpViewController {
+    private func presentHomeViewController() {
+        self.showLoadingView()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            let homeVC = HomeViewController()
+            let navVC = UINavigationController(rootViewController: homeVC)
+            navVC.modalTransitionStyle = .crossDissolve
+            navVC.modalPresentationStyle = .fullScreen
+            
+            self.dismissLoadingView()
+            self.navigationController?.present(navVC, animated: true)
+        }
+    }
+}

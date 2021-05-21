@@ -305,12 +305,7 @@ extension EmailSignInViewController {
                     self.presentAlertOnMainThread(title: "Something went wrong...", message: response, buttonTitle: "Ok")
                     return
                 }
-                
-                let homeVC = HomeViewController()
-                homeVC.modalPresentationStyle = .fullScreen
-                
-                self.dismissLoadingView()
-                self.present(homeVC, animated: true)
+                self.presentHomeVC()
             }
         }
         
@@ -443,6 +438,22 @@ extension EmailSignInViewController {
                 sender.backgroundColor = .textFieldBackground
                 self.rememberUser = false
             }
+        }
+    }
+}
+
+//MARK: - Helpers
+extension EmailSignInViewController {
+    private func presentHomeVC() {
+        self.showLoadingView()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            let homeVC = HomeViewController()
+            let navVC = UINavigationController(rootViewController: homeVC)
+            navVC.modalTransitionStyle = .crossDissolve
+            navVC.modalPresentationStyle = .fullScreen
+            
+            self.dismissLoadingView()
+            self.navigationController?.present(navVC, animated: true)
         }
     }
 }

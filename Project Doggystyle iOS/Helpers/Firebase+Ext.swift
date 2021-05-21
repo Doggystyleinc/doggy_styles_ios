@@ -20,6 +20,7 @@ struct Statics {
     static let  MANAGEUSERSENDPOINT : String = "manage_users"
     static let  EMAIL : String = "email"
     static let  GOOGLE : String = "google"
+    static let  REFERRALCODE: String = "no_code"
     
 }
 
@@ -199,27 +200,58 @@ class Service : NSObject {
                 return
             }
             
-            var referralCodeGrab : String = "no_code"
+            var referralCodeGrab : String = Statics.REFERRALCODE
             
-            referralCodeGrab = referralCode != nil ? referralCode! : "no_code"
+            referralCodeGrab = referralCode != "no_code" ? referralCode! : Statics.REFERRALCODE
             
             let ref = databaseRef.child("all_users").child(usersUID)
             
             let timeStamp : Double = NSDate().timeIntervalSince1970,
                 ref_key = ref.key ?? "nil_key"
             
-            let values : [String : Any] = ["users_firebase_uid" : usersUID, "users_email" : usersEmail, "users_sign_in_method" : Statics.GOOGLE, "users_sign_up_date" : timeStamp, "is_users_terms_and_conditions_accepted" : true, "users_ref_key" : ref_key, "referral_code_grab" : referralCodeGrab]
+            let values : [String : Any] = [
+                "users_firebase_uid" : usersUID,
+                "users_email" : usersEmail,
+                "users_sign_in_method" : Statics.GOOGLE,
+                "users_sign_up_date" : timeStamp,
+                "is_users_terms_and_conditions_accepted" : true,
+                "users_ref_key" : ref_key,
+                "referral_code_grab" : referralCodeGrab]
             
             ref.updateChildValues(values) { (error, ref) in
-                
                 if error != nil {
-                    
                     completion(false, "Login Error: \(error?.localizedDescription as Any).")
                     return
                 }
-                
                 completion(true, "Success")
             }
         }
     }
+    
+    func updateAllUsers(usersEmail: String, userSignInMethod: String, completion: @escaping (_ updateUserSuccess: Bool) -> ()) {
+        if let user_uid = Auth.auth().currentUser?.uid {
+            let ref = Database.database().reference().child("all_users").child(user_uid)
+            let timeStamp : Double = NSDate().timeIntervalSince1970
+            let ref_key = ref.key ?? "nil_key"
+            
+            let values : [String : Any] = [
+                "users_firebase_uid" : user_uid,
+                "users_email" : usersEmail,
+                "users_sign_in_method" : userSignInMethod,
+                "users_sign_up_date" : timeStamp,
+                "is_users_terms_and_conditions_accepted" : true,
+                "users_ref_key" : ref_key]
+            
+            ref.updateChildValues(values) { error, databaseReference in
+                if error != nil {
+                    completion(false)
+                } else {
+                    completion(true)
+                }
+            }
+        }
+    }
+    
 }
+
+

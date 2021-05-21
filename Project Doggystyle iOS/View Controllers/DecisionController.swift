@@ -22,6 +22,7 @@ final class DecisionController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        NetworkMonitor.shared.startMonitoring()
         self.authenticationCheck()
         self.addLogoView()
     }
@@ -54,7 +55,10 @@ extension DecisionController {
                 if hasAuth {
                     self.perform(#selector(self.presentHomeController), with: nil, afterDelay: 1.0)
                 } else {
-                    self.perform(#selector(self.presentSignUpController), with: nil, afterDelay: 1.0)
+                    guard let userEmail = Auth.auth().currentUser?.email else { return }
+                    Service.shared.updateAllUsers(usersEmail: userEmail, userSignInMethod: Statics.EMAIL) { success in
+                        self.perform(#selector(self.presentHomeController), with: nil, afterDelay: 1.0)
+                    }
                 }
             }
         }

@@ -189,7 +189,6 @@ extension SignUpViewController {
 extension SignUpViewController {
     private func addTargets() {
         self.emailButton.addTarget(self, action: #selector(presentEmailSignUp(_:)), for: .touchUpInside)
-        self.googleButton.addTarget(self, action: #selector(didTapGoogleButton(_:)), for: .touchUpInside)
         self.facebookButton.addTarget(self, action: #selector(didTapFacebookButton(_:)), for: .touchUpInside)
         self.appleButton.addTarget(self, action: #selector(didTapAppleButton(_:)), for: .touchUpInside)
     }
@@ -215,10 +214,6 @@ extension SignUpViewController {
         let signInVC = SignInViewController()
         let navVC = UINavigationController(rootViewController: signInVC)
         self.present(navVC, animated: true)
-    }
-    
-    @objc private func didTapGoogleButton(_ sender: UIButton) {
-        print(#function)
     }
     
     @objc private func didTapFacebookButton(_ sender: UIButton) {
