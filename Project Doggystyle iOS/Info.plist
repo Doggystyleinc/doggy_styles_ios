@@ -31,6 +31,10 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We will help you locate services nearby.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We will help you locate services nearby.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ConcertOne-Regular.ttf</string>
@@ -72,6 +76,10 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarHidden</key>
+	<false/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleLightContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -83,9 +91,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We will help you locate services nearby.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We will help you locate services nearby.</string>
 </dict>
 </plist>

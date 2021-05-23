@@ -9,8 +9,9 @@ import UIKit
 import CoreLocation
 import MapKit
 
-class RequestUserLocationViewController: UIViewController, MKMapViewDelegate {
-    let locationManager = CLLocationManager()
+final class RequestUserLocationViewController: UIViewController, MKMapViewDelegate {
+    private let locationManager = CLLocationManager()
+    private var currentLocation: CLLocation?
     private let verticalPadding: CGFloat = 30.0
     
     private let titleLabel: UILabel = {
@@ -94,6 +95,7 @@ class RequestUserLocationViewController: UIViewController, MKMapViewDelegate {
         textField.placeholder = "Address"
         textField.returnKeyType = .done
         textField.spellCheckingType = .no
+        textField.setupLeftImage(imageName: "magnifyingglass")
         return textField
     }()
     
@@ -108,19 +110,15 @@ class RequestUserLocationViewController: UIViewController, MKMapViewDelegate {
         self.configureVC()
         self.addTitleViews()
         self.addSearchViews()
-        self.addressSearchTextField.setupLeftImage(imageName: "magnifyingglass")
-//        self.addPermissionContainer()
-//        self.addPermissionViews()
-        
+        self.checkAuthorizationStatus()
     }
 }
 
 //MARK: - Configure View Controller
 extension RequestUserLocationViewController {
     private func configureVC() {
-        self.view.backgroundColor = .white
-        self.mapView.delegate = self
-        
+        view.backgroundColor = .white
+        mapView.delegate = self
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
@@ -233,8 +231,7 @@ extension RequestUserLocationViewController {
         } completion: { _ in
             //User enabled location services
             self.containerView.removeFromSuperview()
-            self.locationManager.requestWhenInUseAuthorization()
-            self.locationManager.startUpdatingLocation()
+            self.checkLocationServices()
         }
     }
     
@@ -244,33 +241,50 @@ extension RequestUserLocationViewController {
         } completion: { _ in
             //User did not enable location services
             self.containerView.removeFromSuperview()
+            
         }
     }
 }
 
-//MARK: Core Location
+//MARK: - Core Location
 extension RequestUserLocationViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
-            manager.stopUpdatingLocation()
             let latitude = location.coordinate.latitude
             let longitude = location.coordinate.longitude
+            let address = CLLocation(latitude: latitude, longitude: longitude)
+            self.currentLocation = address
+            self.centerOnUserLocation()
             
             let geoCoder = CLGeocoder()
-            geoCoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
+            geoCoder.reverseGeocodeLocation(address) { [weak self] placemarks, error in
                 guard let self = self else { return }
-                
+
                 if let _ = error {
                     //Show alert
                     return
                 }
-                
+
                 guard let placemark = placemarks?.first else {
                     //show alert
                     return
                 }
+                //handle if fields are unavailable
+                let streetNumber = placemark.subThoroughfare ?? ""
+                let postalCode = placemark.postalCode ?? ""
+                let streetName = placemark.thoroughfare ?? ""
+                let stateName = placemark.administrativeArea ?? ""
+                let cityName = placemark.locality ?? ""
+                
+                DispatchQueue.main.async {
+                    self.physicalAddressLabel.text = "User Address:\n\(streetNumber) \(streetName)\n\(cityName), \(stateName) \(postalCode)"
+                }
             }
         }
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        checkLocationAuthorization()
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -278,32 +292,60 @@ extension RequestUserLocationViewController: CLLocationManagerDelegate {
     }
 }
 
-//MARK: - Helpers
+//MARK: - Location Helpers
 extension RequestUserLocationViewController {
-    private func checkLocationServices() {
-        if CLLocationManager.locationServicesEnabled() {
-            checkLocationAuthorization()
+    private func checkAuthorizationStatus() {
+        if locationManager.authorizationStatus == .authorizedWhenInUse || locationManager.authorizationStatus == .authorizedAlways {
+            //Check if system wide Location Services are enabled.
+            checkLocationServices()
         } else {
-            //Show alert letting user know to turn this on
+            //Present permission request prompt
+            addPermissionContainer()
+            addPermissionViews()
         }
+    }
+    
+    private func checkLocationServices() {
+        guard CLLocationManager.locationServicesEnabled() else {
+            //Show alert letting user know to turn this on
+            //direct user to Settings app if possible
+            //This is device wide Location Services
+            return
+        }
+        checkLocationAuthorization()
     }
     
     private func checkLocationAuthorization() {
         switch locationManager.authorizationStatus {
         case .authorizedWhenInUse:
-            break
+            startTrackingUserLocation()
         case .denied:
             //show alert to turn on permissions
+            //direct user to Settings app if possible
             break
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
         case .restricted:
             //show alert that user cannot access modify location status
+            //direct user to Settings app if possible
             break
         case .authorizedAlways:
-            break
+            startTrackingUserLocation()
         @unknown default:
             break
         }
+    }
+    
+    private func centerOnUserLocation() {
+        if let location = locationManager.location?.coordinate {
+            let region = MKCoordinateRegion(center: location, latitudinalMeters: 700, longitudinalMeters: 700)
+            self.mapView.setRegion(region, animated: true)
+        }
+    }
+    
+    private func startTrackingUserLocation() {
+        mapView.showsUserLocation = true
+        locationManager.startUpdatingLocation()
+        centerOnUserLocation()
     }
 }
