@@ -11,7 +11,7 @@ import MapKit
 
 final class RequestUserLocationViewController: UIViewController, MKMapViewDelegate {
     private let locationManager = CLLocationManager()
-    private var currentLocation: CLLocation?
+    private var selectedLocation: CLLocation?
     private let verticalPadding: CGFloat = 30.0
     
     private let titleLabel: UILabel = {
@@ -22,16 +22,36 @@ final class RequestUserLocationViewController: UIViewController, MKMapViewDelega
         return label
     }()
     
-    private let physicalAddressLabel: UILabel = {
+    private let addressHeaderLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = UIFont.robotoBold(size: 18)
-        label.textColor = .headerColor
+        label.textColor = .textColor
         label.numberOfLines = 0
-        label.text = "Address: "
+        label.textAlignment = .center
+        label.text = "Locating..."
+        return label
+    }()
+    
+    private let physicalAddressLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.font = UIFont.robotoRegular(size: 18)
+        label.textColor = .textColor
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.text = ""
         return label
     }()
     
     private let dividerView = DividerView()
+    
+    private let subTitle: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.font = UIFont.robotoRegular(size: 18)
+        label.numberOfLines = 0
+        label.text = NSLocalizedString("ConfirmAddress", comment: "Please confirm your address below or enter a new location.")
+        label.textColor = .textColor
+        return label
+    }()
     
     private let containerView: UIView = {
         let view = UIView(frame: .zero)
@@ -99,6 +119,12 @@ final class RequestUserLocationViewController: UIViewController, MKMapViewDelega
         return textField
     }()
     
+    private let confirmAddressButton: UIButton = {
+        let button = DSButton(titleText: "next", backgroundColor: .dsGrey, titleColor: .white)
+        button.addTarget(self, action: #selector(didTapConfirm(_:)), for: .touchUpInside)
+        return button
+    }()
+    
     private let mapView: MKMapView = {
         let map = MKMapView(frame: .zero)
         map.layer.cornerRadius = 10.0
@@ -128,14 +154,25 @@ extension RequestUserLocationViewController {
 extension RequestUserLocationViewController {
     private func addTitleViews() {
         self.view.addSubview(titleLabel)
-        titleLabel.top(to: self.view, offset: 80.0)
-        titleLabel.left(to: self.view, offset: verticalPadding)
+        titleLabel.top(to: view, offset: 80.0)
+        titleLabel.left(to: view, offset: verticalPadding)
         
         self.view.addSubview(dividerView)
         dividerView.height(0.5)
-        dividerView.topToBottom(of: self.titleLabel, offset: 20.0)
-        dividerView.left(to: self.view, offset: verticalPadding)
-        dividerView.right(to: self.view, offset: -verticalPadding)
+        dividerView.topToBottom(of: titleLabel, offset: 20.0)
+        dividerView.left(to: view, offset: verticalPadding)
+        dividerView.right(to: view, offset: -verticalPadding)
+        
+        self.view.addSubview(subTitle)
+        subTitle.topToBottom(of: dividerView, offset: 20.0)
+        subTitle.left(to: dividerView)
+        subTitle.right(to: dividerView)
+        
+        self.view.addSubview(confirmAddressButton)
+        confirmAddressButton.bottom(to: view, offset: -50)
+        confirmAddressButton.left(to: dividerView)
+        confirmAddressButton.right(to: dividerView)
+        confirmAddressButton.height(44.0)
     }
 }
 
@@ -144,20 +181,25 @@ extension RequestUserLocationViewController {
     private func addSearchViews() {
         self.view.addSubview(addressSearchTextField)
         addressSearchTextField.height(44)
-        addressSearchTextField.topToBottom(of: self.dividerView, offset: 30)
-        addressSearchTextField.left(to: self.dividerView)
-        addressSearchTextField.right(to: self.dividerView)
+        addressSearchTextField.topToBottom(of: subTitle, offset: 30)
+        addressSearchTextField.left(to: dividerView)
+        addressSearchTextField.right(to: dividerView)
         
         self.view.addSubview(mapView)
-        mapView.topToBottom(of: self.addressSearchTextField, offset: 30)
-        mapView.right(to: self.addressSearchTextField)
-        mapView.left(to: self.addressSearchTextField)
+        mapView.topToBottom(of: addressSearchTextField, offset: 30)
+        mapView.right(to: addressSearchTextField)
+        mapView.left(to: addressSearchTextField)
         mapView.height(200)
 
+        self.view.addSubview(addressHeaderLabel)
+        addressHeaderLabel.topToBottom(of: mapView, offset: 30)
+        addressHeaderLabel.left(to: dividerView)
+        addressHeaderLabel.right(to: dividerView)
+        
         self.view.addSubview(physicalAddressLabel)
-        physicalAddressLabel.topToBottom(of: mapView, offset: 30)
-        physicalAddressLabel.left(to: self.dividerView)
-        physicalAddressLabel.right(to: self.dividerView)
+        physicalAddressLabel.topToBottom(of: addressHeaderLabel, offset: 5)
+        physicalAddressLabel.left(to: dividerView)
+        physicalAddressLabel.right(to: dividerView)
     }
 }
 
@@ -244,6 +286,11 @@ extension RequestUserLocationViewController {
             
         }
     }
+    
+    @objc private func didTapConfirm(_ sender: UIButton) {
+        //Store address in database
+        print(#function)
+    }
 }
 
 //MARK: - Core Location
@@ -253,7 +300,7 @@ extension RequestUserLocationViewController: CLLocationManagerDelegate {
             let latitude = location.coordinate.latitude
             let longitude = location.coordinate.longitude
             let address = CLLocation(latitude: latitude, longitude: longitude)
-            self.currentLocation = address
+            self.selectedLocation = address
             self.centerOnUserLocation()
             
             let geoCoder = CLGeocoder()
@@ -277,7 +324,8 @@ extension RequestUserLocationViewController: CLLocationManagerDelegate {
                 let cityName = placemark.locality ?? ""
                 
                 DispatchQueue.main.async {
-                    self.physicalAddressLabel.text = "User Address:\n\(streetNumber) \(streetName)\n\(cityName), \(stateName) \(postalCode)"
+                    self.addressHeaderLabel.text = "Your Service Location:"
+                    self.physicalAddressLabel.text = "\(streetNumber) \(streetName)\n\(cityName), \(stateName) \(postalCode)"
                 }
             }
         }
@@ -285,10 +333,6 @@ extension RequestUserLocationViewController: CLLocationManagerDelegate {
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         checkLocationAuthorization()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-//        presentAlertOnMainThread(title: "Something went wrong...", message: "Unable able to locate your location", buttonTitle: "Ok")
     }
 }
 
