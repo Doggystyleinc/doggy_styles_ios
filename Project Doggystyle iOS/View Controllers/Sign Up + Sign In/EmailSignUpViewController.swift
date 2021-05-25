@@ -12,7 +12,7 @@ final class EmailSignUpViewController: UIViewController {
     private var didAgreeToTerms = true
     private let verticalPadding: CGFloat = 30.0
     private var errorCounter = 0
-    private var scrollView = UIScrollView(frame: .zero)
+    private let scrollView = UIScrollView(frame: .zero)
     private let containerView = UIView(frame: .zero)
     private let phoneNumberKit = PhoneNumberKit()
     

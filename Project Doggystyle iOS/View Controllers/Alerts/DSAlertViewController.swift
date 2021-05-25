@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DSAlertViewController: UIViewController {
+final class DSAlertViewController: UIViewController {
 
     private let padding: CGFloat = 20.0
     

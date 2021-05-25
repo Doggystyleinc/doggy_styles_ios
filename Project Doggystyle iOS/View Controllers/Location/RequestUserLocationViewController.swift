@@ -12,7 +12,9 @@ import MapKit
 final class RequestUserLocationViewController: UIViewController, MKMapViewDelegate {
     private let locationManager = CLLocationManager()
     private var selectedLocation: CLLocation?
+    private var selectedAddress: String?
     private let verticalPadding: CGFloat = 30.0
+    private let appointmentsAvailable = false
     
     private let titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
@@ -121,7 +123,7 @@ final class RequestUserLocationViewController: UIViewController, MKMapViewDelega
     
     private let confirmAddressButton: UIButton = {
         let button = DSButton(titleText: "next", backgroundColor: .dsGrey, titleColor: .white)
-        button.addTarget(self, action: #selector(didTapConfirm(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapNext(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -287,9 +289,25 @@ extension RequestUserLocationViewController {
         }
     }
     
-    @objc private func didTapConfirm(_ sender: UIButton) {
-        //Store address in database
-        print(#function)
+    @objc private func didTapNext(_ sender: UIButton) {
+        //Disable button until location is set.
+        showLoadingView()
+        //Store address in database.
+        //Check if appointments are available at selected location.
+        
+        if appointmentsAvailable {
+            
+        } else {
+            perform(#selector(showNotServicedVC), with: nil, afterDelay: 2.0)
+        }
+    }
+    
+    @objc private func showNotServicedVC() {
+        dismissLoadingView()
+        let notServicedVC = LocationNotServicedViewController()
+        notServicedVC.selectedAddress = selectedAddress
+        
+        self.navigationController?.pushViewController(notServicedVC, animated: true)
     }
 }
 
@@ -326,6 +344,7 @@ extension RequestUserLocationViewController: CLLocationManagerDelegate {
                 DispatchQueue.main.async {
                     self.addressHeaderLabel.text = "Your Service Location:"
                     self.physicalAddressLabel.text = "\(streetNumber) \(streetName)\n\(cityName), \(stateName) \(postalCode)"
+                    self.selectedAddress = self.physicalAddressLabel.text
                 }
             }
         }
