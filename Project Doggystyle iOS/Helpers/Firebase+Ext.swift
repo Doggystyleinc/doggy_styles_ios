@@ -13,17 +13,6 @@ import UIKit
 import Firebase
 //import GoogleSignIn
 
-//MARK: - URLS AND ENDPOINTS TODO: ENVIRONMENTAL VARIABLE
-struct Statics {
-    static let  HTTPURL : String = "https://doggystyle-dev.herokuapp.com/"
-    static let  COMPANYAUTHENDPOINT : String = "company_authentication"
-    static let  MANAGEUSERSENDPOINT : String = "manage_users"
-    static let  EMAIL : String = "email"
-    static let  GOOGLE : String = "google"
-    static let  REFERRALCODE: String = "no_code"
-    
-}
-
 //MARK:- SERVICE SINGLETON FOR CRUD OPERATIONS
 class Service : NSObject {
     
@@ -130,7 +119,7 @@ class Service : NSObject {
     //MARK:- MANUAL HTTPS AUTH
     func firebaseAuthPOSTRequest(parameters : [String : String], endpoint : String,  completion: @escaping ([String: Any]?, Error?) -> Void) {
         
-        guard let url = URL(string: "\(Statics.HTTPURL) + \(endpoint)") else {return} //ALWAYS SUCCEEDS PER UNIT TEST STRING VALIDATION
+        guard let url = URL(string: "\(Constants.httpURL) + \(endpoint)") else {return} //ALWAYS SUCCEEDS PER UNIT TEST STRING VALIDATION
         
         let session = URLSession.shared,
             fetchedParameters = parameters
@@ -200,9 +189,9 @@ class Service : NSObject {
                 return
             }
             
-            var referralCodeGrab : String = Statics.REFERRALCODE
+            var referralCodeGrab : String = Constants.referralCode
             
-            referralCodeGrab = referralCode != "no_code" ? referralCode! : Statics.REFERRALCODE
+            referralCodeGrab = referralCode != "no_code" ? referralCode! : Constants.referralCode
             
             let ref = databaseRef.child("all_users").child(usersUID)
             
@@ -212,7 +201,7 @@ class Service : NSObject {
             let values : [String : Any] = [
                 "users_firebase_uid" : usersUID,
                 "users_email" : usersEmail,
-                "users_sign_in_method" : Statics.GOOGLE,
+                "users_sign_in_method" : Constants.google,
                 "users_sign_up_date" : timeStamp,
                 "is_users_terms_and_conditions_accepted" : true,
                 "users_ref_key" : ref_key,

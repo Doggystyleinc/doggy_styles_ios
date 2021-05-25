@@ -33,8 +33,8 @@ extension DecisionController {
     private func addLogoView() {
         self.view.addSubview(placeholderLogo)
         placeholderLogo.topToSuperview(offset: 164.0, usingSafeArea: true)
-        placeholderLogo.left(to: self.view, offset: 31.0)
-        placeholderLogo.right(to: self.view, offset: -31.0)
+        placeholderLogo.left(to: view, offset: 31.0)
+        placeholderLogo.right(to: view, offset: -31.0)
     }
 }
 
@@ -56,7 +56,7 @@ extension DecisionController {
                     self.perform(#selector(self.presentHomeController), with: nil, afterDelay: 1.0)
                 } else {
                     guard let userEmail = Auth.auth().currentUser?.email else { return }
-                    Service.shared.updateAllUsers(usersEmail: userEmail, userSignInMethod: Statics.EMAIL) { success in
+                    Service.shared.updateAllUsers(usersEmail: userEmail, userSignInMethod: Constants.email) { success in
                         self.perform(#selector(self.presentHomeController), with: nil, afterDelay: 1.0)
                     }
                 }
@@ -73,7 +73,7 @@ extension DecisionController {
         
         navVC.navigationBar.isHidden = true
         navVC.modalPresentationStyle = .fullScreen
-        self.navigationController?.present(navVC, animated: true)
+        navigationController?.present(navVC, animated: true)
     }
     
     @objc func presentSignUpController() {
@@ -81,6 +81,6 @@ extension DecisionController {
         let navVC = UINavigationController(rootViewController: signUpVC)
         
         navVC.modalPresentationStyle = .fullScreen
-        self.navigationController?.present(navVC, animated: true)
+        navigationController?.present(navVC, animated: true)
     }
 }

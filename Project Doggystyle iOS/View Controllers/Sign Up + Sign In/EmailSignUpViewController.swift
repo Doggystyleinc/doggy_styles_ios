@@ -347,7 +347,7 @@ extension EmailSignUpViewController {
             return
         }
         
-        Service.shared.FirebaseRegistrationAndLogin(usersEmailAddress: safeEmail, usersPassword: safePassword, mobileNumber: safeMobile, referralCode: referralCode, signInMethod: Statics.EMAIL) { registrationSucces, response, responseCode in
+        Service.shared.FirebaseRegistrationAndLogin(usersEmailAddress: safeEmail, usersPassword: safePassword, mobileNumber: safeMobile, referralCode: referralCode, signInMethod: Constants.email) { registrationSucces, response, responseCode in
             
             if registrationSucces == true {
                 self.presentHomeViewController()

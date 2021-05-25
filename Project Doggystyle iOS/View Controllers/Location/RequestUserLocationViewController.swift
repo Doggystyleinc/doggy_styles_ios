@@ -122,8 +122,16 @@ final class RequestUserLocationViewController: UIViewController, MKMapViewDelega
     }()
     
     private let confirmAddressButton: UIButton = {
-        let button = DSButton(titleText: "next", backgroundColor: .dsGrey, titleColor: .white)
+        let button = DSButton(titleText: "next", backgroundColor: .systemGreen, titleColor: .white)
         button.addTarget(self, action: #selector(didTapNext(_:)), for: .touchUpInside)
+        button.alpha = 0.0
+        return button
+    }()
+    
+    private let learnMoreButton: DSButton = {
+        let button = DSButton(titleText: "Learn More", backgroundColor: .systemGreen, titleColor: .white)
+        button.addTarget(self, action: #selector(didTapLearnMore), for: .touchUpInside)
+        button.layer.cornerRadius = 5.0
         return button
     }()
     
@@ -274,8 +282,10 @@ extension RequestUserLocationViewController {
             self.containerView.alpha = 0.0
         } completion: { _ in
             //User enabled location services
+            self.learnMoreButton.removeFromSuperview()
             self.containerView.removeFromSuperview()
             self.checkLocationServices()
+            self.confirmAddressButton.alpha = 1.0
         }
     }
     
@@ -285,7 +295,7 @@ extension RequestUserLocationViewController {
         } completion: { _ in
             //User did not enable location services
             self.containerView.removeFromSuperview()
-            
+            self.nudgeForLocationServices()
         }
     }
     
@@ -309,6 +319,18 @@ extension RequestUserLocationViewController {
         
         self.navigationController?.pushViewController(notServicedVC, animated: true)
     }
+    
+    @objc private func didTapLearnMore() {
+        let howToView = HowToEnableLocationView(frame: .zero)
+        howToView.alpha = 0.0
+        
+        self.view.addSubview(howToView)
+        howToView.edgesToSuperview()
+        
+        UIView.animate(withDuration: 0.75) {
+            howToView.alpha = 1.0
+        }
+    }
 }
 
 //MARK: - Core Location
@@ -317,21 +339,21 @@ extension RequestUserLocationViewController: CLLocationManagerDelegate {
         if let location = locations.first {
             let latitude = location.coordinate.latitude
             let longitude = location.coordinate.longitude
-            let address = CLLocation(latitude: latitude, longitude: longitude)
-            self.selectedLocation = address
+            let location = CLLocation(latitude: latitude, longitude: longitude)
+            self.selectedLocation = location
             self.centerOnUserLocation()
             
             let geoCoder = CLGeocoder()
-            geoCoder.reverseGeocodeLocation(address) { [weak self] placemarks, error in
+            geoCoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
                 guard let self = self else { return }
 
                 if let _ = error {
-                    //Show alert
+                    //Show alert?
                     return
                 }
 
                 guard let placemark = placemarks?.first else {
-                    //show alert
+                    //show alert?
                     return
                 }
                 //handle if fields are unavailable
@@ -410,5 +432,20 @@ extension RequestUserLocationViewController {
         mapView.showsUserLocation = true
         locationManager.startUpdatingLocation()
         centerOnUserLocation()
+    }
+}
+
+//MARK: - Helpers
+extension RequestUserLocationViewController {
+    //Prompt user to enable location services with a how-to guide
+    private func nudgeForLocationServices() {
+        self.addressHeaderLabel.text = "Please enter your location above."
+        self.physicalAddressLabel.text = "Enabling location services will allow us to better serve your pet needs. Click below to learn how to briefly share your location."
+        
+        self.view.addSubview(learnMoreButton)
+        learnMoreButton.topToBottom(of: physicalAddressLabel, offset: 20.0)
+        learnMoreButton.height(44)
+        learnMoreButton.width(150)
+        learnMoreButton.centerX(to: physicalAddressLabel)
     }
 }
