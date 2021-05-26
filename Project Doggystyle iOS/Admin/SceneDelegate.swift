@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
           let window = UIWindow(windowScene: sceneWindow)
           window.makeKeyAndVisible()
           
-          let decisionController = RequestUserLocationViewController() //Temp
+          let decisionController = LocationNotServicedViewController() //Temp
 //          let decisionController = DecisionController()
           let navigationController = UINavigationController(rootViewController: decisionController)
           

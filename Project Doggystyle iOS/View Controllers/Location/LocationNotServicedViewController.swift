@@ -7,11 +7,13 @@
 
 import UIKit
 import CoreLocation
+import PhoneNumberKit
 
 final class LocationNotServicedViewController: UIViewController {
     private let scrollView = UIScrollView(frame: .zero)
     private let scrollViewContainer = UIView(frame: .zero)
     private let verticalPadding: CGFloat = 30.0
+    private let phoneNumberKit = PhoneNumberKit()
     var selectedAddress: String!
     
     private let titleLabel: UILabel = {
@@ -97,24 +99,35 @@ final class LocationNotServicedViewController: UIViewController {
         return button
     }()
     
-    private let mobileTextField: UITextField = {
-        let textField = UITextField(frame: .zero)
+    private let mobileTextField: PhoneNumberTextField = {
+        let textField = PhoneNumberTextField(frame: .zero)
         textField.alpha = 0.0
-        textField.placeholder = ""
         textField.borderStyle = .none
-        textField.setLeftPaddingPoints(10)
         textField.layer.cornerRadius = 10.0
         textField.backgroundColor = .textFieldBackground
         textField.keyboardType = .numbersAndPunctuation
         textField.returnKeyType = .done
-        
+        textField.withPrefix = true
+        textField.withExamplePlaceholder = true
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        textField.leftViewMode = .always
+        textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
         return textField
+    }()
+    
+    private let mobileErrorLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.textColor = .errorColor
+        label.font = UIFont.robotoRegular(size: 14)
+        return label
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureVC()
         addViews()
+        self.dismissKeyboardTapGesture()
+        observeForKeyboard()
     }
 }
 
@@ -123,6 +136,7 @@ extension LocationNotServicedViewController {
     private func configureVC() {
         self.view.backgroundColor = .white
         self.navigationController?.navigationBar.isHidden = false
+        self.mobileTextField.delegate = self
         self.selectedLocationLabel.text = selectedAddress
     }
 }
@@ -163,7 +177,7 @@ extension LocationNotServicedViewController {
         self.scrollView.addSubview(scrollViewContainer)
         scrollViewContainer.edgesToSuperview()
         scrollViewContainer.width(to: scrollView)
-        scrollViewContainer.height(400)
+        scrollViewContainer.height(550)
         
         self.scrollViewContainer.addSubview(apologyLabel)
         apologyLabel.top(to: scrollViewContainer)
@@ -193,8 +207,12 @@ extension LocationNotServicedViewController {
         mobileTextField.right(to: scrollViewContainer)
         mobileTextField.height(44)
         
+        self.scrollViewContainer.addSubview(mobileErrorLabel)
+        mobileErrorLabel.topToBottom(of: mobileTextField, offset: 5)
+        mobileErrorLabel.left(to: self.scrollViewContainer, offset: 5)
+        
         self.scrollViewContainer.addSubview(confirmButton)
-        confirmButton.topToBottom(of: mobileTextField, offset: 20.0)
+        confirmButton.topToBottom(of: mobileErrorLabel, offset: 20.0)
         confirmButton.left(to: scrollViewContainer)
         confirmButton.right(to: scrollViewContainer)
         confirmButton.height(44)
@@ -238,10 +256,49 @@ extension LocationNotServicedViewController {
         let contactLaterVC = NotServicedNumberSubmittedViewController()
         self.navigationController?.pushViewController(contactLaterVC, animated: true)
     }
+    
+    @objc func adjustForKeyboard(notification: Notification) {
+        if notification.name == UIResponder.keyboardWillHideNotification {
+            scrollView.contentInset = .zero
+        } else {
+            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0)
+        }
+        
+        scrollView.scrollIndicatorInsets = scrollView.contentInset
+    }
+    
+    @objc private func textDidChange(_ sender: UITextField) {
+        guard let mobileNumber = mobileTextField.text else { return }
+        
+        let isValid = phoneNumberKit.isValidPhoneNumber(mobileNumber)
+
+        mobileErrorLabel.text = isValid ? "" : "Invalid Number"
+        mobileErrorLabel.isHidden = isValid ? true : false
+        
+        //Submit Button disabled until validation is correct
+        guard isValid else {
+            confirmButton.enable(false)
+            return
+        }
+        confirmButton.enable(true)
+    }
 }
 
 
-//MARK: - Helpers
+//MARK: - TextField Delegate
+extension LocationNotServicedViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        showLoadingView()
+        perform(#selector(presentNumberSubmittedVC), with: nil, afterDelay: 1.0)
+        return false
+    }
+}
+
+//MARK: - Adjust Scrollview for Keyboard
 extension LocationNotServicedViewController {
-    
+    private func observeForKeyboard() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
 }

@@ -148,6 +148,11 @@ final class RequestUserLocationViewController: UIViewController, MKMapViewDelega
         self.addSearchViews()
         self.checkAuthorizationStatus()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.checkAuthorizationStatus()
+    }
 }
 
 //MARK: - Configure View Controller
@@ -432,6 +437,8 @@ extension RequestUserLocationViewController {
         mapView.showsUserLocation = true
         locationManager.startUpdatingLocation()
         centerOnUserLocation()
+        learnMoreButton.removeFromSuperview()
+        confirmAddressButton.alpha = 1.0
     }
 }
 

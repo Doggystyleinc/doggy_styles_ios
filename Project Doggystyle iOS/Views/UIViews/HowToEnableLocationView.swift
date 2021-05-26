@@ -234,6 +234,7 @@ extension HowToEnableLocationView {
     @objc private func didTapNext() {
         if nextButton.titleLabel?.text == "Open Settings?".uppercased() {
             openSettings()
+            self.removeFromSuperview()
         }
         
         guard didRemove == false else { return }
@@ -263,7 +264,15 @@ extension HowToEnableLocationView {
     }
     
     @objc private func openSettings() {
-        print(#function)
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+        
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                print("Settings opened: \(success)")
+            })
+        }
     }
 }
 

@@ -15,6 +15,8 @@
 		CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */; };
 		CDCCD0B0265D4DB4007ABECF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0AF265D4DB4007ABECF /* Constants.swift */; };
 		CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */; };
+		CDCCD0B5265EB5DF007ABECF /* CreateDoggyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0B4265EB5DF007ABECF /* CreateDoggyProfileViewController.swift */; };
+		CDCCD0B8265EB884007ABECF /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0B7265EB884007ABECF /* User.swift */; };
 		CDE870DE2652E1610082551B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE870DD2652E1610082551B /* AppDelegate.swift */; };
 		CDE870E02652E1610082551B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE870DF2652E1610082551B /* SceneDelegate.swift */; };
 		CDE870E72652E1640082551B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDE870E62652E1640082551B /* Assets.xcassets */; };
@@ -85,6 +87,8 @@
 		CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotServicedNumberSubmittedViewController.swift; sourceTree = "<group>"; };
 		CDCCD0AF265D4DB4007ABECF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToEnableLocationView.swift; sourceTree = "<group>"; };
+		CDCCD0B4265EB5DF007ABECF /* CreateDoggyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDoggyProfileViewController.swift; sourceTree = "<group>"; };
+		CDCCD0B7265EB884007ABECF /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CDE870DA2652E1610082551B /* Project Doggystyle iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Project Doggystyle iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDE870DD2652E1610082551B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CDE870DF2652E1610082551B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -191,6 +195,22 @@
 			path = Location;
 			sourceTree = "<group>";
 		};
+		CDCCD0B3265EB5C5007ABECF /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				CDCCD0B4265EB5DF007ABECF /* CreateDoggyProfileViewController.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		CDCCD0B6265EB869007ABECF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CDCCD0B7265EB884007ABECF /* User.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		CDE870D12652E1610082551B = {
 			isa = PBXGroup;
 			children = (
@@ -212,6 +232,7 @@
 		CDE870DC2652E1610082551B /* Project Doggystyle iOS */ = {
 			isa = PBXGroup;
 			children = (
+				CDCCD0B6265EB869007ABECF /* Models */,
 				CDE871692652ED930082551B /* Firebase */,
 				CDE870EB2652E1640082551B /* Info.plist */,
 				CDE871662652EA100082551B /* Git */,
@@ -301,6 +322,7 @@
 		CDE8714D2652E65A0082551B /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CDCCD0B3265EB5C5007ABECF /* Dashboard */,
 				CD68688E2656EEEF0064ADFE /* Location */,
 				CD686880265412A20064ADFE /* Alerts */,
 				CDE8715D2652E68D0082551B /* Resetting Password */,
@@ -578,10 +600,12 @@
 				CDE8711F2652E3030082551B /* Firebase+Ext.swift in Sources */,
 				CDE871592652E6850082551B /* EmailSignUpViewController.swift in Sources */,
 				CDE8715C2652E6850082551B /* SignUpViewController.swift in Sources */,
+				CDCCD0B8265EB884007ABECF /* User.swift in Sources */,
 				CDE871622652E69B0082551B /* ResetPasswordViewController.swift in Sources */,
 				CDE871652652E6E60082551B /* DSButton.swift in Sources */,
 				CDE871232652E3030082551B /* String + Ext.swift in Sources */,
 				CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */,
+				CDCCD0B5265EB5DF007ABECF /* CreateDoggyProfileViewController.swift in Sources */,
 				CDE870DE2652E1610082551B /* AppDelegate.swift in Sources */,
 				CD6868842654373A0064ADFE /* UIButton+Ext.swift in Sources */,
 				CDE8711C2652E3030082551B /* TextField+Ext.swift in Sources */,

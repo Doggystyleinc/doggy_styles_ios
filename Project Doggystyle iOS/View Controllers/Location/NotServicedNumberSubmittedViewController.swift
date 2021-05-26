@@ -120,10 +120,27 @@ extension NotServicedNumberSubmittedViewController {
         switch sender.tag {
         case 1:
             print("Profile Tapped")
+            presentHomeVC()
         case 2:
             print("Dashboard Tapped")
         default:
             break
+        }
+    }
+}
+
+//MARK: - Helpers
+extension NotServicedNumberSubmittedViewController {
+    private func presentHomeVC() {
+        self.showLoadingView()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            let homeVC = HomeViewController()
+            let navVC = UINavigationController(rootViewController: homeVC)
+            navVC.modalTransitionStyle = .crossDissolve
+            navVC.modalPresentationStyle = .fullScreen
+            
+            self.dismissLoadingView()
+            self.navigationController?.present(navVC, animated: true)
         }
     }
 }
