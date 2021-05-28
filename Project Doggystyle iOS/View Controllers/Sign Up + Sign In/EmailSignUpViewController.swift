@@ -350,13 +350,13 @@ extension EmailSignUpViewController {
         Service.shared.FirebaseRegistrationAndLogin(usersEmailAddress: safeEmail, usersPassword: safePassword, mobileNumber: safeMobile, referralCode: referralCode, signInMethod: Constants.email) { registrationSucces, response, responseCode in
             
             if registrationSucces == true {
-                self.presentHomeViewController()
+                self.presentRequestVC()
             } else  {
                 switch responseCode {
                 case 200:
                     Service.shared.FirebaseLogin(usersEmailAddress: safeEmail, usersPassword: safePassword) { success, response, responseCode in
                         if success == true {
-                            self.presentHomeViewController()
+                            self.presentRequestVC()
                         } else {
                             //Firebase error. User is registered but unable to login.
                             self.presentAlertOnMainThread(title: "Something went wrong...", message: "Unable to login. Please try again later.", buttonTitle: "Ok")
@@ -441,11 +441,11 @@ extension EmailSignUpViewController: UITextFieldDelegate {
 
 //MARK: - Helpers
 extension EmailSignUpViewController {
-    private func presentHomeViewController() {
+    private func presentRequestVC() {
         self.showLoadingView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            let homeVC = HomeViewController()
-            let navVC = UINavigationController(rootViewController: homeVC)
+            let requestVC = RequestUserLocationViewController()
+            let navVC = UINavigationController(rootViewController: requestVC)
             navVC.modalTransitionStyle = .crossDissolve
             navVC.modalPresentationStyle = .fullScreen
             

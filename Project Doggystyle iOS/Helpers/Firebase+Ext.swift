@@ -23,7 +23,7 @@ class Service : NSObject {
         
         if let user_uid = Auth.auth().currentUser?.uid {
             
-            let ref = Database.database().reference().child("all_users").child(user_uid).child("users_firebase_uid")
+            let ref = Database.database().reference().child(Constants.allUsers).child(user_uid).child("users_firebase_uid")
             
             ref.observeSingleEvent(of: .value) { (snap : DataSnapshot) in
                 
@@ -84,7 +84,7 @@ class Service : NSObject {
                         return
                     }
                     
-                    let ref = databaseRef.child("all_users").child(firebase_uid)
+                    let ref = databaseRef.child(Constants.allUsers).child(firebase_uid)
                     
                     let timeStamp : Double = NSDate().timeIntervalSince1970,
                         ref_key = ref.key ?? "nil_key"
@@ -193,7 +193,7 @@ class Service : NSObject {
             
             referralCodeGrab = referralCode != "no_code" ? referralCode! : Constants.referralCode
             
-            let ref = databaseRef.child("all_users").child(usersUID)
+            let ref = databaseRef.child(Constants.allUsers).child(usersUID)
             
             let timeStamp : Double = NSDate().timeIntervalSince1970,
                 ref_key = ref.key ?? "nil_key"
@@ -219,7 +219,7 @@ class Service : NSObject {
     
     func updateAllUsers(usersEmail: String, userSignInMethod: String, completion: @escaping (_ updateUserSuccess: Bool) -> ()) {
         if let user_uid = Auth.auth().currentUser?.uid {
-            let ref = Database.database().reference().child("all_users").child(user_uid)
+            let ref = Database.database().reference().child(Constants.allUsers).child(user_uid)
             let timeStamp : Double = NSDate().timeIntervalSince1970
             let ref_key = ref.key ?? "nil_key"
             
@@ -240,7 +240,60 @@ class Service : NSObject {
             }
         }
     }
-    
 }
 
-
+extension Service {
+    func fetchCurrentUser() {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        let databaseRef = Database.database().reference()
+        let ref = databaseRef.child(Constants.allUsers).child(userUID)
+        
+        ref.observeSingleEvent(of: .value) { snapshot in
+            
+            if let JSON = snapshot.value as? [String : Any] {
+                let userPhoneNumber = JSON["users_phone_number"] as? String ?? "nil"
+                let userEmail = JSON["users_email"] as? String ?? "nil"
+                userProfileStruct.phoneNumber = userPhoneNumber
+                userProfileStruct.email = userEmail
+            }
+        }
+    }
+    
+    func uploadAddress(latitude: Double, longitude: Double, address: String, completion: @escaping (_ isComplete: Bool) -> ()) {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        let databaseRef = Database.database().reference()
+        let ref = databaseRef.child(Constants.allUsers).child(userUID)
+        let values: [String : Any] = [
+            "latitude" : latitude,
+            "longitude" : longitude,
+            "address" : address
+        ]
+        ref.updateChildValues(values) { error, reference in
+            if error != nil {
+                print(error?.localizedDescription as Any)
+                completion(false)
+                return
+            }
+            completion(true)
+        }
+    }
+    
+    func notifyUserLater(mobileNumber: String, completion: @escaping (_ isComplete: Bool) -> ()) {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        let databaseRef = Database.database().reference()
+        let ref = databaseRef.child(Constants.allUsers).child(userUID)
+        
+        let values: [String : Any] = [
+            "notify_later_number" : mobileNumber
+        ]
+        
+        ref.updateChildValues(values) { error, reference in
+            if error != nil {
+                print(error?.localizedDescription as Any)
+                completion(false)
+                return
+            }
+            completion(true)
+        }
+    }
+}

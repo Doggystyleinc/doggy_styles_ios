@@ -119,7 +119,6 @@ extension NotServicedNumberSubmittedViewController {
     @objc private func didTapButton(_ sender: UIButton) {
         switch sender.tag {
         case 1:
-            print("Profile Tapped")
             presentHomeVC()
         case 2:
             print("Dashboard Tapped")

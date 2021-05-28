@@ -291,7 +291,6 @@ extension EmailSignInViewController {
 //MARK: - @ojbc Functions
 extension EmailSignInViewController {
     @objc private func didTapNext() {
-        print(#function)
         showLoadingView()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -306,28 +305,24 @@ extension EmailSignInViewController {
                     self.presentAlertOnMainThread(title: "Something went wrong...", message: response, buttonTitle: "Ok")
                     return
                 }
-//                self.presentHomeVC()
                 self.presentRequestVC()
             }
         }
-        
-        
     }
     
     @objc private func didTapSubmit(_ sender: UIButton) {
-        print(#function)
         showLoadingView()
         
         guard let email = self.forgotPasswordEmailTextField.text, email.isValidEmail else {
-            self.presentAlertOnMainThread(title: "Something went wrong...", message: "Please check your email address.", buttonTitle: "Ok")
             self.dismissLoadingView()
+            self.presentAlertOnMainThread(title: "Something went wrong...", message: "Please check your email address.", buttonTitle: "Ok")
             return
         }
         
         Service.shared.firebaseForgotPassword(validatedEmail: email) { success, response in
             guard success == true else {
-                self.presentAlertOnMainThread(title: "Something went wrong...", message: response, buttonTitle: "Ok")
                 self.dismissLoadingView()
+                self.presentAlertOnMainThread(title: "Something went wrong...", message: response, buttonTitle: "Ok")
                 return
             }
             
@@ -340,13 +335,10 @@ extension EmailSignInViewController {
     }
     
     @objc private func keepUserLoggedIn(_ sender: UIButton) {
-        print(#function)
-        //TODO: Store in User Defaults
         self.animateRememberButton(sender)
     }
     
     @objc private func didTapForgotPassword(_ sender: UIButton) {
-        print(#function)
         self.animateForgotPasswordViews()
         self.forgotPasswordEmailTextField.resignFirstResponder()
     }
@@ -447,21 +439,7 @@ extension EmailSignInViewController {
 
 //MARK: - Helpers
 extension EmailSignInViewController {
-    private func presentHomeVC() {
-        self.showLoadingView()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            let homeVC = HomeViewController()
-            let navVC = UINavigationController(rootViewController: homeVC)
-            navVC.modalTransitionStyle = .crossDissolve
-            navVC.modalPresentationStyle = .fullScreen
-            
-            self.dismissLoadingView()
-            self.navigationController?.present(navVC, animated: true)
-        }
-    }
-    
     private func presentRequestVC() {
-        self.showLoadingView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             let requestVC = RequestUserLocationViewController()
             let navVC = UINavigationController(rootViewController: requestVC)

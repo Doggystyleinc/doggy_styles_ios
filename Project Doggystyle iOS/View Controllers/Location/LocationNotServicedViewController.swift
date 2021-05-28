@@ -134,10 +134,11 @@ final class LocationNotServicedViewController: UIViewController {
 //MARK: - Configure View Controller
 extension LocationNotServicedViewController {
     private func configureVC() {
-        self.view.backgroundColor = .white
-        self.navigationController?.navigationBar.isHidden = false
-        self.mobileTextField.delegate = self
-        self.selectedLocationLabel.text = selectedAddress
+        view.backgroundColor = .white
+        navigationController?.navigationBar.isHidden = false
+        mobileTextField.delegate = self
+        selectedLocationLabel.text = selectedAddress
+        Service.shared.fetchCurrentUser()
     }
 }
 
@@ -225,25 +226,28 @@ extension LocationNotServicedViewController {
     @objc private func didTapButton(_ sender: UIButton) {
         switch sender.tag {
         case 1:
-            print("WhatsApp Tapped")
             UIView.animate(withDuration: 0.80) {
                 self.mobileTextField.alpha = 0.0
                 self.mobileTextField.alpha = 1.0
+                self.mobileTextField.text = ""
                 self.mobileTextField.placeholder = "Enter WhatsApp number"
                 
                 self.confirmButton.alpha = 1.0
             }
         case 2:
-            print("SMS Tapped")
             UIView.animate(withDuration: 0.80) {
                 self.mobileTextField.alpha = 0.0
                 self.mobileTextField.alpha = 1.0
                 self.mobileTextField.placeholder = "Enter mobile number"
                 
                 self.confirmButton.alpha = 1.0
+                
+                guard let userPhoneNumber = userProfileStruct.phoneNumber else { return }
+                if !userPhoneNumber.isEmpty {
+                    self.mobileTextField.text = userPhoneNumber
+                }
             }
         case 3:
-            print("Confirm Tapped")
             showLoadingView()
             perform(#selector(presentNumberSubmittedVC), with: nil, afterDelay: 1.0)
         default:
@@ -253,8 +257,23 @@ extension LocationNotServicedViewController {
     
     @objc private func presentNumberSubmittedVC() {
         dismissLoadingView()
-        let contactLaterVC = NotServicedNumberSubmittedViewController()
-        self.navigationController?.pushViewController(contactLaterVC, animated: true)
+        
+        guard let mobileNumber = mobileTextField.text else { return }
+        let isValid = phoneNumberKit.isValidPhoneNumber(mobileNumber)
+        
+        guard isValid else {
+            self.presentAlertOnMainThread(title: "Something went wrong...", message: "Invalid number. Please re-enter.", buttonTitle: "Ok")
+            return
+        }
+        
+        Service.shared.notifyUserLater(mobileNumber: mobileNumber) { success in
+            if success {
+                let contactLaterVC = NotServicedNumberSubmittedViewController()
+                self.navigationController?.pushViewController(contactLaterVC, animated: true)
+            }
+        }
+        
+        
     }
     
     @objc func adjustForKeyboard(notification: Notification) {

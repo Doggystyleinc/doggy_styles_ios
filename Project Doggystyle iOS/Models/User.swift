@@ -7,10 +7,9 @@
 
 import Foundation
 
-struct User: Codable {
-    let uuid: String
-    let email: String
-    let mobileNumber: String
-    let referralCode: String
-    let signUpDate: String
+var userProfileStruct = UserProfileStruct()
+
+struct UserProfileStruct {
+  var phoneNumber : String?
+  var email : String?
 }

@@ -8,6 +8,7 @@
 import UIKit
 import CoreLocation
 import MapKit
+import Firebase
 
 final class RequestUserLocationViewController: UIViewController, MKMapViewDelegate {
     private let locationManager = CLLocationManager()
@@ -15,6 +16,7 @@ final class RequestUserLocationViewController: UIViewController, MKMapViewDelega
     private var selectedAddress: String?
     private let verticalPadding: CGFloat = 30.0
     private let appointmentsAvailable = false
+    private let databaseRef = Database.database().reference()
     
     private let titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
@@ -121,7 +123,7 @@ final class RequestUserLocationViewController: UIViewController, MKMapViewDelega
         return textField
     }()
     
-    private let confirmAddressButton: UIButton = {
+    private let nextButton: UIButton = {
         let button = DSButton(titleText: "next", backgroundColor: .systemGreen, titleColor: .white)
         button.addTarget(self, action: #selector(didTapNext(_:)), for: .touchUpInside)
         button.alpha = 0.0
@@ -183,11 +185,11 @@ extension RequestUserLocationViewController {
         subTitle.left(to: dividerView)
         subTitle.right(to: dividerView)
         
-        self.view.addSubview(confirmAddressButton)
-        confirmAddressButton.bottom(to: view, offset: -50)
-        confirmAddressButton.left(to: dividerView)
-        confirmAddressButton.right(to: dividerView)
-        confirmAddressButton.height(44.0)
+        self.view.addSubview(nextButton)
+        nextButton.bottom(to: view, offset: -50)
+        nextButton.left(to: dividerView)
+        nextButton.right(to: dividerView)
+        nextButton.height(44.0)
     }
 }
 
@@ -290,7 +292,6 @@ extension RequestUserLocationViewController {
             self.learnMoreButton.removeFromSuperview()
             self.containerView.removeFromSuperview()
             self.checkLocationServices()
-            self.confirmAddressButton.alpha = 1.0
         }
     }
     
@@ -305,13 +306,11 @@ extension RequestUserLocationViewController {
     }
     
     @objc private func didTapNext(_ sender: UIButton) {
-        //Disable button until location is set.
         showLoadingView()
-        //Store address in database.
-        //Check if appointments are available at selected location.
         
+        //Check if appointments are available at selected location.
         if appointmentsAvailable {
-            
+//            dismissLoadingView()
         } else {
             perform(#selector(showNotServicedVC), with: nil, afterDelay: 2.0)
         }
@@ -344,6 +343,10 @@ extension RequestUserLocationViewController: CLLocationManagerDelegate {
         if let location = locations.first {
             let latitude = location.coordinate.latitude
             let longitude = location.coordinate.longitude
+            
+            let databaseLatitude = Double(latitude)
+            let databaseLongitude = Double(longitude)
+            
             let location = CLLocation(latitude: latitude, longitude: longitude)
             self.selectedLocation = location
             self.centerOnUserLocation()
@@ -353,7 +356,7 @@ extension RequestUserLocationViewController: CLLocationManagerDelegate {
                 guard let self = self else { return }
 
                 if let _ = error {
-                    //Show alert?
+                    //show alert?
                     return
                 }
 
@@ -361,17 +364,27 @@ extension RequestUserLocationViewController: CLLocationManagerDelegate {
                     //show alert?
                     return
                 }
-                //handle if fields are unavailable
-                let streetNumber = placemark.subThoroughfare ?? ""
-                let postalCode = placemark.postalCode ?? ""
-                let streetName = placemark.thoroughfare ?? ""
-                let stateName = placemark.administrativeArea ?? ""
-                let cityName = placemark.locality ?? ""
+                
+                let streetNumber = placemark.subThoroughfare ?? "n/a"
+                let postalCode = placemark.postalCode ?? "n/a"
+                let streetName = placemark.thoroughfare ?? "n/a"
+                let stateName = placemark.administrativeArea ?? "n/a"
+                let cityName = placemark.locality ?? "n/a"
                 
                 DispatchQueue.main.async {
                     self.addressHeaderLabel.text = "Your Service Location:"
                     self.physicalAddressLabel.text = "\(streetNumber) \(streetName)\n\(cityName), \(stateName) \(postalCode)"
                     self.selectedAddress = self.physicalAddressLabel.text
+                }
+                
+                if let cleanAddress = self.selectedAddress?.replacingOccurrences(of: "\n", with: " ") {
+                    Service.shared.uploadAddress(latitude: databaseLatitude, longitude: databaseLongitude, address: cleanAddress) { success in
+                        if success {
+                            print("Latitude, Longitude & Address Upload Successful")
+                        } else {
+                            print("Latitude, Longitude & Address Upload Unsuccessful!")
+                        }
+                    }
                 }
             }
         }
@@ -397,9 +410,6 @@ extension RequestUserLocationViewController {
     
     private func checkLocationServices() {
         guard CLLocationManager.locationServicesEnabled() else {
-            //Show alert letting user know to turn this on
-            //direct user to Settings app if possible
-            //This is device wide Location Services
             return
         }
         checkLocationAuthorization()
@@ -410,15 +420,11 @@ extension RequestUserLocationViewController {
         case .authorizedWhenInUse:
             startTrackingUserLocation()
         case .denied:
-            //show alert to turn on permissions
-            //direct user to Settings app if possible
-            break
+            nudgeForLocationServices()
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
         case .restricted:
-            //show alert that user cannot access modify location status
-            //direct user to Settings app if possible
-            break
+            nudgeForLocationServices()
         case .authorizedAlways:
             startTrackingUserLocation()
         @unknown default:
@@ -438,7 +444,7 @@ extension RequestUserLocationViewController {
         locationManager.startUpdatingLocation()
         centerOnUserLocation()
         learnMoreButton.removeFromSuperview()
-        confirmAddressButton.alpha = 1.0
+        nextButton.alpha = 1.0
     }
 }
 
