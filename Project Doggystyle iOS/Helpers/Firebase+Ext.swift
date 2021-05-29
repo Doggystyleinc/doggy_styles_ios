@@ -15,7 +15,6 @@ import Firebase
 
 //MARK:- SERVICE SINGLETON FOR CRUD OPERATIONS
 class Service : NSObject {
-    
     static let shared = Service()
     
     //MARK:- DOUBLE CHECK FOR AUTH SO WE CAN MAKE SURE THERE ALL USERS NODE IS CURRENT
@@ -89,7 +88,16 @@ class Service : NSObject {
                     let timeStamp : Double = NSDate().timeIntervalSince1970,
                         ref_key = ref.key ?? "nil_key"
                     
-                    let values : [String : Any] = ["users_firebase_uid" : firebase_uid, "users_email" : usersEmailAddress, "users_sign_in_method" : signInMethod, "users_sign_up_date" : timeStamp, "is_users_terms_and_conditions_accepted" : true, "users_phone_number" : mobileNumber, "users_ref_key" : ref_key, "referral_code_grab" : referralCodeGrab]
+                    let values : [String : Any] = [
+                        "users_firebase_uid" : firebase_uid,
+                        "users_email" : usersEmailAddress,
+                        "users_sign_in_method" : signInMethod,
+                        "users_sign_up_date" : timeStamp,
+                        "is_groomer" : false,
+                        "is_users_terms_and_conditions_accepted" : true,
+                        "users_phone_number" : mobileNumber,
+                        "users_ref_key" : ref_key,
+                        "referral_code_grab" : referralCodeGrab]
                     
                     ref.updateChildValues(values) { (error, ref) in
                         if error != nil {
@@ -205,6 +213,7 @@ class Service : NSObject {
                 "users_sign_up_date" : timeStamp,
                 "is_users_terms_and_conditions_accepted" : true,
                 "users_ref_key" : ref_key,
+                "is_groomer" : false,
                 "referral_code_grab" : referralCodeGrab]
             
             ref.updateChildValues(values) { (error, ref) in
@@ -228,6 +237,7 @@ class Service : NSObject {
                 "users_email" : usersEmail,
                 "users_sign_in_method" : userSignInMethod,
                 "users_sign_up_date" : timeStamp,
+                "is_groomer" : false,
                 "is_users_terms_and_conditions_accepted" : true,
                 "users_ref_key" : ref_key]
             
