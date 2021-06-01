@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 
-final class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController, UINavigationControllerDelegate {
     private let profileImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -16,6 +16,7 @@ final class HomeViewController: UIViewController {
         imageView.layer.borderColor = UIColor.systemBlue.cgColor
         imageView.layer.borderWidth = 0.5
         imageView.layer.cornerRadius = 57
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -75,6 +76,12 @@ final class HomeViewController: UIViewController {
         button.leftImage(image: UIImage(systemName: "photo.fill")!, renderMode: .alwaysTemplate)
         button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var imagePickerController: UIImagePickerController = {
+        let controller = UIImagePickerController()
+        controller.delegate = self
+        return controller
     }()
     
     private var signOutButton : UIButton = {
@@ -159,15 +166,64 @@ extension HomeViewController {
     @objc func didTapButton(_ sender: UIButton) {
         switch sender.tag {
         case 0:
-            print("Upload Profile Tapped!")
+            present(imagePickerController, animated: true)
         case 1:
             print("Upload Video Tapped!")
         case 2:
             print("Upload Document Tapped!")
         case 3:
             print("Upload Image Tapped!")
+            self.showLoadingView()
+            
+            guard let image = profileImageView.image, let data = image.pngData() else {
+                self.presentAlertOnMainThread(title: "Something went wrong...", message: "Please try again.", buttonTitle: "Ok")
+                return
+            }
+            
+            let imageName = UUID().uuidString
+            let imageReference = Storage.storage().reference().child("profileImages").child(imageName)
+            
+            imageReference.putData(data, metadata: nil) { metaData, error in
+                if let error = error {
+                    self.presentAlertOnMainThread(title: "Something went wrong...", message: error.localizedDescription, buttonTitle: "Ok")
+                    return
+                }
+                
+                imageReference.downloadURL { url, error in
+                    if let error = error {
+                        self.presentAlertOnMainThread(title: "Something went wrong...", message: error.localizedDescription, buttonTitle: "Ok")
+                        return
+                    }
+                    
+                    guard let url = url else {
+                        self.presentAlertOnMainThread(title: "Something went wrong...", message: "Please try again.", buttonTitle: "Ok")
+                        return
+                    }
+                    
+                    //Save url to user database
+                    
+                }
+                
+            }
+            
         default:
             break
         }
+    }
+}
+
+
+//MARK: - Image Picker Delegate
+extension HomeViewController: UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let selectedImage = info[.originalImage] as? UIImage else {
+            print("Image not found!")
+            return
+        }
+        profileImageView.image = selectedImage
+        imagePickerController.dismiss(animated: true)
+        
+        uploadImageButton.backgroundColor = .systemGreen
+        uploadImageButton.tintColor = .white
     }
 }

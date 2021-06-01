@@ -83,5 +83,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Please allow access to upload media.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please allow access to upload photos.</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>Please allow access to upload documents.</string>
 </dict>
 </plist>
