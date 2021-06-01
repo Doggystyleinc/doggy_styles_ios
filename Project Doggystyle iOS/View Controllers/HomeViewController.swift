@@ -22,6 +22,7 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         self.view.backgroundColor = .systemTeal
         self.addViews()
+        Service.shared.fetchCurrentUser()
     }
 }
 
@@ -47,7 +48,7 @@ extension HomeViewController {
             print(logoutError)
         }
         
-        //LOGGING OUT, REMOVE ALL THE DATABASE OBSERVERS
+        //Logging out, remove all database observers.
         Database.database().reference().removeAllObservers()
 
         let decisionController = DecisionController()

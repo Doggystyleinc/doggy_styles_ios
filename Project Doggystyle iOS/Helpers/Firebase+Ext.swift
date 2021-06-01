@@ -13,19 +13,8 @@ import UIKit
 import Firebase
 //import GoogleSignIn
 
-//MARK: - URLS AND ENDPOINTS TODO: ENVIRONMENTAL VARIABLE
-struct Statics {
-    static let  HTTPURL : String = "https://doggystyle-dev.herokuapp.com/"
-    static let  COMPANYAUTHENDPOINT : String = "company_authentication"
-    static let  MANAGEUSERSENDPOINT : String = "manage_users"
-    static let  EMAIL : String = "email"
-    static let  GOOGLE : String = "google"
-    
-}
-
 //MARK:- SERVICE SINGLETON FOR CRUD OPERATIONS
 class Service : NSObject {
-    
     static let shared = Service()
     
     //MARK:- DOUBLE CHECK FOR AUTH SO WE CAN MAKE SURE THERE ALL USERS NODE IS CURRENT
@@ -33,7 +22,7 @@ class Service : NSObject {
         
         if let user_uid = Auth.auth().currentUser?.uid {
             
-            let ref = Database.database().reference().child("all_users").child(user_uid).child("users_firebase_uid")
+            let ref = Database.database().reference().child(Constants.allUsers).child(user_uid).child("users_firebase_uid")
             
             ref.observeSingleEvent(of: .value) { (snap : DataSnapshot) in
                 
@@ -94,12 +83,21 @@ class Service : NSObject {
                         return
                     }
                     
-                    let ref = databaseRef.child("all_users").child(firebase_uid)
+                    let ref = databaseRef.child(Constants.allUsers).child(firebase_uid)
                     
                     let timeStamp : Double = NSDate().timeIntervalSince1970,
                         ref_key = ref.key ?? "nil_key"
                     
-                    let values : [String : Any] = ["users_firebase_uid" : firebase_uid, "users_email" : usersEmailAddress, "users_sign_in_method" : signInMethod, "users_sign_up_date" : timeStamp, "is_users_terms_and_conditions_accepted" : true, "users_phone_number" : mobileNumber, "users_ref_key" : ref_key, "referral_code_grab" : referralCodeGrab]
+                    let values : [String : Any] = [
+                        "users_firebase_uid" : firebase_uid,
+                        "users_email" : usersEmailAddress,
+                        "users_sign_in_method" : signInMethod,
+                        "users_sign_up_date" : timeStamp,
+                        "is_groomer" : false,
+                        "is_users_terms_and_conditions_accepted" : true,
+                        "users_phone_number" : mobileNumber,
+                        "users_ref_key" : ref_key,
+                        "referral_code_grab" : referralCodeGrab]
                     
                     ref.updateChildValues(values) { (error, ref) in
                         if error != nil {
@@ -129,7 +127,7 @@ class Service : NSObject {
     //MARK:- MANUAL HTTPS AUTH
     func firebaseAuthPOSTRequest(parameters : [String : String], endpoint : String,  completion: @escaping ([String: Any]?, Error?) -> Void) {
         
-        guard let url = URL(string: "\(Statics.HTTPURL) + \(endpoint)") else {return} //ALWAYS SUCCEEDS PER UNIT TEST STRING VALIDATION
+        guard let url = URL(string: "\(Constants.httpURL) + \(endpoint)") else {return} //ALWAYS SUCCEEDS PER UNIT TEST STRING VALIDATION
         
         let session = URLSession.shared,
             fetchedParameters = parameters
@@ -175,23 +173,13 @@ class Service : NSObject {
     
     //MARK:- PASSWORD RESET WITH EMAIL VALIDATION (WEBVIEW)
     func firebaseForgotPassword(validatedEmail : String, completion : @escaping (_ success : Bool, _ response : String)->()) {
-        
-        let emailTrimmedString = validatedEmail.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        if emailTrimmedString.count > 2 && emailTrimmedString.contains("@") && emailTrimmedString.contains(".") {
-            
-            Auth.auth().sendPasswordReset(withEmail: emailTrimmedString, completion: { (error) in
-                
+            Auth.auth().sendPasswordReset(withEmail: validatedEmail, completion: { (error) in
                 if error != nil {
-                    completion(false, "Failed: \(error?.localizedDescription as Any))")
+                    completion(false, "Failed: \(error!.localizedDescription as Any)")
                     return
                 }
                 completion(true, "Success")
             })
-            
-        } else {
-            completion(false, "Failed: Invalid Email Format")
-        }
     }
     
     func firebaseGoogleSignIn(credentials : AuthCredential, referralCode : String?, completion : @escaping (_ success : Bool, _ response : String)->()) {
@@ -209,27 +197,113 @@ class Service : NSObject {
                 return
             }
             
-            var referralCodeGrab : String = "no_code"
+            var referralCodeGrab : String = Constants.referralCode
             
-            referralCodeGrab = referralCode != nil ? referralCode! : "no_code"
+            referralCodeGrab = referralCode != "no_code" ? referralCode! : Constants.referralCode
             
-            let ref = databaseRef.child("all_users").child(usersUID)
+            let ref = databaseRef.child(Constants.allUsers).child(usersUID)
             
             let timeStamp : Double = NSDate().timeIntervalSince1970,
                 ref_key = ref.key ?? "nil_key"
             
-            let values : [String : Any] = ["users_firebase_uid" : usersUID, "users_email" : usersEmail, "users_sign_in_method" : Statics.GOOGLE, "users_sign_up_date" : timeStamp, "is_users_terms_and_conditions_accepted" : true, "users_ref_key" : ref_key, "referral_code_grab" : referralCodeGrab]
+            let values : [String : Any] = [
+                "users_firebase_uid" : usersUID,
+                "users_email" : usersEmail,
+                "users_sign_in_method" : Constants.google,
+                "users_sign_up_date" : timeStamp,
+                "is_users_terms_and_conditions_accepted" : true,
+                "users_ref_key" : ref_key,
+                "is_groomer" : false,
+                "referral_code_grab" : referralCodeGrab]
             
             ref.updateChildValues(values) { (error, ref) in
-                
                 if error != nil {
-                    
                     completion(false, "Login Error: \(error?.localizedDescription as Any).")
                     return
                 }
-                
                 completion(true, "Success")
             }
+        }
+    }
+    
+    func updateAllUsers(usersEmail: String, userSignInMethod: String, completion: @escaping (_ updateUserSuccess: Bool) -> ()) {
+        if let user_uid = Auth.auth().currentUser?.uid {
+            let ref = Database.database().reference().child(Constants.allUsers).child(user_uid)
+            let timeStamp : Double = NSDate().timeIntervalSince1970
+            let ref_key = ref.key ?? "nil_key"
+            
+            let values : [String : Any] = [
+                "users_firebase_uid" : user_uid,
+                "users_email" : usersEmail,
+                "users_sign_in_method" : userSignInMethod,
+                "users_sign_up_date" : timeStamp,
+                "is_groomer" : false,
+                "is_users_terms_and_conditions_accepted" : true,
+                "users_ref_key" : ref_key]
+            
+            ref.updateChildValues(values) { error, databaseReference in
+                if error != nil {
+                    completion(false)
+                } else {
+                    completion(true)
+                }
+            }
+        }
+    }
+}
+
+extension Service {
+    func fetchCurrentUser() {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        let databaseRef = Database.database().reference()
+        let ref = databaseRef.child(Constants.allUsers).child(userUID)
+        
+        ref.observeSingleEvent(of: .value) { snapshot in
+            
+            if let JSON = snapshot.value as? [String : Any] {
+                let userPhoneNumber = JSON["users_phone_number"] as? String ?? "nil"
+                let userEmail = JSON["users_email"] as? String ?? "nil"
+                userProfileStruct.phoneNumber = userPhoneNumber
+                userProfileStruct.email = userEmail
+            }
+        }
+    }
+    
+    func uploadAddress(latitude: Double, longitude: Double, address: String, completion: @escaping (_ isComplete: Bool) -> ()) {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        let databaseRef = Database.database().reference()
+        let ref = databaseRef.child(Constants.allUsers).child(userUID)
+        let values: [String : Any] = [
+            "latitude" : latitude,
+            "longitude" : longitude,
+            "address" : address
+        ]
+        ref.updateChildValues(values) { error, reference in
+            if error != nil {
+                print(error?.localizedDescription as Any)
+                completion(false)
+                return
+            }
+            completion(true)
+        }
+    }
+    
+    func notifyUserLater(mobileNumber: String, completion: @escaping (_ isComplete: Bool) -> ()) {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        let databaseRef = Database.database().reference()
+        let ref = databaseRef.child(Constants.allUsers).child(userUID)
+        
+        let values: [String : Any] = [
+            "notify_later_number" : mobileNumber
+        ]
+        
+        ref.updateChildValues(values) { error, reference in
+            if error != nil {
+                print(error?.localizedDescription as Any)
+                completion(false)
+                return
+            }
+            completion(true)
         }
     }
 }

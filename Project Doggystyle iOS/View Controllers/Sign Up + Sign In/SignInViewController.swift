@@ -166,7 +166,7 @@ extension SignInViewController {
         Service.shared.firebaseGoogleSignIn(credentials: credential, referralCode: referralCode) { (hasSuccess, response) in
             
             if hasSuccess {
-                self.presentHomeController()
+                self.presentRequestVC()
             } else {
                 self.presentAlertOnMainThread(title: "Something went wrong...", message: "Failed to authenticate.\nError: \(response)", buttonTitle: "Ok")
                 print("Failed to authenticate with error: \(response)")
@@ -183,7 +183,6 @@ extension SignInViewController {
 extension SignInViewController {
     private func addTargets() {
         self.emailButton.addTarget(self, action: #selector(presentEmailSignUp(_:)), for: .touchUpInside)
-        self.googleButton.addTarget(self, action: #selector(didTapGoogleButton(_:)), for: .touchUpInside)
         self.facebookButton.addTarget(self, action: #selector(didTapFacebookButton(_:)), for: .touchUpInside)
         self.appleButton.addTarget(self, action: #selector(didTapAppleButton(_:)), for: .touchUpInside)
     }
@@ -194,10 +193,6 @@ extension SignInViewController {
     @objc private func presentEmailSignUp(_ sender: UIButton) {
         let emailVC = EmailSignInViewController()
         self.navigationController?.pushViewController(emailVC, animated: true)
-    }
-    
-    @objc private func didTapGoogleButton(_ sender: UIButton) {
-        print(#function)
     }
     
     @objc private func didTapFacebookButton(_ sender: UIButton) {
@@ -219,5 +214,18 @@ extension SignInViewController {
         navVC.navigationBar.isHidden = true
         navVC.modalPresentationStyle = .fullScreen
         self.navigationController?.present(navVC, animated: true)
+    }
+    
+    @objc private func presentRequestVC() {
+        self.showLoadingView()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            let requestVC = RequestUserLocationViewController()
+            let navVC = UINavigationController(rootViewController: requestVC)
+            navVC.modalTransitionStyle = .crossDissolve
+            navVC.modalPresentationStyle = .fullScreen
+            
+            self.dismissLoadingView()
+            self.navigationController?.present(navVC, animated: true)
+        }
     }
 }

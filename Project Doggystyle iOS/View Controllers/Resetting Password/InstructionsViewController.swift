@@ -36,8 +36,8 @@ final class InstructionsViewController: UIViewController {
     }()
     
     private let resendEmailButton: DSButton = {
-        let button = DSButton(text: "Resend Email")
-        button.addTarget(self, action: #selector(didTapResendEmail(_:)), for: .touchUpInside)
+        let button = DSButton(text: "Login")
+        button.addTarget(self, action: #selector(didTapLogin(_:)), for: .touchUpInside)
         return button
     }()
 
@@ -92,7 +92,9 @@ extension InstructionsViewController {
         }
     }
     
-    @objc private func didTapResendEmail(_ sender: UIButton) {
+    @objc private func didTapLogin(_ sender: UIButton) {
         print(#function)
+        let emailSignInVC = EmailSignInViewController()
+        self.navigationController?.pushViewController(emailSignInVC, animated: true)
     }
 }
