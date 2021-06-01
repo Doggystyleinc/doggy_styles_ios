@@ -34,6 +34,7 @@ final class EmailSignUpViewController: UIViewController {
         textField.keyboardType = .emailAddress
         textField.returnKeyType = .next
         textField.tag = 0
+        textField.clearButtonMode = .whileEditing
         textField.autocapitalizationType = .none
         textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
         return textField
@@ -49,6 +50,7 @@ final class EmailSignUpViewController: UIViewController {
         textField.tag = 1
         textField.withPrefix = true
         textField.withExamplePlaceholder = true
+        textField.clearButtonMode = .whileEditing
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         textField.leftViewMode = .always
         textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
@@ -65,6 +67,7 @@ final class EmailSignUpViewController: UIViewController {
         textField.isSecureTextEntry = true
         textField.textContentType = .oneTimeCode
         textField.returnKeyType = .next
+        textField.clearButtonMode = .whileEditing
         textField.tag = 2
         textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
         return textField
@@ -80,6 +83,7 @@ final class EmailSignUpViewController: UIViewController {
         textField.isSecureTextEntry = true
         textField.textContentType = .oneTimeCode
         textField.returnKeyType = .next
+        textField.clearButtonMode = .whileEditing
         textField.tag = 3
         textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
         return textField
@@ -93,6 +97,7 @@ final class EmailSignUpViewController: UIViewController {
         textField.backgroundColor = .textFieldBackground
         textField.placeholder = "Referral Code"
         textField.returnKeyType = .done
+        textField.clearButtonMode = .whileEditing
         textField.tag = 4
         return textField
     }()

@@ -111,6 +111,7 @@ final class LocationNotServicedViewController: UIViewController {
         textField.withExamplePlaceholder = true
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         textField.leftViewMode = .always
+        textField.clearButtonMode = .whileEditing
         textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
         return textField
     }()

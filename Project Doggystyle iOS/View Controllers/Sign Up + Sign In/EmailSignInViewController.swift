@@ -34,6 +34,7 @@ final class EmailSignInViewController: UIViewController {
         textField.placeholder = "Email"
         textField.keyboardType = .emailAddress
         textField.returnKeyType = .next
+        textField.clearButtonMode = .whileEditing
         textField.tag = 0
         textField.spellCheckingType = .no
         textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
@@ -50,6 +51,7 @@ final class EmailSignInViewController: UIViewController {
         textField.isSecureTextEntry = true
         textField.textContentType = .oneTimeCode
         textField.returnKeyType = .go
+        textField.clearButtonMode = .whileEditing
         textField.tag = 1
         textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
         return textField

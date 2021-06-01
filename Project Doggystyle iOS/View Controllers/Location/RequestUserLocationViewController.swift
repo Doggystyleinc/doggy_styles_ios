@@ -119,6 +119,7 @@ final class RequestUserLocationViewController: UIViewController, MKMapViewDelega
         textField.placeholder = "Address"
         textField.returnKeyType = .done
         textField.spellCheckingType = .no
+        textField.clearButtonMode = .whileEditing
         textField.setupLeftImage(imageName: "magnifyingglass")
         return textField
     }()

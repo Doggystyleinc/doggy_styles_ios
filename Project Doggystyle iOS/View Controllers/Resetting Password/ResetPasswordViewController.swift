@@ -30,6 +30,7 @@ final class ResetPasswordViewController: UIViewController {
         textField.isSecureTextEntry = true
         textField.textContentType = .oneTimeCode
         textField.returnKeyType = .next
+        textField.clearButtonMode = .whileEditing
         textField.tag = 0
         textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
         return textField
@@ -43,6 +44,7 @@ final class ResetPasswordViewController: UIViewController {
         textField.backgroundColor = .textFieldBackground
         textField.placeholder = "Confirm New Password"
         textField.isSecureTextEntry = true
+        textField.clearButtonMode = .whileEditing
         textField.textContentType = .oneTimeCode
         textField.returnKeyType = .done
         textField.tag = 1
