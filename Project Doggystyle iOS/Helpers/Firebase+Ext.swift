@@ -252,6 +252,7 @@ class Service : NSObject {
     }
 }
 
+//MARK: - Fetch Current User Data
 extension Service {
     func fetchCurrentUser() {
         guard let userUID = Auth.auth().currentUser?.uid else { return }
@@ -263,12 +264,75 @@ extension Service {
             if let JSON = snapshot.value as? [String : Any] {
                 let userPhoneNumber = JSON["users_phone_number"] as? String ?? "nil"
                 let userEmail = JSON["users_email"] as? String ?? "nil"
+                let userProfileImageURL = JSON["profile_image_url"] as? String ?? "nil"
+                
                 userProfileStruct.phoneNumber = userPhoneNumber
                 userProfileStruct.email = userEmail
+                userProfileStruct.profileURL = userProfileImageURL
             }
         }
     }
+}
+
+//MARK: - Add / Update Profile Image
+extension Service {
+    func uploadProfileImageData(data: Data, completion: @escaping (_ success: Bool) -> ()) {
+        let imageName = UUID().uuidString
+        let imageReference = Storage.storage().reference().child(Constants.profileImages).child(imageName)
+
+        imageReference.putData(data, metadata: nil) { metaData, error in
+            if error != nil {
+                print(error?.localizedDescription as Any)
+                completion(false)
+                return
+            }
+
+            imageReference.downloadURL { url, error in
+                if error != nil {
+                    print(error?.localizedDescription as Any)
+                    completion(false)
+                    return
+                }
+
+                guard let url = url else {
+                    print(error?.localizedDescription as Any)
+                    completion(false)
+                    return
+                }
+                let urlString = url.absoluteString
+                
+                Service.shared.updateProfileImage(url: urlString) { success in
+                    if success {
+                        completion(true)
+                    }
+                }
+            }
+
+        }
+    }
     
+    func updateProfileImage(url: String, completion: @escaping (_ success: Bool) -> ()) {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        let databaseRef = Database.database().reference()
+        let ref = databaseRef.child(Constants.allUsers).child(userUID)
+        
+        let values: [String : Any] = [
+            "profile_image_url" : url
+        ]
+        
+        ref.updateChildValues(values) { error, reference in
+            if error != nil {
+                print(error?.localizedDescription as Any)
+                completion(false)
+                return
+            }
+            completion(true)
+        }
+    }
+}
+
+//MARK: - Update/Add User Location
+extension Service {
     func uploadAddress(latitude: Double, longitude: Double, address: String, completion: @escaping (_ isComplete: Bool) -> ()) {
         guard let userUID = Auth.auth().currentUser?.uid else { return }
         let databaseRef = Database.database().reference()
@@ -287,7 +351,10 @@ extension Service {
             completion(true)
         }
     }
-    
+}
+
+//MARK: - Notify Later
+extension Service {
     func notifyUserLater(mobileNumber: String, completion: @escaping (_ isComplete: Bool) -> ()) {
         guard let userUID = Auth.auth().currentUser?.uid else { return }
         let databaseRef = Database.database().reference()

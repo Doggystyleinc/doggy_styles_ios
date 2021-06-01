@@ -66,10 +66,11 @@ final class HomeViewController: UIViewController, UINavigationControllerDelegate
     
     private let uploadImageButton: UIButton = {
         let button = UIButton(type: .system)
+        button.isEnabled = false
         button.tag = 3
         button.setTitle("Upload Image", for: .normal)
         button.backgroundColor = .white
-        button.tintColor = .systemBlue
+        button.tintColor = .lightGray
         button.layer.cornerRadius = 5
         button.layer.borderWidth = 0.5
         button.layer.borderColor = UIColor.lightGray.cgColor
@@ -98,7 +99,7 @@ final class HomeViewController: UIViewController, UINavigationControllerDelegate
     override func viewDidLoad() {
         self.view.backgroundColor = .white
         self.addViews()
-        Service.shared.fetchCurrentUser()
+        self.displayUserInfo()
     }
 }
 
@@ -173,38 +174,16 @@ extension HomeViewController {
         case 2:
             print("Upload Document Tapped!")
         case 3:
-            print("Upload Image Tapped!")
             self.showLoadingView()
             
             guard let image = profileImageView.image, let data = image.pngData() else {
+                self.dismissLoadingView()
                 self.presentAlertOnMainThread(title: "Something went wrong...", message: "Please try again.", buttonTitle: "Ok")
                 return
             }
-            
-            let imageName = UUID().uuidString
-            let imageReference = Storage.storage().reference().child("profileImages").child(imageName)
-            
-            imageReference.putData(data, metadata: nil) { metaData, error in
-                if let error = error {
-                    self.presentAlertOnMainThread(title: "Something went wrong...", message: error.localizedDescription, buttonTitle: "Ok")
-                    return
-                }
-                
-                imageReference.downloadURL { url, error in
-                    if let error = error {
-                        self.presentAlertOnMainThread(title: "Something went wrong...", message: error.localizedDescription, buttonTitle: "Ok")
-                        return
-                    }
-                    
-                    guard let url = url else {
-                        self.presentAlertOnMainThread(title: "Something went wrong...", message: "Please try again.", buttonTitle: "Ok")
-                        return
-                    }
-                    
-                    //Save url to user database
-                    
-                }
-                
+            Service.shared.uploadProfileImageData(data: data) { success in
+                self.dismissLoadingView()
+                self.presentAlertOnMainThread(title: success ? "Upload Successful!" : "Something went wrong...", message: success ? "Profile image succesfully uploaded." : "Please try again.", buttonTitle: "Ok")
             }
             
         default:
@@ -213,6 +192,17 @@ extension HomeViewController {
     }
 }
 
+//MARK: - Helpers
+extension HomeViewController {
+    private func displayUserInfo() {
+        profileImageView.sd_setImage(with: URL(string: userProfileStruct.profileURL ?? ""), placeholderImage: UIImage(named: "Temp Placeholder")) { _, _, _, _ in
+            self.profileImageView.alpha = 0.0
+            UIView.animate(withDuration: 1.0) {
+                self.profileImageView.alpha = 1.0
+            }
+        }
+    }
+}
 
 //MARK: - Image Picker Delegate
 extension HomeViewController: UIImagePickerControllerDelegate {
@@ -221,10 +211,12 @@ extension HomeViewController: UIImagePickerControllerDelegate {
             print("Image not found!")
             return
         }
+        
         profileImageView.image = selectedImage
         imagePickerController.dismiss(animated: true)
         
         uploadImageButton.backgroundColor = .systemGreen
         uploadImageButton.tintColor = .white
+        uploadImageButton.isEnabled = true
     }
 }

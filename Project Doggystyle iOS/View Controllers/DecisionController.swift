@@ -53,8 +53,7 @@ extension DecisionController {
             //DOUBLE CHECK A NODE UNDER ALL USERS TO MAKE SURE IT EXISTS-> WE CAN ROUTE HERE AND AUTOFILL THEIR DATA
             Service.shared.authCheck { (hasAuth) in
                 if hasAuth {
-                    userProfileStruct = UserProfileStruct()
-                    //Ping user and fill profile struct
+                    Service.shared.fetchCurrentUser()
                     self.perform(#selector(self.presentHomeController), with: nil, afterDelay: 1.0)
                 } else {
                     guard let userEmail = Auth.auth().currentUser?.email else { return }
