@@ -374,3 +374,19 @@ extension Service {
         }
     }
 }
+
+//MARK: - Upload Documents
+extension Service {
+    func uploadDocument(url: URL, completion: @escaping (_ isComplete: Bool) -> ()) {
+        let fileName = "UploadedFile " + UUID().uuidString
+        let fileReference = Storage.storage().reference().child(Constants.uploadFiles).child(fileName)
+        
+        fileReference.putFile(from: url, metadata: nil) { _, error in
+            if error != nil {
+                completion(false)
+                return
+            }
+            completion(true)
+        }
+    }
+}

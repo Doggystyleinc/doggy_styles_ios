@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import UniformTypeIdentifiers
 
 final class HomeViewController: UIViewController, UINavigationControllerDelegate {
     private let profileImageView: UIImageView = {
@@ -81,6 +82,15 @@ final class HomeViewController: UIViewController, UINavigationControllerDelegate
     
     private lazy var imagePickerController: UIImagePickerController = {
         let controller = UIImagePickerController()
+        controller.delegate = self
+        return controller
+    }()
+    
+    private lazy var documentPicker: UIDocumentPickerViewController = {
+        let supportedTypes: [UTType] = [UTType.image, UTType.pdf, UTType.png, UTType.jpeg]
+        let controller = UIDocumentPickerViewController(forOpeningContentTypes: supportedTypes)
+        controller.allowsMultipleSelection = false
+        controller.shouldShowFileExtensions = true
         controller.delegate = self
         return controller
     }()
@@ -172,7 +182,9 @@ extension HomeViewController {
         case 1:
             print("Upload Video Tapped!")
         case 2:
-            print("Upload Document Tapped!")
+            self.uploadDocumentButton.isEnabled = false
+            self.showLoadingView()
+            present(documentPicker, animated: true)
         case 3:
             self.showLoadingView()
             
@@ -181,6 +193,7 @@ extension HomeViewController {
                 self.presentAlertOnMainThread(title: "Something went wrong...", message: "Please try again.", buttonTitle: "Ok")
                 return
             }
+            
             Service.shared.uploadProfileImageData(data: data) { success in
                 self.dismissLoadingView()
                 self.presentAlertOnMainThread(title: success ? "Upload Successful!" : "Something went wrong...", message: success ? "Profile image succesfully uploaded." : "Please try again.", buttonTitle: "Ok")
@@ -218,5 +231,30 @@ extension HomeViewController: UIImagePickerControllerDelegate {
         uploadImageButton.backgroundColor = .systemGreen
         uploadImageButton.tintColor = .white
         uploadImageButton.isEnabled = true
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        imagePickerController.dismiss(animated: true)
+    }
+}
+
+//MARK: - Document Picker Delegate
+extension HomeViewController: UIDocumentPickerDelegate {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        self.uploadDocumentButton.isEnabled = true
+        guard let url = urls.first else {
+            self.dismissLoadingView()
+            return
+        }
+        
+        Service.shared.uploadDocument(url: url) { success in
+            self.dismissLoadingView()
+            self.presentAlertOnMainThread(title: success ? "Succesful Upload!" : "Something went wrong...", message: success ? "The document was succesfully uploaded." : "Please try again.", buttonTitle: "Ok")
+        }
+    }
+    
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        self.uploadDocumentButton.isEnabled = true
+        self.dismissLoadingView()
     }
 }

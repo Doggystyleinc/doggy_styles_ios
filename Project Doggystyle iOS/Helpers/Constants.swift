@@ -31,4 +31,7 @@ struct Constants {
     
     //MARK: - R
     static let referralCode = "no_code"
+    
+    //MARK: - U
+    static let uploadFiles = "uploadedFiles"
 }
