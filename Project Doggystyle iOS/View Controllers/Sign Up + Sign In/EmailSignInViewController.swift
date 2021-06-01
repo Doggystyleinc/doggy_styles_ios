@@ -26,6 +26,7 @@ final class EmailSignInViewController: UIViewController {
     
     private let emailTextField: UITextField = {
         let textField = UITextField(frame: .zero)
+        textField.autocorrectionType = .no
         textField.borderStyle = .none
         textField.layer.cornerRadius = 10.0
         textField.setLeftPaddingPoints(10)
@@ -33,7 +34,9 @@ final class EmailSignInViewController: UIViewController {
         textField.placeholder = "Email"
         textField.keyboardType = .emailAddress
         textField.returnKeyType = .next
+        textField.clearButtonMode = .whileEditing
         textField.tag = 0
+        textField.spellCheckingType = .no
         textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
         return textField
     }()
@@ -48,6 +51,7 @@ final class EmailSignInViewController: UIViewController {
         textField.isSecureTextEntry = true
         textField.textContentType = .oneTimeCode
         textField.returnKeyType = .go
+        textField.clearButtonMode = .whileEditing
         textField.tag = 1
         textField.addTarget(self, action: #selector(textDidChange(_:)), for: .editingChanged)
         return textField
@@ -126,12 +130,13 @@ final class EmailSignInViewController: UIViewController {
         textField.returnKeyType = .done
         textField.layer.opacity = 0.0
         textField.tag = 3
+        textField.spellCheckingType = .no
         return textField
     }()
     
-    private let signInButton: DSButton = {
-        let button = DSButton(titleText: "Sign In", backgroundColor: .dsGrey, titleColor: .white)
-        button.addTarget(self, action: #selector(didTapSignIn(_:)), for: .touchUpInside)
+    private let nextButton: DSButton = {
+        let button = DSButton(titleText: "Next", backgroundColor: .dsGrey, titleColor: .white)
+        button.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
         return button
     }()
     
@@ -165,11 +170,11 @@ extension EmailSignInViewController {
         self.forgotPasswordEmailTextField.delegate = self
         self.scrollView.showsVerticalScrollIndicator = false
         
-        self.view.addSubview(signInButton)
-        signInButton.height(44)
-        signInButton.left(to: self.view, offset: verticalPadding)
-        signInButton.right(to: self.view, offset: -verticalPadding)
-        signInButton.bottom(to: self.view, offset: -50)
+        self.view.addSubview(nextButton)
+        nextButton.height(44)
+        nextButton.left(to: self.view, offset: verticalPadding)
+        nextButton.right(to: self.view, offset: -verticalPadding)
+        nextButton.bottom(to: self.view, offset: -50)
     }
 }
 
@@ -287,8 +292,7 @@ extension EmailSignInViewController {
 
 //MARK: - @ojbc Functions
 extension EmailSignInViewController {
-    @objc private func didTapSignIn(_ sender: UIButton) {
-        print(#function)
+    @objc private func didTapNext() {
         showLoadingView()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -303,35 +307,40 @@ extension EmailSignInViewController {
                     self.presentAlertOnMainThread(title: "Something went wrong...", message: response, buttonTitle: "Ok")
                     return
                 }
-                
-                let homeVC = HomeViewController()
-                homeVC.modalPresentationStyle = .fullScreen
-                
-                self.dismissLoadingView()
-                self.present(homeVC, animated: true)
+                self.presentRequestVC()
             }
         }
-        
-        
     }
     
     @objc private func didTapSubmit(_ sender: UIButton) {
-        print(#function)
         showLoadingView()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        
+        guard let email = self.forgotPasswordEmailTextField.text, email.isValidEmail else {
             self.dismissLoadingView()
-            self.navigationController?.pushViewController(InstructionsViewController(), animated: true)
+            self.presentAlertOnMainThread(title: "Something went wrong...", message: "Please check your email address.", buttonTitle: "Ok")
+            return
+        }
+        
+        Service.shared.firebaseForgotPassword(validatedEmail: email) { success, response in
+            guard success == true else {
+                self.dismissLoadingView()
+                self.presentAlertOnMainThread(title: "Something went wrong...", message: response, buttonTitle: "Ok")
+                return
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.dismissLoadingView()
+                let instructionsVC = InstructionsViewController()
+                self.navigationController?.pushViewController(instructionsVC, animated: true)
+            }
         }
     }
     
     @objc private func keepUserLoggedIn(_ sender: UIButton) {
-        print(#function)
-        //TODO: Store in User Defaults
         self.animateRememberButton(sender)
     }
     
     @objc private func didTapForgotPassword(_ sender: UIButton) {
-        print(#function)
         self.animateForgotPasswordViews()
         self.forgotPasswordEmailTextField.resignFirstResponder()
     }
@@ -361,6 +370,7 @@ extension EmailSignInViewController: UITextFieldDelegate {
         } else {
             textField.resignFirstResponder()
             scrollView.setContentOffset(.zero, animated: true)
+            didTapNext()
         }
         return false
     }
@@ -376,10 +386,10 @@ extension EmailSignInViewController: UITextFieldDelegate {
         passwordErrorLabel.isHidden = passwordText.isValidPassword ? true : false
         
         guard emailText.isValidEmail, passwordText.isValidPassword else {
-            self.signInButton.enable(false)
+            self.nextButton.enable(false)
             return
         }
-        self.signInButton.enable(true)
+        self.nextButton.enable(true)
     }
 }
 
@@ -425,6 +435,21 @@ extension EmailSignInViewController {
                 sender.backgroundColor = .textFieldBackground
                 self.rememberUser = false
             }
+        }
+    }
+}
+
+//MARK: - Helpers
+extension EmailSignInViewController {
+    private func presentRequestVC() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            let requestVC = RequestUserLocationViewController()
+            let navVC = UINavigationController(rootViewController: requestVC)
+            navVC.modalTransitionStyle = .crossDissolve
+            navVC.modalPresentationStyle = .fullScreen
+            
+            self.dismissLoadingView()
+            self.navigationController?.present(navVC, animated: true)
         }
     }
 }

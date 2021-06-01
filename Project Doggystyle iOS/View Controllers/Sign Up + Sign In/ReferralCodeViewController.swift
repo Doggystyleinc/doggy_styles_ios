@@ -34,6 +34,7 @@ final class ReferralCodeViewController: UIViewController {
         textField.borderStyle = .roundedRect
         textField.backgroundColor = .textFieldBackground
         textField.placeholder = "Referral Code (optional)"
+        textField.clearButtonMode = .whileEditing
         return textField
     }()
     

@@ -6,11 +6,16 @@
   
 */
 
+//Notes: ignore \n
+
 //MARK: - English Translations
 
 //MARK: - A
 "AlreadyHave" = "Already have an account?";
 "apple" = "apple";
+
+//MARK: - C
+"ConfirmAddress" = "Please confirm your address below \nor enter a new location.";
 
 //MARK: - E
 "email" = "email";
