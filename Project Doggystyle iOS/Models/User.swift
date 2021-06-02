@@ -13,4 +13,5 @@ struct UserProfileStruct {
     var email : String?
     var phoneNumber : String?
     var profileURL: String?
+    var uploadedDocumentURL: String?
 }

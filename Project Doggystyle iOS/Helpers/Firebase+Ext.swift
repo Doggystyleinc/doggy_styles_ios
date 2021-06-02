@@ -265,10 +265,12 @@ extension Service {
                 let userPhoneNumber = JSON["users_phone_number"] as? String ?? "nil"
                 let userEmail = JSON["users_email"] as? String ?? "nil"
                 let userProfileImageURL = JSON["profile_image_url"] as? String ?? "nil"
+                let uploadedDocumentURL = JSON["uploaded_document_url"] as? String ?? "nil"
                 
                 userProfileStruct.phoneNumber = userPhoneNumber
                 userProfileStruct.email = userEmail
                 userProfileStruct.profileURL = userProfileImageURL
+                userProfileStruct.uploadedDocumentURL = uploadedDocumentURL
             }
         }
     }
@@ -383,6 +385,46 @@ extension Service {
         
         fileReference.putFile(from: url, metadata: nil) { _, error in
             if error != nil {
+                completion(false)
+                return
+            }
+            completion(true)
+            
+            fileReference.downloadURL { url, error in
+                if error != nil {
+                    print(error?.localizedDescription as Any)
+                    completion(false)
+                    return
+                }
+
+                guard let url = url else {
+                    print(error?.localizedDescription as Any)
+                    completion(false)
+                    return
+                }
+                
+                let urlString = url.absoluteString
+                Service.shared.storeDocument(url: urlString) { success in
+                    if !success {
+                        print("Error storing document.")
+                    }
+                }
+            }
+        }
+    }
+    
+    func storeDocument(url: String, completion: @escaping (_ success: Bool) -> ()) {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        let databaseRef = Database.database().reference()
+        let ref = databaseRef.child(Constants.allUsers).child(userUID)
+        
+        let values: [String : Any] = [
+            "uploaded_document_url" : url
+        ]
+        
+        ref.updateChildValues(values) { error, reference in
+            if error != nil {
+                print(error?.localizedDescription as Any)
                 completion(false)
                 return
             }
