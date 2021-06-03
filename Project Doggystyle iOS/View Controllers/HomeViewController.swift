@@ -17,13 +17,13 @@ final class HomeViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureVC()
+        configureTabVC()
     }
 }
 
-//MARK: - Configure View Controller
+//MARK: - Configure Controller
 extension HomeViewController {
-    private func configureVC() {
+    private func configureTabVC() {
         self.view.backgroundColor = .white
         self.tabBar.backgroundColor = .white
         self.tabBar.backgroundImage = UIImage()

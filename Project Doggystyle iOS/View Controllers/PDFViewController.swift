@@ -26,11 +26,6 @@ final class PDFViewController: UIViewController {
         configureVC()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        Service.shared.fetchCurrentUser()
-    }
-    
     private func configureVC() {
         self.view.addSubview(pdfView)
         pdfView.edgesToSuperview()

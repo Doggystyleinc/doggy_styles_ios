@@ -429,6 +429,7 @@ extension Service {
                 return
             }
             completion(true)
+            Service.shared.fetchCurrentUser()
         }
     }
 }
