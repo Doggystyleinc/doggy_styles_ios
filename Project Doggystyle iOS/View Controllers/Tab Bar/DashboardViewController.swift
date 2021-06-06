@@ -238,13 +238,13 @@ extension DashboardViewController {
         case 3:
             self.showLoadingView()
             
-            guard let image = profileImageView.image, let data = image.pngData() else {
+            guard let image = profileImageView.image, let imageDataToUpload = image.jpegData(compressionQuality: 0.15) else {
                 self.dismissLoadingView()
                 self.presentAlertOnMainThread(title: "Something went wrong...", message: "Please try again.", buttonTitle: "Ok")
                 return
             }
             
-            Service.shared.uploadProfileImageData(data: data) { success in
+            Service.shared.uploadProfileImageData(data: imageDataToUpload) { success in
                 self.dismissLoadingView()
                 self.presentAlertOnMainThread(title: success ? "Upload Successful!" : "Something went wrong...", message: success ? "Profile image succesfully uploaded." : "Please try again.", buttonTitle: "Ok")
             }

@@ -13,11 +13,11 @@ import UIKit
 import Firebase
 //import GoogleSignIn
 
-//MARK:- SERVICE SINGLETON FOR CRUD OPERATIONS
+//MARK: - SERVICE SINGLETON FOR CRUD OPERATIONS
 class Service : NSObject {
     static let shared = Service()
     
-    //MARK:- DOUBLE CHECK FOR AUTH SO WE CAN MAKE SURE THERE ALL USERS NODE IS CURRENT
+    //MARK: - DOUBLE CHECK FOR AUTH SO WE CAN MAKE SURE THERE ALL USERS NODE IS CURRENT
     func authCheck(completion : @escaping (_ hasAuth : Bool)->()) {
         
         if let user_uid = Auth.auth().currentUser?.uid {
@@ -42,7 +42,7 @@ class Service : NSObject {
     }
     
     
-    //MARK:- REGISTRATION: ERROR CODE 200 PROMPTS REGISTRATION SUCCESS WITH LOGIN FAILURE, SO CALL LOGIN FUNCTION AGAIN INDEPENDENTLY. 500 = REGISTRATION FAILED, CALL THIS FUNCTION AGAIN FROM SCRATCH.
+    //MARK: - REGISTRATION: ERROR CODE 200 PROMPTS REGISTRATION SUCCESS WITH LOGIN FAILURE, SO CALL LOGIN FUNCTION AGAIN INDEPENDENTLY. 500 = REGISTRATION FAILED, CALL THIS FUNCTION AGAIN FROM SCRATCH.
     func FirebaseRegistrationAndLogin(usersEmailAddress : String, usersPassword : String, mobileNumber : String, referralCode : String?, signInMethod : String, completion : @escaping (_ registrationSuccess : Bool, _ response : String, _ responseCode : Int)->()) {
         let databaseRef = Database.database().reference()
         
@@ -111,7 +111,7 @@ class Service : NSObject {
         }
     }
     
-    //MARK:- IN THE CASE LOGIN FAILS DURING REGISTRATION AND LOGIN, CALL LOGIN AGAIN ONLY.
+    //MARK: - IN THE CASE LOGIN FAILS DURING REGISTRATION AND LOGIN, CALL LOGIN AGAIN ONLY.
     func FirebaseLogin(usersEmailAddress : String, usersPassword : String, completion : @escaping (_ loginSuccess : Bool, _ response : String, _ responseCode : Int) -> ()) {
         
         Auth.auth().signIn(withEmail: usersEmailAddress, password: usersPassword) { (user, error) in
@@ -124,7 +124,7 @@ class Service : NSObject {
         }
     }
     
-    //MARK:- MANUAL HTTPS AUTH
+    //MARK: - MANUAL HTTPS AUTH
     func firebaseAuthPOSTRequest(parameters : [String : String], endpoint : String,  completion: @escaping ([String: Any]?, Error?) -> Void) {
         
         guard let url = URL(string: "\(Constants.httpURL) + \(endpoint)") else {return} //ALWAYS SUCCEEDS PER UNIT TEST STRING VALIDATION
@@ -171,7 +171,7 @@ class Service : NSObject {
         task.resume()
     }
     
-    //MARK:- PASSWORD RESET WITH EMAIL VALIDATION (WEBVIEW)
+    //MARK: - PASSWORD RESET WITH EMAIL VALIDATION (WEBVIEW)
     func firebaseForgotPassword(validatedEmail : String, completion : @escaping (_ success : Bool, _ response : String)->()) {
             Auth.auth().sendPasswordReset(withEmail: validatedEmail, completion: { (error) in
                 if error != nil {
