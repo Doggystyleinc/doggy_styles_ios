@@ -146,7 +146,7 @@ extension DashboardViewController {
         }
         
         //Enable / Disable document viewer
-        if userProfileStruct.uploadedDocumentURL != nil {
+        if userProfileStruct.uploadedDocumentURL != "nil" {
             viewDocumentButton.isEnabled = true
         }
     }
@@ -222,19 +222,21 @@ extension DashboardViewController {
     
     @objc func didTapButton(_ sender: UIButton) {
         switch sender.tag {
+        
+        //Update / Set Profile Image
         case 0:
             self.imagePickerController.mediaTypes = [kUTTypeImage as String]
             present(imagePickerController, animated: true)
-            
+        //Upload video.
         case 1:
-            print("Upload Video Tapped!")
             self.imagePickerController.mediaTypes = [kUTTypeMovie as String]
             present(imagePickerController, animated: true)
+        //Upload document.
         case 2:
             self.uploadDocumentButton.isEnabled = false
             self.showLoadingView()
             present(documentPicker, animated: true)
-            
+        //Upload image.
         case 3:
             self.showLoadingView()
             
@@ -248,7 +250,7 @@ extension DashboardViewController {
                 self.dismissLoadingView()
                 self.presentAlertOnMainThread(title: success ? "Upload Successful!" : "Something went wrong...", message: success ? "Profile image succesfully uploaded." : "Please try again.", buttonTitle: "Ok")
             }
-            
+        //View uploaded document.
         case 4:
             guard userProfileStruct.uploadedDocumentURL != "nil" else {
                 self.viewDocumentButton.isEnabled = false
