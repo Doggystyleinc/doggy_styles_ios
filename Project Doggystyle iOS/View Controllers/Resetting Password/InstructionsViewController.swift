@@ -85,7 +85,6 @@ extension InstructionsViewController {
 //MARK: - @objc Functions
 extension InstructionsViewController {
     @objc private func didTapOpenEmail(_ sender: UIButton) {
-        print(#function)
         let mailURL = URL(string: "message://")!
         if UIApplication.shared.canOpenURL(mailURL) {
             UIApplication.shared.open(mailURL, options: [:])
@@ -93,7 +92,6 @@ extension InstructionsViewController {
     }
     
     @objc private func didTapLogin(_ sender: UIButton) {
-        print(#function)
         let emailSignInVC = EmailSignInViewController()
         self.navigationController?.pushViewController(emailSignInVC, animated: true)
     }

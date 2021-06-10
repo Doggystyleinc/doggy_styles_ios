@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		B9C4113B2E4DED8ACF4B9F44 /* Pods_Project_Doggystyle_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41D14D6AC9CE858765BD6462 /* Pods_Project_Doggystyle_iOS.framework */; };
+		CD203BF72667D3B900335D93 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BF62667D3B900335D93 /* PDFViewController.swift */; };
+		CD203BFA2667FA9F00335D93 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BF92667FA9F00335D93 /* DashboardViewController.swift */; };
+		CD203BFC2667FAB300335D93 /* SecondaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BFB2667FAB300335D93 /* SecondaryViewController.swift */; };
+		CD203BFE2667FABE00335D93 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BFD2667FABE00335D93 /* ThirdViewController.swift */; };
+		CD203C002667FACC00335D93 /* FourthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BFF2667FACC00335D93 /* FourthViewController.swift */; };
 		CD686882265412BB0064ADFE /* DSAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD686881265412BB0064ADFE /* DSAlertViewController.swift */; };
 		CD6868842654373A0064ADFE /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6868832654373A0064ADFE /* UIButton+Ext.swift */; };
 		CD6868902656EF920064ADFE /* LocationNotServicedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD68688F2656EF920064ADFE /* LocationNotServicedViewController.swift */; };
@@ -80,6 +85,11 @@
 		009E7669434EEDF1549DCECF /* Pods-Project Doggystyle iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Project Doggystyle iOS.debug.xcconfig"; path = "Target Support Files/Pods-Project Doggystyle iOS/Pods-Project Doggystyle iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		41D14D6AC9CE858765BD6462 /* Pods_Project_Doggystyle_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Project_Doggystyle_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB384B464E20B6C31281433B /* Pods-Project Doggystyle iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Project Doggystyle iOS.release.xcconfig"; path = "Target Support Files/Pods-Project Doggystyle iOS/Pods-Project Doggystyle iOS.release.xcconfig"; sourceTree = "<group>"; };
+		CD203BF62667D3B900335D93 /* PDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
+		CD203BF92667FA9F00335D93 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
+		CD203BFB2667FAB300335D93 /* SecondaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryViewController.swift; sourceTree = "<group>"; };
+		CD203BFD2667FABE00335D93 /* ThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
+		CD203BFF2667FACC00335D93 /* FourthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourthViewController.swift; sourceTree = "<group>"; };
 		CD686881265412BB0064ADFE /* DSAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAlertViewController.swift; sourceTree = "<group>"; };
 		CD6868832654373A0064ADFE /* UIButton+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Ext.swift"; sourceTree = "<group>"; };
 		CD68688F2656EF920064ADFE /* LocationNotServicedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationNotServicedViewController.swift; sourceTree = "<group>"; };
@@ -175,6 +185,17 @@
 				AB384B464E20B6C31281433B /* Pods-Project Doggystyle iOS.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		CD203BF82667FA7700335D93 /* Tab Bar */ = {
+			isa = PBXGroup;
+			children = (
+				CD203BF92667FA9F00335D93 /* DashboardViewController.swift */,
+				CD203BFB2667FAB300335D93 /* SecondaryViewController.swift */,
+				CD203BFD2667FABE00335D93 /* ThirdViewController.swift */,
+				CD203BFF2667FACC00335D93 /* FourthViewController.swift */,
+			);
+			path = "Tab Bar";
 			sourceTree = "<group>";
 		};
 		CD686880265412A20064ADFE /* Alerts */ = {
@@ -322,6 +343,7 @@
 		CDE8714D2652E65A0082551B /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CD203BF82667FA7700335D93 /* Tab Bar */,
 				CDCCD0B3265EB5C5007ABECF /* Dashboard */,
 				CD68688E2656EEEF0064ADFE /* Location */,
 				CD686880265412A20064ADFE /* Alerts */,
@@ -329,6 +351,7 @@
 				CDE871522652E66F0082551B /* Sign Up + Sign In */,
 				CDE8714E2652E66A0082551B /* DecisionController.swift */,
 				CDE8714F2652E66A0082551B /* HomeViewController.swift */,
+				CD203BF62667D3B900335D93 /* PDFViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -592,6 +615,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD203BFE2667FABE00335D93 /* ThirdViewController.swift in Sources */,
 				CDE871242652E3030082551B /* UIFont+Ext.swift in Sources */,
 				CDE8715B2652E6850082551B /* ReferralCodeViewController.swift in Sources */,
 				CDE8711E2652E3030082551B /* UIColor+Ext.swift in Sources */,
@@ -599,6 +623,7 @@
 				CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */,
 				CDE8711F2652E3030082551B /* Firebase+Ext.swift in Sources */,
 				CDE871592652E6850082551B /* EmailSignUpViewController.swift in Sources */,
+				CD203BF72667D3B900335D93 /* PDFViewController.swift in Sources */,
 				CDE8715C2652E6850082551B /* SignUpViewController.swift in Sources */,
 				CDCCD0B8265EB884007ABECF /* User.swift in Sources */,
 				CDE871622652E69B0082551B /* ResetPasswordViewController.swift in Sources */,
@@ -614,14 +639,17 @@
 				CD6868922656EFB20064ADFE /* RequestUserLocationViewController.swift in Sources */,
 				CDE871112652E2DC0082551B /* DividerView.swift in Sources */,
 				CDE871502652E66A0082551B /* DecisionController.swift in Sources */,
+				CD203C002667FACC00335D93 /* FourthViewController.swift in Sources */,
 				CD686882265412BB0064ADFE /* DSAlertViewController.swift in Sources */,
 				CDE871202652E3030082551B /* NetworkMonitor.swift in Sources */,
 				CDE871612652E69B0082551B /* SuccessfulPasswordResetViewController.swift in Sources */,
 				CDE8715A2652E6850082551B /* SignInViewController.swift in Sources */,
 				CDE871582652E6850082551B /* EmailSignInViewController.swift in Sources */,
 				CDE871512652E66A0082551B /* HomeViewController.swift in Sources */,
+				CD203BFC2667FAB300335D93 /* SecondaryViewController.swift in Sources */,
 				CDE870E02652E1610082551B /* SceneDelegate.swift in Sources */,
 				CDCCD0B0265D4DB4007ABECF /* Constants.swift in Sources */,
+				CD203BFA2667FA9F00335D93 /* DashboardViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

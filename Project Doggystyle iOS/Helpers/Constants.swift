@@ -12,20 +12,26 @@ struct Constants {
     //MARK: - A
     static let allUsers = "all_users"
     //MARK: - C
-    static let companyAuthEndpoint: String = "company_authentication"
+    static let companyAuthEndpoint = "company_authentication"
     
     //E
-    static let email: String = "email"
+    static let email = "email"
     
     //MARK: - G
-    static let google: String = "google"
+    static let google = "google"
     
     //MARK: - H
-    static let httpURL: String = "https://doggystyle-dev.herokuapp.com/"
+    static let httpURL = "https://doggystyle-dev.herokuapp.com/"
     
     //MARK: - M
-    static let mangeUserEndpoint: String = "manage_users"
+    static let mangeUserEndpoint = "manage_users"
+    
+    //MARK: - P
+    static let profileImages = "profileImages"
     
     //MARK: - R
-    static let referralCode: String = "no_code"
+    static let referralCode = "no_code"
+    
+    //MARK: - U
+    static let uploadFiles = "uploadedFiles"
 }

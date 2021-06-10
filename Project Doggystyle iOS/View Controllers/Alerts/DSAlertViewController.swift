@@ -20,6 +20,7 @@ final class DSAlertViewController: UIViewController {
         let label = UILabel(frame: .zero)
         label.font = UIFont.robotoBold(size: 20)
         label.adjustsFontSizeToFitWidth = true
+        label.textAlignment = .center
         label.textColor = .headerColor
         return label
     }()

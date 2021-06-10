@@ -324,8 +324,6 @@ extension EmailSignUpViewController {
     }
     
     @objc private func agreeToTerms(_ sender: UIButton) {
-        print(#function)
-        
         UIView.animate(withDuration: 0.85) {
             if self.didAgreeToTerms == false {
                 sender.backgroundColor = .systemGreen

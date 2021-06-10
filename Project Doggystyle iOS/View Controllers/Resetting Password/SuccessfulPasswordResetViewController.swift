@@ -72,7 +72,6 @@ extension SuccessfulPasswordResetViewController {
 //MARK: - @objc Functions
 extension SuccessfulPasswordResetViewController {
     @objc private func didTapDashboard(_ sender: UIButton) {
-        print(#function)
         self.navigationController?.pushViewController(EmailSignInViewController(), animated: true)
     }
 }

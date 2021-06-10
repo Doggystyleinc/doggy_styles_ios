@@ -13,11 +13,11 @@ import UIKit
 import Firebase
 //import GoogleSignIn
 
-//MARK:- SERVICE SINGLETON FOR CRUD OPERATIONS
+//MARK: - SERVICE SINGLETON FOR CRUD OPERATIONS
 class Service : NSObject {
     static let shared = Service()
     
-    //MARK:- DOUBLE CHECK FOR AUTH SO WE CAN MAKE SURE THERE ALL USERS NODE IS CURRENT
+    //MARK: - DOUBLE CHECK FOR AUTH SO WE CAN MAKE SURE THERE ALL USERS NODE IS CURRENT
     func authCheck(completion : @escaping (_ hasAuth : Bool)->()) {
         
         if let user_uid = Auth.auth().currentUser?.uid {
@@ -42,7 +42,7 @@ class Service : NSObject {
     }
     
     
-    //MARK:- REGISTRATION: ERROR CODE 200 PROMPTS REGISTRATION SUCCESS WITH LOGIN FAILURE, SO CALL LOGIN FUNCTION AGAIN INDEPENDENTLY. 500 = REGISTRATION FAILED, CALL THIS FUNCTION AGAIN FROM SCRATCH.
+    //MARK: - REGISTRATION: ERROR CODE 200 PROMPTS REGISTRATION SUCCESS WITH LOGIN FAILURE, SO CALL LOGIN FUNCTION AGAIN INDEPENDENTLY. 500 = REGISTRATION FAILED, CALL THIS FUNCTION AGAIN FROM SCRATCH.
     func FirebaseRegistrationAndLogin(usersEmailAddress : String, usersPassword : String, mobileNumber : String, referralCode : String?, signInMethod : String, completion : @escaping (_ registrationSuccess : Bool, _ response : String, _ responseCode : Int)->()) {
         let databaseRef = Database.database().reference()
         
@@ -111,7 +111,7 @@ class Service : NSObject {
         }
     }
     
-    //MARK:- IN THE CASE LOGIN FAILS DURING REGISTRATION AND LOGIN, CALL LOGIN AGAIN ONLY.
+    //MARK: - IN THE CASE LOGIN FAILS DURING REGISTRATION AND LOGIN, CALL LOGIN AGAIN ONLY.
     func FirebaseLogin(usersEmailAddress : String, usersPassword : String, completion : @escaping (_ loginSuccess : Bool, _ response : String, _ responseCode : Int) -> ()) {
         
         Auth.auth().signIn(withEmail: usersEmailAddress, password: usersPassword) { (user, error) in
@@ -124,7 +124,7 @@ class Service : NSObject {
         }
     }
     
-    //MARK:- MANUAL HTTPS AUTH
+    //MARK: - MANUAL HTTPS AUTH
     func firebaseAuthPOSTRequest(parameters : [String : String], endpoint : String,  completion: @escaping ([String: Any]?, Error?) -> Void) {
         
         guard let url = URL(string: "\(Constants.httpURL) + \(endpoint)") else {return} //ALWAYS SUCCEEDS PER UNIT TEST STRING VALIDATION
@@ -171,8 +171,8 @@ class Service : NSObject {
         task.resume()
     }
     
-    //MARK:- PASSWORD RESET WITH EMAIL VALIDATION (WEBVIEW)
-    func firebaseForgotPassword(validatedEmail : String, completion : @escaping (_ success : Bool, _ response : String)->()) {
+    //MARK: - PASSWORD RESET WITH EMAIL VALIDATION (WEBVIEW)
+    func firebaseForgotPassword(validatedEmail: String, completion: @escaping (_ success: Bool, _ response: String) -> ()) {
             Auth.auth().sendPasswordReset(withEmail: validatedEmail, completion: { (error) in
                 if error != nil {
                     completion(false, "Failed: \(error!.localizedDescription as Any)")
@@ -182,7 +182,7 @@ class Service : NSObject {
             })
     }
     
-    func firebaseGoogleSignIn(credentials : AuthCredential, referralCode : String?, completion : @escaping (_ success : Bool, _ response : String)->()) {
+    func firebaseGoogleSignIn(credentials : AuthCredential, referralCode: String?, completion : @escaping (_ success: Bool, _ response: String) -> ()) {
         
         let databaseRef = Database.database().reference()
         
@@ -252,6 +252,7 @@ class Service : NSObject {
     }
 }
 
+//MARK: - Fetch Current User Data
 extension Service {
     func fetchCurrentUser() {
         guard let userUID = Auth.auth().currentUser?.uid else { return }
@@ -263,12 +264,77 @@ extension Service {
             if let JSON = snapshot.value as? [String : Any] {
                 let userPhoneNumber = JSON["users_phone_number"] as? String ?? "nil"
                 let userEmail = JSON["users_email"] as? String ?? "nil"
+                let userProfileImageURL = JSON["profile_image_url"] as? String ?? "nil"
+                let uploadedDocumentURL = JSON["uploaded_document_url"] as? String ?? "nil"
+                
                 userProfileStruct.phoneNumber = userPhoneNumber
                 userProfileStruct.email = userEmail
+                userProfileStruct.profileURL = userProfileImageURL
+                userProfileStruct.uploadedDocumentURL = uploadedDocumentURL
             }
         }
     }
+}
+
+//MARK: - Add / Update Profile Image
+extension Service {
+    func uploadProfileImageData(data: Data, completion: @escaping (_ success: Bool) -> ()) {
+        let imageName = UUID().uuidString
+        let imageReference = Storage.storage().reference().child(Constants.profileImages).child(imageName)
+
+        imageReference.putData(data, metadata: nil) { metaData, error in
+            if error != nil {
+                print(error?.localizedDescription as Any)
+                completion(false)
+                return
+            }
+
+            imageReference.downloadURL { url, error in
+                if error != nil {
+                    print(error?.localizedDescription as Any)
+                    completion(false)
+                    return
+                }
+
+                guard let url = url else {
+                    print(error?.localizedDescription as Any)
+                    completion(false)
+                    return
+                }
+                let urlString = url.absoluteString
+                
+                Service.shared.updateProfileImage(url: urlString) { success in
+                    if success {
+                        completion(true)
+                    }
+                }
+            }
+
+        }
+    }
     
+    func updateProfileImage(url: String, completion: @escaping (_ success: Bool) -> ()) {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        let databaseRef = Database.database().reference()
+        let ref = databaseRef.child(Constants.allUsers).child(userUID)
+        
+        let values: [String : Any] = [
+            "profile_image_url" : url
+        ]
+        
+        ref.updateChildValues(values) { error, reference in
+            if error != nil {
+                print(error?.localizedDescription as Any)
+                completion(false)
+                return
+            }
+            completion(true)
+        }
+    }
+}
+
+//MARK: - Update/Add User Location
+extension Service {
     func uploadAddress(latitude: Double, longitude: Double, address: String, completion: @escaping (_ isComplete: Bool) -> ()) {
         guard let userUID = Auth.auth().currentUser?.uid else { return }
         let databaseRef = Database.database().reference()
@@ -287,7 +353,10 @@ extension Service {
             completion(true)
         }
     }
-    
+}
+
+//MARK: - Notify Later
+extension Service {
     func notifyUserLater(mobileNumber: String, completion: @escaping (_ isComplete: Bool) -> ()) {
         guard let userUID = Auth.auth().currentUser?.uid else { return }
         let databaseRef = Database.database().reference()
@@ -304,6 +373,63 @@ extension Service {
                 return
             }
             completion(true)
+        }
+    }
+}
+
+//MARK: - Upload Documents
+extension Service {
+    func uploadDocument(url: URL, completion: @escaping (_ isComplete: Bool) -> ()) {
+        let fileName = "UploadedFile " + UUID().uuidString
+        let fileReference = Storage.storage().reference().child(Constants.uploadFiles).child(fileName)
+        
+        fileReference.putFile(from: url, metadata: nil) { _, error in
+            if error != nil {
+                completion(false)
+                return
+            }
+            completion(true)
+            
+            fileReference.downloadURL { url, error in
+                if error != nil {
+                    print(error?.localizedDescription as Any)
+                    completion(false)
+                    return
+                }
+
+                guard let url = url else {
+                    print(error?.localizedDescription as Any)
+                    completion(false)
+                    return
+                }
+                
+                let urlString = url.absoluteString
+                Service.shared.storeDocument(url: urlString) { success in
+                    if !success {
+                        print("Error storing document.")
+                    }
+                }
+            }
+        }
+    }
+    
+    func storeDocument(url: String, completion: @escaping (_ success: Bool) -> ()) {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        let databaseRef = Database.database().reference()
+        let ref = databaseRef.child(Constants.allUsers).child(userUID)
+        
+        let values: [String : Any] = [
+            "uploaded_document_url" : url
+        ]
+        
+        ref.updateChildValues(values) { error, reference in
+            if error != nil {
+                print(error?.localizedDescription as Any)
+                completion(false)
+                return
+            }
+            completion(true)
+            Service.shared.fetchCurrentUser()
         }
     }
 }

@@ -357,12 +357,10 @@ extension RequestUserLocationViewController: CLLocationManagerDelegate {
                 guard let self = self else { return }
 
                 if let _ = error {
-                    //show alert?
                     return
                 }
 
                 guard let placemark = placemarks?.first else {
-                    //show alert?
                     return
                 }
                 
@@ -380,11 +378,7 @@ extension RequestUserLocationViewController: CLLocationManagerDelegate {
                 
                 if let cleanAddress = self.selectedAddress?.replacingOccurrences(of: "\n", with: " ") {
                     Service.shared.uploadAddress(latitude: databaseLatitude, longitude: databaseLongitude, address: cleanAddress) { success in
-                        if success {
-                            print("Latitude, Longitude & Address Upload Successful")
-                        } else {
-                            print("Latitude, Longitude & Address Upload Unsuccessful!")
-                        }
+                        print(success ? "Latitude, Longitude & Address Upload Successful" : "Latitude, Longitude & Address Upload Unsuccessful!")
                     }
                 }
             }

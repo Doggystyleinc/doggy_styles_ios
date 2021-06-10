@@ -7,7 +7,7 @@
 
 import UIKit
 
-fileprivate var containerView: UIView! //TODO: Refactor
+fileprivate var containerView: UIView!
 
 extension UIViewController {
     //MARK: - Animating Loading View
