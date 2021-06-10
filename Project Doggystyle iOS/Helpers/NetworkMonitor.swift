@@ -8,7 +8,7 @@
 import Network
 import Foundation
 
-//MARK:- SHARED INSTANCE
+//MARK: - SHARED INSTANCE
 class NetworkMonitor {
     
     static let shared = NetworkMonitor()
@@ -22,21 +22,21 @@ class NetworkMonitor {
             self?.status = path.status
             self?.isReachableOnCellular = path.isExpensive
             
-            //MARK:- SATISFIED
+            //MARK: - SATISFIED
             if path.status == .satisfied {
                 
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: NSNotification.Name("HANDLE_SERVICE_SATISFIED"), object: nil)
                 }
                 
-                //MARK:- UNSATISFIED
+                //MARK: - UNSATISFIED
             } else if path.status == .unsatisfied {
                 
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: NSNotification.Name("HANDLE_SERVICE_UNSATISIFED"), object: nil)
                 }
                 
-                //MARK:- REQUIRES CONNECTION
+                //MARK: - REQUIRES CONNECTION
             } else if path.status == .requiresConnection {
                 
                 DispatchQueue.main.async {

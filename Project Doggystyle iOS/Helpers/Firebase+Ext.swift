@@ -172,7 +172,7 @@ class Service : NSObject {
     }
     
     //MARK: - PASSWORD RESET WITH EMAIL VALIDATION (WEBVIEW)
-    func firebaseForgotPassword(validatedEmail : String, completion : @escaping (_ success : Bool, _ response : String)->()) {
+    func firebaseForgotPassword(validatedEmail: String, completion: @escaping (_ success: Bool, _ response: String) -> ()) {
             Auth.auth().sendPasswordReset(withEmail: validatedEmail, completion: { (error) in
                 if error != nil {
                     completion(false, "Failed: \(error!.localizedDescription as Any)")
@@ -182,7 +182,7 @@ class Service : NSObject {
             })
     }
     
-    func firebaseGoogleSignIn(credentials : AuthCredential, referralCode : String?, completion : @escaping (_ success : Bool, _ response : String)->()) {
+    func firebaseGoogleSignIn(credentials : AuthCredential, referralCode: String?, completion : @escaping (_ success: Bool, _ response: String) -> ()) {
         
         let databaseRef = Database.database().reference()
         
