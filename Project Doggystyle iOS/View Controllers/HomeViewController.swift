@@ -28,35 +28,32 @@ extension HomeViewController {
         self.tabBar.backgroundColor = .white
         self.tabBar.backgroundImage = UIImage()
         
-        let configHome = UIImage.SymbolConfiguration(pointSize: 15, weight: .medium)
-        
-        let tabOneIcon = UIImage(systemName: "house", withConfiguration: configHome)?.withTintColor(.black).withRenderingMode(.alwaysOriginal)
-        let tabOneFillIcon = UIImage(systemName: "house", withConfiguration: configHome)?.withTintColor(.orange).withRenderingMode(.alwaysOriginal)
+        let tabOneIcon = UIImage(named: "Home Icon")
+        let tabOneFillIcon = UIImage(named: "Home Icon")?.withTintColor(.dsOrange).withRenderingMode(.alwaysOriginal)
         
         let tabOne = UINavigationController(rootViewController: self.dashboardController)
-        self.dashboardController.homeController = self
         tabOne.navigationBar.isHidden = true
         tabOne.tabBarItem = UITabBarItem(title: nil, image: tabOneIcon, selectedImage: tabOneFillIcon)
         
         
-        let tabTwoIcon = UIImage(systemName: "doc", withConfiguration: configHome)?.withTintColor(.black).withRenderingMode(.alwaysOriginal)
-        let tabTwoFillIcon = UIImage(systemName: "doc.fill", withConfiguration: configHome)?.withTintColor(.orange).withRenderingMode(.alwaysOriginal)
+        let tabTwoIcon = UIImage(named: "Services Icon")
+        let tabTwoFillIcon = UIImage(named: "Services Icon")?.withTintColor(.dsOrange).withRenderingMode(.alwaysOriginal)
         
         let tabTwo = UINavigationController(rootViewController: self.secondaryController)
         self.secondaryController.homeController = self
         tabTwo.navigationBar.isHidden = true
         tabTwo.tabBarItem = UITabBarItem(title: nil, image: tabTwoIcon, selectedImage: tabTwoFillIcon)
         
-        let tabThreeIcon = UIImage(systemName: "bookmark", withConfiguration: configHome)?.withTintColor(.black).withRenderingMode(.alwaysOriginal)
-        let tabThreeFillIcon = UIImage(systemName: "bookmark.fill", withConfiguration: configHome)?.withTintColor(.orange).withRenderingMode(.alwaysOriginal)
+        let tabThreeIcon = UIImage(named: "Appointments Icon")
+        let tabThreeFillIcon = UIImage(named: "Appointments Icon")?.withTintColor(.dsOrange).withRenderingMode(.alwaysOriginal)
         
         let tabThree = UINavigationController(rootViewController: self.thirdController)
         self.thirdController.homeController = self
         tabThree.navigationBar.isHidden = true
         tabThree.tabBarItem = UITabBarItem(title: nil, image: tabThreeIcon, selectedImage: tabThreeFillIcon)
         
-        let tabFourIcon = UIImage(systemName: "gearshape", withConfiguration: configHome)?.withTintColor(.black).withRenderingMode(.alwaysOriginal)
-        let tabFourFillIcon = UIImage(systemName: "gearshape.fill", withConfiguration: configHome)?.withTintColor(.orange).withRenderingMode(.alwaysOriginal)
+        let tabFourIcon = UIImage(named: "Profile Icon")
+        let tabFourFillIcon = UIImage(named: "Profile Icon")?.withTintColor(.dsOrange).withRenderingMode(.alwaysOriginal)
         
         let tabFour = UINavigationController(rootViewController: self.fourthController)
         self.fourthController.homeController = self

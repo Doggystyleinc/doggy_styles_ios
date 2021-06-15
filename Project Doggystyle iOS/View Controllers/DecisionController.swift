@@ -13,15 +13,21 @@ import UIKit
 import Firebase
 
 final class DecisionController: UIViewController {
+    private let iconLogo: UIImageView = {
+        let imageView = UIImageView(image: UIImage(named: "DS App Icon")!)
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
     private let placeholderLogo: UIImageView = {
-        let imageView = UIImageView(image: #imageLiteral(resourceName: "PlaceholderLogo"))
+        let imageView = UIImageView(image: UIImage(named: "DS Logo")!)
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .dsViewBackground
         NetworkMonitor.shared.startMonitoring()
         self.authenticationCheck()
         self.addLogoView()
@@ -31,8 +37,12 @@ final class DecisionController: UIViewController {
 //MARK: - Layout Views
 extension DecisionController {
     private func addLogoView() {
+        self.view.addSubview(iconLogo)
+        iconLogo.centerX(to: view)
+        iconLogo.centerY(to: view, offset: -50)
+        
         self.view.addSubview(placeholderLogo)
-        placeholderLogo.topToSuperview(offset: 164.0, usingSafeArea: true)
+        placeholderLogo.topToBottom(of: iconLogo, offset: 12)
         placeholderLogo.left(to: view, offset: 31.0)
         placeholderLogo.right(to: view, offset: -31.0)
     }
