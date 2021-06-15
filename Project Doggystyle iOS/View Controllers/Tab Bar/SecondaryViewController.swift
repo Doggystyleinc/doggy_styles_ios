@@ -8,7 +8,6 @@
 import UIKit
 
 class SecondaryViewController: UIViewController {
-    var homeController: UIViewController!
 
     override func viewDidLoad() {
         super.viewDidLoad()

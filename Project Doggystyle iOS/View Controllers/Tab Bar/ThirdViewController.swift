@@ -8,7 +8,6 @@
 import UIKit
 
 class ThirdViewController: UIViewController {
-    var homeController: UIViewController!
 
     override func viewDidLoad() {
         super.viewDidLoad()

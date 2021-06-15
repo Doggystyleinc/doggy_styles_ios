@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "DSHomeIconSelected.png",
+      "filename" : "BellNotificationsIcon.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "DSHomeIconSelected@2x.png",
+      "filename" : "BellNotificationsIcon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "DSHomeIconSelected@3x.png",
+      "filename" : "BellNotificationsIcon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -11,10 +11,17 @@ import Foundation
 struct Constants {
     //MARK: - A
     static let allUsers = "all_users"
+    
+    //MARK: - B
+    static let bellIcon = "Bell Notifications Icon"
+    
     //MARK: - C
     static let companyAuthEndpoint = "company_authentication"
     
-    //E
+    //MARK: - D
+    static let dsLogo = "DS Logo"
+    
+    //MARK: - E
     static let email = "email"
     
     //MARK: - G
@@ -31,6 +38,7 @@ struct Constants {
     
     //MARK: - R
     static let referralCode = "no_code"
+    static let refurIcon = "Refur A Friend Icon"
     
     //MARK: - U
     static let uploadFiles = "uploadedFiles"

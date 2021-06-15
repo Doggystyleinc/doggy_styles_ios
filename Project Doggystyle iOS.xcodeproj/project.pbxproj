@@ -14,6 +14,11 @@
 		CD203BFE2667FABE00335D93 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BFD2667FABE00335D93 /* ThirdViewController.swift */; };
 		CD203C002667FACC00335D93 /* FourthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BFF2667FACC00335D93 /* FourthViewController.swift */; };
 		CD319F6B26790AD900F48E3C /* DeleteLaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD319F6A26790AD900F48E3C /* DeleteLaterViewController.swift */; };
+		CD319F71267936AD00F48E3C /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD319F6E267936AD00F48E3C /* Poppins-Bold.ttf */; };
+		CD319F72267936AD00F48E3C /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD319F6F267936AD00F48E3C /* Poppins-Regular.ttf */; };
+		CD319F73267936AD00F48E3C /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD319F70267936AD00F48E3C /* Poppins-SemiBold.ttf */; };
+		CD319F782679435900F48E3C /* DSNavButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD319F772679435900F48E3C /* DSNavButton.swift */; };
+		CD319F7A2679462500F48E3C /* LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD319F792679462500F48E3C /* LogoImageView.swift */; };
 		CD686882265412BB0064ADFE /* DSAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD686881265412BB0064ADFE /* DSAlertViewController.swift */; };
 		CD6868842654373A0064ADFE /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6868832654373A0064ADFE /* UIButton+Ext.swift */; };
 		CD6868902656EF920064ADFE /* LocationNotServicedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD68688F2656EF920064ADFE /* LocationNotServicedViewController.swift */; };
@@ -92,6 +97,11 @@
 		CD203BFD2667FABE00335D93 /* ThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
 		CD203BFF2667FACC00335D93 /* FourthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourthViewController.swift; sourceTree = "<group>"; };
 		CD319F6A26790AD900F48E3C /* DeleteLaterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteLaterViewController.swift; sourceTree = "<group>"; };
+		CD319F6E267936AD00F48E3C /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
+		CD319F6F267936AD00F48E3C /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		CD319F70267936AD00F48E3C /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
+		CD319F772679435900F48E3C /* DSNavButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSNavButton.swift; sourceTree = "<group>"; };
+		CD319F792679462500F48E3C /* LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoImageView.swift; sourceTree = "<group>"; };
 		CD686881265412BB0064ADFE /* DSAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAlertViewController.swift; sourceTree = "<group>"; };
 		CD6868832654373A0064ADFE /* UIButton+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Ext.swift"; sourceTree = "<group>"; };
 		CD68688F2656EF920064ADFE /* LocationNotServicedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationNotServicedViewController.swift; sourceTree = "<group>"; };
@@ -200,6 +210,43 @@
 			path = "Tab Bar";
 			sourceTree = "<group>";
 		};
+		CD319F6C2679364400F48E3C /* Roboto */ = {
+			isa = PBXGroup;
+			children = (
+				CDE870FB2652E2070082551B /* Roboto-Black.ttf */,
+				CDE870FA2652E2070082551B /* Roboto-BlackItalic.ttf */,
+				CDE870FF2652E2070082551B /* Roboto-Bold.ttf */,
+				CDE870FC2652E2070082551B /* Roboto-BoldItalic.ttf */,
+				CDE871002652E2080082551B /* Roboto-Italic.ttf */,
+				CDE870F62652E2070082551B /* Roboto-Light.ttf */,
+				CDE870F52652E2070082551B /* Roboto-LightItalic.ttf */,
+				CDE870F72652E2070082551B /* Roboto-Medium.ttf */,
+				CDE870F82652E2070082551B /* Roboto-MediumItalic.ttf */,
+				CDE870FD2652E2070082551B /* Roboto-Regular.ttf */,
+				CDE870F92652E2070082551B /* Roboto-Thin.ttf */,
+				CDE870FE2652E2070082551B /* Roboto-ThinItalic.ttf */,
+			);
+			path = Roboto;
+			sourceTree = "<group>";
+		};
+		CD319F6D2679365900F48E3C /* Concert One */ = {
+			isa = PBXGroup;
+			children = (
+				CDE870F32652E1FB0082551B /* ConcertOne-Regular.ttf */,
+			);
+			path = "Concert One";
+			sourceTree = "<group>";
+		};
+		CD319F74267936F200F48E3C /* Poppins */ = {
+			isa = PBXGroup;
+			children = (
+				CD319F6E267936AD00F48E3C /* Poppins-Bold.ttf */,
+				CD319F6F267936AD00F48E3C /* Poppins-Regular.ttf */,
+				CD319F70267936AD00F48E3C /* Poppins-SemiBold.ttf */,
+			);
+			path = Poppins;
+			sourceTree = "<group>";
+		};
 		CD686880265412A20064ADFE /* Alerts */ = {
 			isa = PBXGroup;
 			children = (
@@ -272,19 +319,9 @@
 		CDE870F12652E1DA0082551B /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				CDE870F32652E1FB0082551B /* ConcertOne-Regular.ttf */,
-				CDE870FB2652E2070082551B /* Roboto-Black.ttf */,
-				CDE870FA2652E2070082551B /* Roboto-BlackItalic.ttf */,
-				CDE870FF2652E2070082551B /* Roboto-Bold.ttf */,
-				CDE870FC2652E2070082551B /* Roboto-BoldItalic.ttf */,
-				CDE871002652E2080082551B /* Roboto-Italic.ttf */,
-				CDE870F62652E2070082551B /* Roboto-Light.ttf */,
-				CDE870F52652E2070082551B /* Roboto-LightItalic.ttf */,
-				CDE870F72652E2070082551B /* Roboto-Medium.ttf */,
-				CDE870F82652E2070082551B /* Roboto-MediumItalic.ttf */,
-				CDE870FD2652E2070082551B /* Roboto-Regular.ttf */,
-				CDE870F92652E2070082551B /* Roboto-Thin.ttf */,
-				CDE870FE2652E2070082551B /* Roboto-ThinItalic.ttf */,
+				CD319F74267936F200F48E3C /* Poppins */,
+				CD319F6D2679365900F48E3C /* Concert One */,
+				CD319F6C2679364400F48E3C /* Roboto */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -313,6 +350,7 @@
 			children = (
 				CDE871102652E2DC0082551B /* DividerView.swift */,
 				CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */,
+				CD319F792679462500F48E3C /* LogoImageView.swift */,
 			);
 			path = UIViews;
 			sourceTree = "<group>";
@@ -321,6 +359,7 @@
 			isa = PBXGroup;
 			children = (
 				CDE871642652E6E60082551B /* DSButton.swift */,
+				CD319F772679435900F48E3C /* DSNavButton.swift */,
 			);
 			path = UIButtons;
 			sourceTree = "<group>";
@@ -515,9 +554,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDE870EA2652E1640082551B /* LaunchScreen.storyboard in Resources */,
+				CD319F71267936AD00F48E3C /* Poppins-Bold.ttf in Resources */,
 				CDE870F42652E1FB0082551B /* ConcertOne-Regular.ttf in Resources */,
 				CDE8710B2652E2080082551B /* Roboto-Bold.ttf in Resources */,
 				CDE871022652E2080082551B /* Roboto-Light.ttf in Resources */,
+				CD319F73267936AD00F48E3C /* Poppins-SemiBold.ttf in Resources */,
 				CDE871682652EA3B0082551B /* .gitignore in Resources */,
 				CDE871032652E2080082551B /* Roboto-Medium.ttf in Resources */,
 				CDE8710C2652E2080082551B /* Roboto-Italic.ttf in Resources */,
@@ -530,6 +571,7 @@
 				CDE8710A2652E2080082551B /* Roboto-ThinItalic.ttf in Resources */,
 				CDE871272652E3310082551B /* Localizable.strings in Resources */,
 				CDE871092652E2080082551B /* Roboto-Regular.ttf in Resources */,
+				CD319F72267936AD00F48E3C /* Poppins-Regular.ttf in Resources */,
 				CDE871052652E2080082551B /* Roboto-Thin.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -633,6 +675,7 @@
 				CDE871652652E6E60082551B /* DSButton.swift in Sources */,
 				CDE871232652E3030082551B /* String + Ext.swift in Sources */,
 				CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */,
+				CD319F782679435900F48E3C /* DSNavButton.swift in Sources */,
 				CDCCD0B5265EB5DF007ABECF /* CreateDoggyProfileViewController.swift in Sources */,
 				CD319F6B26790AD900F48E3C /* DeleteLaterViewController.swift in Sources */,
 				CDE870DE2652E1610082551B /* AppDelegate.swift in Sources */,
@@ -654,6 +697,7 @@
 				CDE870E02652E1610082551B /* SceneDelegate.swift in Sources */,
 				CDCCD0B0265D4DB4007ABECF /* Constants.swift in Sources */,
 				CD203BFA2667FA9F00335D93 /* DashboardViewController.swift in Sources */,
+				CD319F7A2679462500F48E3C /* LogoImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

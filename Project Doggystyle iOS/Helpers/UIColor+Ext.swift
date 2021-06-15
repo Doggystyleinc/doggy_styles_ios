@@ -19,4 +19,6 @@ extension UIColor {
     static let dsTextColor = #colorLiteral(red: 0.1882352941, green: 0.1843137255, blue: 0.2352941176, alpha: 1) // #302F3C
     static let dsGray = #colorLiteral(red: 0.768627451, green: 0.768627451, blue: 0.768627451, alpha: 1) // #C4C4C4
     static let dsViewBackground = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1) // #F5F5F5
+    static let deselectedTab = #colorLiteral(red: 0.5921568627, green: 0.5921568627, blue: 0.5921568627, alpha: 1) // #979797
+    static let dsError = #colorLiteral(red: 0.9176470588, green: 0.1725490196, blue: 0.1725490196, alpha: 1) // #EA2C2C
 }
