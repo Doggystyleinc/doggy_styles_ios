@@ -15,10 +15,16 @@ extension UIColor {
     static let textFieldBackground = #colorLiteral(red: 0.9450980392, green: 0.9450980392, blue: 0.9450980392, alpha: 1) // #F1F1F1
     static let errorColor = #colorLiteral(red: 0.7333333333, green: 0.03921568627, blue: 0.1882352941, alpha: 1) //#BB0A30
     
-    static let dsOrange = #colorLiteral(red: 0.8509803922, green: 0.3568627451, blue: 0.07058823529, alpha: 1) // #D95B12
-    static let dsTextColor = #colorLiteral(red: 0.1882352941, green: 0.1843137255, blue: 0.2352941176, alpha: 1) // #302F3C
-    static let dsGray = #colorLiteral(red: 0.768627451, green: 0.768627451, blue: 0.768627451, alpha: 1) // #C4C4C4
-    static let dsViewBackground = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1) // #F5F5F5
-    static let deselectedTab = #colorLiteral(red: 0.5921568627, green: 0.5921568627, blue: 0.5921568627, alpha: 1) // #979797
-    static let dsError = #colorLiteral(red: 0.9176470588, green: 0.1725490196, blue: 0.1725490196, alpha: 1) // #EA2C2C
+    /// Hex #D95B12
+    static let dsOrange = #colorLiteral(red: 0.8509803922, green: 0.3568627451, blue: 0.07058823529, alpha: 1)
+    /// Hex #302F3C
+    static let dsTextColor = #colorLiteral(red: 0.1882352941, green: 0.1843137255, blue: 0.2352941176, alpha: 1)
+    /// Hex #C4C4C4
+    static let dsGray = #colorLiteral(red: 0.768627451, green: 0.768627451, blue: 0.768627451, alpha: 1)
+    /// Hex #F5F5F5
+    static let dsViewBackground = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+    /// Hex #979797
+    static let deselectedTab = #colorLiteral(red: 0.5921568627, green: 0.5921568627, blue: 0.5921568627, alpha: 1)
+    /// Hex #EA2C2C
+    static let dsError = #colorLiteral(red: 0.9176470588, green: 0.1725490196, blue: 0.1725490196, alpha: 1)
 }

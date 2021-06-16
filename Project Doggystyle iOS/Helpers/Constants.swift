@@ -19,6 +19,7 @@ struct Constants {
     static let companyAuthEndpoint = "company_authentication"
     
     //MARK: - D
+    static let dogIcon = "Dog Icon"
     static let dsLogo = "DS Logo"
     
     //MARK: - E

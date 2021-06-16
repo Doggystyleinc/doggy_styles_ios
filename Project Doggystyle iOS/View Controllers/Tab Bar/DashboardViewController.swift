@@ -13,6 +13,9 @@ final class DashboardViewController: UIViewController {
     private let rightIcon = DSNavButton(imageName: Constants.bellIcon)
     private let logo = LogoImageView(frame: .zero)
     
+    private let appointmentHeader = DSHeaderLabel(title: "Upcoming Appointment", size: 22.0)
+    private let serviceHeader = DSHeaderLabel(title: "Service of the Week", size: 22.0)
+    
     private let notificationsButton: UIButton = {
         let button = UIButton(type: .system)
         let attrString = NSAttributedString(string: "99", attributes: [NSAttributedString.Key.font : UIFont.poppinsSemiBold(size: 11)])
@@ -23,9 +26,74 @@ final class DashboardViewController: UIViewController {
         return button
     }()
     
+    private let viewAllPetsButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: Constants.dogIcon), for: .normal)
+        button.backgroundColor = .dsOrange
+        button.tintColor = .white
+        button.layer.cornerRadius = 37.0
+        button.addTarget(self, action: #selector(didTapAll), for: .touchUpInside)
+        return button
+    }()
+    
+    private let viewAllLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.text = "All"
+        label.font = UIFont.poppinsBold(size: 16)
+        label.textColor = .dsOrange
+        return label
+    }()
+    
+    private let appointmentContainer: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 20.0
+        view.layer.shadowOpacity = 1
+        view.layer.shadowOffset = CGSize(width: 0, height: 4)
+        view.layer.shadowRadius = 8
+        view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.10).cgColor
+        return view
+    }()
+    
+    private let servicesContainer: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 20.0
+        view.layer.shadowOpacity = 1
+        view.layer.shadowOffset = CGSize(width: 0, height: 4)
+        view.layer.shadowRadius = 8
+        view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.10).cgColor
+        return view
+    }()
+    
+    private let viewAllAppointmentsButton: UIButton = {
+        let button = UIButton(type: .system)
+        let attrString = NSAttributedString(string: "View all", attributes: [NSAttributedString.Key.font : UIFont.poppinsSemiBold(size: 18.0)])
+        button.setAttributedTitle(attrString, for: .normal)
+        button.backgroundColor = .clear
+        button.tintColor = .dsGray
+        button.setTitle("View all", for: .normal)
+        button.addTarget(self, action: #selector(didTapViewAllAppointments), for: .touchUpInside)
+        return button
+    }()
+    
+    private let viewAllServicesButton: UIButton = {
+        let button = UIButton(type: .system)
+        let attrString = NSAttributedString(string: "View all", attributes: [NSAttributedString.Key.font : UIFont.poppinsSemiBold(size: 18.0)])
+        button.setAttributedTitle(attrString, for: .normal)
+        button.backgroundColor = .clear
+        button.tintColor = .dsGray
+        button.setTitle("View all", for: .normal)
+        button.addTarget(self, action: #selector(didTapViewAllServices), for: .touchUpInside)
+        return button
+    }()
+    
     override func viewDidLoad() {
         self.configureVC()
-        self.addViews()
+        self.addNavViews()
+        self.addViewAllPetsView()
+        self.addAppointmentViews()
+        self.addServiceViews()
     }
 }
 
@@ -39,7 +107,7 @@ extension DashboardViewController {
 
 //MARK: - Configure Views
 extension DashboardViewController {
-    private func addViews() {
+    private func addNavViews() {
         self.view.addSubview(logo)
         logo.topToSuperview(offset: 26, usingSafeArea: true)
         logo.centerX(to: view)
@@ -57,5 +125,70 @@ extension DashboardViewController {
         notificationsButton.width(20)
         notificationsButton.top(to: rightIcon, offset: 4)
         notificationsButton.right(to: rightIcon, offset: -4)
+    }
+    
+    private func addViewAllPetsView() {
+        self.view.addSubview(viewAllPetsButton)
+        viewAllPetsButton.topToBottom(of: leftIcon, offset: 24)
+        viewAllPetsButton.height(74)
+        viewAllPetsButton.width(74)
+        viewAllPetsButton.left(to: leftIcon, offset: 8)
+        
+        self.view.addSubview(viewAllLabel)
+        viewAllLabel.centerX(to: viewAllPetsButton)
+        viewAllLabel.topToBottom(of: viewAllPetsButton, offset: 6)
+    }
+    
+    private func addPetCollectionView() {
+        
+    }
+    
+    private func addAppointmentViews() {
+        self.view.addSubview(appointmentHeader)
+        appointmentHeader.left(to: viewAllPetsButton)
+        appointmentHeader.topToBottom(of: viewAllLabel, offset: 16)
+        
+        self.view.addSubview(appointmentContainer)
+        appointmentContainer.topToBottom(of: appointmentHeader, offset: 10.0)
+        appointmentContainer.left(to: viewAllPetsButton)
+        appointmentContainer.height(152)
+        appointmentContainer.right(to: notificationsButton)
+        
+        self.view.addSubview(viewAllAppointmentsButton)
+        viewAllAppointmentsButton.centerX(to: appointmentContainer)
+        viewAllAppointmentsButton.topToBottom(of: appointmentContainer, offset: 6.0)
+        viewAllAppointmentsButton.width(150)
+    }
+    
+    private func addServiceViews() {
+        self.view.addSubview(serviceHeader)
+        serviceHeader.topToBottom(of: viewAllAppointmentsButton, offset: 20.0)
+        serviceHeader.left(to: appointmentHeader)
+        
+        self.view.addSubview(servicesContainer)
+        servicesContainer.topToBottom(of: serviceHeader, offset: 10.0)
+        servicesContainer.left(to: appointmentContainer)
+        servicesContainer.right(to: appointmentContainer)
+        servicesContainer.height(152)
+        
+        self.view.addSubview(viewAllServicesButton)
+        viewAllServicesButton.centerX(to: servicesContainer)
+        viewAllServicesButton.topToBottom(of: servicesContainer, offset: 6.0)
+        viewAllServicesButton.width(150)
+    }
+}
+
+//MARK: - @objc Functions
+extension DashboardViewController {
+    @objc private func didTapAll() {
+        print(#function)
+    }
+    
+    @objc private func didTapViewAllAppointments() {
+        print(#function)
+    }
+    
+    @objc private func didTapViewAllServices() {
+        print(#function)
     }
 }

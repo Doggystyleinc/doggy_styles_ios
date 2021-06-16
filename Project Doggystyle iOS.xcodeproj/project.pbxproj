@@ -19,6 +19,7 @@
 		CD319F73267936AD00F48E3C /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD319F70267936AD00F48E3C /* Poppins-SemiBold.ttf */; };
 		CD319F782679435900F48E3C /* DSNavButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD319F772679435900F48E3C /* DSNavButton.swift */; };
 		CD319F7A2679462500F48E3C /* LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD319F792679462500F48E3C /* LogoImageView.swift */; };
+		CD319F7D26794D5E00F48E3C /* DSHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD319F7C26794D5E00F48E3C /* DSHeaderLabel.swift */; };
 		CD686882265412BB0064ADFE /* DSAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD686881265412BB0064ADFE /* DSAlertViewController.swift */; };
 		CD6868842654373A0064ADFE /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6868832654373A0064ADFE /* UIButton+Ext.swift */; };
 		CD6868902656EF920064ADFE /* LocationNotServicedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD68688F2656EF920064ADFE /* LocationNotServicedViewController.swift */; };
@@ -102,6 +103,7 @@
 		CD319F70267936AD00F48E3C /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		CD319F772679435900F48E3C /* DSNavButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSNavButton.swift; sourceTree = "<group>"; };
 		CD319F792679462500F48E3C /* LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoImageView.swift; sourceTree = "<group>"; };
+		CD319F7C26794D5E00F48E3C /* DSHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSHeaderLabel.swift; sourceTree = "<group>"; };
 		CD686881265412BB0064ADFE /* DSAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAlertViewController.swift; sourceTree = "<group>"; };
 		CD6868832654373A0064ADFE /* UIButton+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Ext.swift"; sourceTree = "<group>"; };
 		CD68688F2656EF920064ADFE /* LocationNotServicedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationNotServicedViewController.swift; sourceTree = "<group>"; };
@@ -247,6 +249,14 @@
 			path = Poppins;
 			sourceTree = "<group>";
 		};
+		CD319F7B26794D4D00F48E3C /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+				CD319F7C26794D5E00F48E3C /* DSHeaderLabel.swift */,
+			);
+			path = Labels;
+			sourceTree = "<group>";
+		};
 		CD686880265412A20064ADFE /* Alerts */ = {
 			isa = PBXGroup;
 			children = (
@@ -339,6 +349,7 @@
 		CDE8710D2652E2B20082551B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CD319F7B26794D4D00F48E3C /* Labels */,
 				CDE8710F2652E2C50082551B /* UIButtons */,
 				CDE8710E2652E2BA0082551B /* UIViews */,
 			);
@@ -690,6 +701,7 @@
 				CD686882265412BB0064ADFE /* DSAlertViewController.swift in Sources */,
 				CDE871202652E3030082551B /* NetworkMonitor.swift in Sources */,
 				CDE871612652E69B0082551B /* SuccessfulPasswordResetViewController.swift in Sources */,
+				CD319F7D26794D5E00F48E3C /* DSHeaderLabel.swift in Sources */,
 				CDE8715A2652E6850082551B /* SignInViewController.swift in Sources */,
 				CDE871582652E6850082551B /* EmailSignInViewController.swift in Sources */,
 				CDE871512652E66A0082551B /* HomeViewController.swift in Sources */,
