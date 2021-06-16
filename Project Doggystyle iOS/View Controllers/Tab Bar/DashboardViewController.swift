@@ -88,6 +88,8 @@ final class DashboardViewController: UIViewController {
         return button
     }()
     
+    private let package = Package.examplePackage
+    
     override func viewDidLoad() {
         self.configureVC()
         self.addNavViews()
@@ -175,6 +177,10 @@ extension DashboardViewController {
         viewAllServicesButton.centerX(to: servicesContainer)
         viewAllServicesButton.topToBottom(of: servicesContainer, offset: 6.0)
         viewAllServicesButton.width(150)
+        
+        let serviceView = ServiceOfTheWeekView(package: package)
+        servicesContainer.addSubview(serviceView)
+        serviceView.edgesToSuperview()
     }
 }
 

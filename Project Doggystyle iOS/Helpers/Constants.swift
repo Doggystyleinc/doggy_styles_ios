@@ -43,4 +43,7 @@ struct Constants {
     
     //MARK: - U
     static let uploadFiles = "uploadedFiles"
+    
+    //MARK: - W
+    static let weeklyServiceIcon = "Service Of The Week Icon"
 }
