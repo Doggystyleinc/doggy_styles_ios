@@ -10,7 +10,8 @@ import Foundation
 var userProfileStruct = UserProfileStruct()
 
 struct UserProfileStruct {
-    var userName: String?
+    var firstName: String?
+    var lastName: String?
     var email : String?
     var phoneNumber : String?
     var profileURL: String?

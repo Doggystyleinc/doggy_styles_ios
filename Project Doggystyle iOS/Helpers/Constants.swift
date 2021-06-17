@@ -36,6 +36,9 @@ struct Constants {
     //MARK: - M
     static let mangeUserEndpoint = "manage_users"
     
+    //MARK: - O
+    static let ownerProfilePlaceholder = "Owner Profile Placeholder"
+    
     //MARK: - P
     static let profileImages = "profileImages"
     static let petProfilePlaceholder = "Pet Profile Placeholder"

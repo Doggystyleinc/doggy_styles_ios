@@ -28,6 +28,15 @@ class ProfileViewController: UIViewController {
     private let contactUsContainer = DSContainerView(frame: .zero)
     private let refurContainer = DSContainerView(frame: .zero)
     
+    private let profileImageView: UIImageView = {
+        let imageView = UIImageView(frame: .zero)
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.shouldRasterize = false
+        imageView.layer.cornerRadius = 65
+        return imageView
+    }()
+    
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.backgroundColor = .clear
@@ -36,8 +45,8 @@ class ProfileViewController: UIViewController {
         label.textColor = .dsTextColor
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
-        
-       return label
+        label.numberOfLines = 1
+        return label
     }()
     
     override func viewDidLoad() {
@@ -76,7 +85,7 @@ extension ProfileViewController {
     
     private func addContainers() {
         self.view.addSubview(nameContainer)
-        nameContainer.height(136)
+        nameContainer.height(126)
         nameContainer.left(to: view, offset: 30)
         nameContainer.right(to: view, offset: -30)
         nameContainer.topToBottom(of: rightIcon, offset: 96)
@@ -107,6 +116,17 @@ extension ProfileViewController {
     }
     
     private func addContainerViews() {
+        self.view.addSubview(profileImageView)
+        profileImageView.height(130)
+        profileImageView.width(130)
+        profileImageView.top(to: nameContainer, offset: -65)
+        profileImageView.centerX(to: view)
+        
+        self.nameContainer.addSubview(nameLabel)
+        nameLabel.bottom(to: nameContainer, offset: -22)
+        nameLabel.left(to: nameContainer, offset: 30)
+        nameLabel.right(to: nameContainer, offset: -30)
+        
         let petLabel = DSBoldLabel(title: "My dogs", size: 16)
         let petImageView = UIImageView(image: dogIcon)
         petImageView.contentMode = .scaleAspectFit
@@ -193,14 +213,17 @@ extension ProfileViewController {
 extension ProfileViewController {
     //GOOD IDEA TO CHECK THIS EVERYTIME THE VIEW LOADS, INCASE THEY CHANGE THEIR PHOTO, NAME ETC.
     func fetchJSON() {
+        Service.shared.fetchCurrentUser()
         //DATA SHOULD BE FILLED ON APPLICATION LOAD AFTER AUTHENTICATION OR SIGN IN
-        let userName = userProfileStruct.userName ?? "Pet Lover"
-        self.nameLabel.text = userName
+        self.nameLabel.text = "\(userProfileStruct.firstName ?? "Pet") \(userProfileStruct.lastName ?? "Lover")"
         
-        //THROW A DEFAULT PHOTO IN STORAGE AND GRAB THE URL THEN REPLACE "nil" WITH THE URL
-//        let userProfilePhoto = userProfileStruct.profileURL ?? "nil"
-//        self.profileImageView.loadImageGeneralUse(userProfilePhoto)
-        
+        //Set profile image with animation
+        profileImageView.sd_setImage(with: URL(string: userProfileStruct.profileURL ?? ""), placeholderImage: UIImage(named: Constants.ownerProfilePlaceholder)) { _, _, _, _ in
+            self.profileImageView.alpha = 0.0
+            UIView.animate(withDuration: 1.0) {
+                self.profileImageView.alpha = 1.0
+            }
+        }
     }
     
     private func addTargets() {

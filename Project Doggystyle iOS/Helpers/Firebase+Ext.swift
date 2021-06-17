@@ -262,11 +262,15 @@ extension Service {
         ref.observeSingleEvent(of: .value) { snapshot in
             
             if let JSON = snapshot.value as? [String : Any] {
+                let userFirstName = JSON["user_first_name"] as? String ?? "nil"
+                let userLastName = JSON["user_last_name"] as? String ?? "nil"
                 let userPhoneNumber = JSON["users_phone_number"] as? String ?? "nil"
                 let userEmail = JSON["users_email"] as? String ?? "nil"
                 let userProfileImageURL = JSON["profile_image_url"] as? String ?? "nil"
                 let uploadedDocumentURL = JSON["uploaded_document_url"] as? String ?? "nil"
                 
+                userProfileStruct.firstName = userFirstName
+                userProfileStruct.lastName = userLastName
                 userProfileStruct.phoneNumber = userPhoneNumber
                 userProfileStruct.email = userEmail
                 userProfileStruct.profileURL = userProfileImageURL
