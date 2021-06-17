@@ -7,14 +7,38 @@
 
 import UIKit
 import Firebase
+import SDWebImage
+
+//TODO: - Initialize this view with a user object or fetch on viewDidLoad
 
 final class DashboardViewController: UIViewController {
-    private let leftIcon = DSNavButton(imageName: Constants.refurIcon)
+    var homeController: HomeViewController?
+    private let package = Package.examplePackage
+    private let pets: [Pet] = [Pet.petOne, Pet.petTwo, Pet.petOne, Pet.petTwo, Pet.petOne, Pet.petTwo]
+    private let appointment = Appointment.exampleAppointment
+    
+    private let leftIcon = DSNavButton(imageName: Constants.refurNavIcon)
     private let rightIcon = DSNavButton(imageName: Constants.bellIcon)
     private let logo = LogoImageView(frame: .zero)
     
-    private let appointmentHeader = DSHeaderLabel(title: "Upcoming Appointment", size: 22.0)
-    private let serviceHeader = DSHeaderLabel(title: "Service of the Week", size: 22.0)
+    private let appointmentHeader = DSBoldLabel(title: "Upcoming Appointment", size: 22.0)
+    private let serviceHeader = DSBoldLabel(title: "Service of the Week", size: 22.0)
+    
+    private let appointmentContainer = DSContainerView(frame: .zero)
+    private let servicesContainer = DSContainerView(frame: .zero)
+    
+    private let petCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: 74, height: 74)
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 10
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(PetCollectionViewCell.self, forCellWithReuseIdentifier: PetCollectionViewCell.reuseIdentifier)
+        collectionView.indicatorStyle = .white
+        collectionView.backgroundColor = .dsViewBackground
+        return collectionView
+    }()
     
     private let notificationsButton: UIButton = {
         let button = UIButton(type: .system)
@@ -44,28 +68,6 @@ final class DashboardViewController: UIViewController {
         return label
     }()
     
-    private let appointmentContainer: UIView = {
-        let view = UIView(frame: .zero)
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 20.0
-        view.layer.shadowOpacity = 1
-        view.layer.shadowOffset = CGSize(width: 0, height: 4)
-        view.layer.shadowRadius = 8
-        view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.10).cgColor
-        return view
-    }()
-    
-    private let servicesContainer: UIView = {
-        let view = UIView(frame: .zero)
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 20.0
-        view.layer.shadowOpacity = 1
-        view.layer.shadowOffset = CGSize(width: 0, height: 4)
-        view.layer.shadowRadius = 8
-        view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.10).cgColor
-        return view
-    }()
-    
     private let viewAllAppointmentsButton: UIButton = {
         let button = UIButton(type: .system)
         let attrString = NSAttributedString(string: "View all", attributes: [NSAttributedString.Key.font : UIFont.poppinsSemiBold(size: 18.0)])
@@ -88,12 +90,22 @@ final class DashboardViewController: UIViewController {
         return button
     }()
     
-    private let package = Package.examplePackage
+    private let editAppointmentButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: Constants.editIcon)?.withRenderingMode(.alwaysOriginal), for: .normal)
+        return button
+    }()
+    
+    private lazy var appointmentDate = DSSemiBoldLabel(title: appointment.date, size: 15)
+    private lazy var appointmentTime = DSSemiBoldLabel(title: appointment.time, size: 15)
+    private lazy var appointmentCycle = DSRegularLabel(title: "\(appointment.cycle) week cycle", size: 12)
+    
     
     override func viewDidLoad() {
         self.configureVC()
         self.addNavViews()
         self.addViewAllPetsView()
+        self.addPetCollectionView()
         self.addAppointmentViews()
         self.addServiceViews()
     }
@@ -103,6 +115,8 @@ final class DashboardViewController: UIViewController {
 extension DashboardViewController {
     private func configureVC() {
         self.view.backgroundColor = .dsViewBackground
+        self.petCollectionView.dataSource = self
+        self.petCollectionView.delegate = self
     }
 }
 
@@ -142,19 +156,66 @@ extension DashboardViewController {
     }
     
     private func addPetCollectionView() {
-        
+        self.view.addSubview(petCollectionView)
+        petCollectionView.centerY(to: viewAllPetsButton)
+        petCollectionView.leftToRight(of: viewAllPetsButton, offset: 16)
+        petCollectionView.height(84)
+        petCollectionView.right(to: notificationsButton)
     }
     
     private func addAppointmentViews() {
         self.view.addSubview(appointmentHeader)
         appointmentHeader.left(to: viewAllPetsButton)
-        appointmentHeader.topToBottom(of: viewAllLabel, offset: 16)
+        appointmentHeader.topToBottom(of: viewAllLabel, offset: 20)
         
         self.view.addSubview(appointmentContainer)
         appointmentContainer.topToBottom(of: appointmentHeader, offset: 10.0)
         appointmentContainer.left(to: viewAllPetsButton)
         appointmentContainer.height(152)
         appointmentContainer.right(to: notificationsButton)
+        
+        //Move this once we decided if numberOfPets > 2
+        let imageViewOne = UIImageView(frame: .zero)
+        imageViewOne.sd_setImage(with: URL(string: pets[0].imageURL), placeholderImage: UIImage(named: Constants.petProfilePlaceholder), options: .continueInBackground, context: nil)
+        imageViewOne.contentMode = .scaleToFill
+        imageViewOne.clipsToBounds = true
+        imageViewOne.layer.cornerRadius = 23
+        
+        self.appointmentContainer.addSubview(imageViewOne)
+        imageViewOne.height(46)
+        imageViewOne.width(46)
+        imageViewOne.top(to: appointmentContainer, offset: 20)
+        imageViewOne.left(to: appointmentContainer, offset: 20)
+        
+        let imageViewTwo = UIImageView(frame: .zero)
+        imageViewTwo.sd_setImage(with: URL(string: pets[1].imageURL), placeholderImage: UIImage(named: Constants.petProfilePlaceholder), options: .continueInBackground, context: nil)
+        imageViewTwo.contentMode = .scaleToFill
+        imageViewTwo.clipsToBounds = true
+        imageViewTwo.layer.cornerRadius = 23
+        
+        self.appointmentContainer.addSubview(imageViewTwo)
+        imageViewTwo.height(46)
+        imageViewTwo.width(46)
+        imageViewTwo.top(to: imageViewOne)
+        imageViewTwo.leftToRight(of: imageViewOne, offset: 10)
+        
+        self.appointmentContainer.addSubview(editAppointmentButton)
+        editAppointmentButton.top(to: imageViewOne)
+        editAppointmentButton.right(to: appointmentContainer, offset: -20)
+        editAppointmentButton.height(38)
+        editAppointmentButton.width(38)
+        
+        self.appointmentContainer.addSubview(appointmentDate)
+        appointmentDate.topToBottom(of: imageViewOne, offset: 12)
+        appointmentDate.left(to: imageViewOne)
+        
+        self.appointmentContainer.addSubview(appointmentTime)
+        appointmentTime.top(to: appointmentDate)
+        appointmentTime.right(to: editAppointmentButton)
+        
+        self.appointmentContainer.addSubview(appointmentCycle)
+        appointmentCycle.left(to: appointmentDate)
+        appointmentCycle.topToBottom(of: appointmentDate, offset: 5)
         
         self.view.addSubview(viewAllAppointmentsButton)
         viewAllAppointmentsButton.centerX(to: appointmentContainer)
@@ -191,10 +252,26 @@ extension DashboardViewController {
     }
     
     @objc private func didTapViewAllAppointments() {
-        print(#function)
+        homeController?.switchTabs(tabIndex: 2)
     }
     
     @objc private func didTapViewAllServices() {
         print(#function)
     }
+}
+
+//MARK: - CollectionView DataSource & Delegate
+extension DashboardViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return pets.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PetCollectionViewCell.reuseIdentifier, for: indexPath) as! PetCollectionViewCell
+        let pet = pets[indexPath.row]
+        cell.configure(with: pet)
+        return cell
+    }
+    
+    
 }

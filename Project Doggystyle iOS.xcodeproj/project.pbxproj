@@ -11,21 +11,28 @@
 		CD203BF72667D3B900335D93 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BF62667D3B900335D93 /* PDFViewController.swift */; };
 		CD203BFA2667FA9F00335D93 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BF92667FA9F00335D93 /* DashboardViewController.swift */; };
 		CD203BFC2667FAB300335D93 /* SecondaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BFB2667FAB300335D93 /* SecondaryViewController.swift */; };
-		CD203BFE2667FABE00335D93 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BFD2667FABE00335D93 /* ThirdViewController.swift */; };
-		CD203C002667FACC00335D93 /* FourthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BFF2667FACC00335D93 /* FourthViewController.swift */; };
+		CD203C002667FACC00335D93 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BFF2667FACC00335D93 /* ProfileViewController.swift */; };
 		CD319F6B26790AD900F48E3C /* DeleteLaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD319F6A26790AD900F48E3C /* DeleteLaterViewController.swift */; };
 		CD319F71267936AD00F48E3C /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD319F6E267936AD00F48E3C /* Poppins-Bold.ttf */; };
 		CD319F72267936AD00F48E3C /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD319F6F267936AD00F48E3C /* Poppins-Regular.ttf */; };
 		CD319F73267936AD00F48E3C /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD319F70267936AD00F48E3C /* Poppins-SemiBold.ttf */; };
 		CD319F782679435900F48E3C /* DSNavButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD319F772679435900F48E3C /* DSNavButton.swift */; };
 		CD319F7A2679462500F48E3C /* LogoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD319F792679462500F48E3C /* LogoImageView.swift */; };
-		CD319F7D26794D5E00F48E3C /* DSHeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD319F7C26794D5E00F48E3C /* DSHeaderLabel.swift */; };
+		CD319F7D26794D5E00F48E3C /* DSBoldLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD319F7C26794D5E00F48E3C /* DSBoldLabel.swift */; };
 		CD686882265412BB0064ADFE /* DSAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD686881265412BB0064ADFE /* DSAlertViewController.swift */; };
 		CD6868842654373A0064ADFE /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6868832654373A0064ADFE /* UIButton+Ext.swift */; };
 		CD6868902656EF920064ADFE /* LocationNotServicedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD68688F2656EF920064ADFE /* LocationNotServicedViewController.swift */; };
 		CD6868922656EFB20064ADFE /* RequestUserLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6868912656EFB20064ADFE /* RequestUserLocationViewController.swift */; };
 		CD6DCFF2267A62D300BC376B /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DCFF1267A62D300BC376B /* Package.swift */; };
 		CD6DCFF4267A648400BC376B /* ServiceOfTheWeekView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DCFF3267A648400BC376B /* ServiceOfTheWeekView.swift */; };
+		CD6DCFF6267A820700BC376B /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DCFF5267A820700BC376B /* Pet.swift */; };
+		CD6DCFF8267A824A00BC376B /* Appointment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DCFF7267A824A00BC376B /* Appointment.swift */; };
+		CD6DCFFA267A8D7400BC376B /* DSSemiBoldLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DCFF9267A8D7400BC376B /* DSSemiBoldLabel.swift */; };
+		CD6DCFFC267A8DD200BC376B /* DSRegularLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DCFFB267A8DD200BC376B /* DSRegularLabel.swift */; };
+		CD6DCFFF267ACAEE00BC376B /* PetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DCFFE267ACAEE00BC376B /* PetCollectionViewCell.swift */; };
+		CD6DD001267AD81100BC376B /* AppointmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD000267AD81100BC376B /* AppointmentsViewController.swift */; };
+		CD6DD003267AD88800BC376B /* PackagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD002267AD88800BC376B /* PackagesViewController.swift */; };
+		CD6DD005267B9DAF00BC376B /* DSContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD004267B9DAF00BC376B /* DSContainerView.swift */; };
 		CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */; };
 		CDCCD0B0265D4DB4007ABECF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0AF265D4DB4007ABECF /* Constants.swift */; };
 		CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */; };
@@ -97,21 +104,28 @@
 		CD203BF62667D3B900335D93 /* PDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
 		CD203BF92667FA9F00335D93 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		CD203BFB2667FAB300335D93 /* SecondaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryViewController.swift; sourceTree = "<group>"; };
-		CD203BFD2667FABE00335D93 /* ThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdViewController.swift; sourceTree = "<group>"; };
-		CD203BFF2667FACC00335D93 /* FourthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourthViewController.swift; sourceTree = "<group>"; };
+		CD203BFF2667FACC00335D93 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		CD319F6A26790AD900F48E3C /* DeleteLaterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteLaterViewController.swift; sourceTree = "<group>"; };
 		CD319F6E267936AD00F48E3C /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		CD319F6F267936AD00F48E3C /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		CD319F70267936AD00F48E3C /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		CD319F772679435900F48E3C /* DSNavButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSNavButton.swift; sourceTree = "<group>"; };
 		CD319F792679462500F48E3C /* LogoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoImageView.swift; sourceTree = "<group>"; };
-		CD319F7C26794D5E00F48E3C /* DSHeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSHeaderLabel.swift; sourceTree = "<group>"; };
+		CD319F7C26794D5E00F48E3C /* DSBoldLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSBoldLabel.swift; sourceTree = "<group>"; };
 		CD686881265412BB0064ADFE /* DSAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAlertViewController.swift; sourceTree = "<group>"; };
 		CD6868832654373A0064ADFE /* UIButton+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Ext.swift"; sourceTree = "<group>"; };
 		CD68688F2656EF920064ADFE /* LocationNotServicedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationNotServicedViewController.swift; sourceTree = "<group>"; };
 		CD6868912656EFB20064ADFE /* RequestUserLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestUserLocationViewController.swift; sourceTree = "<group>"; };
 		CD6DCFF1267A62D300BC376B /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		CD6DCFF3267A648400BC376B /* ServiceOfTheWeekView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceOfTheWeekView.swift; sourceTree = "<group>"; };
+		CD6DCFF5267A820700BC376B /* Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
+		CD6DCFF7267A824A00BC376B /* Appointment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appointment.swift; sourceTree = "<group>"; };
+		CD6DCFF9267A8D7400BC376B /* DSSemiBoldLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSSemiBoldLabel.swift; sourceTree = "<group>"; };
+		CD6DCFFB267A8DD200BC376B /* DSRegularLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSRegularLabel.swift; sourceTree = "<group>"; };
+		CD6DCFFE267ACAEE00BC376B /* PetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetCollectionViewCell.swift; sourceTree = "<group>"; };
+		CD6DD000267AD81100BC376B /* AppointmentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentsViewController.swift; sourceTree = "<group>"; };
+		CD6DD002267AD88800BC376B /* PackagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackagesViewController.swift; sourceTree = "<group>"; };
+		CD6DD004267B9DAF00BC376B /* DSContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSContainerView.swift; sourceTree = "<group>"; };
 		CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotServicedNumberSubmittedViewController.swift; sourceTree = "<group>"; };
 		CDCCD0AF265D4DB4007ABECF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToEnableLocationView.swift; sourceTree = "<group>"; };
@@ -210,8 +224,8 @@
 			children = (
 				CD203BF92667FA9F00335D93 /* DashboardViewController.swift */,
 				CD203BFB2667FAB300335D93 /* SecondaryViewController.swift */,
-				CD203BFD2667FABE00335D93 /* ThirdViewController.swift */,
-				CD203BFF2667FACC00335D93 /* FourthViewController.swift */,
+				CD6DD002267AD88800BC376B /* PackagesViewController.swift */,
+				CD203BFF2667FACC00335D93 /* ProfileViewController.swift */,
 			);
 			path = "Tab Bar";
 			sourceTree = "<group>";
@@ -256,7 +270,9 @@
 		CD319F7B26794D4D00F48E3C /* Labels */ = {
 			isa = PBXGroup;
 			children = (
-				CD319F7C26794D5E00F48E3C /* DSHeaderLabel.swift */,
+				CD319F7C26794D5E00F48E3C /* DSBoldLabel.swift */,
+				CD6DCFF9267A8D7400BC376B /* DSSemiBoldLabel.swift */,
+				CD6DCFFB267A8DD200BC376B /* DSRegularLabel.swift */,
 			);
 			path = Labels;
 			sourceTree = "<group>";
@@ -279,6 +295,14 @@
 			path = Location;
 			sourceTree = "<group>";
 		};
+		CD6DCFFD267ACAC500BC376B /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				CD6DCFFE267ACAEE00BC376B /* PetCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		CDCCD0B3265EB5C5007ABECF /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
@@ -292,6 +316,8 @@
 			children = (
 				CDCCD0B7265EB884007ABECF /* User.swift */,
 				CD6DCFF1267A62D300BC376B /* Package.swift */,
+				CD6DCFF5267A820700BC376B /* Pet.swift */,
+				CD6DCFF7267A824A00BC376B /* Appointment.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -354,6 +380,7 @@
 		CDE8710D2652E2B20082551B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CD6DCFFD267ACAC500BC376B /* Cells */,
 				CD319F7B26794D4D00F48E3C /* Labels */,
 				CDE8710F2652E2C50082551B /* UIButtons */,
 				CDE8710E2652E2BA0082551B /* UIViews */,
@@ -368,6 +395,7 @@
 				CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */,
 				CD319F792679462500F48E3C /* LogoImageView.swift */,
 				CD6DCFF3267A648400BC376B /* ServiceOfTheWeekView.swift */,
+				CD6DD004267B9DAF00BC376B /* DSContainerView.swift */,
 			);
 			path = UIViews;
 			sourceTree = "<group>";
@@ -411,6 +439,7 @@
 				CDE8714E2652E66A0082551B /* DecisionController.swift */,
 				CDE8714F2652E66A0082551B /* HomeViewController.swift */,
 				CD203BF62667D3B900335D93 /* PDFViewController.swift */,
+				CD6DD000267AD81100BC376B /* AppointmentsViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -677,8 +706,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD203BFE2667FABE00335D93 /* ThirdViewController.swift in Sources */,
 				CDE871242652E3030082551B /* UIFont+Ext.swift in Sources */,
+				CD6DCFFF267ACAEE00BC376B /* PetCollectionViewCell.swift in Sources */,
 				CDE8715B2652E6850082551B /* ReferralCodeViewController.swift in Sources */,
 				CDE8711E2652E3030082551B /* UIColor+Ext.swift in Sources */,
 				CDE871222652E3030082551B /* UIViewController+Ext.swift in Sources */,
@@ -688,27 +717,34 @@
 				CD203BF72667D3B900335D93 /* PDFViewController.swift in Sources */,
 				CDE8715C2652E6850082551B /* SignUpViewController.swift in Sources */,
 				CDCCD0B8265EB884007ABECF /* User.swift in Sources */,
+				CD6DCFFC267A8DD200BC376B /* DSRegularLabel.swift in Sources */,
 				CDE871622652E69B0082551B /* ResetPasswordViewController.swift in Sources */,
 				CDE871652652E6E60082551B /* DSButton.swift in Sources */,
 				CDE871232652E3030082551B /* String + Ext.swift in Sources */,
+				CD6DCFFA267A8D7400BC376B /* DSSemiBoldLabel.swift in Sources */,
 				CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */,
 				CD319F782679435900F48E3C /* DSNavButton.swift in Sources */,
 				CDCCD0B5265EB5DF007ABECF /* CreateDoggyProfileViewController.swift in Sources */,
 				CD6DCFF2267A62D300BC376B /* Package.swift in Sources */,
 				CD319F6B26790AD900F48E3C /* DeleteLaterViewController.swift in Sources */,
+				CD6DD005267B9DAF00BC376B /* DSContainerView.swift in Sources */,
 				CDE870DE2652E1610082551B /* AppDelegate.swift in Sources */,
 				CD6868842654373A0064ADFE /* UIButton+Ext.swift in Sources */,
+				CD6DCFF6267A820700BC376B /* Pet.swift in Sources */,
 				CDE8711C2652E3030082551B /* TextField+Ext.swift in Sources */,
+				CD6DD001267AD81100BC376B /* AppointmentsViewController.swift in Sources */,
 				CD6868902656EF920064ADFE /* LocationNotServicedViewController.swift in Sources */,
 				CDE871632652E69B0082551B /* InstructionsViewController.swift in Sources */,
 				CD6868922656EFB20064ADFE /* RequestUserLocationViewController.swift in Sources */,
 				CDE871112652E2DC0082551B /* DividerView.swift in Sources */,
 				CDE871502652E66A0082551B /* DecisionController.swift in Sources */,
-				CD203C002667FACC00335D93 /* FourthViewController.swift in Sources */,
+				CD203C002667FACC00335D93 /* ProfileViewController.swift in Sources */,
 				CD686882265412BB0064ADFE /* DSAlertViewController.swift in Sources */,
 				CDE871202652E3030082551B /* NetworkMonitor.swift in Sources */,
+				CD6DCFF8267A824A00BC376B /* Appointment.swift in Sources */,
 				CDE871612652E69B0082551B /* SuccessfulPasswordResetViewController.swift in Sources */,
-				CD319F7D26794D5E00F48E3C /* DSHeaderLabel.swift in Sources */,
+				CD6DD003267AD88800BC376B /* PackagesViewController.swift in Sources */,
+				CD319F7D26794D5E00F48E3C /* DSBoldLabel.swift in Sources */,
 				CDE8715A2652E6850082551B /* SignInViewController.swift in Sources */,
 				CDE871582652E6850082551B /* EmailSignInViewController.swift in Sources */,
 				CDE871512652E66A0082551B /* HomeViewController.swift in Sources */,

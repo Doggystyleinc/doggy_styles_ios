@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ServiceOfTheWeekView: UIView {
+final class ServiceOfTheWeekView: UIView {
     var package: Package!
     
     private let container: UIView = {

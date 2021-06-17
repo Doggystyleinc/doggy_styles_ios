@@ -1,18 +1,19 @@
 //
-//  DSHeaderLabel.swift
+//  DSRegularLabel.swift
 //  Project Doggystyle iOS
 //
-//  Created by Stanley Miller on 6/15/21.
+//  Created by Stanley Miller on 6/16/21.
 //
+
 
 import UIKit
 
-class DSHeaderLabel: UILabel {
+final class DSRegularLabel: UILabel {
 
     init(title: String, size: CGFloat) {
         super.init(frame: .zero)
         self.text = title
-        self.font = UIFont.poppinsBold(size: size)
+        self.font = UIFont.poppinsRegular(size: size)
         self.textColor = .dsTextColor
     }
     

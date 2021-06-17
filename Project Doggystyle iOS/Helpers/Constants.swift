@@ -17,6 +17,7 @@ struct Constants {
     
     //MARK: - C
     static let companyAuthEndpoint = "company_authentication"
+    static let contactIcon = "Contact Us Icon"
     
     //MARK: - D
     static let dogIcon = "Dog Icon"
@@ -24,6 +25,7 @@ struct Constants {
     
     //MARK: - E
     static let email = "email"
+    static let editIcon = "Edit Icon"
     
     //MARK: - G
     static let google = "google"
@@ -36,10 +38,16 @@ struct Constants {
     
     //MARK: - P
     static let profileImages = "profileImages"
+    static let petProfilePlaceholder = "Pet Profile Placeholder"
+    static let paymentIcon = "Payment Icon"
     
     //MARK: - R
     static let referralCode = "no_code"
-    static let refurIcon = "Refur A Friend Icon"
+    static let refurNavIcon = "ReFur Nav Icon"
+    static let refurIcon = "ReFur Icon"
+    
+    //MARK: - S
+    static let signOutNavIcon = "Sign Out"
     
     //MARK: - U
     static let uploadFiles = "uploadedFiles"
