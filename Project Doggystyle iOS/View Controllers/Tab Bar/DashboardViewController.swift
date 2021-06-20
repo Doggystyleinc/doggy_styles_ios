@@ -14,11 +14,11 @@ import SDWebImage
 final class DashboardViewController: UIViewController {
     var homeController: HomeViewController?
     private let package = Package.examplePackage
-    private let pets: [Pet] = [Pet.petOne, Pet.petTwo, Pet.petOne, Pet.petTwo, Pet.petOne, Pet.petTwo]
+    private let pets: [Pet] = [Pet.allPets, Pet.petOne, Pet.petTwo, Pet.petThree, Pet.petFour]
     private let appointment = Appointment.exampleAppointment
     
-    private let leftIcon = DSNavButton(imageName: Constants.refurNavIcon)
-    private let rightIcon = DSNavButton(imageName: Constants.bellIcon)
+    private let leftIcon = DSNavButton(imageName: Constants.refurNavIcon, tagNumber: 0)
+    private let rightIcon = DSNavButton(imageName: Constants.bellIcon, tagNumber: 1)
     private let logo = LogoImageView(frame: .zero)
     
     private let appointmentHeader = DSBoldLabel(title: "Upcoming Appointment", size: 22.0)
@@ -31,11 +31,10 @@ final class DashboardViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 74, height: 74)
         layout.scrollDirection = .horizontal
-        layout.minimumInteritemSpacing = 10
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(PetCollectionViewCell.self, forCellWithReuseIdentifier: PetCollectionViewCell.reuseIdentifier)
-        collectionView.indicatorStyle = .white
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .dsViewBackground
         return collectionView
     }()
@@ -48,24 +47,6 @@ final class DashboardViewController: UIViewController {
         button.layer.cornerRadius = 10.0
         button.tintColor = .white
         return button
-    }()
-    
-    private let viewAllPetsButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(named: Constants.dogIcon), for: .normal)
-        button.backgroundColor = .dsOrange
-        button.tintColor = .white
-        button.layer.cornerRadius = 37.0
-        button.addTarget(self, action: #selector(didTapAll), for: .touchUpInside)
-        return button
-    }()
-    
-    private let viewAllLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.text = "All"
-        label.font = UIFont.poppinsBold(size: 16)
-        label.textColor = .dsOrange
-        return label
     }()
     
     private let viewAllAppointmentsButton: UIButton = {
@@ -104,7 +85,6 @@ final class DashboardViewController: UIViewController {
     override func viewDidLoad() {
         self.configureVC()
         self.addNavViews()
-        self.addViewAllPetsView()
         self.addPetCollectionView()
         self.addAppointmentViews()
         self.addServiceViews()
@@ -117,6 +97,9 @@ extension DashboardViewController {
         self.view.backgroundColor = .dsViewBackground
         self.petCollectionView.dataSource = self
         self.petCollectionView.delegate = self
+        
+        leftIcon.addTarget(self, action: #selector(didTap(_:)), for: .touchUpInside)
+        rightIcon.addTarget(self, action: #selector(didTap(_:)), for: .touchUpInside)
     }
 }
 
@@ -143,40 +126,28 @@ extension DashboardViewController {
         notificationsButton.right(to: rightIcon, offset: -4)
     }
     
-    private func addViewAllPetsView() {
-        self.view.addSubview(viewAllPetsButton)
-        viewAllPetsButton.topToBottom(of: leftIcon, offset: 24)
-        viewAllPetsButton.height(74)
-        viewAllPetsButton.width(74)
-        viewAllPetsButton.left(to: leftIcon, offset: 8)
-        
-        self.view.addSubview(viewAllLabel)
-        viewAllLabel.centerX(to: viewAllPetsButton)
-        viewAllLabel.topToBottom(of: viewAllPetsButton, offset: 6)
-    }
-    
     private func addPetCollectionView() {
         self.view.addSubview(petCollectionView)
-        petCollectionView.centerY(to: viewAllPetsButton)
-        petCollectionView.leftToRight(of: viewAllPetsButton, offset: 16)
-        petCollectionView.height(84)
-        petCollectionView.right(to: notificationsButton)
+        petCollectionView.topToBottom(of: leftIcon, offset: 10)
+        petCollectionView.left(to: leftIcon)
+        petCollectionView.height(120)
+        petCollectionView.right(to: rightIcon)
     }
     
     private func addAppointmentViews() {
         self.view.addSubview(appointmentHeader)
-        appointmentHeader.left(to: viewAllPetsButton)
-        appointmentHeader.topToBottom(of: viewAllLabel, offset: 20)
+        appointmentHeader.left(to: petCollectionView)
+        appointmentHeader.topToBottom(of: petCollectionView, offset: 20)
         
         self.view.addSubview(appointmentContainer)
         appointmentContainer.topToBottom(of: appointmentHeader, offset: 10.0)
-        appointmentContainer.left(to: viewAllPetsButton)
+        appointmentContainer.left(to: petCollectionView)
         appointmentContainer.height(152)
-        appointmentContainer.right(to: notificationsButton)
+        appointmentContainer.right(to: rightIcon)
         
         //Move this once we decided if numberOfPets > 2
         let imageViewOne = UIImageView(frame: .zero)
-        imageViewOne.sd_setImage(with: URL(string: pets[0].imageURL), placeholderImage: UIImage(named: Constants.petProfilePlaceholder), options: .continueInBackground, context: nil)
+        imageViewOne.sd_setImage(with: URL(string: pets[1].imageURL), placeholderImage: UIImage(named: Constants.petProfilePlaceholder), options: .continueInBackground, context: nil)
         imageViewOne.contentMode = .scaleToFill
         imageViewOne.clipsToBounds = true
         imageViewOne.layer.cornerRadius = 23
@@ -187,8 +158,9 @@ extension DashboardViewController {
         imageViewOne.top(to: appointmentContainer, offset: 20)
         imageViewOne.left(to: appointmentContainer, offset: 20)
         
+        //Must check if user numberOfPets > 2 before displaying this
         let imageViewTwo = UIImageView(frame: .zero)
-        imageViewTwo.sd_setImage(with: URL(string: pets[1].imageURL), placeholderImage: UIImage(named: Constants.petProfilePlaceholder), options: .continueInBackground, context: nil)
+        imageViewTwo.sd_setImage(with: URL(string: pets[2].imageURL), placeholderImage: UIImage(named: Constants.petProfilePlaceholder), options: .continueInBackground, context: nil)
         imageViewTwo.contentMode = .scaleToFill
         imageViewTwo.clipsToBounds = true
         imageViewTwo.layer.cornerRadius = 23
@@ -247,6 +219,22 @@ extension DashboardViewController {
 
 //MARK: - @objc Functions
 extension DashboardViewController {
+    @objc private func didTap(_ sender: UIButton) {
+        switch sender.tag {
+        //Refur Button
+        case 0:
+            let refurVC = RefurAFriendController()
+            self.present(refurVC, animated: true)
+            
+        //Notification Button
+        case 1:
+            let notificationVC = NotificationController()
+            self.present(notificationVC, animated: true)
+        default:
+            break
+        }
+    }
+    
     @objc private func didTapAll() {
         print(#function)
     }

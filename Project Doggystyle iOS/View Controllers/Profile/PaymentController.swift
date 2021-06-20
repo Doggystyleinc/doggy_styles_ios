@@ -8,7 +8,7 @@
 import UIKit
 
 final class PaymentController: UIViewController {
-    private let rightIcon = DSNavButton(imageName: Constants.closeButton)
+    private let rightIcon = DSNavButton(imageName: Constants.closeButton, tagNumber: 0)
     private let logo = LogoImageView(frame: .zero)
 
     override func viewDidLoad() {

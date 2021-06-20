@@ -74,6 +74,6 @@ extension HomeViewController {
         tabFour.tabBarItem = UITabBarItem(title: nil, image: tabFourIcon, selectedImage: tabFourFillIcon)
         
         self.viewControllers = [tabOne, tabTwo, tabThree, tabFour]
-        self.switchTabs(tabIndex: 3)
+        self.switchTabs(tabIndex: 0)
     }
 }

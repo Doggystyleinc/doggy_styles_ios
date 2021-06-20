@@ -40,5 +40,17 @@ class PetCollectionViewCell: UICollectionViewCell {
         if let imageURL = URL(string: pet.imageURL) {
             imageView.sd_setImage(with: imageURL, placeholderImage: UIImage(named: Constants.petProfilePlaceholder))
         }
+        
+        let label = DSBoldLabel(title: pet.name, size: 16)
+        label.textAlignment = .center
+        
+        if pet.name == "All" {
+            label.textColor = .dsOrange
+        }
+        
+        self.addSubview(label)
+        label.topToBottom(of: imageView, offset: 3)
+        label.left(to: imageView)
+        label.right(to: imageView)
     }
 }

@@ -9,7 +9,7 @@ import UIKit
 
 final class DSNavButton: UIButton {
     
-    init(imageName: String) {
+    init(imageName: String, tagNumber: Int) {
         super.init(frame: .zero)
         let image = UIImage(named: imageName)?.withRenderingMode(.alwaysOriginal)
         self.setImage(image, for: .normal)
@@ -20,6 +20,7 @@ final class DSNavButton: UIButton {
         self.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.10).cgColor
         self.height(54)
         self.width(54)
+        self.tag = tagNumber
     }
     
     required init?(coder: NSCoder) {

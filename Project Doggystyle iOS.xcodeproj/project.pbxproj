@@ -36,6 +36,7 @@
 		CD6DD00A267FC7A800BC376B /* PaymentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD009267FC7A800BC376B /* PaymentController.swift */; };
 		CD6DD00C267FC7DF00BC376B /* ContactUsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD00B267FC7DF00BC376B /* ContactUsController.swift */; };
 		CD6DD00E267FC86000BC376B /* RefurAFriendController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD00D267FC86000BC376B /* RefurAFriendController.swift */; };
+		CD6DD010267FDEED00BC376B /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD00F267FDEED00BC376B /* NotificationController.swift */; };
 		CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */; };
 		CDCCD0B0265D4DB4007ABECF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0AF265D4DB4007ABECF /* Constants.swift */; };
 		CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */; };
@@ -132,6 +133,7 @@
 		CD6DD009267FC7A800BC376B /* PaymentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentController.swift; sourceTree = "<group>"; };
 		CD6DD00B267FC7DF00BC376B /* ContactUsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsController.swift; sourceTree = "<group>"; };
 		CD6DD00D267FC86000BC376B /* RefurAFriendController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefurAFriendController.swift; sourceTree = "<group>"; };
+		CD6DD00F267FDEED00BC376B /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotServicedNumberSubmittedViewController.swift; sourceTree = "<group>"; };
 		CDCCD0AF265D4DB4007ABECF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToEnableLocationView.swift; sourceTree = "<group>"; };
@@ -457,6 +459,7 @@
 				CDE8714E2652E66A0082551B /* DecisionController.swift */,
 				CDE8714F2652E66A0082551B /* HomeViewController.swift */,
 				CD203BF62667D3B900335D93 /* PDFViewController.swift */,
+				CD6DD00F267FDEED00BC376B /* NotificationController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -745,6 +748,7 @@
 				CDCCD0B5265EB5DF007ABECF /* CreateDoggyProfileViewController.swift in Sources */,
 				CD6DCFF2267A62D300BC376B /* Package.swift in Sources */,
 				CD319F6B26790AD900F48E3C /* DeleteLaterViewController.swift in Sources */,
+				CD6DD010267FDEED00BC376B /* NotificationController.swift in Sources */,
 				CD6DD005267B9DAF00BC376B /* DSContainerView.swift in Sources */,
 				CDE870DE2652E1610082551B /* AppDelegate.swift in Sources */,
 				CD6868842654373A0064ADFE /* UIButton+Ext.swift in Sources */,

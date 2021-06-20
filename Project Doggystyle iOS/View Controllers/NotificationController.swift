@@ -1,5 +1,5 @@
 //
-//  RefurAFriendController.swift
+//  NotificationController.swift
 //  Project Doggystyle iOS
 //
 //  Created by Stanley Miller on 6/20/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class RefurAFriendController: UIViewController {
+final class NotificationController: UIViewController {
     private let rightIcon = DSNavButton(imageName: Constants.closeButton, tagNumber: 0)
     private let logo = LogoImageView(frame: .zero)
 
@@ -16,7 +16,7 @@ final class RefurAFriendController: UIViewController {
         view.backgroundColor = .dsViewBackground
         
         let title = UILabel(frame: .zero)
-        title.text = "Re-fur a Friend Details"
+        title.text = "User Notifications"
         title.font = UIFont.poppinsRegular(size: 18)
         title.textColor = .dsTextColor
         

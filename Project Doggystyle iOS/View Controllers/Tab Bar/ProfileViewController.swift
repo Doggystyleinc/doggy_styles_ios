@@ -14,7 +14,7 @@ class ProfileViewController: UIViewController {
     private let spacing: CGFloat = 22
     private let iconSize: CGFloat = 24
     
-    private let rightIcon = DSNavButton(imageName: Constants.signOutNavIcon)
+    private let rightIcon = DSNavButton(imageName: Constants.signOutNavIcon, tagNumber: 0)
     private let logo = LogoImageView(frame: .zero)
     
     private let dogIcon = UIImage(named: Constants.dogIcon)?.withTintColor(.dsOrange)
