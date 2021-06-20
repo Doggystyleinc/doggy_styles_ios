@@ -1,13 +1,14 @@
 //
-//  PackagesViewController.swift
+//  ServicesController.swift
 //  Project Doggystyle iOS
 //
-//  Created by Stanley Miller on 6/16/21.
+//  Created by Stanley Miller on 6/2/21.
 //
 
 import UIKit
 
-final class PackagesViewController: UIViewController {
+final class ServicesController: UIViewController {
+    var homeController: HomeViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()

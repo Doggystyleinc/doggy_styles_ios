@@ -256,7 +256,7 @@ extension DashboardViewController {
     }
     
     @objc private func didTapViewAllServices() {
-        print(#function)
+        homeController?.switchTabs(tabIndex: 1)
     }
 }
 

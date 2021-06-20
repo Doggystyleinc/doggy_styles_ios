@@ -10,7 +10,7 @@
 		B9C4113B2E4DED8ACF4B9F44 /* Pods_Project_Doggystyle_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41D14D6AC9CE858765BD6462 /* Pods_Project_Doggystyle_iOS.framework */; };
 		CD203BF72667D3B900335D93 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BF62667D3B900335D93 /* PDFViewController.swift */; };
 		CD203BFA2667FA9F00335D93 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BF92667FA9F00335D93 /* DashboardViewController.swift */; };
-		CD203BFC2667FAB300335D93 /* SecondaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BFB2667FAB300335D93 /* SecondaryViewController.swift */; };
+		CD203BFC2667FAB300335D93 /* ServicesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BFB2667FAB300335D93 /* ServicesController.swift */; };
 		CD203C002667FACC00335D93 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BFF2667FACC00335D93 /* ProfileViewController.swift */; };
 		CD319F6B26790AD900F48E3C /* DeleteLaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD319F6A26790AD900F48E3C /* DeleteLaterViewController.swift */; };
 		CD319F71267936AD00F48E3C /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CD319F6E267936AD00F48E3C /* Poppins-Bold.ttf */; };
@@ -31,8 +31,11 @@
 		CD6DCFFC267A8DD200BC376B /* DSRegularLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DCFFB267A8DD200BC376B /* DSRegularLabel.swift */; };
 		CD6DCFFF267ACAEE00BC376B /* PetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DCFFE267ACAEE00BC376B /* PetCollectionViewCell.swift */; };
 		CD6DD001267AD81100BC376B /* AppointmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD000267AD81100BC376B /* AppointmentsViewController.swift */; };
-		CD6DD003267AD88800BC376B /* PackagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD002267AD88800BC376B /* PackagesViewController.swift */; };
 		CD6DD005267B9DAF00BC376B /* DSContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD004267B9DAF00BC376B /* DSContainerView.swift */; };
+		CD6DD008267FC0F500BC376B /* MyPetsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD007267FC0F500BC376B /* MyPetsController.swift */; };
+		CD6DD00A267FC7A800BC376B /* PaymentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD009267FC7A800BC376B /* PaymentController.swift */; };
+		CD6DD00C267FC7DF00BC376B /* ContactUsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD00B267FC7DF00BC376B /* ContactUsController.swift */; };
+		CD6DD00E267FC86000BC376B /* RefurAFriendController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD00D267FC86000BC376B /* RefurAFriendController.swift */; };
 		CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */; };
 		CDCCD0B0265D4DB4007ABECF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0AF265D4DB4007ABECF /* Constants.swift */; };
 		CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */; };
@@ -103,7 +106,7 @@
 		AB384B464E20B6C31281433B /* Pods-Project Doggystyle iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Project Doggystyle iOS.release.xcconfig"; path = "Target Support Files/Pods-Project Doggystyle iOS/Pods-Project Doggystyle iOS.release.xcconfig"; sourceTree = "<group>"; };
 		CD203BF62667D3B900335D93 /* PDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
 		CD203BF92667FA9F00335D93 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
-		CD203BFB2667FAB300335D93 /* SecondaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryViewController.swift; sourceTree = "<group>"; };
+		CD203BFB2667FAB300335D93 /* ServicesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesController.swift; sourceTree = "<group>"; };
 		CD203BFF2667FACC00335D93 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		CD319F6A26790AD900F48E3C /* DeleteLaterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteLaterViewController.swift; sourceTree = "<group>"; };
 		CD319F6E267936AD00F48E3C /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
@@ -124,8 +127,11 @@
 		CD6DCFFB267A8DD200BC376B /* DSRegularLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSRegularLabel.swift; sourceTree = "<group>"; };
 		CD6DCFFE267ACAEE00BC376B /* PetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetCollectionViewCell.swift; sourceTree = "<group>"; };
 		CD6DD000267AD81100BC376B /* AppointmentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentsViewController.swift; sourceTree = "<group>"; };
-		CD6DD002267AD88800BC376B /* PackagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackagesViewController.swift; sourceTree = "<group>"; };
 		CD6DD004267B9DAF00BC376B /* DSContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSContainerView.swift; sourceTree = "<group>"; };
+		CD6DD007267FC0F500BC376B /* MyPetsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPetsController.swift; sourceTree = "<group>"; };
+		CD6DD009267FC7A800BC376B /* PaymentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentController.swift; sourceTree = "<group>"; };
+		CD6DD00B267FC7DF00BC376B /* ContactUsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsController.swift; sourceTree = "<group>"; };
+		CD6DD00D267FC86000BC376B /* RefurAFriendController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefurAFriendController.swift; sourceTree = "<group>"; };
 		CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotServicedNumberSubmittedViewController.swift; sourceTree = "<group>"; };
 		CDCCD0AF265D4DB4007ABECF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToEnableLocationView.swift; sourceTree = "<group>"; };
@@ -223,8 +229,8 @@
 			isa = PBXGroup;
 			children = (
 				CD203BF92667FA9F00335D93 /* DashboardViewController.swift */,
-				CD203BFB2667FAB300335D93 /* SecondaryViewController.swift */,
-				CD6DD002267AD88800BC376B /* PackagesViewController.swift */,
+				CD203BFB2667FAB300335D93 /* ServicesController.swift */,
+				CD6DD000267AD81100BC376B /* AppointmentsViewController.swift */,
 				CD203BFF2667FACC00335D93 /* ProfileViewController.swift */,
 			);
 			path = "Tab Bar";
@@ -301,6 +307,17 @@
 				CD6DCFFE267ACAEE00BC376B /* PetCollectionViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		CD6DD006267FC0BE00BC376B /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				CD6DD007267FC0F500BC376B /* MyPetsController.swift */,
+				CD6DD009267FC7A800BC376B /* PaymentController.swift */,
+				CD6DD00B267FC7DF00BC376B /* ContactUsController.swift */,
+				CD6DD00D267FC86000BC376B /* RefurAFriendController.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		CDCCD0B3265EB5C5007ABECF /* Dashboard */ = {
@@ -430,6 +447,7 @@
 		CDE8714D2652E65A0082551B /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CD6DD006267FC0BE00BC376B /* Profile */,
 				CD203BF82667FA7700335D93 /* Tab Bar */,
 				CDCCD0B3265EB5C5007ABECF /* Dashboard */,
 				CD68688E2656EEEF0064ADFE /* Location */,
@@ -439,7 +457,6 @@
 				CDE8714E2652E66A0082551B /* DecisionController.swift */,
 				CDE8714F2652E66A0082551B /* HomeViewController.swift */,
 				CD203BF62667D3B900335D93 /* PDFViewController.swift */,
-				CD6DD000267AD81100BC376B /* AppointmentsViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -447,9 +464,9 @@
 		CDE871522652E66F0082551B /* Sign Up + Sign In */ = {
 			isa = PBXGroup;
 			children = (
+				CDE871562652E6850082551B /* ReferralCodeViewController.swift */,
 				CDE871532652E6850082551B /* EmailSignInViewController.swift */,
 				CDE871542652E6850082551B /* EmailSignUpViewController.swift */,
-				CDE871562652E6850082551B /* ReferralCodeViewController.swift */,
 				CDE871552652E6850082551B /* SignInViewController.swift */,
 				CDE871572652E6850082551B /* SignUpViewController.swift */,
 			);
@@ -717,6 +734,7 @@
 				CD203BF72667D3B900335D93 /* PDFViewController.swift in Sources */,
 				CDE8715C2652E6850082551B /* SignUpViewController.swift in Sources */,
 				CDCCD0B8265EB884007ABECF /* User.swift in Sources */,
+				CD6DD00E267FC86000BC376B /* RefurAFriendController.swift in Sources */,
 				CD6DCFFC267A8DD200BC376B /* DSRegularLabel.swift in Sources */,
 				CDE871622652E69B0082551B /* ResetPasswordViewController.swift in Sources */,
 				CDE871652652E6E60082551B /* DSButton.swift in Sources */,
@@ -734,6 +752,7 @@
 				CDE8711C2652E3030082551B /* TextField+Ext.swift in Sources */,
 				CD6DD001267AD81100BC376B /* AppointmentsViewController.swift in Sources */,
 				CD6868902656EF920064ADFE /* LocationNotServicedViewController.swift in Sources */,
+				CD6DD00C267FC7DF00BC376B /* ContactUsController.swift in Sources */,
 				CDE871632652E69B0082551B /* InstructionsViewController.swift in Sources */,
 				CD6868922656EFB20064ADFE /* RequestUserLocationViewController.swift in Sources */,
 				CDE871112652E2DC0082551B /* DividerView.swift in Sources */,
@@ -743,14 +762,15 @@
 				CDE871202652E3030082551B /* NetworkMonitor.swift in Sources */,
 				CD6DCFF8267A824A00BC376B /* Appointment.swift in Sources */,
 				CDE871612652E69B0082551B /* SuccessfulPasswordResetViewController.swift in Sources */,
-				CD6DD003267AD88800BC376B /* PackagesViewController.swift in Sources */,
 				CD319F7D26794D5E00F48E3C /* DSBoldLabel.swift in Sources */,
 				CDE8715A2652E6850082551B /* SignInViewController.swift in Sources */,
+				CD6DD008267FC0F500BC376B /* MyPetsController.swift in Sources */,
 				CDE871582652E6850082551B /* EmailSignInViewController.swift in Sources */,
 				CDE871512652E66A0082551B /* HomeViewController.swift in Sources */,
-				CD203BFC2667FAB300335D93 /* SecondaryViewController.swift in Sources */,
+				CD203BFC2667FAB300335D93 /* ServicesController.swift in Sources */,
 				CD6DCFF4267A648400BC376B /* ServiceOfTheWeekView.swift in Sources */,
 				CDE870E02652E1610082551B /* SceneDelegate.swift in Sources */,
+				CD6DD00A267FC7A800BC376B /* PaymentController.swift in Sources */,
 				CDCCD0B0265D4DB4007ABECF /* Constants.swift in Sources */,
 				CD203BFA2667FA9F00335D93 /* DashboardViewController.swift in Sources */,
 				CD319F7A2679462500F48E3C /* LogoImageView.swift in Sources */,

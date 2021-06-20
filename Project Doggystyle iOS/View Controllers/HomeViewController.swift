@@ -51,7 +51,7 @@ extension HomeViewController {
         let tabTwoIcon = UIImage(named: "Services Icon")?.withTintColor(.deselectedTab).withRenderingMode(.alwaysOriginal)
         let tabTwoFillIcon = UIImage(named: "Services Icon")?.withTintColor(.dsOrange).withRenderingMode(.alwaysOriginal)
         
-        let tabTwo = UINavigationController(rootViewController: SecondaryViewController())
+        let tabTwo = UINavigationController(rootViewController: ServicesController())
         tabTwo.navigationBar.isHidden = true
         tabTwo.tabBarItem = UITabBarItem(title: nil, image: tabTwoIcon, selectedImage: tabTwoFillIcon)
         

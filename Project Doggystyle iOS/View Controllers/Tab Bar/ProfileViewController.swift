@@ -54,8 +54,11 @@ class ProfileViewController: UIViewController {
         configureVC()
         addNavViews()
         addContainers()
-        addContainerViews()
-        addTargets()
+        addProfileViews()
+        addMyPetViews()
+        addPaymentViews()
+        addContactViews()
+        addRefurViews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,6 +71,7 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController {
     private func configureVC() {
         view.backgroundColor = .dsViewBackground
+        rightIcon.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
     }
 }
 
@@ -82,7 +86,7 @@ extension ProfileViewController {
         rightIcon.leftToRight(of: logo, offset: 70)
         rightIcon.topToSuperview(offset: 14, usingSafeArea: true)
     }
-    
+        
     private func addContainers() {
         self.view.addSubview(nameContainer)
         nameContainer.height(126)
@@ -115,7 +119,7 @@ extension ProfileViewController {
         refurContainer.topToBottom(of: contactUsContainer, offset: spacing)
     }
     
-    private func addContainerViews() {
+    private func addProfileViews() {
         self.view.addSubview(profileImageView)
         profileImageView.height(130)
         profileImageView.width(130)
@@ -126,7 +130,9 @@ extension ProfileViewController {
         nameLabel.bottom(to: nameContainer, offset: -22)
         nameLabel.left(to: nameContainer, offset: 30)
         nameLabel.right(to: nameContainer, offset: -30)
-        
+    }
+    
+    private func addMyPetViews() {
         let petLabel = DSBoldLabel(title: "My dogs", size: 16)
         let petImageView = UIImageView(image: dogIcon)
         petImageView.contentMode = .scaleAspectFit
@@ -141,6 +147,16 @@ extension ProfileViewController {
         petLabel.leftToRight(of: petImageView, offset: 20)
         petLabel.centerY(to: petImageView)
         
+        let action = UIButton(type: .system)
+        action.setTitle("", for: .normal)
+        action.tag = 1
+        action.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
+        
+        petContainer.addSubview(action)
+        action.edgesToSuperview()
+    }
+    
+    private func addPaymentViews() {
         let paymentLabel = DSBoldLabel(title: "Payment", size: 16)
         let paymentImageView = UIImageView(image: paymentIcon)
         paymentImageView.contentMode = .scaleAspectFit
@@ -155,6 +171,16 @@ extension ProfileViewController {
         paymentLabel.leftToRight(of: paymentImageView, offset: 20)
         paymentLabel.centerY(to: paymentImageView)
         
+        let action = UIButton(type: .system)
+        action.setTitle("", for: .normal)
+        action.tag = 2
+        action.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
+        
+        paymentContainer.addSubview(action)
+        action.edgesToSuperview()
+    }
+    
+    private func addContactViews() {
         let contactLabel = DSBoldLabel(title: "Contact Us", size: 16)
         let contactImageView = UIImageView(image: contactIcon)
         contactImageView.contentMode = .scaleAspectFit
@@ -169,6 +195,16 @@ extension ProfileViewController {
         contactLabel.leftToRight(of: contactImageView, offset: 20)
         contactLabel.centerY(to: contactImageView)
         
+        let action = UIButton(type: .system)
+        action.setTitle("", for: .normal)
+        action.tag = 3
+        action.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
+        
+        contactUsContainer.addSubview(action)
+        action.edgesToSuperview()
+    }
+    
+    private func addRefurViews() {
         let refurLabel = DSBoldLabel(title: "Re-fur a Friend", size: 16)
         let refurImageView = UIImageView(image: refurIcon)
         refurImageView.contentMode = .scaleAspectFit
@@ -182,6 +218,14 @@ extension ProfileViewController {
         refurContainer.addSubview(refurLabel)
         refurLabel.leftToRight(of: refurImageView, offset: 20)
         refurLabel.centerY(to: refurImageView)
+        
+        let action = UIButton(type: .system)
+        action.setTitle("", for: .normal)
+        action.tag = 4
+        action.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
+        
+        refurContainer.addSubview(action)
+        action.edgesToSuperview()
     }
 }
 
@@ -204,8 +248,25 @@ extension ProfileViewController {
         self.navigationController?.present(nav, animated: true, completion: nil)
     }
     
-    @objc func didTapView(_ sender: UIButton) {
-        print("Sender Tag - \(sender.tag)")
+    @objc func didTapButton(_ sender: UIButton) {
+        switch sender.tag {
+        case 0:
+            print("Profile Tapped!")
+        case 1:
+            let petsVC = MyPetsController()
+            self.present(petsVC, animated: true)
+        case 2:
+            let paymentVC = PaymentController()
+            self.present(paymentVC, animated: true)
+        case 3:
+            let contactVC = ContactUsController()
+            self.present(contactVC, animated: true)
+        case 4:
+            let refurVC = RefurAFriendController()
+            self.present(refurVC, animated: true)
+        default:
+            break
+        }
     }
 }
 
@@ -224,9 +285,5 @@ extension ProfileViewController {
                 self.profileImageView.alpha = 1.0
             }
         }
-    }
-    
-    private func addTargets() {
-        rightIcon.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
     }
 }
