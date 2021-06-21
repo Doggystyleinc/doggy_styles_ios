@@ -8,7 +8,6 @@
 import UIKit
 
 final class DSAlertViewController: UIViewController {
-
     private let padding: CGFloat = 20.0
     
     private let containverView: UIView = {
@@ -18,16 +17,16 @@ final class DSAlertViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = UIFont.robotoBold(size: 20)
+        label.font = UIFont.poppinsBold(size: 20)
         label.adjustsFontSizeToFitWidth = true
         label.textAlignment = .center
-        label.textColor = .headerColor
+        label.textColor = .dsTextColor
         return label
     }()
     
     private let messageLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = UIFont.robotoRegular(size: 16)
+        label.font = UIFont.poppinsRegular(size: 16)
         label.adjustsFontSizeToFitWidth = true
         label.textColor = .textColor
         label.textAlignment = .center
@@ -39,7 +38,7 @@ final class DSAlertViewController: UIViewController {
     private let actionButton: UIButton = {
         let button = UIButton(frame: .zero)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .dsGrey
+        button.backgroundColor = .dsOrange
         button.layer.cornerRadius = 10.0
         return button
     }()

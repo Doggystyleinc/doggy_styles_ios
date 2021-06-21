@@ -37,6 +37,10 @@
 		CD6DD00C267FC7DF00BC376B /* ContactUsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD00B267FC7DF00BC376B /* ContactUsController.swift */; };
 		CD6DD00E267FC86000BC376B /* RefurAFriendController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD00D267FC86000BC376B /* RefurAFriendController.swift */; };
 		CD6DD010267FDEED00BC376B /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD00F267FDEED00BC376B /* NotificationController.swift */; };
+		CD6DD0142680DDC900BC376B /* SlideOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD0112680DDC900BC376B /* SlideOne.swift */; };
+		CD6DD0152680DDC900BC376B /* SlideTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD0122680DDC900BC376B /* SlideTwo.swift */; };
+		CD6DD0162680DDC900BC376B /* SlideThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD0132680DDC900BC376B /* SlideThree.swift */; };
+		CD6DD0182680DE2E00BC376B /* TutorialController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD0172680DE2E00BC376B /* TutorialController.swift */; };
 		CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */; };
 		CDCCD0B0265D4DB4007ABECF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0AF265D4DB4007ABECF /* Constants.swift */; };
 		CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */; };
@@ -134,6 +138,10 @@
 		CD6DD00B267FC7DF00BC376B /* ContactUsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsController.swift; sourceTree = "<group>"; };
 		CD6DD00D267FC86000BC376B /* RefurAFriendController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefurAFriendController.swift; sourceTree = "<group>"; };
 		CD6DD00F267FDEED00BC376B /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		CD6DD0112680DDC900BC376B /* SlideOne.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideOne.swift; sourceTree = "<group>"; };
+		CD6DD0122680DDC900BC376B /* SlideTwo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideTwo.swift; sourceTree = "<group>"; };
+		CD6DD0132680DDC900BC376B /* SlideThree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideThree.swift; sourceTree = "<group>"; };
+		CD6DD0172680DE2E00BC376B /* TutorialController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialController.swift; sourceTree = "<group>"; };
 		CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotServicedNumberSubmittedViewController.swift; sourceTree = "<group>"; };
 		CDCCD0AF265D4DB4007ABECF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToEnableLocationView.swift; sourceTree = "<group>"; };
@@ -326,6 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				CDCCD0B4265EB5DF007ABECF /* CreateDoggyProfileViewController.swift */,
+				CD6DD00F267FDEED00BC376B /* NotificationController.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -459,7 +468,6 @@
 				CDE8714E2652E66A0082551B /* DecisionController.swift */,
 				CDE8714F2652E66A0082551B /* HomeViewController.swift */,
 				CD203BF62667D3B900335D93 /* PDFViewController.swift */,
-				CD6DD00F267FDEED00BC376B /* NotificationController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -470,6 +478,10 @@
 				CDE871562652E6850082551B /* ReferralCodeViewController.swift */,
 				CDE871532652E6850082551B /* EmailSignInViewController.swift */,
 				CDE871542652E6850082551B /* EmailSignUpViewController.swift */,
+				CD6DD0172680DE2E00BC376B /* TutorialController.swift */,
+				CD6DD0112680DDC900BC376B /* SlideOne.swift */,
+				CD6DD0132680DDC900BC376B /* SlideThree.swift */,
+				CD6DD0122680DDC900BC376B /* SlideTwo.swift */,
 				CDE871552652E6850082551B /* SignInViewController.swift */,
 				CDE871572652E6850082551B /* SignUpViewController.swift */,
 			);
@@ -737,6 +749,8 @@
 				CD203BF72667D3B900335D93 /* PDFViewController.swift in Sources */,
 				CDE8715C2652E6850082551B /* SignUpViewController.swift in Sources */,
 				CDCCD0B8265EB884007ABECF /* User.swift in Sources */,
+				CD6DD0182680DE2E00BC376B /* TutorialController.swift in Sources */,
+				CD6DD0142680DDC900BC376B /* SlideOne.swift in Sources */,
 				CD6DD00E267FC86000BC376B /* RefurAFriendController.swift in Sources */,
 				CD6DCFFC267A8DD200BC376B /* DSRegularLabel.swift in Sources */,
 				CDE871622652E69B0082551B /* ResetPasswordViewController.swift in Sources */,
@@ -747,6 +761,7 @@
 				CD319F782679435900F48E3C /* DSNavButton.swift in Sources */,
 				CDCCD0B5265EB5DF007ABECF /* CreateDoggyProfileViewController.swift in Sources */,
 				CD6DCFF2267A62D300BC376B /* Package.swift in Sources */,
+				CD6DD0162680DDC900BC376B /* SlideThree.swift in Sources */,
 				CD319F6B26790AD900F48E3C /* DeleteLaterViewController.swift in Sources */,
 				CD6DD010267FDEED00BC376B /* NotificationController.swift in Sources */,
 				CD6DD005267B9DAF00BC376B /* DSContainerView.swift in Sources */,
@@ -765,6 +780,7 @@
 				CD686882265412BB0064ADFE /* DSAlertViewController.swift in Sources */,
 				CDE871202652E3030082551B /* NetworkMonitor.swift in Sources */,
 				CD6DCFF8267A824A00BC376B /* Appointment.swift in Sources */,
+				CD6DD0152680DDC900BC376B /* SlideTwo.swift in Sources */,
 				CDE871612652E69B0082551B /* SuccessfulPasswordResetViewController.swift in Sources */,
 				CD319F7D26794D5E00F48E3C /* DSBoldLabel.swift in Sources */,
 				CDE8715A2652E6850082551B /* SignInViewController.swift in Sources */,

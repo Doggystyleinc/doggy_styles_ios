@@ -7,14 +7,16 @@
 
 import UIKit
 import Firebase
+import UniformTypeIdentifiers
+import MobileCoreServices
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UINavigationControllerDelegate {
     var homeController: HomeViewController?
     private let containerHeight: CGFloat = 70
     private let spacing: CGFloat = 22
     private let iconSize: CGFloat = 24
     
-    private let rightIcon = DSNavButton(imageName: Constants.signOutNavIcon, tagNumber: 0)
+    private let rightIcon = DSNavButton(imageName: Constants.signOutNavIcon, tagNumber: 99)
     private let logo = LogoImageView(frame: .zero)
     
     private let dogIcon = UIImage(named: Constants.dogIcon)?.withTintColor(.dsOrange)
@@ -47,6 +49,14 @@ class ProfileViewController: UIViewController {
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 1
         return label
+    }()
+    
+    private lazy var imagePickerController: UIImagePickerController = {
+        let controller = UIImagePickerController()
+        controller.delegate = self
+        controller.allowsEditing = true
+        controller.sourceType = .savedPhotosAlbum
+        return controller
     }()
     
     override func viewDidLoad() {
@@ -130,6 +140,14 @@ extension ProfileViewController {
         nameLabel.bottom(to: nameContainer, offset: -22)
         nameLabel.left(to: nameContainer, offset: 30)
         nameLabel.right(to: nameContainer, offset: -30)
+        
+        let action = UIButton(type: .system)
+        action.setTitle("", for: .normal)
+        action.tag = 0
+        action.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
+        
+        nameContainer.addSubview(action)
+        action.edgesToSuperview()
     }
     
     private func addMyPetViews() {
@@ -251,7 +269,8 @@ extension ProfileViewController {
     @objc func didTapButton(_ sender: UIButton) {
         switch sender.tag {
         case 0:
-            print("Profile Tapped!")
+            self.imagePickerController.mediaTypes = [kUTTypeImage as String]
+            present(imagePickerController, animated: true)
         case 1:
             let petsVC = MyPetsController()
             self.present(petsVC, animated: true)
@@ -285,5 +304,35 @@ extension ProfileViewController {
                 self.profileImageView.alpha = 1.0
             }
         }
+    }
+}
+
+//MARK: - Image Picker Delegate
+extension ProfileViewController: UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let selectedImage = info[.editedImage] as? UIImage else {
+            print("Image not found!")
+            return
+        }
+        
+        profileImageView.image = selectedImage
+        imagePickerController.dismiss(animated: true)
+        
+        self.showLoadingView()
+        
+        guard let image = profileImageView.image, let imageDataToUpload = image.jpegData(compressionQuality: 0.15) else {
+            self.dismissLoadingView()
+            self.presentAlertOnMainThread(title: "Something went wrong...", message: "Please try again.", buttonTitle: "Ok")
+            return
+        }
+        
+        Service.shared.uploadProfileImageData(data: imageDataToUpload) { success in
+            self.dismissLoadingView()
+            self.presentAlertOnMainThread(title: success ? "Upload Successful!" : "Something went wrong...", message: success ? "Profile image succesfully changed." : "Please try again.", buttonTitle: "Ok")
+        }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        imagePickerController.dismiss(animated: true)
     }
 }

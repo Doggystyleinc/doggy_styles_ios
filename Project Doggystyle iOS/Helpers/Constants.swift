@@ -23,6 +23,7 @@ struct Constants {
     //MARK: - D
     static let dogIcon = "Dog Icon"
     static let dsLogo = "DS Logo"
+    static let dsLogoWhite = "DS Logo White"
     
     //MARK: - E
     static let email = "email"
