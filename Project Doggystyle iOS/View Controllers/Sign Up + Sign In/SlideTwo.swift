@@ -10,7 +10,7 @@ import Foundation
 import Lottie
 
 class SlideTwo: UIViewController, CAAnimationDelegate {
-    var tutorialClass : TutorialClass?
+    var tutorialClass : WelcomePageController?
     
     private let orangeContainer : UIView = {
         let oc = UIView()
@@ -23,7 +23,6 @@ class SlideTwo: UIViewController, CAAnimationDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.view.backgroundColor = coreWhiteColor
         self.addViews()
     }
     
@@ -32,6 +31,6 @@ class SlideTwo: UIViewController, CAAnimationDelegate {
         self.orangeContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
         self.orangeContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.orangeContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.orangeContainer.bottomAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 50).isActive = true
+        self.orangeContainer.bottomAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 70).isActive = true
     }
 }

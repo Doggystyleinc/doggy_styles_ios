@@ -9,7 +9,7 @@ import UIKit
 import Foundation
 
 class SlideOne: UIViewController {
-    var tutorialClass : TutorialClass?
+    var tutorialClass : WelcomePageController?
     
     private let virtualTourViewer : UIView = {
         let vtv = UIView()
@@ -45,16 +45,6 @@ class SlideOne: UIViewController {
         super.viewDidLoad()
         self.addViews()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        self.tutorialClass?.hideBottomButtons(shouldHide: false)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-        self.tutorialClass?.hideBottomButtons(shouldHide: true)
-    }
 }
 
 //MARK: - Configure Views
@@ -64,13 +54,13 @@ extension SlideOne {
         self.orangeContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
         self.orangeContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.orangeContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.orangeContainer.bottomAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 50).isActive = true
+        self.orangeContainer.bottomAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 70).isActive = true
         
         self.view.addSubview(self.virtualTourViewer)
         self.virtualTourViewer.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
         self.virtualTourViewer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 50).isActive = true
         self.virtualTourViewer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -50).isActive = true
-        self.virtualTourViewer.heightAnchor.constraint(equalToConstant: 250).isActive = true
+        self.virtualTourViewer.height(280)
         
         self.view.addSubview(self.subHeaderLabel)
         self.subHeaderLabel.topAnchor.constraint(equalTo: self.virtualTourViewer.bottomAnchor, constant: 10).isActive = true

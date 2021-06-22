@@ -70,7 +70,7 @@ extension DecisionController {
         
         //USER IS NOT AUTHENTICATED
         if auth == nil {
-            self.perform(#selector(presentSignUpController), with: nil, afterDelay: 1.0)
+            self.perform(#selector(presentWelcomeController), with: nil, afterDelay: 1.0)
             
             //USER IS AUTHENTICATED
         } else if auth != nil {
@@ -99,8 +99,8 @@ extension DecisionController {
         navigationController?.present(navVC, animated: true)
     }
     
-    @objc func presentSignUpController() {
-        let signUpVC = SignUpViewController()
+    @objc func presentWelcomeController() {
+        let signUpVC = WelcomePageController()
         let navVC = UINavigationController(rootViewController: signUpVC)
         
         navVC.modalPresentationStyle = .fullScreen

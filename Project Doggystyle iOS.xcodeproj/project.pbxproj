@@ -40,8 +40,10 @@
 		CD6DD0142680DDC900BC376B /* SlideOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD0112680DDC900BC376B /* SlideOne.swift */; };
 		CD6DD0152680DDC900BC376B /* SlideTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD0122680DDC900BC376B /* SlideTwo.swift */; };
 		CD6DD0162680DDC900BC376B /* SlideThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD0132680DDC900BC376B /* SlideThree.swift */; };
-		CD6DD0182680DE2E00BC376B /* TutorialController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD0172680DE2E00BC376B /* TutorialController.swift */; };
+		CD6DD0182680DE2E00BC376B /* WelcomePageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD0172680DE2E00BC376B /* WelcomePageController.swift */; };
 		CD6DD01A2680FC4100BC376B /* GrabDeviceID.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD0192680FC4100BC376B /* GrabDeviceID.swift */; };
+		CD6DD01D26827E6A00BC376B /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD01C26827E6A00BC376B /* LoginController.swift */; };
+		CD6DD01F26827EA500BC376B /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD01E26827EA500BC376B /* RegistrationController.swift */; };
 		CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */; };
 		CDCCD0B0265D4DB4007ABECF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0AF265D4DB4007ABECF /* Constants.swift */; };
 		CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */; };
@@ -141,8 +143,10 @@
 		CD6DD0112680DDC900BC376B /* SlideOne.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideOne.swift; sourceTree = "<group>"; };
 		CD6DD0122680DDC900BC376B /* SlideTwo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideTwo.swift; sourceTree = "<group>"; };
 		CD6DD0132680DDC900BC376B /* SlideThree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideThree.swift; sourceTree = "<group>"; };
-		CD6DD0172680DE2E00BC376B /* TutorialController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialController.swift; sourceTree = "<group>"; };
+		CD6DD0172680DE2E00BC376B /* WelcomePageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomePageController.swift; sourceTree = "<group>"; };
 		CD6DD0192680FC4100BC376B /* GrabDeviceID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrabDeviceID.swift; sourceTree = "<group>"; };
+		CD6DD01C26827E6A00BC376B /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		CD6DD01E26827EA500BC376B /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotServicedNumberSubmittedViewController.swift; sourceTree = "<group>"; };
 		CDCCD0AF265D4DB4007ABECF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToEnableLocationView.swift; sourceTree = "<group>"; };
@@ -330,6 +334,16 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		CD6DD01B26827E4800BC376B /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				CD6DD0172680DE2E00BC376B /* WelcomePageController.swift */,
+				CD6DD01C26827E6A00BC376B /* LoginController.swift */,
+				CD6DD01E26827EA500BC376B /* RegistrationController.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		CDCCD0B3265EB5C5007ABECF /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
@@ -459,6 +473,7 @@
 		CDE8714D2652E65A0082551B /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CD6DD01B26827E4800BC376B /* Onboarding */,
 				CDE8714E2652E66A0082551B /* DecisionController.swift */,
 				CDE8714F2652E66A0082551B /* HomeViewController.swift */,
 				CD203BF62667D3B900335D93 /* PDFViewController.swift */,
@@ -478,7 +493,6 @@
 			children = (
 				CDE871532652E6850082551B /* EmailSignInViewController.swift */,
 				CDE871542652E6850082551B /* EmailSignUpViewController.swift */,
-				CD6DD0172680DE2E00BC376B /* TutorialController.swift */,
 				CD6DD0112680DDC900BC376B /* SlideOne.swift */,
 				CD6DD0132680DDC900BC376B /* SlideThree.swift */,
 				CD6DD0122680DDC900BC376B /* SlideTwo.swift */,
@@ -740,6 +754,7 @@
 			files = (
 				CDE871242652E3030082551B /* UIFont+Ext.swift in Sources */,
 				CD6DCFFF267ACAEE00BC376B /* PetCollectionViewCell.swift in Sources */,
+				CD6DD01F26827EA500BC376B /* RegistrationController.swift in Sources */,
 				CDE8711E2652E3030082551B /* UIColor+Ext.swift in Sources */,
 				CDE871222652E3030082551B /* UIViewController+Ext.swift in Sources */,
 				CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */,
@@ -748,7 +763,7 @@
 				CD203BF72667D3B900335D93 /* PDFViewController.swift in Sources */,
 				CDE8715C2652E6850082551B /* SignUpViewController.swift in Sources */,
 				CDCCD0B8265EB884007ABECF /* User.swift in Sources */,
-				CD6DD0182680DE2E00BC376B /* TutorialController.swift in Sources */,
+				CD6DD0182680DE2E00BC376B /* WelcomePageController.swift in Sources */,
 				CD6DD0142680DDC900BC376B /* SlideOne.swift in Sources */,
 				CD6DD00E267FC86000BC376B /* RefurAFriendController.swift in Sources */,
 				CD6DCFFC267A8DD200BC376B /* DSRegularLabel.swift in Sources */,
@@ -757,6 +772,7 @@
 				CDE871652652E6E60082551B /* DSButton.swift in Sources */,
 				CDE871232652E3030082551B /* String + Ext.swift in Sources */,
 				CD6DCFFA267A8D7400BC376B /* DSSemiBoldLabel.swift in Sources */,
+				CD6DD01D26827E6A00BC376B /* LoginController.swift in Sources */,
 				CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */,
 				CD319F782679435900F48E3C /* DSNavButton.swift in Sources */,
 				CDCCD0B5265EB5DF007ABECF /* CreateDoggyProfileViewController.swift in Sources */,

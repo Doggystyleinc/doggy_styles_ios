@@ -14,6 +14,7 @@ struct Constants {
     
     //MARK: - B
     static let bellIcon = "Bell Notifications Icon"
+    static let backIcon = "Back Icon"
     
     //MARK: - C
     static let closeButton = "Close Button"

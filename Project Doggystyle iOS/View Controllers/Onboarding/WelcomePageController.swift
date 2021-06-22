@@ -8,8 +8,8 @@
 import UIKit
 import UserNotifications
 
-class TutorialClass : UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
-    
+class WelcomePageController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+    private let backImage = UIImage(named: Constants.backIcon)?.withRenderingMode(.alwaysOriginal)
     private var pages = [UIViewController]()
     private var isNotificationsEnabled : Bool = false
     private var gradientLayer: CAGradientLayer!
@@ -114,9 +114,12 @@ class TutorialClass : UIPageViewController, UIPageViewControllerDataSource, UIPa
 }
 
 //MARK: - Configure View Controller
-extension TutorialClass {
+extension WelcomePageController {
     private func configureVC() {
         self.view.backgroundColor = .white
+//        self.navigationController?.navigationBar.backIndicatorImage = backImage
+//        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = backImage
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.dataSource = self
         self.delegate = self
         
@@ -139,7 +142,7 @@ extension TutorialClass {
 }
 
 //MARK: - Configure Views
-extension TutorialClass {
+extension WelcomePageController {
     private func addViews() {
         self.view.addSubview(self.dsCompanyLogoImage)
         self.dsCompanyLogoImage.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
@@ -148,39 +151,39 @@ extension TutorialClass {
         self.dsCompanyLogoImage.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         self.view.addSubview(self.pageControl)
-        self.pageControl.bottomAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 20).isActive = true
+        self.pageControl.bottomAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 60).isActive = true
         self.pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
         self.pageControl.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -20).isActive = true
         self.pageControl.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        self.view.addSubview(self.registerWithfacebookButton)
-        self.registerWithfacebookButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
-        self.registerWithfacebookButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        self.registerWithfacebookButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-        self.registerWithfacebookButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        
-        self.view.addSubview(self.registerWithGoogleButton)
-        self.registerWithGoogleButton.bottomAnchor.constraint(equalTo: self.registerWithfacebookButton.topAnchor, constant: -20).isActive = true
-        self.registerWithGoogleButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        self.registerWithGoogleButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-        self.registerWithGoogleButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        self.view.addSubview(self.signUpButton)
+        signUpButton.topToBottom(of: pageControl, offset: 40)
+        signUpButton.left(to: view, offset: 30)
+        signUpButton.height(60)
+        signUpButton.right(to: view, offset: -30)
         
         self.view.addSubview(self.loginButton)
-        self.loginButton.bottomAnchor.constraint(equalTo: self.registerWithGoogleButton.topAnchor, constant: -20).isActive = true
-        self.loginButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.loginButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-        self.loginButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        loginButton.topToBottom(of: signUpButton, offset: 25)
+        loginButton.left(to: signUpButton)
+        loginButton.height(60)
+        loginButton.right(to: signUpButton)
         
-        self.view.addSubview(self.signUpButton)
-        self.signUpButton.bottomAnchor.constraint(equalTo: self.loginButton.topAnchor, constant: -20).isActive = true
-        self.signUpButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.signUpButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-        self.signUpButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        self.view.addSubview(self.registerWithGoogleButton)
+        registerWithGoogleButton.topToBottom(of: loginButton, offset: 25)
+        registerWithGoogleButton.left(to: signUpButton)
+        registerWithGoogleButton.height(50)
+        registerWithGoogleButton.right(to: signUpButton)
+        
+        self.view.addSubview(self.registerWithfacebookButton)
+        registerWithfacebookButton.topToBottom(of: registerWithGoogleButton, offset: 4)
+        registerWithfacebookButton.left(to: signUpButton)
+        registerWithfacebookButton.height(50)
+        registerWithfacebookButton.right(to: signUpButton)
     }
 }
 
 //MARK: - PageViewController DataSource & Delegate
-extension TutorialClass {
+extension WelcomePageController {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
         if let viewControllerIndex = self.pages.firstIndex(of: viewController) {
@@ -213,33 +216,10 @@ extension TutorialClass {
     }
 }
 //MARK: - Helpers
-extension TutorialClass {
-    func hideBottomButtons(shouldHide : Bool) {
-        if shouldHide {
-            UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseInOut) {
-                self.loginButton.alpha = 0
-                self.signUpButton.alpha = 0
-                self.registerWithfacebookButton.alpha = 0
-                self.registerWithGoogleButton.alpha = 0
-            } completion: { complete in
-                
-            }
-        } else {
-            UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseInOut) {
-                
-            } completion: { complete in
-                self.loginButton.alpha = 1
-                self.signUpButton.alpha = 1
-                self.registerWithfacebookButton.alpha = 1
-                self.registerWithGoogleButton.alpha = 1
-                
-            }
-        }
-    }
-}
+extension WelcomePageController { }
 
 //MARK: - @objc
-extension TutorialClass {
+extension WelcomePageController {
     @objc func handleSignUpButton() {
         print(#function)
 //        let registrationController = RegistrationLoginController()
@@ -249,10 +229,7 @@ extension TutorialClass {
     }
     
     @objc func handleLoginButton() {
-        print(#function)
-//        let registrationController = RegistrationLoginController()
-//        registrationController.isRegistration = false
-//        self.navigationController?.pushViewController(registrationController, animated: true)
-//        UIDevice.vibrateLight()
+        let loginController = LoginController()
+        self.navigationController?.pushViewController(loginController, animated: true)
     }
 }
