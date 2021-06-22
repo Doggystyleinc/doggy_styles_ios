@@ -7,304 +7,259 @@
 
 import UIKit
 import Firebase
-import UniformTypeIdentifiers
-import MobileCoreServices
+import SDWebImage
 
-final class DashboardViewController: UIViewController, UINavigationControllerDelegate {
-    var homeController: UIViewController!
+//TODO: - Initialize this view with a user object or fetch on viewDidLoad
+
+final class DashboardViewController: UIViewController {
+    var homeController: HomeViewController?
+    private let package = Package.examplePackage
+    private let pets: [Pet] = [Pet.allPets, Pet.petOne, Pet.petTwo, Pet.petThree, Pet.petFour]
+    private let appointment = Appointment.exampleAppointment
     
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView(frame: .zero)
-        imageView.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        imageView.clipsToBounds = true
-        imageView.layer.borderColor = UIColor.systemBlue.cgColor
-        imageView.layer.borderWidth = 0.5
-        imageView.layer.cornerRadius = 57
-        imageView.contentMode = .scaleAspectFill
-        return imageView
+    private let leftIcon = DSNavButton(imageName: Constants.refurNavIcon, tagNumber: 0)
+    private let rightIcon = DSNavButton(imageName: Constants.bellIcon, tagNumber: 1)
+    private let logo = LogoImageView(frame: .zero)
+    
+    private let appointmentHeader = DSBoldLabel(title: "Upcoming Appointment", size: 22.0)
+    private let serviceHeader = DSBoldLabel(title: "Service of the Week", size: 22.0)
+    
+    private let appointmentContainer = DSContainerView(frame: .zero)
+    private let servicesContainer = DSContainerView(frame: .zero)
+    
+    private let petCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: 74, height: 74)
+        layout.scrollDirection = .horizontal
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(PetCollectionViewCell.self, forCellWithReuseIdentifier: PetCollectionViewCell.reuseIdentifier)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .dsViewBackground
+        return collectionView
     }()
     
-    private let infoLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        return label
-    }()
-    
-    private let addButton: UIButton = {
-        let button = UIButton(frame: .zero)
-        button.tag = 0
-        button.setImage(UIImage(systemName: "plus"), for: .normal)
-        button.backgroundColor = .systemGreen
+    private let notificationsButton: UIButton = {
+        let button = UIButton(type: .system)
+        let attrString = NSAttributedString(string: "99", attributes: [NSAttributedString.Key.font : UIFont.poppinsSemiBold(size: 11)])
+        button.setAttributedTitle(attrString, for: .normal)
+        button.backgroundColor = .dsError
+        button.layer.cornerRadius = 10.0
         button.tintColor = .white
-        button.layer.cornerRadius = 17
-        button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
         return button
     }()
     
-    private let uploadVideoButton: UIButton = {
+    private let viewAllAppointmentsButton: UIButton = {
         let button = UIButton(type: .system)
-        button.tag = 1
-        button.setTitle("Upload Video", for: .normal)
-        button.backgroundColor = .white
-        button.tintColor = .systemBlue
-        button.layer.cornerRadius = 5
-        button.layer.borderWidth = 0.5
-        button.layer.borderColor = UIColor.lightGray.cgColor
-        button.leftImage(image: UIImage(systemName: "video.bubble.left.fill")!, renderMode: .alwaysTemplate)
-        button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
+        let attrString = NSAttributedString(string: "View all", attributes: [NSAttributedString.Key.font : UIFont.poppinsSemiBold(size: 18.0)])
+        button.setAttributedTitle(attrString, for: .normal)
+        button.backgroundColor = .clear
+        button.tintColor = .dsGray
+        button.setTitle("View all", for: .normal)
+        button.addTarget(self, action: #selector(didTapViewAllAppointments), for: .touchUpInside)
         return button
     }()
     
-    private let uploadDocumentButton: UIButton = {
+    private let viewAllServicesButton: UIButton = {
         let button = UIButton(type: .system)
-        button.tag = 2
-        button.setTitle("Upload Document", for: .normal)
-        button.backgroundColor = .white
-        button.tintColor = .systemBlue
-        button.layer.cornerRadius = 5
-        button.layer.borderWidth = 0.5
-        button.layer.borderColor = UIColor.lightGray.cgColor
-        button.leftImage(image: UIImage(systemName: "doc.fill.badge.plus")!, renderMode: .alwaysTemplate)
-        button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
+        let attrString = NSAttributedString(string: "View all", attributes: [NSAttributedString.Key.font : UIFont.poppinsSemiBold(size: 18.0)])
+        button.setAttributedTitle(attrString, for: .normal)
+        button.backgroundColor = .clear
+        button.tintColor = .dsGray
+        button.setTitle("View all", for: .normal)
+        button.addTarget(self, action: #selector(didTapViewAllServices), for: .touchUpInside)
         return button
     }()
     
-    private let uploadImageButton: UIButton = {
+    private let editAppointmentButton: UIButton = {
         let button = UIButton(type: .system)
-        button.isEnabled = false
-        button.tag = 3
-        button.setTitle("Upload Image", for: .normal)
-        button.backgroundColor = .white
-        button.tintColor = .lightGray
-        button.layer.cornerRadius = 5
-        button.layer.borderWidth = 0.5
-        button.layer.borderColor = UIColor.lightGray.cgColor
-        button.leftImage(image: UIImage(systemName: "photo.fill")!, renderMode: .alwaysTemplate)
-        button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
+        button.setImage(UIImage(named: Constants.editIcon)?.withRenderingMode(.alwaysOriginal), for: .normal)
         return button
     }()
     
-    private let viewDocumentButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.tag = 4
-        button.isEnabled = false
-        button.setTitle("View Document", for: .normal)
-        button.backgroundColor = .white
-        button.tintColor = .systemBlue
-        button.layer.cornerRadius = 5
-        button.layer.borderWidth = 0.5
-        button.layer.borderColor = UIColor.lightGray.cgColor
-        button.leftImage(image: UIImage(systemName: "doc.text.magnifyingglass")!, renderMode: .alwaysTemplate)
-        button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchUpInside)
-        return button
-    }()
+    private lazy var appointmentDate = DSSemiBoldLabel(title: appointment.date, size: 15)
+    private lazy var appointmentTime = DSSemiBoldLabel(title: appointment.time, size: 15)
+    private lazy var appointmentCycle = DSRegularLabel(title: "\(appointment.cycle) week cycle", size: 12)
     
-    private lazy var imagePickerController: UIImagePickerController = {
-        let controller = UIImagePickerController()
-        controller.delegate = self
-        controller.allowsEditing = true
-        controller.sourceType = .savedPhotosAlbum
-        return controller
-    }()
-    
-    private lazy var documentPicker: UIDocumentPickerViewController = {
-        let supportedTypes: [UTType] = [UTType.pdf]
-        let controller = UIDocumentPickerViewController(forOpeningContentTypes: supportedTypes)
-        controller.allowsMultipleSelection = false
-        controller.shouldShowFileExtensions = true
-        controller.delegate = self
-        return controller
-    }()
-    
-    private var signOutButton : UIButton = {
-        let sob = UIButton(type: .system)
-        let buttonTitle = NSLocalizedString("LogOut", comment: "Log Out")
-        sob.backgroundColor = .orange
-        sob.tintColor = .white
-        sob.setTitle(buttonTitle, for: .normal)
-        sob.addTarget(self, action: #selector(handleLogOut), for: .touchUpInside)
-        sob.layer.cornerRadius = 5.0
-        return sob
-    }()
     
     override func viewDidLoad() {
         self.configureVC()
-        self.addViews()
+        self.addNavViews()
+        self.addPetCollectionView()
+        self.addAppointmentViews()
+        self.addServiceViews()
     }
 }
 
 //MARK: - Configure View Controller
 extension DashboardViewController {
     private func configureVC() {
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .dsViewBackground
+        self.petCollectionView.dataSource = self
+        self.petCollectionView.delegate = self
         
-        //Set profile image.
-        profileImageView.sd_setImage(with: URL(string: userProfileStruct.profileURL ?? ""), placeholderImage: UIImage(named: "Temp Placeholder")) { _, _, _, _ in
-            self.profileImageView.alpha = 0.0
-            UIView.animate(withDuration: 1.0) {
-                self.profileImageView.alpha = 1.0
-            }
-        }
-        
-        //Enable / Disable document viewer
-        if userProfileStruct.uploadedDocumentURL != "nil" {
-            viewDocumentButton.isEnabled = true
-        }
+        leftIcon.addTarget(self, action: #selector(didTap(_:)), for: .touchUpInside)
+        rightIcon.addTarget(self, action: #selector(didTap(_:)), for: .touchUpInside)
     }
 }
 
 
 //MARK: - Configure Views
 extension DashboardViewController {
-    private func addViews() {
-        self.view.addSubview(profileImageView)
-        profileImageView.height(114)
-        profileImageView.width(114)
-        profileImageView.top(to: view, offset: 150)
-        profileImageView.centerX(to: view)
+    private func addNavViews() {
+        self.view.addSubview(logo)
+        logo.topToSuperview(offset: 26, usingSafeArea: true)
+        logo.centerX(to: view)
         
-        self.view.addSubview(addButton)
-        addButton.topToBottom(of: profileImageView, offset: -18)
-        addButton.centerX(to: profileImageView)
-        addButton.height(34)
-        addButton.width(34)
+        self.view.addSubview(leftIcon)
+        leftIcon.rightToLeft(of: logo, offset: -70)
+        leftIcon.topToSuperview(offset: 14, usingSafeArea: true)
         
-        self.view.addSubview(uploadVideoButton)
-        uploadVideoButton.topToBottom(of: addButton, offset: 60)
-        uploadVideoButton.height(44)
-        uploadVideoButton.width(200)
-        uploadVideoButton.centerX(to: view)
+        self.view.addSubview(rightIcon)
+        rightIcon.leftToRight(of: logo, offset: 70)
+        rightIcon.top(to: leftIcon)
         
-        self.view.addSubview(uploadDocumentButton)
-        uploadDocumentButton.topToBottom(of: uploadVideoButton, offset: 30)
-        uploadDocumentButton.height(44)
-        uploadDocumentButton.width(200)
-        uploadDocumentButton.centerX(to: view)
+        rightIcon.addSubview(notificationsButton)
+        notificationsButton.height(20)
+        notificationsButton.width(20)
+        notificationsButton.top(to: rightIcon, offset: 4)
+        notificationsButton.right(to: rightIcon, offset: -4)
+    }
+    
+    private func addPetCollectionView() {
+        self.view.addSubview(petCollectionView)
+        petCollectionView.topToBottom(of: leftIcon, offset: 10)
+        petCollectionView.left(to: view, offset: 2)
+        petCollectionView.height(120)
+        petCollectionView.right(to: view, offset: -2)
+    }
+    
+    private func addAppointmentViews() {
+        self.view.addSubview(appointmentHeader)
+        appointmentHeader.left(to: leftIcon)
+        appointmentHeader.topToBottom(of: petCollectionView, offset: 20)
         
-        self.view.addSubview(uploadImageButton)
-        uploadImageButton.topToBottom(of: uploadDocumentButton, offset: 30)
-        uploadImageButton.height(44)
-        uploadImageButton.width(200)
-        uploadImageButton.centerX(to: view)
+        self.view.addSubview(appointmentContainer)
+        appointmentContainer.topToBottom(of: appointmentHeader, offset: 10.0)
+        appointmentContainer.left(to: leftIcon)
+        appointmentContainer.height(152)
+        appointmentContainer.right(to: rightIcon)
         
-        self.view.addSubview(viewDocumentButton)
-        viewDocumentButton.topToBottom(of: uploadImageButton, offset: 30)
-        viewDocumentButton.height(44)
-        viewDocumentButton.width(200)
-        viewDocumentButton.centerX(to: view)
+        //Move this once we decided if numberOfPets > 2
+        let imageViewOne = UIImageView(frame: .zero)
+        imageViewOne.sd_setImage(with: URL(string: pets[1].imageURL), placeholderImage: UIImage(named: Constants.petProfilePlaceholder), options: .continueInBackground, context: nil)
+        imageViewOne.contentMode = .scaleToFill
+        imageViewOne.clipsToBounds = true
+        imageViewOne.layer.cornerRadius = 23
         
-        self.view.addSubview(signOutButton)
-        signOutButton.bottomToSuperview(offset: -50, usingSafeArea: true)
-        signOutButton.height(44)
-        signOutButton.width(160)
-        signOutButton.centerX(to: view)
+        self.appointmentContainer.addSubview(imageViewOne)
+        imageViewOne.height(46)
+        imageViewOne.width(46)
+        imageViewOne.top(to: appointmentContainer, offset: 20)
+        imageViewOne.left(to: appointmentContainer, offset: 20)
+        
+        //Must check if user numberOfPets > 2 before displaying this
+        let imageViewTwo = UIImageView(frame: .zero)
+        imageViewTwo.sd_setImage(with: URL(string: pets[2].imageURL), placeholderImage: UIImage(named: Constants.petProfilePlaceholder), options: .continueInBackground, context: nil)
+        imageViewTwo.contentMode = .scaleToFill
+        imageViewTwo.clipsToBounds = true
+        imageViewTwo.layer.cornerRadius = 23
+        
+        self.appointmentContainer.addSubview(imageViewTwo)
+        imageViewTwo.height(46)
+        imageViewTwo.width(46)
+        imageViewTwo.top(to: imageViewOne)
+        imageViewTwo.leftToRight(of: imageViewOne, offset: 10)
+        
+        self.appointmentContainer.addSubview(editAppointmentButton)
+        editAppointmentButton.top(to: imageViewOne)
+        editAppointmentButton.right(to: appointmentContainer, offset: -20)
+        editAppointmentButton.height(38)
+        editAppointmentButton.width(38)
+        
+        self.appointmentContainer.addSubview(appointmentDate)
+        appointmentDate.topToBottom(of: imageViewOne, offset: 12)
+        appointmentDate.left(to: imageViewOne)
+        
+        self.appointmentContainer.addSubview(appointmentTime)
+        appointmentTime.top(to: appointmentDate)
+        appointmentTime.right(to: editAppointmentButton)
+        
+        self.appointmentContainer.addSubview(appointmentCycle)
+        appointmentCycle.left(to: appointmentDate)
+        appointmentCycle.topToBottom(of: appointmentDate, offset: 5)
+        
+        self.view.addSubview(viewAllAppointmentsButton)
+        viewAllAppointmentsButton.centerX(to: appointmentContainer)
+        viewAllAppointmentsButton.topToBottom(of: appointmentContainer, offset: 6.0)
+        viewAllAppointmentsButton.width(150)
+    }
+    
+    private func addServiceViews() {
+        self.view.addSubview(serviceHeader)
+        serviceHeader.topToBottom(of: viewAllAppointmentsButton, offset: 20.0)
+        serviceHeader.left(to: appointmentHeader)
+        
+        self.view.addSubview(servicesContainer)
+        servicesContainer.topToBottom(of: serviceHeader, offset: 10.0)
+        servicesContainer.left(to: appointmentContainer)
+        servicesContainer.right(to: appointmentContainer)
+        servicesContainer.height(152)
+        
+        self.view.addSubview(viewAllServicesButton)
+        viewAllServicesButton.centerX(to: servicesContainer)
+        viewAllServicesButton.topToBottom(of: servicesContainer, offset: 6.0)
+        viewAllServicesButton.width(150)
+        
+        let serviceView = ServiceOfTheWeekView(package: package)
+        servicesContainer.addSubview(serviceView)
+        serviceView.edgesToSuperview()
     }
 }
 
-
 //MARK: - @objc Functions
 extension DashboardViewController {
-    @objc func handleLogOut() {
-        do {
-            try Auth.auth().signOut()
-        } catch let logoutError {
-            print(logoutError)
-        }
-        
-        //Logging out, remove all database observers.
-        Database.database().reference().removeAllObservers()
-
-        let decisionController = DecisionController()
-        let nav = UINavigationController(rootViewController: decisionController)
-        nav.modalPresentationStyle = .fullScreen
-        nav.navigationBar.isHidden = true
-        self.navigationController?.present(nav, animated: true, completion: nil)
-    }
-    
-    @objc func didTapButton(_ sender: UIButton) {
+    @objc private func didTap(_ sender: UIButton) {
         switch sender.tag {
-        
-        //Update / Set Profile Image
+        //Refur Button
         case 0:
-            self.imagePickerController.mediaTypes = [kUTTypeImage as String]
-            present(imagePickerController, animated: true)
-        //Upload video.
+            let refurVC = RefurAFriendController()
+            self.present(refurVC, animated: true)
+            
+        //Notification Button
         case 1:
-            self.imagePickerController.mediaTypes = [kUTTypeMovie as String]
-            present(imagePickerController, animated: true)
-        //Upload document.
-        case 2:
-            self.uploadDocumentButton.isEnabled = false
-            self.showLoadingView()
-            present(documentPicker, animated: true)
-        //Upload image.
-        case 3:
-            self.showLoadingView()
-            
-            guard let image = profileImageView.image, let imageDataToUpload = image.jpegData(compressionQuality: 0.15) else {
-                self.dismissLoadingView()
-                self.presentAlertOnMainThread(title: "Something went wrong...", message: "Please try again.", buttonTitle: "Ok")
-                return
-            }
-            
-            Service.shared.uploadProfileImageData(data: imageDataToUpload) { success in
-                self.dismissLoadingView()
-                self.presentAlertOnMainThread(title: success ? "Upload Successful!" : "Something went wrong...", message: success ? "Profile image succesfully uploaded." : "Please try again.", buttonTitle: "Ok")
-            }
-        //View uploaded document.
-        case 4:
-            guard userProfileStruct.uploadedDocumentURL != "nil" else {
-                self.viewDocumentButton.isEnabled = false
-                self.presentAlertOnMainThread(title: "Sorry...", message: "No documents available to view", buttonTitle: "Ok")
-                return
-            }
-            let pdfView = PDFViewController()
-            pdfView.pdfURL = URL(string: userProfileStruct.uploadedDocumentURL!)
-            present(pdfView, animated: true)
-            
+            let notificationVC = NotificationController()
+            self.present(notificationVC, animated: true)
         default:
             break
         }
     }
-}
-
-//MARK: - Image Picker Delegate
-extension DashboardViewController: UIImagePickerControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let selectedImage = info[.editedImage] as? UIImage else {
-            print("Image not found!")
-            return
-        }
-        
-        profileImageView.image = selectedImage
-        imagePickerController.dismiss(animated: true)
-        
-        uploadImageButton.backgroundColor = .systemGreen
-        uploadImageButton.tintColor = .white
-        uploadImageButton.isEnabled = true
+    
+    @objc private func didTapAll() {
+        print(#function)
     }
     
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        imagePickerController.dismiss(animated: true)
+    @objc private func didTapViewAllAppointments() {
+        homeController?.switchTabs(tabIndex: 2)
+    }
+    
+    @objc private func didTapViewAllServices() {
+        homeController?.switchTabs(tabIndex: 1)
     }
 }
 
-//MARK: - Document Picker Delegate
-extension DashboardViewController: UIDocumentPickerDelegate {
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        self.uploadDocumentButton.isEnabled = true
-        guard let url = urls.first else {
-            self.dismissLoadingView()
-            return
-        }
-        
-        Service.shared.uploadDocument(url: url) { success in
-            self.dismissLoadingView()
-            self.presentAlertOnMainThread(title: success ? "Successful Upload!" : "Something went wrong...", message: success ? "The document was successfully uploaded." : "Please try again.", buttonTitle: "Ok")
-        }
+//MARK: - CollectionView DataSource & Delegate
+extension DashboardViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return pets.count
     }
     
-    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        self.uploadDocumentButton.isEnabled = true
-        self.dismissLoadingView()
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PetCollectionViewCell.reuseIdentifier, for: indexPath) as! PetCollectionViewCell
+        let pet = pets[indexPath.row]
+        cell.configure(with: pet)
+        return cell
     }
+    
+    
 }

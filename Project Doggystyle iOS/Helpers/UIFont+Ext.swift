@@ -20,3 +20,17 @@ extension UIFont {
         return UIFont(name: "Roboto-Regular", size: fontSize)!
     }
 }
+
+extension UIFont {
+    static func poppinsRegular(size fontSize: CGFloat) -> UIFont {
+        return UIFont(name: "Poppins-Regular", size: fontSize)!
+    }
+    
+    static func poppinsBold(size fontSize: CGFloat) -> UIFont {
+        return UIFont(name: "Poppins-Bold", size: fontSize)!
+    }
+    
+    static func poppinsSemiBold(size fontSize: CGFloat) -> UIFont {
+        return UIFont(name: "Poppins-SemiBold", size: fontSize)!
+    }
+}

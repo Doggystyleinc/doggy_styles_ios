@@ -29,5 +29,3 @@ extension UIButton {
         self.imageView?.contentMode = .scaleAspectFit
     }
 }
-
-
