@@ -16,21 +16,35 @@ final class DecisionController: UIViewController {
     private let iconLogo: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "DS App Icon")!)
         imageView.contentMode = .scaleAspectFit
+        imageView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         return imageView
     }()
     
     private let placeholderLogo: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "DS Logo")!)
         imageView.contentMode = .scaleAspectFit
+        imageView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         return imageView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .dsViewBackground
+        configureVC()
+        authenticationCheck()
+        addLogoView()
+    }
+}
+
+//MARK: - Configure View Controller
+extension DecisionController {
+    private func configureVC() {
+        view.backgroundColor = .dsViewBackground
         NetworkMonitor.shared.startMonitoring()
-        self.authenticationCheck()
-        self.addLogoView()
+        
+        UIView.animate(withDuration: 0.5) {
+            self.iconLogo.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            self.placeholderLogo.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+        }
     }
 }
 

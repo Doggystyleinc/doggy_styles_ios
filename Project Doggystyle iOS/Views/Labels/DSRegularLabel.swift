@@ -15,6 +15,7 @@ final class DSRegularLabel: UILabel {
         self.text = title
         self.font = UIFont.poppinsRegular(size: size)
         self.textColor = .dsTextColor
+        self.numberOfLines = 0
     }
     
     required init?(coder: NSCoder) {

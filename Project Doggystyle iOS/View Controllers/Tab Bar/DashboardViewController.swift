@@ -129,19 +129,19 @@ extension DashboardViewController {
     private func addPetCollectionView() {
         self.view.addSubview(petCollectionView)
         petCollectionView.topToBottom(of: leftIcon, offset: 10)
-        petCollectionView.left(to: leftIcon)
+        petCollectionView.left(to: view, offset: 2)
         petCollectionView.height(120)
-        petCollectionView.right(to: rightIcon)
+        petCollectionView.right(to: view, offset: -2)
     }
     
     private func addAppointmentViews() {
         self.view.addSubview(appointmentHeader)
-        appointmentHeader.left(to: petCollectionView)
+        appointmentHeader.left(to: leftIcon)
         appointmentHeader.topToBottom(of: petCollectionView, offset: 20)
         
         self.view.addSubview(appointmentContainer)
         appointmentContainer.topToBottom(of: appointmentHeader, offset: 10.0)
-        appointmentContainer.left(to: petCollectionView)
+        appointmentContainer.left(to: leftIcon)
         appointmentContainer.height(152)
         appointmentContainer.right(to: rightIcon)
         

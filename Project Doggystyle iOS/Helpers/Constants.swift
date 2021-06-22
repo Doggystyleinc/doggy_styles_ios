@@ -50,6 +50,7 @@ struct Constants {
     static let referralCode = "no_code"
     static let refurNavIcon = "ReFur Nav Icon"
     static let refurIcon = "ReFur Icon"
+    static let refurBackground = "Refur Background"
     
     //MARK: - S
     static let signOutNavIcon = "Sign Out"

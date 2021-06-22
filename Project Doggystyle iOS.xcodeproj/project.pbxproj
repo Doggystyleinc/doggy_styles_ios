@@ -41,6 +41,7 @@
 		CD6DD0152680DDC900BC376B /* SlideTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD0122680DDC900BC376B /* SlideTwo.swift */; };
 		CD6DD0162680DDC900BC376B /* SlideThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD0132680DDC900BC376B /* SlideThree.swift */; };
 		CD6DD0182680DE2E00BC376B /* TutorialController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD0172680DE2E00BC376B /* TutorialController.swift */; };
+		CD6DD01A2680FC4100BC376B /* GrabDeviceID.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD0192680FC4100BC376B /* GrabDeviceID.swift */; };
 		CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */; };
 		CDCCD0B0265D4DB4007ABECF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0AF265D4DB4007ABECF /* Constants.swift */; };
 		CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */; };
@@ -142,6 +143,7 @@
 		CD6DD0122680DDC900BC376B /* SlideTwo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideTwo.swift; sourceTree = "<group>"; };
 		CD6DD0132680DDC900BC376B /* SlideThree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideThree.swift; sourceTree = "<group>"; };
 		CD6DD0172680DE2E00BC376B /* TutorialController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialController.swift; sourceTree = "<group>"; };
+		CD6DD0192680FC4100BC376B /* GrabDeviceID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrabDeviceID.swift; sourceTree = "<group>"; };
 		CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotServicedNumberSubmittedViewController.swift; sourceTree = "<group>"; };
 		CDCCD0AF265D4DB4007ABECF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToEnableLocationView.swift; sourceTree = "<group>"; };
@@ -342,10 +344,10 @@
 		CDCCD0B6265EB869007ABECF /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				CDCCD0B7265EB884007ABECF /* User.swift */,
+				CD6DCFF7267A824A00BC376B /* Appointment.swift */,
 				CD6DCFF1267A62D300BC376B /* Package.swift */,
 				CD6DCFF5267A820700BC376B /* Pet.swift */,
-				CD6DCFF7267A824A00BC376B /* Appointment.swift */,
+				CDCCD0B7265EB884007ABECF /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -371,14 +373,14 @@
 		CDE870DC2652E1610082551B /* Project Doggystyle iOS */ = {
 			isa = PBXGroup;
 			children = (
-				CDCCD0B6265EB869007ABECF /* Models */,
-				CDE871692652ED930082551B /* Firebase */,
 				CDE870EB2652E1640082551B /* Info.plist */,
-				CDE871662652EA100082551B /* Git */,
-				CDE870F22652E1E30082551B /* Admin */,
 				CDE870E62652E1640082551B /* Assets.xcassets */,
+				CDE870F22652E1E30082551B /* Admin */,
+				CDE871692652ED930082551B /* Firebase */,
 				CDE870F12652E1DA0082551B /* Fonts */,
+				CDE871662652EA100082551B /* Git */,
 				CDE871122652E2EE0082551B /* Helpers */,
+				CDCCD0B6265EB869007ABECF /* Models */,
 				CDE8714D2652E65A0082551B /* View Controllers */,
 				CDE8710D2652E2B20082551B /* Views */,
 			);
@@ -440,17 +442,18 @@
 		CDE871122652E2EE0082551B /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				CDCCD0AF265D4DB4007ABECF /* Constants.swift */,
+				CD319F6A26790AD900F48E3C /* DeleteLaterViewController.swift */,
 				CDE871162652E3030082551B /* Firebase+Ext.swift */,
+				CD6DD0192680FC4100BC376B /* GrabDeviceID.swift */,
 				CDE871292652E3310082551B /* Localizable.strings */,
 				CDE871172652E3030082551B /* NetworkMonitor.swift */,
 				CDE8711A2652E3030082551B /* String + Ext.swift */,
 				CDE871132652E3030082551B /* TextField+Ext.swift */,
+				CD6868832654373A0064ADFE /* UIButton+Ext.swift */,
 				CDE871152652E3030082551B /* UIColor+Ext.swift */,
 				CDE8711B2652E3030082551B /* UIFont+Ext.swift */,
 				CDE871192652E3030082551B /* UIViewController+Ext.swift */,
-				CD6868832654373A0064ADFE /* UIButton+Ext.swift */,
-				CDCCD0AF265D4DB4007ABECF /* Constants.swift */,
-				CD319F6A26790AD900F48E3C /* DeleteLaterViewController.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -458,16 +461,16 @@
 		CDE8714D2652E65A0082551B /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				CD6DD006267FC0BE00BC376B /* Profile */,
-				CD203BF82667FA7700335D93 /* Tab Bar */,
-				CDCCD0B3265EB5C5007ABECF /* Dashboard */,
-				CD68688E2656EEEF0064ADFE /* Location */,
-				CD686880265412A20064ADFE /* Alerts */,
-				CDE8715D2652E68D0082551B /* Resetting Password */,
-				CDE871522652E66F0082551B /* Sign Up + Sign In */,
 				CDE8714E2652E66A0082551B /* DecisionController.swift */,
 				CDE8714F2652E66A0082551B /* HomeViewController.swift */,
 				CD203BF62667D3B900335D93 /* PDFViewController.swift */,
+				CD686880265412A20064ADFE /* Alerts */,
+				CDCCD0B3265EB5C5007ABECF /* Dashboard */,
+				CD68688E2656EEEF0064ADFE /* Location */,
+				CD6DD006267FC0BE00BC376B /* Profile */,
+				CDE8715D2652E68D0082551B /* Resetting Password */,
+				CDE871522652E66F0082551B /* Sign Up + Sign In */,
+				CD203BF82667FA7700335D93 /* Tab Bar */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -753,6 +756,7 @@
 				CD6DD0142680DDC900BC376B /* SlideOne.swift in Sources */,
 				CD6DD00E267FC86000BC376B /* RefurAFriendController.swift in Sources */,
 				CD6DCFFC267A8DD200BC376B /* DSRegularLabel.swift in Sources */,
+				CD6DD01A2680FC4100BC376B /* GrabDeviceID.swift in Sources */,
 				CDE871622652E69B0082551B /* ResetPasswordViewController.swift in Sources */,
 				CDE871652652E6E60082551B /* DSButton.swift in Sources */,
 				CDE871232652E3030082551B /* String + Ext.swift in Sources */,
