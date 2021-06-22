@@ -93,7 +93,6 @@
 		CDE871582652E6850082551B /* EmailSignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE871532652E6850082551B /* EmailSignInViewController.swift */; };
 		CDE871592652E6850082551B /* EmailSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE871542652E6850082551B /* EmailSignUpViewController.swift */; };
 		CDE8715A2652E6850082551B /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE871552652E6850082551B /* SignInViewController.swift */; };
-		CDE8715B2652E6850082551B /* ReferralCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE871562652E6850082551B /* ReferralCodeViewController.swift */; };
 		CDE8715C2652E6850082551B /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE871572652E6850082551B /* SignUpViewController.swift */; };
 		CDE871612652E69B0082551B /* SuccessfulPasswordResetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE8715E2652E69B0082551B /* SuccessfulPasswordResetViewController.swift */; };
 		CDE871622652E69B0082551B /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE8715F2652E69B0082551B /* ResetPasswordViewController.swift */; };
@@ -186,7 +185,6 @@
 		CDE871532652E6850082551B /* EmailSignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailSignInViewController.swift; sourceTree = "<group>"; };
 		CDE871542652E6850082551B /* EmailSignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailSignUpViewController.swift; sourceTree = "<group>"; };
 		CDE871552652E6850082551B /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
-		CDE871562652E6850082551B /* ReferralCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralCodeViewController.swift; sourceTree = "<group>"; };
 		CDE871572652E6850082551B /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		CDE8715E2652E69B0082551B /* SuccessfulPasswordResetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuccessfulPasswordResetViewController.swift; sourceTree = "<group>"; };
 		CDE8715F2652E69B0082551B /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
@@ -478,7 +476,6 @@
 		CDE871522652E66F0082551B /* Sign Up + Sign In */ = {
 			isa = PBXGroup;
 			children = (
-				CDE871562652E6850082551B /* ReferralCodeViewController.swift */,
 				CDE871532652E6850082551B /* EmailSignInViewController.swift */,
 				CDE871542652E6850082551B /* EmailSignUpViewController.swift */,
 				CD6DD0172680DE2E00BC376B /* TutorialController.swift */,
@@ -743,7 +740,6 @@
 			files = (
 				CDE871242652E3030082551B /* UIFont+Ext.swift in Sources */,
 				CD6DCFFF267ACAEE00BC376B /* PetCollectionViewCell.swift in Sources */,
-				CDE8715B2652E6850082551B /* ReferralCodeViewController.swift in Sources */,
 				CDE8711E2652E3030082551B /* UIColor+Ext.swift in Sources */,
 				CDE871222652E3030082551B /* UIViewController+Ext.swift in Sources */,
 				CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */,

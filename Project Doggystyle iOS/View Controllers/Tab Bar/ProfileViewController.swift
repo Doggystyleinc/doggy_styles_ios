@@ -81,20 +81,16 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate {
 extension ProfileViewController {
     private func configureVC() {
         view.backgroundColor = .dsViewBackground
-        rightIcon.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
+        self.navigationController?.navigationBar.isHidden = false
     }
 }
 
 //MARK: - Configure Views
 extension ProfileViewController {
     private func addNavViews() {
-        self.view.addSubview(logo)
-        logo.topToSuperview(offset: 26, usingSafeArea: true)
-        logo.centerX(to: view)
-        
-        self.view.addSubview(rightIcon)
-        rightIcon.leftToRight(of: logo, offset: 70)
-        rightIcon.topToSuperview(offset: 14, usingSafeArea: true)
+        self.navigationItem.titleView = logo
+        let rightBarImage = UIImage(named: Constants.signOutNavIcon)?.withRenderingMode(.alwaysOriginal)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightBarImage, landscapeImagePhone: nil, style: .plain, target: self, action: #selector(handleLogout))
     }
         
     private func addContainers() {
@@ -102,7 +98,7 @@ extension ProfileViewController {
         nameContainer.height(126)
         nameContainer.left(to: view, offset: 30)
         nameContainer.right(to: view, offset: -30)
-        nameContainer.topToBottom(of: rightIcon, offset: 96)
+        nameContainer.topToSuperview(offset: 95, usingSafeArea: true)
         
         self.view.addSubview(petContainer)
         petContainer.height(containerHeight)
@@ -318,17 +314,13 @@ extension ProfileViewController: UIImagePickerControllerDelegate {
         profileImageView.image = selectedImage
         imagePickerController.dismiss(animated: true)
         
-        self.showLoadingView()
-        
         guard let image = profileImageView.image, let imageDataToUpload = image.jpegData(compressionQuality: 0.15) else {
-            self.dismissLoadingView()
             self.presentAlertOnMainThread(title: "Something went wrong...", message: "Please try again.", buttonTitle: "Ok")
             return
         }
         
         Service.shared.uploadProfileImageData(data: imageDataToUpload) { success in
-            self.dismissLoadingView()
-            self.presentAlertOnMainThread(title: success ? "Upload Successful!" : "Something went wrong...", message: success ? "Profile image succesfully changed." : "Please try again.", buttonTitle: "Ok")
+            print("User: \(Auth.auth().currentUser?.uid ?? "user unknown") Profile Image Uploaded Succesfully!")
         }
     }
     

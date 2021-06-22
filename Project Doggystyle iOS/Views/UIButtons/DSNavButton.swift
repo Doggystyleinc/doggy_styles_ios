@@ -18,8 +18,8 @@ final class DSNavButton: UIButton {
         self.layer.shadowOffset = CGSize(width: 0, height: 4)
         self.layer.shadowRadius = 8
         self.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.10).cgColor
-        self.height(54)
-        self.width(54)
+        self.height(44)
+        self.width(44)
         self.tag = tagNumber
     }
     

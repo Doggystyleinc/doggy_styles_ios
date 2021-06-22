@@ -9,7 +9,6 @@ import UIKit
 
 final class RefurAFriendController: UIViewController {
     private let rightIcon = DSNavButton(imageName: Constants.closeButton, tagNumber: 0)
-    private let logo = LogoImageView(frame: .zero)
     private let backgroundImage: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.image = UIImage(named: Constants.refurBackground)
@@ -73,13 +72,8 @@ extension RefurAFriendController {
         self.view.addSubview(backgroundImage)
         backgroundImage.edgesToSuperview()
         
-        logo.image = nil
-        self.view.addSubview(logo)
-        logo.topToSuperview(offset: 26, usingSafeArea: true)
-        logo.centerX(to: view)
-        
         self.view.addSubview(rightIcon)
-        rightIcon.leftToRight(of: logo, offset: 70)
+        rightIcon.right(to: view, offset: -20)
         rightIcon.topToSuperview(offset: 20, usingSafeArea: true)
         
         self.view.addSubview(titleLabel)

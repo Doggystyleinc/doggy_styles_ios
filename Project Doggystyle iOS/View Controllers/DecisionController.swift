@@ -95,8 +95,6 @@ extension DecisionController {
     @objc func presentHomeController() {
         let homeVC = HomeViewController()
         let navVC = UINavigationController(rootViewController: homeVC)
-        
-        navVC.navigationBar.isHidden = true
         navVC.modalPresentationStyle = .fullScreen
         navigationController?.present(navVC, animated: true)
     }
