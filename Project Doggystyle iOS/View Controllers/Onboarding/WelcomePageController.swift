@@ -21,41 +21,14 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
     private let page2 = SlideTwo()
     private let page3 = SlideThree()
     
-    private lazy var signUpButton : UIButton = {
-        let cbf = UIButton(type: .system)
-        cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.setTitle("Sign Up", for: UIControl.State.normal)
-        cbf.titleLabel?.font = UIFont.poppinsBold(size: 16)
-        cbf.titleLabel?.adjustsFontSizeToFitWidth = true
-        cbf.titleLabel?.numberOfLines = 1
-        cbf.titleLabel?.adjustsFontForContentSizeCategory = true
-        cbf.titleLabel?.textColor = .white
-        cbf.backgroundColor = .dsOrange
-        cbf.layer.cornerRadius = 14
-        cbf.layer.masksToBounds = true
-        cbf.tintColor = .white
+    private lazy var signUpButton: DSButton = {
+        let cbf = DSButton(titleText: "Sign Up", backgroundColor: .dsOrange, titleColor: .white)
         cbf.addTarget(self, action: #selector(self.handleSignUpButton), for: UIControl.Event.touchUpInside)
-        
         return cbf
     }()
     
-    private lazy var loginButton : UIButton = {
-        let cbf = UIButton(type: .system)
-        cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.setTitle("Login", for: UIControl.State.normal)
-        cbf.titleLabel?.font = UIFont.poppinsBold(size: 16)
-        cbf.titleLabel?.adjustsFontSizeToFitWidth = true
-        cbf.titleLabel?.numberOfLines = 1
-        cbf.titleLabel?.adjustsFontForContentSizeCategory = true
-        cbf.backgroundColor = .white
-        cbf.layer.cornerRadius = 14
-        cbf.layer.masksToBounds = false
-        cbf.tintColor = .dsOrange
-        cbf.layer.shadowOpacity = 1
-        cbf.layer.shadowOffset = CGSize(width: 0, height: 4)
-        cbf.layer.shadowRadius = 8
-        cbf.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.10).cgColor
-        cbf.layer.shouldRasterize = false
+    private lazy var loginButton: DSButton = {
+        let cbf = DSButton(titleText: "Login", backgroundColor: .white, titleColor: .dsOrange)
         cbf.addTarget(self, action: #selector(self.handleLoginButton), for: UIControl.Event.touchUpInside)
         return cbf
     }()

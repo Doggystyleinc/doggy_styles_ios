@@ -44,6 +44,7 @@
 		CD6DD01A2680FC4100BC376B /* GrabDeviceID.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD0192680FC4100BC376B /* GrabDeviceID.swift */; };
 		CD6DD01D26827E6A00BC376B /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD01C26827E6A00BC376B /* LoginController.swift */; };
 		CD6DD01F26827EA500BC376B /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD01E26827EA500BC376B /* RegistrationController.swift */; };
+		CD6DD02226839ED600BC376B /* DSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD02126839ED600BC376B /* DSTextField.swift */; };
 		CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */; };
 		CDCCD0B0265D4DB4007ABECF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0AF265D4DB4007ABECF /* Constants.swift */; };
 		CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */; };
@@ -147,6 +148,7 @@
 		CD6DD0192680FC4100BC376B /* GrabDeviceID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrabDeviceID.swift; sourceTree = "<group>"; };
 		CD6DD01C26827E6A00BC376B /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		CD6DD01E26827EA500BC376B /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
+		CD6DD02126839ED600BC376B /* DSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSTextField.swift; sourceTree = "<group>"; };
 		CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotServicedNumberSubmittedViewController.swift; sourceTree = "<group>"; };
 		CDCCD0AF265D4DB4007ABECF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToEnableLocationView.swift; sourceTree = "<group>"; };
@@ -344,6 +346,14 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		CD6DD02026839EBF00BC376B /* Text Fields */ = {
+			isa = PBXGroup;
+			children = (
+				CD6DD02126839ED600BC376B /* DSTextField.swift */,
+			);
+			path = "Text Fields";
+			sourceTree = "<group>";
+		};
 		CDCCD0B3265EB5C5007ABECF /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
@@ -422,6 +432,7 @@
 		CDE8710D2652E2B20082551B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CD6DD02026839EBF00BC376B /* Text Fields */,
 				CD6DCFFD267ACAC500BC376B /* Cells */,
 				CD319F7B26794D4D00F48E3C /* Labels */,
 				CDE8710F2652E2C50082551B /* UIButtons */,
@@ -783,6 +794,7 @@
 				CD6DD005267B9DAF00BC376B /* DSContainerView.swift in Sources */,
 				CDE870DE2652E1610082551B /* AppDelegate.swift in Sources */,
 				CD6868842654373A0064ADFE /* UIButton+Ext.swift in Sources */,
+				CD6DD02226839ED600BC376B /* DSTextField.swift in Sources */,
 				CD6DCFF6267A820700BC376B /* Pet.swift in Sources */,
 				CDE8711C2652E3030082551B /* TextField+Ext.swift in Sources */,
 				CD6DD001267AD81100BC376B /* AppointmentsViewController.swift in Sources */,
