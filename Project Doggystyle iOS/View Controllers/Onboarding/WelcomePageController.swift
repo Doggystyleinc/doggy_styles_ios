@@ -35,9 +35,8 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
     
     private let dsCompanyLogoImage = LogoImageView(withImage: UIImage(named: Constants.dsLogoWhite))
     
-    private lazy var registerWithfacebookButton : UIButton = {
+    private let registerWithfacebookButton : UIButton = {
         let cbf = UIButton(type: .system)
-        cbf.translatesAutoresizingMaskIntoConstraints = false
         cbf.backgroundColor = .clear
         let image = UIImage(named: "Facebook Connect")?.withRenderingMode(.alwaysOriginal)
         cbf.setImage(image, for: .normal)
@@ -47,9 +46,8 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
         
     }()
     
-    private lazy var registerWithGoogleButton : UIButton = {
+    private let registerWithGoogleButton : UIButton = {
         let cbf = UIButton(type: .system)
-        cbf.translatesAutoresizingMaskIntoConstraints = false
         cbf.backgroundColor = .clear
         let image = UIImage(named: "Google Connect")?.withRenderingMode(.alwaysOriginal)
         cbf.setImage(image, for: .normal)
@@ -194,11 +192,8 @@ extension WelcomePageController { }
 //MARK: - @objc
 extension WelcomePageController {
     @objc func handleSignUpButton() {
-        print(#function)
-//        let registrationController = RegistrationLoginController()
-//        registrationController.isRegistration = true
-//        self.navigationController?.pushViewController(registrationController, animated: true)
-//        UIDevice.vibrateLight()
+        let registrationController = RegistrationController()
+        self.navigationController?.pushViewController(registrationController, animated: true)
     }
     
     @objc func handleLoginButton() {

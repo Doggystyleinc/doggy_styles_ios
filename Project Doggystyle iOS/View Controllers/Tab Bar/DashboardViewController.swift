@@ -88,6 +88,11 @@ final class DashboardViewController: UIViewController {
         self.addAppointmentViews()
         self.addServiceViews()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Service.shared.fetchCurrentUser()
+    }
 }
 
 //MARK: - Configure View Controller

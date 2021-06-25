@@ -295,7 +295,7 @@ extension EmailSignInViewController {
     @objc private func didTapNext() {
         showLoadingView()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             guard let emailText = self.emailTextField.text, let password = self.passwordTextField.text else {
                 return
             }
@@ -328,9 +328,9 @@ extension EmailSignInViewController {
                 return
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.dismissLoadingView()
-                let instructionsVC = InstructionsViewController()
+                let instructionsVC = PasswordResetController()
                 self.navigationController?.pushViewController(instructionsVC, animated: true)
             }
         }

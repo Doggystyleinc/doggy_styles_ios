@@ -55,6 +55,7 @@ struct Constants {
     
     //MARK: - S
     static let signOutNavIcon = "Sign Out"
+    static let successIcon = "Success Icon"
     
     //MARK: - U
     static let uploadFiles = "uploadedFiles"

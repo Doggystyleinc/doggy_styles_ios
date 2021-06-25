@@ -43,7 +43,7 @@ class Service : NSObject {
     
     
     //MARK: - REGISTRATION: ERROR CODE 200 PROMPTS REGISTRATION SUCCESS WITH LOGIN FAILURE, SO CALL LOGIN FUNCTION AGAIN INDEPENDENTLY. 500 = REGISTRATION FAILED, CALL THIS FUNCTION AGAIN FROM SCRATCH.
-    func FirebaseRegistrationAndLogin(usersEmailAddress : String, usersPassword : String, mobileNumber : String, referralCode : String?, signInMethod : String, completion : @escaping (_ registrationSuccess : Bool, _ response : String, _ responseCode : Int)->()) {
+    func FirebaseRegistrationAndLogin(userFirstName: String, userLastName: String, usersEmailAddress : String, usersPassword : String, mobileNumber : String, referralCode : String?, signInMethod : String, completion : @escaping (_ registrationSuccess : Bool, _ response : String, _ responseCode : Int)->()) {
         let databaseRef = Database.database().reference()
         
         var referralCodeGrab : String = "no_code"
@@ -90,6 +90,8 @@ class Service : NSObject {
                     
                     let values : [String : Any] = [
                         "users_firebase_uid" : firebase_uid,
+                        "user_first_name" : userFirstName,
+                        "user_last_name" : userLastName,
                         "users_email" : usersEmailAddress,
                         "users_sign_in_method" : signInMethod,
                         "users_sign_up_date" : timeStamp,
@@ -97,7 +99,8 @@ class Service : NSObject {
                         "is_users_terms_and_conditions_accepted" : true,
                         "users_phone_number" : mobileNumber,
                         "users_ref_key" : ref_key,
-                        "referral_code_grab" : referralCodeGrab]
+                        "referral_code_grab" : referralCodeGrab
+                    ]
                     
                     ref.updateChildValues(values) { (error, ref) in
                         if error != nil {

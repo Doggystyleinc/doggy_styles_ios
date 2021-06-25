@@ -14,7 +14,6 @@ final class DSTextField: UITextField {
         super.init(frame: .zero)
         self.font = UIFont.poppinsSemiBold(size: 16)
         self.autocorrectionType = .no
-        self.autocapitalizationType = .none
         self.borderStyle = .none
         self.layer.cornerRadius = 10.0
         self.setLeftPaddingPoints(25)
