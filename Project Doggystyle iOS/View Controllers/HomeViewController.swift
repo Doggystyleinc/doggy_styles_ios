@@ -9,7 +9,6 @@ import UIKit
 import Firebase
 
 final class HomeViewController: UITabBarController {
-    private let databaseRef = Database.database().reference()
     private let dashboardController = DashboardViewController()
     private let appointmentController = AppointmentsViewController()
     private let profileController = ProfileViewController()

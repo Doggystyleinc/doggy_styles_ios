@@ -9,7 +9,6 @@ import UIKit
 
 final class NotificationController: UIViewController {
     private let rightIcon = DSNavButton(imageName: Constants.closeButton, tagNumber: 0)
-    private let logo = LogoImageView(frame: .zero)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,14 +22,9 @@ final class NotificationController: UIViewController {
         self.view.addSubview(title)
         title.centerInSuperview()
         
-        logo.image = nil
-        self.view.addSubview(logo)
-        logo.topToSuperview(offset: 26, usingSafeArea: true)
-        logo.centerX(to: view)
-        
         self.view.addSubview(rightIcon)
-        rightIcon.leftToRight(of: logo, offset: 70)
-        rightIcon.topToSuperview(offset: 14, usingSafeArea: true)
+        rightIcon.right(to: view, offset: -20)
+        rightIcon.topToSuperview(offset: 20, usingSafeArea: true)
         
         rightIcon.addTarget(self, action: #selector(didTapClose), for: .touchUpInside)
     }

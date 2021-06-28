@@ -23,6 +23,7 @@ extension UIViewController {
         }
         
         let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.color = .dsOrange
         containerView.addSubview(activityIndicator)
         activityIndicator.centerInSuperview()
         activityIndicator.startAnimating()

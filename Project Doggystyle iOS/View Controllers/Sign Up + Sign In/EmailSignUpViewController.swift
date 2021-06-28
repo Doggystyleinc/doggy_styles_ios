@@ -350,39 +350,39 @@ extension EmailSignUpViewController {
             return
         }
         
-        Service.shared.FirebaseRegistrationAndLogin(usersEmailAddress: safeEmail, usersPassword: safePassword, mobileNumber: safeMobile, referralCode: referralCode, signInMethod: Constants.email) { registrationSucces, response, responseCode in
-            
-            if registrationSucces == true {
-                self.presentRequestVC()
-            } else  {
-                switch responseCode {
-                case 200:
-                    Service.shared.FirebaseLogin(usersEmailAddress: safeEmail, usersPassword: safePassword) { success, response, responseCode in
-                        if success == true {
-                            self.presentRequestVC()
-                        } else {
-                            //Firebase error. User is registered but unable to login.
-                            self.presentAlertOnMainThread(title: "Something went wrong...", message: "Unable to login. Please try again later.", buttonTitle: "Ok")
-                        }
-                    }
-                case 500:
-                    self.errorCounter += 1
-                    if self.errorCounter < 2 {
-                        self.didTapSignUp()
-                    } else {
-                        //Firebase error. Clear text fields. Prompt user to try again.
-                        self.presentAlertOnMainThread(title: "Something went wrong...", message: "Unable to register. Please try again.", buttonTitle: "Ok")
-                        self.emailTextField.text = nil
-                        self.passwordTextField.text = nil
-                        self.confirmPWTextField.text = nil
-                        self.mobileTextField.text = nil
-                        self.referralTextField.text = nil
-                    }
-                default:
-                    break
-                }
-            }
-        }
+//        Service.shared.FirebaseRegistrationAndLogin(usersEmailAddress: safeEmail, usersPassword: safePassword, mobileNumber: safeMobile, referralCode: referralCode, signInMethod: Constants.email) { registrationSucces, response, responseCode in
+//            
+//            if registrationSucces == true {
+//                self.presentRequestVC()
+//            } else  {
+//                switch responseCode {
+//                case 200:
+//                    Service.shared.FirebaseLogin(usersEmailAddress: safeEmail, usersPassword: safePassword) { success, response, responseCode in
+//                        if success == true {
+//                            self.presentRequestVC()
+//                        } else {
+//                            //Firebase error. User is registered but unable to login.
+//                            self.presentAlertOnMainThread(title: "Something went wrong...", message: "Unable to login. Please try again later.", buttonTitle: "Ok")
+//                        }
+//                    }
+//                case 500:
+//                    self.errorCounter += 1
+//                    if self.errorCounter < 2 {
+//                        self.didTapSignUp()
+//                    } else {
+//                        //Firebase error. Clear text fields. Prompt user to try again.
+//                        self.presentAlertOnMainThread(title: "Something went wrong...", message: "Unable to register. Please try again.", buttonTitle: "Ok")
+//                        self.emailTextField.text = nil
+//                        self.passwordTextField.text = nil
+//                        self.confirmPWTextField.text = nil
+//                        self.mobileTextField.text = nil
+//                        self.referralTextField.text = nil
+//                    }
+//                default:
+//                    break
+//                }
+//            }
+//        }
     }
     
     @objc func adjustForKeyboard(notification: Notification) {

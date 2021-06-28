@@ -14,11 +14,10 @@ import SDWebImage
 final class DashboardViewController: UIViewController {
     var homeController: HomeViewController?
     private let package = Package.examplePackage
+    private let databaseRef = Database.database().reference()
     private let pets: [Pet] = [Pet.allPets, Pet.petOne, Pet.petTwo, Pet.petThree, Pet.petFour]
     private let appointment = Appointment.exampleAppointment
     
-    private let leftIcon = DSNavButton(imageName: Constants.refurNavIcon, tagNumber: 0)
-    private let rightIcon = DSNavButton(imageName: Constants.bellIcon, tagNumber: 1)
     private let logo = LogoImageView(frame: .zero)
     
     private let appointmentHeader = DSBoldLabel(title: "Upcoming Appointment", size: 22.0)
@@ -31,6 +30,7 @@ final class DashboardViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 74, height: 74)
         layout.scrollDirection = .horizontal
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(PetCollectionViewCell.self, forCellWithReuseIdentifier: PetCollectionViewCell.reuseIdentifier)
@@ -88,18 +88,22 @@ final class DashboardViewController: UIViewController {
         self.addPetCollectionView()
         self.addAppointmentViews()
         self.addServiceViews()
+        Service.shared.fetchCurrentUser()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Service.shared.fetchCurrentUser()
     }
 }
 
 //MARK: - Configure View Controller
 extension DashboardViewController {
     private func configureVC() {
+        self.navigationController?.navigationBar.isHidden = false
         self.view.backgroundColor = .dsViewBackground
         self.petCollectionView.dataSource = self
         self.petCollectionView.delegate = self
-        
-        leftIcon.addTarget(self, action: #selector(didTap(_:)), for: .touchUpInside)
-        rightIcon.addTarget(self, action: #selector(didTap(_:)), for: .touchUpInside)
     }
 }
 
@@ -107,28 +111,18 @@ extension DashboardViewController {
 //MARK: - Configure Views
 extension DashboardViewController {
     private func addNavViews() {
-        self.view.addSubview(logo)
-        logo.topToSuperview(offset: 26, usingSafeArea: true)
-        logo.centerX(to: view)
+        self.navigationItem.titleView = logo
         
-        self.view.addSubview(leftIcon)
-        leftIcon.rightToLeft(of: logo, offset: -70)
-        leftIcon.topToSuperview(offset: 14, usingSafeArea: true)
+        let leftBarImage = UIImage(named: Constants.refurNavIcon)?.withRenderingMode(.alwaysOriginal)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: leftBarImage, landscapeImagePhone: nil, style: .plain, target: self, action: #selector(didTapRefur))
         
-        self.view.addSubview(rightIcon)
-        rightIcon.leftToRight(of: logo, offset: 70)
-        rightIcon.top(to: leftIcon)
-        
-        rightIcon.addSubview(notificationsButton)
-        notificationsButton.height(20)
-        notificationsButton.width(20)
-        notificationsButton.top(to: rightIcon, offset: 4)
-        notificationsButton.right(to: rightIcon, offset: -4)
+        let rightBarImage = UIImage(named: Constants.bellIcon)?.withRenderingMode(.alwaysOriginal)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: rightBarImage, landscapeImagePhone: nil, style: .plain, target: self, action: #selector(didTapNotification))
     }
     
     private func addPetCollectionView() {
         self.view.addSubview(petCollectionView)
-        petCollectionView.topToBottom(of: leftIcon, offset: 10)
+        petCollectionView.topToSuperview(offset: 4, usingSafeArea: true)
         petCollectionView.left(to: view, offset: 2)
         petCollectionView.height(120)
         petCollectionView.right(to: view, offset: -2)
@@ -136,14 +130,15 @@ extension DashboardViewController {
     
     private func addAppointmentViews() {
         self.view.addSubview(appointmentHeader)
-        appointmentHeader.left(to: leftIcon)
-        appointmentHeader.topToBottom(of: petCollectionView, offset: 20)
+        appointmentHeader.left(to: view, offset: 30.0)
+        appointmentHeader.right(to: view, offset: -30.0)
+        appointmentHeader.topToBottom(of: petCollectionView, offset: 24)
         
         self.view.addSubview(appointmentContainer)
         appointmentContainer.topToBottom(of: appointmentHeader, offset: 10.0)
-        appointmentContainer.left(to: leftIcon)
+        appointmentContainer.left(to: appointmentHeader)
         appointmentContainer.height(152)
-        appointmentContainer.right(to: rightIcon)
+        appointmentContainer.right(to: appointmentHeader)
         
         //Move this once we decided if numberOfPets > 2
         let imageViewOne = UIImageView(frame: .zero)
@@ -191,13 +186,13 @@ extension DashboardViewController {
         
         self.view.addSubview(viewAllAppointmentsButton)
         viewAllAppointmentsButton.centerX(to: appointmentContainer)
-        viewAllAppointmentsButton.topToBottom(of: appointmentContainer, offset: 6.0)
+        viewAllAppointmentsButton.topToBottom(of: appointmentContainer, offset: 2.0)
         viewAllAppointmentsButton.width(150)
     }
     
     private func addServiceViews() {
         self.view.addSubview(serviceHeader)
-        serviceHeader.topToBottom(of: viewAllAppointmentsButton, offset: 20.0)
+        serviceHeader.topToBottom(of: viewAllAppointmentsButton, offset: 12.0)
         serviceHeader.left(to: appointmentHeader)
         
         self.view.addSubview(servicesContainer)
@@ -208,7 +203,7 @@ extension DashboardViewController {
         
         self.view.addSubview(viewAllServicesButton)
         viewAllServicesButton.centerX(to: servicesContainer)
-        viewAllServicesButton.topToBottom(of: servicesContainer, offset: 6.0)
+        viewAllServicesButton.topToBottom(of: servicesContainer, offset: 2.0)
         viewAllServicesButton.width(150)
         
         let serviceView = ServiceOfTheWeekView(package: package)
@@ -219,20 +214,14 @@ extension DashboardViewController {
 
 //MARK: - @objc Functions
 extension DashboardViewController {
-    @objc private func didTap(_ sender: UIButton) {
-        switch sender.tag {
-        //Refur Button
-        case 0:
-            let refurVC = RefurAFriendController()
-            self.present(refurVC, animated: true)
-            
-        //Notification Button
-        case 1:
-            let notificationVC = NotificationController()
-            self.present(notificationVC, animated: true)
-        default:
-            break
-        }
+    @objc private func didTapRefur() {
+        let refurVC = RefurAFriendController()
+        self.present(refurVC, animated: true)
+    }
+    
+    @objc private func didTapNotification() {
+        let notificationVC = NotificationController()
+        self.present(notificationVC, animated: true)
     }
     
     @objc private func didTapAll() {
@@ -260,6 +249,4 @@ extension DashboardViewController: UICollectionViewDelegate, UICollectionViewDat
         cell.configure(with: pet)
         return cell
     }
-    
-    
 }

@@ -14,6 +14,7 @@ struct Constants {
     
     //MARK: - B
     static let bellIcon = "Bell Notifications Icon"
+    static let backIcon = "Back Icon"
     
     //MARK: - C
     static let closeButton = "Close Button"
@@ -54,6 +55,7 @@ struct Constants {
     
     //MARK: - S
     static let signOutNavIcon = "Sign Out"
+    static let successIcon = "Success Icon"
     
     //MARK: - U
     static let uploadFiles = "uploadedFiles"

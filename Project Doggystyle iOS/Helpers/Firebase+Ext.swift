@@ -43,7 +43,7 @@ class Service : NSObject {
     
     
     //MARK: - REGISTRATION: ERROR CODE 200 PROMPTS REGISTRATION SUCCESS WITH LOGIN FAILURE, SO CALL LOGIN FUNCTION AGAIN INDEPENDENTLY. 500 = REGISTRATION FAILED, CALL THIS FUNCTION AGAIN FROM SCRATCH.
-    func FirebaseRegistrationAndLogin(usersEmailAddress : String, usersPassword : String, mobileNumber : String, referralCode : String?, signInMethod : String, completion : @escaping (_ registrationSuccess : Bool, _ response : String, _ responseCode : Int)->()) {
+    func FirebaseRegistrationAndLogin(userFirstName: String, userLastName: String, usersEmailAddress : String, usersPassword : String, mobileNumber : String, referralCode : String?, signInMethod : String, completion : @escaping (_ registrationSuccess : Bool, _ response : String, _ responseCode : Int)->()) {
         let databaseRef = Database.database().reference()
         
         var referralCodeGrab : String = "no_code"
@@ -90,6 +90,8 @@ class Service : NSObject {
                     
                     let values : [String : Any] = [
                         "users_firebase_uid" : firebase_uid,
+                        "user_first_name" : userFirstName,
+                        "user_last_name" : userLastName,
                         "users_email" : usersEmailAddress,
                         "users_sign_in_method" : signInMethod,
                         "users_sign_up_date" : timeStamp,
@@ -97,7 +99,8 @@ class Service : NSObject {
                         "is_users_terms_and_conditions_accepted" : true,
                         "users_phone_number" : mobileNumber,
                         "users_ref_key" : ref_key,
-                        "referral_code_grab" : referralCodeGrab]
+                        "referral_code_grab" : referralCodeGrab
+                    ]
                     
                     ref.updateChildValues(values) { (error, ref) in
                         if error != nil {
@@ -260,7 +263,6 @@ extension Service {
         let ref = databaseRef.child(Constants.allUsers).child(userUID)
         
         ref.observeSingleEvent(of: .value) { snapshot in
-            
             if let JSON = snapshot.value as? [String : Any] {
                 let userFirstName = JSON["user_first_name"] as? String ?? "nil"
                 let userLastName = JSON["user_last_name"] as? String ?? "nil"
@@ -269,12 +271,27 @@ extension Service {
                 let userProfileImageURL = JSON["profile_image_url"] as? String ?? "nil"
                 let uploadedDocumentURL = JSON["uploaded_document_url"] as? String ?? "nil"
                 
+                
                 userProfileStruct.firstName = userFirstName
                 userProfileStruct.lastName = userLastName
                 userProfileStruct.phoneNumber = userPhoneNumber
                 userProfileStruct.email = userEmail
                 userProfileStruct.profileURL = userProfileImageURL
                 userProfileStruct.uploadedDocumentURL = uploadedDocumentURL
+                
+                let path = databaseRef.child(Constants.allUsers).child(userUID).child("pets")
+                path.observe(.childAdded) { snapshot in
+                    
+                    if let JSON = snapshot.value as? [String : String] {
+                        let petsName = JSON["pet_name"] ?? "nil"
+                        
+                        let pet = Pet(name: petsName, imageURL: "testing")
+                        
+                        if !userProfileStruct.pets.contains(pet) {
+                            userProfileStruct.pets.append(pet)
+                        }
+                    }
+                }
             }
         }
     }
@@ -434,6 +451,54 @@ extension Service {
             }
             completion(true)
             Service.shared.fetchCurrentUser()
+        }
+    }
+}
+
+//MARK: - Add/Upload Pet
+extension Service {
+    func uploadData(forPet pet: Pet, completion: @escaping (_ isComplete: Bool) -> ()) {
+        let databaseRef = Database.database().reference()
+        guard let user_uid = Auth.auth().currentUser?.uid else { return }
+        
+        let path = databaseRef.child(Constants.allUsers).child(user_uid).child("pets").childByAutoId()
+        
+        let value : [String : String] = [
+            "pet_name" : pet.name
+        ]
+        
+        path.updateChildValues(value) { error, databaseRef in
+            if error != nil {
+                print(error?.localizedDescription as Any)
+                completion(false)
+                return
+            }
+            print("* Successfully Updated Pet Data *")
+            completion(true)
+        }
+    }
+}
+
+//MARK: Add/Upload Appointment
+extension Service {
+    func uploadData(forAppointment appointment: Appointment, completion: @escaping (_ isComplete: Bool) -> ()) {
+        let databaseRef = Database.database().reference()
+        guard let user_uid = Auth.auth().currentUser?.uid else { return }
+        
+        let path = databaseRef.child(Constants.allUsers).child(user_uid).child("appointments").childByAutoId()
+        
+        let value : [String : String] = [
+            "appointment_stylist" : appointment.stylist
+        ]
+        
+        path.updateChildValues(value) { error, databaseRef in
+            if error != nil {
+                print(error?.localizedDescription as Any)
+                completion(false)
+                return
+            }
+            print("* Successfully Updated Appointment Data *")
+            completion(true)
         }
     }
 }

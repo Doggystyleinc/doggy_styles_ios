@@ -148,7 +148,7 @@ extension ResetPasswordViewController: UITextFieldDelegate {
 //MARK: - @objc Functions
 extension ResetPasswordViewController {
     @objc private func didTapReset(_ sender: UIButton) {
-        self.navigationController?.pushViewController(SuccessfulPasswordResetViewController(), animated: true)
+        self.navigationController?.pushViewController(PasswordResetSuccessController(), animated: true)
     }
     
     @objc private func textDidChange(_ sender: UITextField) {
