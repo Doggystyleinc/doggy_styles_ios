@@ -263,7 +263,6 @@ extension Service {
         let ref = databaseRef.child(Constants.allUsers).child(userUID)
         
         ref.observeSingleEvent(of: .value) { snapshot in
-            
             if let JSON = snapshot.value as? [String : Any] {
                 let userFirstName = JSON["user_first_name"] as? String ?? "nil"
                 let userLastName = JSON["user_last_name"] as? String ?? "nil"
@@ -272,12 +271,27 @@ extension Service {
                 let userProfileImageURL = JSON["profile_image_url"] as? String ?? "nil"
                 let uploadedDocumentURL = JSON["uploaded_document_url"] as? String ?? "nil"
                 
+                
                 userProfileStruct.firstName = userFirstName
                 userProfileStruct.lastName = userLastName
                 userProfileStruct.phoneNumber = userPhoneNumber
                 userProfileStruct.email = userEmail
                 userProfileStruct.profileURL = userProfileImageURL
                 userProfileStruct.uploadedDocumentURL = uploadedDocumentURL
+                
+                let path = databaseRef.child(Constants.allUsers).child(userUID).child("pets")
+                path.observe(.childAdded) { snapshot in
+                    
+                    if let JSON = snapshot.value as? [String : String] {
+                        let petsName = JSON["pet_name"] ?? "nil"
+                        
+                        let pet = Pet(name: petsName, imageURL: "testing")
+                        
+                        if !userProfileStruct.pets.contains(pet) {
+                            userProfileStruct.pets.append(pet)
+                        }
+                    }
+                }
             }
         }
     }
@@ -437,6 +451,54 @@ extension Service {
             }
             completion(true)
             Service.shared.fetchCurrentUser()
+        }
+    }
+}
+
+//MARK: - Add/Upload Pet
+extension Service {
+    func uploadData(forPet pet: Pet, completion: @escaping (_ isComplete: Bool) -> ()) {
+        let databaseRef = Database.database().reference()
+        guard let user_uid = Auth.auth().currentUser?.uid else { return }
+        
+        let path = databaseRef.child(Constants.allUsers).child(user_uid).child("pets").childByAutoId()
+        
+        let value : [String : String] = [
+            "pet_name" : pet.name
+        ]
+        
+        path.updateChildValues(value) { error, databaseRef in
+            if error != nil {
+                print(error?.localizedDescription as Any)
+                completion(false)
+                return
+            }
+            print("* Successfully Updated Pet Data *")
+            completion(true)
+        }
+    }
+}
+
+//MARK: Add/Upload Appointment
+extension Service {
+    func uploadData(forAppointment appointment: Appointment, completion: @escaping (_ isComplete: Bool) -> ()) {
+        let databaseRef = Database.database().reference()
+        guard let user_uid = Auth.auth().currentUser?.uid else { return }
+        
+        let path = databaseRef.child(Constants.allUsers).child(user_uid).child("appointments").childByAutoId()
+        
+        let value : [String : String] = [
+            "appointment_stylist" : appointment.stylist
+        ]
+        
+        path.updateChildValues(value) { error, databaseRef in
+            if error != nil {
+                print(error?.localizedDescription as Any)
+                completion(false)
+                return
+            }
+            print("* Successfully Updated Appointment Data *")
+            completion(true)
         }
     }
 }

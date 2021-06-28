@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Pet {
+struct Pet: Equatable {
     let name: String
     let imageURL: String
 }

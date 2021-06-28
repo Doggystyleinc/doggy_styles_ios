@@ -16,6 +16,6 @@ struct UserProfileStruct {
     var phoneNumber : String?
     var profileURL: String?
     var uploadedDocumentURL: String?
-    var pets: [Pet]?
+    var pets: [Pet] = [Pet]()
     var appointments: [Appointment]?
 }

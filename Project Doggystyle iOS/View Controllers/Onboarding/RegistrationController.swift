@@ -14,7 +14,6 @@ final class RegistrationController: UIViewController {
     private let scrollView = UIScrollView(frame: .zero)
     private let containerView = UIView(frame: .zero)
     private let phoneNumberKit = PhoneNumberKit()
-    private var errorCounter = 0
     
     private let firstNameTextField: DSTextField = {
         let textField = DSTextField(placeholder: "First name")
@@ -42,6 +41,7 @@ final class RegistrationController: UIViewController {
         textField.keyboardType = .numbersAndPunctuation
         textField.returnKeyType = .next
         textField.tag = 2
+        textField.withExamplePlaceholder = true
         textField.layer.borderWidth = 0.5
         textField.layer.borderColor = UIColor.clear.cgColor
         textField.font = UIFont.poppinsSemiBold(size: 16)
@@ -173,50 +173,44 @@ extension RegistrationController {
         guard let firstName = firstNameTextField.text, let lastName = lastNameTextField.text, let mobileNumber = phoneNumberTextField.text, let emailText = emailTextField.text, let passwordText = passwordTextField.text else {
             return
         }
-        
+
         firstNameTextField.layer.borderColor = !firstName.isEmpty ? UIColor.clear.cgColor : UIColor.dsError.cgColor
         lastNameTextField.layer.borderColor = !lastName.isEmpty ? UIColor.clear.cgColor : UIColor.dsError.cgColor
         emailTextField.layer.borderColor = emailText.isValidEmail ? UIColor.clear.cgColor : UIColor.dsError.cgColor
         phoneNumberTextField.layer.borderColor = phoneNumberKit.isValidPhoneNumber(mobileNumber) ? UIColor.clear.cgColor : UIColor.dsError.cgColor
         passwordTextField.layer.borderColor = passwordText.isValidPassword ? UIColor.clear.cgColor : UIColor.dsError.cgColor
-        
+
         let safeEmail = emailText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), safePassword = passwordText.trimmingCharacters(in: .whitespacesAndNewlines), safeMobile = mobileNumber.trimmingCharacters(in: .whitespacesAndNewlines)
-        
+
         guard safeEmail.isValidEmail, safePassword.isValidPassword, phoneNumberKit.isValidPhoneNumber(safeMobile) else {
             return
         }
-        print("All Fields Correct!!!")
-//        Service.shared.FirebaseRegistrationAndLogin(userFirstName: firstName, userLastName: lastName, usersEmailAddress: safeEmail, usersPassword: safePassword, mobileNumber: safeMobile, referralCode: "referralCode", signInMethod: Constants.email) { registrationSucces, response, responseCode in
-//
-//            if registrationSucces == true {
-//                self.presentPinNumberVC()
-//            } else  {
-//                switch responseCode {
-//                case 200:
-//                    Service.shared.FirebaseLogin(usersEmailAddress: safeEmail, usersPassword: safePassword) { success, response, responseCode in
-//                        if success == true {
-//                            self.presentPinNumberVC()
-//                        } else {
-//                            //Firebase error. User is registered but unable to login.
-//                            self.presentAlertOnMainThread(title: "Something went wrong...", message: "Unable to login. Please try again later.", buttonTitle: "Ok")
-//                        }
-//                    }
-//                case 500:
-//                    self.errorCounter += 1
-//                    if self.errorCounter < 2 {
-//                        self.didTapNext()
-//                    } else {
-//                        //Firebase error. Clear text fields. Prompt user to try again.
-//                        self.presentAlertOnMainThread(title: "Something went wrong...", message: "Unable to register. Please try again.", buttonTitle: "Ok")
-//                        self.emailTextField.text = nil
-//                        self.passwordTextField.text = nil
-//                        self.phoneNumberTextField.text = nil
-//                    }
-//                default:
-//                    break
-//                }
-//            }
-//        }
+        
+        do {
+            let phoneNumber = try phoneNumberKit.parse(safeMobile)
+            let countryCode = "\(phoneNumber.countryCode)"
+            let nationalNumber = "\(phoneNumber.nationalNumber)"
+            
+            showLoadingView()
+            Service.shared.twilioPinRequest(phone: nationalNumber, countryCode: countryCode, deliveryMethod: "sms") { success in
+                if success {
+                    //Send to Pin Verification
+                    let pinNumberVC = PinNumberVerificationEntryController()
+                    pinNumberVC.phoneNumber = nationalNumber
+                    pinNumberVC.countryCode = countryCode
+                    pinNumberVC.firstName = firstName
+                    pinNumberVC.lastName = lastName
+                    pinNumberVC.email = safeEmail
+                    pinNumberVC.password = safePassword
+
+                    self.dismissLoadingView()
+                    let navVC = UINavigationController(rootViewController: pinNumberVC)
+                    self.navigationController?.present(navVC, animated: true)
+                }
+            }
+        } catch {
+            print("Error")
+        }
     }
     
     @objc func adjustForKeyboard(notification: Notification) {
@@ -247,6 +241,7 @@ extension RegistrationController: UITextFieldDelegate {
             textField.resignFirstResponder()
             //Auto scroll to the top
             scrollView.setContentOffset(.zero, animated: true)
+            didTapNext()
         }
         return false
     }

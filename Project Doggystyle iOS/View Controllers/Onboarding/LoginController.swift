@@ -6,10 +6,14 @@
 //
 
 import UIKit
+import Firebase
 
 final class LoginController: UIViewController {
     private let logo = LogoImageView(frame: .zero)
     private let welcomeLabel = DSBoldLabel(title: "Welcome back", size: 22)
+    
+    let databaseRef = Database.database().reference()
+    let pets: [Pet] = [Pet.petOne, Pet.petTwo, Pet.petThree]
     
     private let emailTextField: DSTextField = {
         let textField = DSTextField(placeholder: "Enter email")
@@ -88,7 +92,7 @@ final class LoginController: UIViewController {
         cbf.addTarget(self, action: #selector(didTapGoogle), for: UIControl.Event.touchUpInside)
         return cbf
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         dismissKeyboardTapGesture()

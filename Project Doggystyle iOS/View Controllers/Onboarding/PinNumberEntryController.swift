@@ -11,11 +11,15 @@ import Firebase
 
 final class PinNumberVerificationEntryController: UIViewController, UITextFieldDelegate {
     private let logo = LogoImageView(frame: .zero)
+    private var errorCounter = 0
     
     //AND ANY OTHER DATA YOU WOULD LIKE TO PASS IN HERE
-    var phoneNumber: String?
-    var countryCode: String?
-    var usersName: String?
+    var phoneNumber: String!
+    var countryCode: String!
+    var firstName: String!
+    var lastName: String!
+    var email: String!
+    var password: String!
     var pinTimer: Timer?
     var pinCounter: Int = 120
     
@@ -194,7 +198,7 @@ extension PinNumberVerificationEntryController {
                     
                 case "failed": print("Failed Verification")
                     self.dismissLoadingView()
-                    self.presentAlertOnMainThread(title: "Failed", message: "Please check your phone/pin # and try again.", buttonTitle: "Ok")
+                    self.presentAlertOnMainThread(title: "Failed", message: "Please check your phone or pin and try again.", buttonTitle: "Ok")
                     self.navigationController?.popViewController(animated: true)
                     
                 case "canceled" : print("Canceled Verification")
@@ -203,6 +207,7 @@ extension PinNumberVerificationEntryController {
                     self.navigationController?.popViewController(animated: true)
                     
                 case "approved": print("Verification code has been approved")
+                    self.registerUserInfo()
                     self.handleVerifiedPinState()
                     
                 default :
@@ -262,7 +267,7 @@ extension PinNumberVerificationEntryController {
         self.pinTimer?.invalidate()
         self.counterForPinLabel.text = ""
         self.pinCounter = 120
-        self.handleVerification(phone: self.phoneNumber ?? "", countryCode: self.countryCode ?? "", enteredCode: pin)
+        self.handleVerification(phone: self.phoneNumber, countryCode: self.countryCode, enteredCode: pin)
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -283,6 +288,37 @@ extension PinNumberVerificationEntryController {
         self.slotTwoTextField.resignFirstResponder()
         self.slotThreeTextField.resignFirstResponder()
         self.slotFourTextField.resignFirstResponder()
+    }
+    
+    private func registerUserInfo() {
+        Service.shared.FirebaseRegistrationAndLogin(userFirstName: firstName, userLastName: lastName, usersEmailAddress: email, usersPassword: password, mobileNumber: phoneNumber, referralCode: "referralCode", signInMethod: Constants.email) { registrationSucces, response, responseCode in
+            
+            if registrationSucces == true {
+                self.handleVerifiedPinState()
+            } else  {
+                switch responseCode {
+                case 200:
+                    Service.shared.FirebaseLogin(usersEmailAddress: self.email, usersPassword: self.password) { success, response, responseCode in
+                        if success == true {
+                            self.handleVerifiedPinState()
+                        } else {
+                            //Firebase error. User is registered but unable to login.
+                            self.presentAlertOnMainThread(title: "Something went wrong...", message: "Unable to login. Please try again later.", buttonTitle: "Ok")
+                        }
+                    }
+                case 500:
+                    self.errorCounter += 1
+                    if self.errorCounter < 2 {
+                        self.registerUserInfo()
+                    } else {
+                        //Firebase error. Clear text fields. Prompt user to try again.
+                        self.presentAlertOnMainThread(title: "Something went wrong...", message: "Unable to register. Please try again.", buttonTitle: "Ok")
+                    }
+                default:
+                    break
+                }
+            }
+        }
     }
 }
 
@@ -307,28 +343,28 @@ extension PinNumberVerificationEntryController {
             //
         } else {
             self.slotOneTextField.layer.borderColor = UIColor.dsOrange.cgColor
-            self.slotOneTextField.layer.borderWidth = 1.5
+            self.slotOneTextField.layer.borderWidth = 0.5
         }
         
         if slotTwoText.isEmpty {
             //
         } else {
             self.slotTwoTextField.layer.borderColor = UIColor.dsOrange.cgColor
-            self.slotTwoTextField.layer.borderWidth = 1.5
+            self.slotTwoTextField.layer.borderWidth = 0.5
         }
         
         if slotThreeText.isEmpty {
             //
         } else {
             self.slotThreeTextField.layer.borderColor = UIColor.dsOrange.cgColor
-            self.slotThreeTextField.layer.borderWidth = 1.5
+            self.slotThreeTextField.layer.borderWidth = 0.5
         }
         
         if slotFourText.isEmpty {
             //
         } else {
             self.slotFourTextField.layer.borderColor = UIColor.dsOrange.cgColor
-            self.slotFourTextField.layer.borderWidth = 1.5
+            self.slotFourTextField.layer.borderWidth = 0.5
         }
         
         if self.slotOneTextField.isFirstResponder && slotOneText.count > 0 {
@@ -347,12 +383,12 @@ extension PinNumberVerificationEntryController {
         self.handlePinCompletionEntry()
     }
     
+    //User is verified - push them to the next controller in the flow
     @objc func handleVerifiedPinState() {
-        print("User is verified - push them to the next controller in the flow")
-//        let homeVC = HomeViewController()
-//        let navVC = UINavigationController(rootViewController: homeVC)
-//        navVC.modalPresentationStyle = .fullScreen
-//        navigationController?.present(navVC, animated: true)
+        let homeVC = HomeViewController()
+        let navVC = UINavigationController(rootViewController: homeVC)
+        navVC.modalPresentationStyle = .fullScreen
+        navigationController?.present(navVC, animated: true)
     }
     
     @objc func handleCancelButton() {

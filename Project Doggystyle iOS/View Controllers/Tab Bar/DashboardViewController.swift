@@ -14,6 +14,7 @@ import SDWebImage
 final class DashboardViewController: UIViewController {
     var homeController: HomeViewController?
     private let package = Package.examplePackage
+    private let databaseRef = Database.database().reference()
     private let pets: [Pet] = [Pet.allPets, Pet.petOne, Pet.petTwo, Pet.petThree, Pet.petFour]
     private let appointment = Appointment.exampleAppointment
     
@@ -87,6 +88,7 @@ final class DashboardViewController: UIViewController {
         self.addPetCollectionView()
         self.addAppointmentViews()
         self.addServiceViews()
+        Service.shared.fetchCurrentUser()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -247,6 +249,4 @@ extension DashboardViewController: UICollectionViewDelegate, UICollectionViewDat
         cell.configure(with: pet)
         return cell
     }
-    
-    
 }
