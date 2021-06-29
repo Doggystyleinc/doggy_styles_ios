@@ -95,10 +95,6 @@
 		CDE8714C2652E4FE0082551B /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = CDE8714B2652E4FE0082551B /* FirebaseRemoteConfig */; };
 		CDE871502652E66A0082551B /* DecisionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE8714E2652E66A0082551B /* DecisionController.swift */; };
 		CDE871512652E66A0082551B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE8714F2652E66A0082551B /* HomeViewController.swift */; };
-		CDE871582652E6850082551B /* EmailSignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE871532652E6850082551B /* EmailSignInViewController.swift */; };
-		CDE871592652E6850082551B /* EmailSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE871542652E6850082551B /* EmailSignUpViewController.swift */; };
-		CDE8715A2652E6850082551B /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE871552652E6850082551B /* SignInViewController.swift */; };
-		CDE8715C2652E6850082551B /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE871572652E6850082551B /* SignUpViewController.swift */; };
 		CDE871612652E69B0082551B /* PasswordResetSuccessController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE8715E2652E69B0082551B /* PasswordResetSuccessController.swift */; };
 		CDE871622652E69B0082551B /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE8715F2652E69B0082551B /* ResetPasswordViewController.swift */; };
 		CDE871632652E69B0082551B /* PasswordResetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE871602652E69B0082551B /* PasswordResetController.swift */; };
@@ -192,10 +188,6 @@
 		CDE8712B2652E3360082551B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CDE8714E2652E66A0082551B /* DecisionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecisionController.swift; sourceTree = "<group>"; };
 		CDE8714F2652E66A0082551B /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		CDE871532652E6850082551B /* EmailSignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailSignInViewController.swift; sourceTree = "<group>"; };
-		CDE871542652E6850082551B /* EmailSignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailSignUpViewController.swift; sourceTree = "<group>"; };
-		CDE871552652E6850082551B /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
-		CDE871572652E6850082551B /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		CDE8715E2652E69B0082551B /* PasswordResetSuccessController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetSuccessController.swift; sourceTree = "<group>"; };
 		CDE8715F2652E69B0082551B /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		CDE871602652E69B0082551B /* PasswordResetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetController.swift; sourceTree = "<group>"; };
@@ -347,6 +339,9 @@
 				CD6DD01C26827E6A00BC376B /* LoginController.swift */,
 				CD6DD01E26827EA500BC376B /* RegistrationController.swift */,
 				CD6DD023268636DA00BC376B /* PinNumberEntryController.swift */,
+				CD6DD0112680DDC900BC376B /* SlideOne.swift */,
+				CD6DD0132680DDC900BC376B /* SlideThree.swift */,
+				CD6DD0122680DDC900BC376B /* SlideTwo.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -499,24 +494,9 @@
 				CD68688E2656EEEF0064ADFE /* Location */,
 				CD6DD006267FC0BE00BC376B /* Profile */,
 				CDE8715D2652E68D0082551B /* Resetting Password */,
-				CDE871522652E66F0082551B /* Sign Up + Sign In */,
 				CD203BF82667FA7700335D93 /* Tab Bar */,
 			);
 			path = "View Controllers";
-			sourceTree = "<group>";
-		};
-		CDE871522652E66F0082551B /* Sign Up + Sign In */ = {
-			isa = PBXGroup;
-			children = (
-				CDE871532652E6850082551B /* EmailSignInViewController.swift */,
-				CDE871542652E6850082551B /* EmailSignUpViewController.swift */,
-				CD6DD0112680DDC900BC376B /* SlideOne.swift */,
-				CD6DD0132680DDC900BC376B /* SlideThree.swift */,
-				CD6DD0122680DDC900BC376B /* SlideTwo.swift */,
-				CDE871552652E6850082551B /* SignInViewController.swift */,
-				CDE871572652E6850082551B /* SignUpViewController.swift */,
-			);
-			path = "Sign Up + Sign In";
 			sourceTree = "<group>";
 		};
 		CDE8715D2652E68D0082551B /* Resetting Password */ = {
@@ -776,9 +756,7 @@
 				CDE871222652E3030082551B /* UIViewController+Ext.swift in Sources */,
 				CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */,
 				CDE8711F2652E3030082551B /* Firebase+Ext.swift in Sources */,
-				CDE871592652E6850082551B /* EmailSignUpViewController.swift in Sources */,
 				CD203BF72667D3B900335D93 /* PDFViewController.swift in Sources */,
-				CDE8715C2652E6850082551B /* SignUpViewController.swift in Sources */,
 				CDCCD0B8265EB884007ABECF /* User.swift in Sources */,
 				CD6DD0182680DE2E00BC376B /* WelcomePageController.swift in Sources */,
 				CD6DD0142680DDC900BC376B /* SlideOne.swift in Sources */,
@@ -818,10 +796,8 @@
 				CD6DD0152680DDC900BC376B /* SlideTwo.swift in Sources */,
 				CDE871612652E69B0082551B /* PasswordResetSuccessController.swift in Sources */,
 				CD319F7D26794D5E00F48E3C /* DSBoldLabel.swift in Sources */,
-				CDE8715A2652E6850082551B /* SignInViewController.swift in Sources */,
 				CD6DD026268643F500BC376B /* DSSMSTextField.swift in Sources */,
 				CD6DD008267FC0F500BC376B /* MyPetsController.swift in Sources */,
-				CDE871582652E6850082551B /* EmailSignInViewController.swift in Sources */,
 				CDE871512652E66A0082551B /* HomeViewController.swift in Sources */,
 				CD203BFC2667FAB300335D93 /* ServicesController.swift in Sources */,
 				CD6DCFF4267A648400BC376B /* ServiceOfTheWeekView.swift in Sources */,
