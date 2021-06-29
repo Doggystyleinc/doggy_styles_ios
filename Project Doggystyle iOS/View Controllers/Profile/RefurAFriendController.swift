@@ -25,6 +25,14 @@ final class RefurAFriendController: UIViewController {
     private let refurCodeContainer = DSContainerView(frame: .zero)
     private let refurLabel = DSSemiBoldLabel(title: "https://www.doggystyle.com/u0387", size: 14)
     
+    private let refurLabelButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .clear
+        button.setTitle("", for: .normal)
+        button.addTarget(self, action: #selector(didTapCopy), for: .touchUpInside)
+        return button
+    }()
+    
     private let tapToCopyButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Tap to copy", for: UIControl.State.normal)
@@ -34,6 +42,7 @@ final class RefurAFriendController: UIViewController {
         button.backgroundColor = .clear
         button.layer.masksToBounds = true
         button.tintColor = .dsOrange
+        button.addTarget(self, action: #selector(didTapCopy), for: .touchUpInside)
         return button
     }()
     
@@ -100,6 +109,9 @@ extension RefurAFriendController {
         self.refurCodeContainer.addSubview(refurLabel)
         refurLabel.centerInSuperview()
         
+        self.refurCodeContainer.addSubview(refurLabelButton)
+        refurLabelButton.edgesToSuperview()
+        
         self.view.addSubview(tapToCopyButton)
         tapToCopyButton.topToBottom(of: refurCodeContainer, offset: 10)
         tapToCopyButton.left(to: titleLabel)
@@ -118,5 +130,10 @@ extension RefurAFriendController {
 extension RefurAFriendController {
     @objc private func didTapClose() {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func didTapCopy() {
+        let pasteboard = UIPasteboard.general
+        pasteboard.string = refurLabel.text
     }
 }

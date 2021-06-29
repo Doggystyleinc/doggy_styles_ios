@@ -11,6 +11,6 @@ final class CreateDoggyProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .systemTeal
+        self.view.backgroundColor = .dsViewBackground
     }
 }
