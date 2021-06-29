@@ -174,79 +174,24 @@ extension PinNumberVerificationEntryController {
 
 //MARK: - Helpers
 extension PinNumberVerificationEntryController {
-    private func listenForPendingResponsesFromToken(listeningKey: String, phone: String, countryCode: String) {
-        let ref = Database.database().reference().child("pin_verification_responses").child(listeningKey)
-        
-        ref.observe(.value) { (snap: DataSnapshot) in
-            
-            if snap.exists() {
-                guard let dic = snap.value as? [String : AnyObject] else {return}
-                
-                let status = dic["status"] as? String ?? ""
-                
-                switch status {
-                
-                case "error": print("Error: listening key")
-                    self.dismissLoadingView()
-                    self.presentAlertOnMainThread(title: "Error", message: "Seems something went wrong attempting to validate. Plase try again. If this problem persists, please contact Team Doggystyle directly.", buttonTitle: "Ok")
-                    self.registerButton.isHidden = false
-                    
-                case "expired": print("Verification code has been approved")
-                    self.dismissLoadingView()
-                    self.presentAlertOnMainThread(title: "Expired", message: "Code has expired. Please try again.", buttonTitle: "Ok")
-                    self.navigationController?.popViewController(animated: true)
-                    
-                case "failed": print("Failed Verification")
-                    self.dismissLoadingView()
-                    self.presentAlertOnMainThread(title: "Failed", message: "Please check your phone or pin and try again.", buttonTitle: "Ok")
-                    self.navigationController?.popViewController(animated: true)
-                    
-                case "canceled" : print("Canceled Verification")
-                    self.dismissLoadingView()
-                    self.presentAlertOnMainThread(title: "Canceled", message: "Verification was canceled", buttonTitle: "Ok")
-                    self.navigationController?.popViewController(animated: true)
-                    
-                case "approved": print("Verification code has been approved")
-                    self.registerUserInfo()
-                    self.handleVerifiedPinState()
-                    
-                default :
-                    self.dismissLoadingView()
-                    self.presentAlertOnMainThread(title: "Unknown Error", message: "Something is not right. Please try again.", buttonTitle: "Ok")
-                    self.navigationController?.popViewController(animated: true)
-                }
-                
-            } else if !snap.exists() {
-                print("nothing yet here from the linker")
-            }
-        }
-    }
-    
     private func handleVerification(phone : String, countryCode : String, enteredCode : String) {
         
         self.showLoadingView()
         self.resignation()
         
-        let unique_key = NSUUID().uuidString
-        let ref = Database.database().reference().child("pin_verification_requests").child(unique_key)
-        let values = [
-            "unique_key" : unique_key,
-            "users_phone_number" : phone,
-            "users_country_code" : countryCode,
-            "entered_code" : enteredCode
-        ]
-        
-        ref.updateChildValues(values) { (error, ref) in
+        ServiceHTTP.shared.twilioGetRequest(function_call: "request_for_authorization", users_country_code: countryCode, users_phone_number: phone, delivery_method: "sms", entered_code: enteredCode) { object, error in
             
-            if error != nil {
-                print(error?.localizedDescription as Any)
-                self.dismissLoadingView()
-                self.presentAlertOnMainThread(title: "Error", message: "Seems something went wrong attempting to register. Plase try again. If this problem persists, please contact Team Doggystyle directly.", buttonTitle: "Ok")
-                self.registerButton.isHidden = false
-                return
+            DispatchQueue.main.async {
+                if error == nil {
+                    self.dismissLoadingView()
+                    self.registerUserInfo()
+                    self.handleVerifiedPinState()
+                } else {
+                    self.dismissLoadingView()
+                    self.presentAlertOnMainThread(title: "Failed", message: "Please check your phone or pin and try again.", buttonTitle: "Ok")
+                    self.navigationController?.popViewController(animated: true)
+                }
             }
-            
-            self.listenForPendingResponsesFromToken(listeningKey: unique_key, phone: phone, countryCode: countryCode)
         }
     }
     

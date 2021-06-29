@@ -47,6 +47,7 @@
 		CD6DD02226839ED600BC376B /* DSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD02126839ED600BC376B /* DSTextField.swift */; };
 		CD6DD024268636DA00BC376B /* PinNumberEntryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD023268636DA00BC376B /* PinNumberEntryController.swift */; };
 		CD6DD026268643F500BC376B /* DSSMSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD025268643F500BC376B /* DSSMSTextField.swift */; };
+		CD6DD051268B9E8400BC376B /* ServiceSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6DD050268B9E8400BC376B /* ServiceSingleton.swift */; };
 		CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */; };
 		CDCCD0B0265D4DB4007ABECF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0AF265D4DB4007ABECF /* Constants.swift */; };
 		CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */; };
@@ -149,6 +150,7 @@
 		CD6DD02126839ED600BC376B /* DSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSTextField.swift; sourceTree = "<group>"; };
 		CD6DD023268636DA00BC376B /* PinNumberEntryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinNumberEntryController.swift; sourceTree = "<group>"; };
 		CD6DD025268643F500BC376B /* DSSMSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DSSMSTextField.swift; path = "Project Doggystyle iOS/Views/Text Fields/DSSMSTextField.swift"; sourceTree = SOURCE_ROOT; };
+		CD6DD050268B9E8400BC376B /* ServiceSingleton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceSingleton.swift; sourceTree = "<group>"; };
 		CDCCD092265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotServicedNumberSubmittedViewController.swift; sourceTree = "<group>"; };
 		CDCCD0AF265D4DB4007ABECF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CDCCD0B1265D7CC1007ABECF /* HowToEnableLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToEnableLocationView.swift; sourceTree = "<group>"; };
@@ -472,6 +474,7 @@
 				CD6DD0192680FC4100BC376B /* GrabDeviceID.swift */,
 				CDE871292652E3310082551B /* Localizable.strings */,
 				CDE871172652E3030082551B /* NetworkMonitor.swift */,
+				CD6DD050268B9E8400BC376B /* ServiceSingleton.swift */,
 				CDE8711A2652E3030082551B /* String + Ext.swift */,
 				CDE871132652E3030082551B /* TextField+Ext.swift */,
 				CD6868832654373A0064ADFE /* UIButton+Ext.swift */,
@@ -800,6 +803,7 @@
 				CD6DD008267FC0F500BC376B /* MyPetsController.swift in Sources */,
 				CDE871512652E66A0082551B /* HomeViewController.swift in Sources */,
 				CD203BFC2667FAB300335D93 /* ServicesController.swift in Sources */,
+				CD6DD051268B9E8400BC376B /* ServiceSingleton.swift in Sources */,
 				CD6DCFF4267A648400BC376B /* ServiceOfTheWeekView.swift in Sources */,
 				CDE870E02652E1610082551B /* SceneDelegate.swift in Sources */,
 				CD6DD00A267FC7A800BC376B /* PaymentController.swift in Sources */,

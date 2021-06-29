@@ -192,22 +192,28 @@ extension RegistrationController {
             let nationalNumber = "\(phoneNumber.nationalNumber)"
             
             showLoadingView()
-            Service.shared.twilioPinRequest(phone: nationalNumber, countryCode: countryCode, deliveryMethod: "sms") { success in
-                if success {
-                    //Send to Pin Verification
-                    let pinNumberVC = PinNumberVerificationEntryController()
-                    pinNumberVC.phoneNumber = nationalNumber
-                    pinNumberVC.countryCode = countryCode
-                    pinNumberVC.firstName = firstName
-                    pinNumberVC.lastName = lastName
-                    pinNumberVC.email = safeEmail
-                    pinNumberVC.password = safePassword
+            
+            ServiceHTTP.shared.twilioGetRequest(function_call: "request_for_pin", users_country_code: countryCode, users_phone_number: nationalNumber, delivery_method: "sms", entered_code: "nil") { object, error in
+                if error == nil {
+                    DispatchQueue.main.async {
+                        let pinNumberVC = PinNumberVerificationEntryController()
+                        pinNumberVC.phoneNumber = nationalNumber
+                        pinNumberVC.countryCode = countryCode
+                        pinNumberVC.firstName = firstName
+                        pinNumberVC.lastName = lastName
+                        pinNumberVC.email = safeEmail
+                        pinNumberVC.password = safePassword
 
+                        self.dismissLoadingView()
+                        let navVC = UINavigationController(rootViewController: pinNumberVC)
+                        self.navigationController?.present(navVC, animated: true)
+                    }
+                } else {
                     self.dismissLoadingView()
-                    let navVC = UINavigationController(rootViewController: pinNumberVC)
-                    self.navigationController?.present(navVC, animated: true)
+                    self.presentAlertOnMainThread(title: "Something went wrong...", message: error!.localizedDescription, buttonTitle: "Ok")
                 }
             }
+            
         } catch {
             print("Error")
         }
