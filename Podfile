@@ -7,4 +7,15 @@ target 'Project Doggystyle iOS' do
 
   # Pods for Project Doggystyle iOS
   pod 'GoogleSignIn'
+  
+  #Places API
+  pod 'GooglePlaces'
+  
+  #Symbols for icons
+  pod 'FontAwesome.swift'
+  
+  #Facebook Authenticaion
+  pod 'FBSDKLoginKit'
+  
+  
 end

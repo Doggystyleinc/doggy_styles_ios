@@ -2,22 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>API_KEY</key>
-	<string>AIzaSyCfb7KxeoO6WSfQ7jpcBbykiMvyRHv6zaw</string>
 	<key>CLIENT_ID</key>
-	<string>274920531684-uu0t513nbm9toai23llccdil9ajt4rvq.apps.googleusercontent.com</string>
+	<string>227362523264-h4mg5rm1ukf44c8blhu0dm89a6h3ibvq.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.274920531684-uu0t513nbm9toai23llccdil9ajt4rvq</string>
+	<string>com.googleusercontent.apps.227362523264-h4mg5rm1ukf44c8blhu0dm89a6h3ibvq</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDgQqE2rD0DRCA3RRobl7joQCBZA6hd5y0</string>
 	<key>GCM_SENDER_ID</key>
-	<string>274920531684</string>
+	<string>227362523264</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.kphonereact.Project-Doggystyle-iOS</string>
+	<string>com.doggystyle.Project-Doggystyle-iOS</string>
 	<key>PROJECT_ID</key>
-	<string>project-doggystyle-dev</string>
+	<string>doggystyle-dev</string>
 	<key>STORAGE_BUCKET</key>
-	<string>project-doggystyle-dev.appspot.com</string>
+	<string>doggystyle-dev.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:274920531684:ios:695977541fe3924dcaeef1</string>
-	<key>DATABASE_URL</key>
-	<string>https://project-doggystyle-dev-default-rtdb.firebaseio.com</string>
+	<string>1:227362523264:ios:041925f00aa7877c37fe65</string>
 </dict>
 </plist>

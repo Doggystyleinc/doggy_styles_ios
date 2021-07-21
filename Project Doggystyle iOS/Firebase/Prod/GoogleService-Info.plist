@@ -3,34 +3,32 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1019166453869-pilkte6fr40a8m0u038e2173e49lnjsq.apps.googleusercontent.com</string>
+	<string>701488023457-u560qeq3tr466ps9vcd3udacc7cgk245.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1019166453869-pilkte6fr40a8m0u038e2173e49lnjsq</string>
+	<string>com.googleusercontent.apps.701488023457-u560qeq3tr466ps9vcd3udacc7cgk245</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAuE5WiHkukOZ1dNPvqTf651Z_wPAQcXqs</string>
+	<string>AIzaSyD1XCe1AjtqR2zG-NTJhy95N8CMv27wbzc</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1019166453869</string>
+	<string>701488023457</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.kphonereact.Project-Doggystyle-iOS</string>
+	<string>com.doggystyle.Project-Doggystyle-iOS</string>
 	<key>PROJECT_ID</key>
-	<string>project-doggystyle-prod</string>
+	<string>doggystyle-prod</string>
 	<key>STORAGE_BUCKET</key>
-	<string>project-doggystyle-prod.appspot.com</string>
+	<string>doggystyle-prod.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1019166453869:ios:44cb16f68432d5fb1ecf64</string>
-	<key>DATABASE_URL</key>
-	<string>https://project-doggystyle-prod-default-rtdb.firebaseio.com</string>
+	<string>1:701488023457:ios:68df4fed285019feb96de0</string>
 </dict>
 </plist>

@@ -243,7 +243,7 @@ extension LocationNotServicedViewController {
                 
                 self.confirmButton.alpha = 1.0
                 
-                guard let userPhoneNumber = userProfileStruct.phoneNumber else { return }
+                guard let userPhoneNumber = userProfileStruct.users_phone_number else { return }
                 if !userPhoneNumber.isEmpty {
                     self.mobileTextField.text = userPhoneNumber
                 }
