@@ -12,6 +12,7 @@ final class PasswordResetController: UIViewController, UITextFieldDelegate {
     private let logo = LogoImageView(frame: .zero)
     private let resetLabel = DSBoldLabel(title: "Reset Password", size: 24)
     private let instructionsLabel = DSRegularLabel(title: "An email with reset instructions will be sent to your registered email address.", size: 16)
+    let mainLoadingScreen = MainLoadingScreen()
     
     lazy var emailTextField: CustomTextField = {
         
@@ -41,7 +42,7 @@ final class PasswordResetController: UIViewController, UITextFieldDelegate {
         etfc.layer.shouldRasterize = false
         etfc.addTarget(self, action: #selector(self.handleEmailTextFieldChange), for: .editingChanged)
         etfc.addTarget(self, action: #selector(self.handleEmailTextFieldBegin), for: .touchDown)
-
+        
         return etfc
         
     }()
@@ -58,7 +59,7 @@ final class PasswordResetController: UIViewController, UITextFieldDelegate {
         tel.isHidden = true
         tel.textColor = dividerGrey
         
-       return tel
+        return tel
     }()
     
     let placeHolderEmailLabel : UILabel = {
@@ -73,7 +74,7 @@ final class PasswordResetController: UIViewController, UITextFieldDelegate {
         tel.isHidden = false
         tel.textColor = dividerGrey
         
-       return tel
+        return tel
     }()
     
     private let sendButton: DSButton = {
@@ -115,7 +116,7 @@ final class PasswordResetController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         configureVC()
         addViews()
-//        self.emailTextField.becomeFirstResponder()
+        //        self.emailTextField.becomeFirstResponder()
     }
     
     @objc func handleBackButton() {
@@ -146,7 +147,7 @@ extension PasswordResetController {
         
         self.view.addSubview(self.typingEmailLabel)
         self.view.addSubview(self.placeHolderEmailLabel)
-
+        
         self.backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 57).isActive = true
         self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 11).isActive = true
         self.backButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
@@ -202,32 +203,30 @@ extension PasswordResetController {
     }
     
     @objc private func didTapSend() {
-        showLoadingView()
+        
+        self.emailTextField.resignFirstResponder()
         
         guard let email = self.emailTextField.text, email.isValidEmail else {
-            self.dismissLoadingView()
-            self.presentAlertOnMainThread(title: "Invalid Address", message: "Please check your email address for formatting.", buttonTitle: "Ok")
+            self.presentAlertOnMainThread(title: "Invalid Address", message: "Please check your email address", buttonTitle: "Ok")
             return
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.dismissLoadingView()
-            let resetSuccessVC = PasswordResetSuccessController()
-            self.navigationController?.pushViewController(resetSuccessVC, animated: true)
+        self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
+        
+        Service.shared.firebaseForgotPassword(validatedEmail: email) { isComplete, message in
+            
+            if isComplete {
+                
+                self.mainLoadingScreen.cancelMainLoadingScreen()
+                let resetSuccessVC = PasswordResetSuccessController()
+                self.navigationController?.pushViewController(resetSuccessVC, animated: true)
+                
+            } else {
+                
+                self.mainLoadingScreen.cancelMainLoadingScreen()
+                self.presentAlertOnMainThread(title: "Error", message: "This is on us. Please try again.", buttonTitle: "Ok")
+            }
+            
         }
-        //TODO: - Remember to enable this!
-//        Service.shared.firebaseForgotPassword(validatedEmail: email) { success, response in
-//            guard success == true else {
-//                self.dismissLoadingView()
-//                self.presentAlertOnMainThread(title: "Something went wrong...", message: response, buttonTitle: "Ok")
-//                return
-//            }
-//
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-//                self.dismissLoadingView()
-//                let resetSuccessVC = PasswordResetSuccessController()
-//                self.navigationController?.pushViewController(resetSuccessVC, animated: true)
-//            }
-//        }
     }
 }

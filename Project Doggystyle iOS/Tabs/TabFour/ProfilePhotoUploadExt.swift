@@ -16,6 +16,8 @@ extension ProfileController : UIImagePickerControllerDelegate, UINavigationContr
     
     @objc func checkForGalleryAuth() {
         
+        UIDevice.vibrateLight()
+        
         let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
         switch photoAuthorizationStatus {
         

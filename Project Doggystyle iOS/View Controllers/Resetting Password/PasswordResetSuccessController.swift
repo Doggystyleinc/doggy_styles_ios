@@ -26,7 +26,7 @@ final class PasswordResetSuccessController: UIViewController {
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
-        hl.text = "Password reset\nsuccessfully"
+        hl.text = "Password reset"
         hl.font = UIFont(name: dsHeaderFont, size: 24)
         hl.numberOfLines = 2
         hl.adjustsFontSizeToFitWidth = true
@@ -35,14 +35,8 @@ final class PasswordResetSuccessController: UIViewController {
        return hl
     }()
     
-    private let successSubText = DSRegularLabel(title: "Tap continue to log in to your Doggystyle account", size: 16)
-    
-//    private let openEmailButton: DSButton = {
-//        let button = DSButton(titleText: "Open Email", backgroundColor: .white, titleColor: .dsOrange)
-//        button.addTarget(self, action: #selector(didTapOpenEmail), for: .touchUpInside)
-//        return button
-//    }()
-//
+    private let successSubText = DSRegularLabel(title: "Tap continue to log in to your Doggystyle account once your password is reset VIA Email", size: 16)
+   
     lazy var loginButton: UIButton = {
         
         let cbf = UIButton(type: .system)
@@ -100,29 +94,11 @@ extension PasswordResetSuccessController {
         self.loginButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
     }
-}
-
-
-//MARK: - @objc Functions
-extension PasswordResetSuccessController {
+    
     @objc private func didTapLogin() {
-        let loginVC = LoginController()
+        let loginVC = WelcomePageController()
         let navVC = UINavigationController(rootViewController: loginVC)
         navVC.modalPresentationStyle = .fullScreen
         navigationController?.present(navVC, animated: true)
-    }
-    
-    @objc private func didTapOpenEmail() {
-        let mailURL = URL(string: "message://")!
-        if UIApplication.shared.canOpenURL(mailURL) {
-            UIApplication.shared.open(mailURL, options: [:])
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            let loginVC = LoginController()
-            let navVC = UINavigationController(rootViewController: loginVC)
-            navVC.modalPresentationStyle = .fullScreen
-            self.navigationController?.present(navVC, animated: true)
-        }
     }
 }

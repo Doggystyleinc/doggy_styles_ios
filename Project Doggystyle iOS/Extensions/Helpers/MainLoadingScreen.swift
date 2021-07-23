@@ -61,9 +61,10 @@ class MainLoadingScreen : NSObject {
             
         } completion: { (isComplete) in
             
+            self.loadingAnimation.stop()
+
             self.smokeView.removeFromSuperview()
             self.keyWindow.removeFromSuperview()
-            self.loadingAnimation.stop()
             self.loadingAnimation.removeFromSuperview()
             
         }

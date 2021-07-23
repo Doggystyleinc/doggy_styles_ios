@@ -32,10 +32,19 @@ final class DecisionController: UIViewController {
         
         view.backgroundColor = .dsViewBackground
         NetworkMonitor.shared.startMonitoring()
-
-        addViews()
-        authenticationCheck()
-        FontLister.enumerateFonts()
+        self.addViews()
+        self.authenticationCheck()
+        
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        guard let insetsTop = self.view.window?.safeAreaInsets.top else {return}
+        guard let insetsBottom = self.view.window?.safeAreaInsets.bottom else {return}
+    
+        globalFooterHeight = insetsBottom
+        globalStatusBarHeight = insetsTop
         
     }
     

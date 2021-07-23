@@ -30,9 +30,9 @@ class DSSMSTextField: UITextField {
         self.layer.shadowRadius = 8
         self.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.10).cgColor
         self.layer.shouldRasterize = false
-        self.layer.cornerRadius = 6
-        self.height(55)
-        self.width(55)
+        self.layer.cornerRadius = 12
+        self.height(70)
+        self.width(70)
     }
     
     required init?(coder: NSCoder) {

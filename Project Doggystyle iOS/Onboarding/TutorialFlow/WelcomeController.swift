@@ -122,7 +122,6 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
         self.delegate = self
         
         self.addViews()
-        self.initializeGoogleAuthentication()
         
 
         
@@ -131,8 +130,7 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         navigationController?.navigationBar.barStyle = .black
-        self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
-
+        self.initializeGoogleAuthentication()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -140,7 +138,6 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
         self.navigationController?.navigationBar.isHidden = true
         self.navigationController?.navigationBar.barStyle = .default
         self.navigationItem.setHidesBackButton(true, animated: false)
-        GIDSignIn.sharedInstance()?.presentingViewController = self
     }
     
     private func addViews() {
@@ -209,11 +206,13 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
     }
     
     @objc func handleSignUpButton() {
+        UIDevice.vibrateLight()
         let registrationController = RegistrationController()
         self.navigationController?.pushViewController(registrationController, animated: true)
     }
     
     @objc func handleLoginButton() {
+        UIDevice.vibrateLight()
         let loginController = LoginController()
         self.navigationController?.pushViewController(loginController, animated: true)
     }
@@ -263,6 +262,7 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
 extension WelcomePageController : GIDSignInDelegate {
     
     @objc func handleGoogleRegistration() {
+        UIDevice.vibrateLight()
         self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
         GIDSignIn.sharedInstance().signIn()
     }
@@ -310,6 +310,8 @@ extension WelcomePageController {
     
     @objc func handleFacebookRegistration() {
         
+        UIDevice.vibrateLight()
+
         self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
 
         let fbLoginManager : LoginManager = LoginManager()

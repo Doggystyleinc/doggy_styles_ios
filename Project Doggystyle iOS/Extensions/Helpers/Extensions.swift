@@ -118,8 +118,8 @@ class PhoneTextFieldWithPadding: PhoneNumberTextField {
 struct Statics {
     
     //MARK: - URLS AND LINKS FOR DUV MESSENGER
-    static let  TERMS_OF_SERVICE : String = "https://www..com"
-    static let  PRIVACY_POLICY : String = "https://www..com"
+    static let  TERMS_OF_SERVICE : String = "https://doggystyle.ca"
+    static let  PRIVACY_POLICY : String = "https://doggystyle.ca"
     
     static let  SUPPORT_EMAIL_ADDRESS : String = "support@.com"
     static let  FAQS : String = "https://www..com"
@@ -735,8 +735,9 @@ extension NSMutableAttributedString {
         let foundRange = self.mutableString.range(of: textToFind)
         
         if foundRange.location != NSNotFound {
+          
             self.addAttribute(NSAttributedString.Key.link, value: linkURL, range: foundRange)
-            
+
             print("found the link NSMutableAttributedString helper")
             return true
         }

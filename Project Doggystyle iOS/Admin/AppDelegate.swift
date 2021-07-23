@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         
         //GOOGLE PLACES KEY
-        GMSPlacesClient.provideAPIKey("AIzaSyCfb7KxeoO6WSfQ7jpcBbykiMvyRHv6zaw")
+        GMSPlacesClient.provideAPIKey("AIzaSyBBe3beW4gVBST98T2oHFdqrNeCJV-GWKM")
         
         //FACEBOOK CALLBACK
         ApplicationDelegate.shared.application(

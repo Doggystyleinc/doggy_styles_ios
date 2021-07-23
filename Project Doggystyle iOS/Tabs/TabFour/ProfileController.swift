@@ -21,7 +21,7 @@ class ProfileController : UIViewController {
         dcl.translatesAutoresizingMaskIntoConstraints = false
         dcl.backgroundColor = .clear
         dcl.contentMode = .scaleAspectFit
-        dcl.isUserInteractionEnabled = false
+        dcl.isUserInteractionEnabled = true
         let image = UIImage(named: "DS Logo")?.withRenderingMode(.alwaysOriginal)
         dcl.image = image
         return dcl
@@ -32,17 +32,9 @@ class ProfileController : UIViewController {
         let dcl = UIButton(type: .system)
         dcl.translatesAutoresizingMaskIntoConstraints = false
         dcl.backgroundColor = .clear
-        dcl.contentMode = .scaleAspectFit
-        dcl.isUserInteractionEnabled = true
-        let image = UIImage(named: "Sign Out")?.withRenderingMode(.alwaysOriginal)
-        dcl.setBackgroundImage(image, for: .normal)
-        dcl.clipsToBounds = false
-        dcl.layer.masksToBounds = false
-        dcl.layer.shadowColor = coreBlackColor.cgColor
-        dcl.layer.shadowOpacity = 0.1
-        dcl.layer.shadowOffset = CGSize(width: 0, height: 0)
-        dcl.layer.shadowRadius = 9
-        dcl.layer.shouldRasterize = false
+        dcl.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
+        dcl.setTitle(String.fontAwesomeIcon(name: .cogs), for: .normal)
+        dcl.tintColor = coreOrangeColor
         dcl.addTarget(self, action: #selector(self.handleLogout), for: .touchUpInside)
         
         return dcl
@@ -115,6 +107,7 @@ class ProfileController : UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = coreBackgroundWhite
+    
         self.addViews()
         self.fetchJSON()
         
@@ -122,41 +115,42 @@ class ProfileController : UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+
         self.fetchJSON()
     }
     
     func addViews() {
         
         self.view.addSubview(self.dsCompanyLogoImage)
-        self.view.addSubview(self.notificationIcon)
         self.view.addSubview(self.containerView)
         self.view.addSubview(self.profileImageView)
         self.view.addSubview(self.nameLabel)
         self.view.addSubview(self.profileCollectionSubview)
         self.view.addSubview(self.activityIndicator)
+        self.view.addSubview(self.notificationIcon)
         
-        self.dsCompanyLogoImage.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -20).isActive = true
+        self.notificationIcon.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -20).isActive = true
+        self.notificationIcon.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.notificationIcon.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        self.notificationIcon.widthAnchor.constraint(equalToConstant: 44).isActive = true
+
+        self.dsCompanyLogoImage.centerYAnchor.constraint(equalTo: self.notificationIcon.centerYAnchor, constant: 0).isActive = true
         self.dsCompanyLogoImage.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
         self.dsCompanyLogoImage.widthAnchor.constraint(equalToConstant: self.view.frame.width / 2.5).isActive = true
         self.dsCompanyLogoImage.heightAnchor.constraint(equalToConstant: 26).isActive = true
-        
-        self.notificationIcon.centerYAnchor.constraint(equalTo: self.dsCompanyLogoImage.centerYAnchor, constant: 0).isActive = true
-        self.notificationIcon.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-        self.notificationIcon.heightAnchor.constraint(equalToConstant: 54).isActive = true
-        self.notificationIcon.widthAnchor.constraint(equalToConstant: 54).isActive = true
-        
+
         self.profileImageView.topAnchor.constraint(equalTo: self.dsCompanyLogoImage.bottomAnchor, constant: 20).isActive = true
         self.profileImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
         self.profileImageView.heightAnchor.constraint(equalToConstant: 130).isActive = true
         self.profileImageView.widthAnchor.constraint(equalToConstant: 130).isActive = true
         self.profileImageView.layer.cornerRadius = 130/2
-        
+
         self.containerView.topAnchor.constraint(equalTo: self.profileImageView.centerYAnchor, constant: 0).isActive = true
         self.containerView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
         self.containerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 1.15).isActive = true
         self.containerView.heightAnchor.constraint(equalToConstant: 120).isActive = true
         self.containerView.layer.cornerRadius = 12
-        
+
         self.nameLabel.topAnchor.constraint(equalTo: self.profileImageView.bottomAnchor, constant: 15).isActive = true
         self.nameLabel.leftAnchor.constraint(equalTo: self.containerView.leftAnchor, constant: 15).isActive = true
         self.nameLabel.rightAnchor.constraint(equalTo: self.containerView.rightAnchor, constant: -15).isActive = true
@@ -211,9 +205,9 @@ class ProfileController : UIViewController {
             print(logoutError)
             return
         }
-        
+
         Database.database().reference().removeAllObservers()
-        
+
         let decisionController = DecisionController()
         let nav = UINavigationController(rootViewController: decisionController)
         nav.modalPresentationStyle = .fullScreen

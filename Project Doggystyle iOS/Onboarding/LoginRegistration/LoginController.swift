@@ -67,7 +67,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         
         let tel = UILabel()
         tel.translatesAutoresizingMaskIntoConstraints = false
-        tel.backgroundColor = coreWhiteColor
+        tel.backgroundColor = .clear
         tel.text = "Enter email"
         tel.font = UIFont(name: rubikRegular, size: 18)
         tel.textAlignment = .left
@@ -82,7 +82,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         
         let tel = UILabel()
         tel.translatesAutoresizingMaskIntoConstraints = false
-        tel.backgroundColor = coreWhiteColor
+        tel.backgroundColor = .clear
         tel.text = "Enter password"
         tel.font = UIFont(name: rubikRegular, size: 18)
         tel.textAlignment = .left
@@ -141,10 +141,11 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         etfc.layer.masksToBounds = true
         etfc.layer.cornerRadius = 8
         etfc.leftViewMode = .always
-        etfc.layer.borderColor = coreRedColor.cgColor
+        etfc.layer.borderColor = UIColor.clear.cgColor
+        etfc.layer.borderWidth = 1
         etfc.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 30))
         etfc.clipsToBounds = false
-        etfc.layer.masksToBounds = false
+        etfc.layer.masksToBounds = true
         etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
         etfc.layer.shadowOpacity = 0.05
         etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
@@ -174,10 +175,11 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         etfc.layer.masksToBounds = true
         etfc.layer.cornerRadius = 8
         etfc.leftViewMode = .always
-        etfc.layer.borderColor = coreRedColor.cgColor
+        etfc.layer.borderColor = UIColor.clear.cgColor
+        etfc.layer.borderWidth = 1
         etfc.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 30))
         etfc.clipsToBounds = false
-        etfc.layer.masksToBounds = false
+        etfc.layer.masksToBounds = true
         etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
         etfc.layer.shadowOpacity = 0.05
         etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
@@ -279,7 +281,6 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         self.view.backgroundColor = .dsViewBackground
         navigationController?.navigationBar.isHidden = true
         
-        self.initializeGoogleAuthentication()
         self.emailTextField.delegate = self
         self.passwordTextField.delegate = self
         
@@ -290,8 +291,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        GIDSignIn.sharedInstance()?.presentingViewController = self
-
+        self.initializeGoogleAuthentication()
     }
     
     private func addViews() {
@@ -323,7 +323,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         self.dsCompanyLogoImage.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
         self.dsCompanyLogoImage.heightAnchor.constraint(equalToConstant: 26).isActive = true
         
-        self.headerLabel.topAnchor.constraint(equalTo: self.backButton.bottomAnchor, constant: 62).isActive = true
+        self.headerLabel.topAnchor.constraint(equalTo: self.backButton.bottomAnchor, constant: 32).isActive = true
         self.headerLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.headerLabel.sizeToFit()
         
@@ -358,12 +358,12 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         self.loginButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.loginButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        self.forgortPasswordButton.topAnchor.constraint(equalTo: self.loginButton.bottomAnchor, constant: 35).isActive = true
+        self.forgortPasswordButton.topAnchor.constraint(equalTo: self.loginButton.bottomAnchor, constant: 8).isActive = true
         self.forgortPasswordButton.leftAnchor.constraint(equalTo: self.headerLabel.leftAnchor, constant: 0).isActive = true
         self.forgortPasswordButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.forgortPasswordButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         
-        self.registerWithfacebookButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -60).isActive = true
+        self.registerWithfacebookButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
         self.registerWithfacebookButton.leftAnchor.constraint(equalTo: self.loginButton.leftAnchor, constant: 0).isActive = true
         self.registerWithfacebookButton.rightAnchor.constraint(equalTo: self.loginButton.rightAnchor, constant: 0).isActive = true
         self.registerWithfacebookButton.heightAnchor.constraint(equalToConstant: 52).isActive = true
@@ -404,9 +404,6 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         if self.emailTextField.text != "" {
             typingEmailLabel.isHidden = false
             placeHolderEmailLabel.isHidden = true
-        } else {
-            typingEmailLabel.isHidden = true
-            placeHolderEmailLabel.isHidden = false
         }
     }
     
@@ -426,13 +423,12 @@ final class LoginController: UIViewController, UITextFieldDelegate {
             typingPasswordLabel.isHidden = false
             placeHolderPasswordLabel.isHidden = true
             
-        } else {
-            typingPasswordLabel.isHidden = true
-            placeHolderPasswordLabel.isHidden = false
         }
     }
     
     @objc private func didTapLogin() {
+        
+        UIDevice.vibrateLight()
         
         self.resignation()
         
@@ -440,21 +436,21 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         
         emailTextField.layer.borderColor = emailText.isValidEmail ? UIColor.clear.cgColor : UIColor.dsError.cgColor
         passwordTextField.layer.borderColor = passwordText.isValidPassword ? UIColor.clear.cgColor : UIColor.dsError.cgColor
-        
+
         guard emailText.isValidEmail, passwordText.isValidPassword else {
             return
         }
         
-        showLoadingView()
+        self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             Service.shared.FirebaseLogin(usersEmailAddress: emailText, usersPassword: passwordText) { loginSuccess, response, responseCode in
                 
                 guard loginSuccess == true else {
-                    self.dismissLoadingView()
+                    self.mainLoadingScreen.cancelMainLoadingScreen()
                     self.presentAlertOnMainThread(title: "Credential Mismatch", message: response, buttonTitle: "Ok")
                     return
                 }
-                self.dismissLoadingView()
+                self.mainLoadingScreen.cancelMainLoadingScreen()
                 self.presentHomeController()
             }
         }

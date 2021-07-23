@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 
 final class HomeViewController: UITabBarController {
+    
     private let dashboardController = DashboardViewController()
     private let appointmentController = AppointmentsViewController()
     private let profileController = ProfileController()
@@ -20,6 +21,7 @@ final class HomeViewController: UITabBarController {
         super.viewDidLoad()
         configureTabVC()
         configureTabIcons()
+        
     }
 }
 

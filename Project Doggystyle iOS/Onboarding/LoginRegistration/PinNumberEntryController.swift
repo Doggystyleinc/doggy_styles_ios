@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 
 final class PinNumberVerificationEntryController: UIViewController, UITextFieldDelegate {
+   
     private let logo = LogoImageView(frame: .zero)
     private var errorCounter = 0
     
@@ -22,6 +23,8 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
     var password: String!
     var pinTimer: Timer?
     var pinCounter: Int = 120
+    
+    let mainLoadingScreen = MainLoadingScreen()
     
     let databaseRef = Database.database().reference()
     
@@ -39,12 +42,12 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
         cbf.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.10).cgColor
         cbf.layer.shouldRasterize = false
         cbf.layer.cornerRadius = 4
-                cbf.addTarget(self, action: #selector(handleCancelButton), for: UIControl.Event.touchUpInside)
+        cbf.addTarget(self, action: #selector(handleCancelButton), for: UIControl.Event.touchUpInside)
         return cbf
     }()
     
-    private let mainHeaderLabel = DSBoldLabel(title: "SMS Verification", size: 22)
-    private lazy var subHeaderLabel = DSRegularLabel(title: "We have sent you a unique 4 digit code to the phone number ending in \(self.phoneNumber ?? "xxxx")", size: 14)
+    private let mainHeaderLabel = DSBoldLabel(title: "SMS Verification", size: 24)
+    private lazy var subHeaderLabel = DSRegularLabel(title: "", size: 16)
     
     private let registerButton: DSButton = {
         let cbf = DSButton(titleText: "Send", backgroundColor: .dsOrange, titleColor: .white)
@@ -108,6 +111,11 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
         configureVC()
         addViews()
         pinTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.handleCountDown), userInfo: nil, repeats: true)
+       
+        let phoneNumber = self.phoneNumber ?? "xxxx"
+        let phoneTrim = phoneNumber.suffix(4)
+        
+        self.subHeaderLabel.text = "We have sent you a unique 4 digit code to the phone number ending in \(phoneTrim)"
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -130,21 +138,16 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
         self.pinTimer?.invalidate()
         self.counterForPinLabel.text = "120"
     }
-}
-
-//MARK: - Configure View Controller
-extension PinNumberVerificationEntryController {
+    
     private func configureVC() {
         view.backgroundColor = .dsViewBackground
         navigationController?.navigationBar.isHidden = false
         navigationItem.titleView = logo
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
-}
-
-//MARK: - Configure Views
-extension PinNumberVerificationEntryController {
+    
     func addViews() {
+        
         self.stackView.addArrangedSubview(self.slotOneTextField)
         self.stackView.addArrangedSubview(self.slotTwoTextField)
         self.stackView.addArrangedSubview(self.slotThreeTextField)
@@ -170,25 +173,22 @@ extension PinNumberVerificationEntryController {
         registerButton.left(to: mainHeaderLabel)
         registerButton.right(to: mainHeaderLabel)
     }
-}
-
-//MARK: - Helpers
-extension PinNumberVerificationEntryController {
+    
     private func handleVerification(phone : String, countryCode : String, enteredCode : String) {
         
-        self.showLoadingView()
+        self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
         self.resignation()
         
         ServiceHTTP.shared.twilioGetRequest(function_call: "request_for_authorization", users_country_code: countryCode, users_phone_number: phone, delivery_method: "sms", entered_code: enteredCode) { object, error in
             
             DispatchQueue.main.async {
                 if error == nil {
-                    self.dismissLoadingView()
+                    self.mainLoadingScreen.cancelMainLoadingScreen()
                     self.registerUserInfo()
                     self.handleVerifiedPinState()
                 } else {
-                    self.dismissLoadingView()
-                    self.presentAlertOnMainThread(title: "Failed", message: "Please check your phone or pin and try again.", buttonTitle: "Ok")
+                    self.mainLoadingScreen.cancelMainLoadingScreen()
+                    self.presentAlertOnMainThread(title: "Error", message: "Please check your pin # and try again.", buttonTitle: "Ok")
                     self.navigationController?.popViewController(animated: true)
                 }
             }
@@ -212,7 +212,13 @@ extension PinNumberVerificationEntryController {
         self.pinTimer?.invalidate()
         self.counterForPinLabel.text = ""
         self.pinCounter = 120
-        self.handleVerification(phone: self.phoneNumber, countryCode: self.countryCode, enteredCode: pin)
+        
+        guard let safePhoneNumber = self.phoneNumber, let safeCountryCode = self.countryCode else {
+            self.navigationController?.popViewController(animated: true)
+            return
+        }
+
+        self.handleVerification(phone: safePhoneNumber, countryCode: safeCountryCode, enteredCode: pin)
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -235,6 +241,7 @@ extension PinNumberVerificationEntryController {
         self.slotFourTextField.resignFirstResponder()
     }
     
+    
     private func registerUserInfo() {
         Service.shared.FirebaseRegistrationAndLogin(userFirstName: firstName, userLastName: lastName, usersEmailAddress: email, usersPassword: password, mobileNumber: phoneNumber, referralCode: "referralCode", signInMethod: Constants.email) { registrationSucces, response, responseCode in
             
@@ -248,7 +255,7 @@ extension PinNumberVerificationEntryController {
                             self.handleVerifiedPinState()
                         } else {
                             //Firebase error. User is registered but unable to login.
-                            self.presentAlertOnMainThread(title: "Something went wrong...", message: "Unable to login. Please try again later.", buttonTitle: "Ok")
+                            self.presentAlertOnMainThread(title: "Error", message: "Unable to login. Please try again later.", buttonTitle: "Ok")
                         }
                     }
                 case 500:
@@ -257,7 +264,7 @@ extension PinNumberVerificationEntryController {
                         self.registerUserInfo()
                     } else {
                         //Firebase error. Clear text fields. Prompt user to try again.
-                        self.presentAlertOnMainThread(title: "Something went wrong...", message: "Unable to register. Please try again.", buttonTitle: "Ok")
+                        self.presentAlertOnMainThread(title: "Error", message: "Unable to register. Please try again.", buttonTitle: "Ok")
                     }
                 default:
                     break
@@ -269,6 +276,7 @@ extension PinNumberVerificationEntryController {
 
 //MARK: - @objc
 extension PinNumberVerificationEntryController {
+    
     @objc func handleCountDown() {
         self.pinCounter -= 1
         self.counterForPinLabel.text = "\(self.pinCounter)"
@@ -330,7 +338,9 @@ extension PinNumberVerificationEntryController {
     
     //User is verified - push them to the next controller in the flow
     @objc func handleVerifiedPinState() {
-        let homeVC = HomeViewController()
+        
+        //FROM HERE WE NEED TO GO THROUGH THE LOCATION SCREENS
+        let homeVC = LocationFinder()
         let navVC = UINavigationController(rootViewController: homeVC)
         navVC.modalPresentationStyle = .fullScreen
         navigationController?.present(navVC, animated: true)
