@@ -18,7 +18,6 @@ final class DecisionController: UIViewController {
         
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.contentMode = .scaleAspectFit
         let image = UIImage(named: "splash_screen")?.withRenderingMode(.alwaysOriginal)
         iv.image = image
         iv.contentMode = .scaleAspectFill

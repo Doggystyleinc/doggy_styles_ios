@@ -274,6 +274,21 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         return cbf
         
     }()
+    
+    lazy var showHideEyeButton : UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.backgroundColor = .clear
+        cbf.tintColor = UIColor.dsOrange
+        cbf.contentMode = .scaleAspectFill
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 18, style: .light)
+        cbf.setTitle(String.fontAwesomeIcon(name: .eyeSlash), for: .normal)
+        cbf.tintColor = coreOrangeColor
+        cbf.addTarget(self, action: #selector(self.showHidePassWord), for: UIControl.Event.touchUpInside)
+        return cbf
+        
+    }()
   
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -304,7 +319,8 @@ final class LoginController: UIViewController, UITextFieldDelegate {
 
         self.view.addSubview(self.passwordTextField)
         self.view.addSubview(self.typingPasswordLabel)
-        
+        self.view.addSubview(self.showHideEyeButton)
+
         self.view.addSubview(self.placeHolderEmailLabel)
         self.view.addSubview(self.placeHolderPasswordLabel)
 
@@ -332,7 +348,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         self.emailTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.emailTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
-        self.placeHolderEmailLabel.leftAnchor.constraint(equalTo: self.emailTextField.leftAnchor, constant: 25).isActive = true
+        self.placeHolderEmailLabel.leftAnchor.constraint(equalTo: self.emailTextField.leftAnchor, constant: 30).isActive = true
         self.placeHolderEmailLabel.centerYAnchor.constraint(equalTo: self.emailTextField.centerYAnchor, constant: 0).isActive = true
         self.placeHolderEmailLabel.sizeToFit()
         
@@ -349,9 +365,14 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         self.passwordTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.passwordTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
-        self.placeHolderPasswordLabel.leftAnchor.constraint(equalTo: self.passwordTextField.leftAnchor, constant: 25).isActive = true
+        self.placeHolderPasswordLabel.leftAnchor.constraint(equalTo: self.passwordTextField.leftAnchor, constant: 30).isActive = true
         self.placeHolderPasswordLabel.centerYAnchor.constraint(equalTo: self.passwordTextField.centerYAnchor, constant: 0).isActive = true
         self.placeHolderPasswordLabel.sizeToFit()
+        
+        self.showHideEyeButton.rightAnchor.constraint(equalTo: self.passwordTextField.rightAnchor, constant: -10).isActive = true
+        self.showHideEyeButton.centerYAnchor.constraint(equalTo: self.passwordTextField.centerYAnchor, constant: 0).isActive = true
+        self.showHideEyeButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        self.showHideEyeButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
         
         self.loginButton.topAnchor.constraint(equalTo: self.passwordTextField.bottomAnchor, constant: 30).isActive = true
         self.loginButton.leftAnchor.constraint(equalTo: self.headerLabel.leftAnchor, constant: 0).isActive = true
@@ -380,6 +401,22 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         self.emailTextField.resignFirstResponder()
         self.passwordTextField.resignFirstResponder()
         
+    }
+    
+    @objc func showHidePassWord() {
+        
+        self.passwordTextField.isSecureTextEntry = !self.passwordTextField.isSecureTextEntry
+        
+        if self.passwordTextField.isSecureTextEntry {
+            
+            self.showHideEyeButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 18, style: .light)
+            self.showHideEyeButton.setTitle(String.fontAwesomeIcon(name: .eyeSlash), for: .normal)
+            
+        } else {
+            
+            self.showHideEyeButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 18, style: .solid)
+            self.showHideEyeButton.setTitle(String.fontAwesomeIcon(name: .eye), for: .normal)
+        }
     }
     
     @objc func handleBackButton() {

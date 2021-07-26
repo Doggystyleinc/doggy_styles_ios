@@ -51,7 +51,7 @@ final class PasswordResetController: UIViewController, UITextFieldDelegate {
         
         let tel = UILabel()
         tel.translatesAutoresizingMaskIntoConstraints = false
-        tel.backgroundColor = coreWhiteColor
+        tel.backgroundColor = .clear
         tel.text = "Email"
         tel.font = UIFont(name: rubikBold, size: 13)
         tel.textAlignment = .left
@@ -66,7 +66,7 @@ final class PasswordResetController: UIViewController, UITextFieldDelegate {
         
         let tel = UILabel()
         tel.translatesAutoresizingMaskIntoConstraints = false
-        tel.backgroundColor = coreWhiteColor
+        tel.backgroundColor = .clear
         tel.text = "Enter email"
         tel.font = UIFont(name: rubikRegular, size: 18)
         tel.textAlignment = .left
@@ -191,10 +191,7 @@ extension PasswordResetController {
         if self.emailTextField.text != "" {
             typingEmailLabel.isHidden = false
             placeHolderEmailLabel.isHidden = true
-        } else {
-            typingEmailLabel.isHidden = true
-            placeHolderEmailLabel.isHidden = false
-        }
+        } 
     }
     
     @objc func handleEmailTextFieldBegin() {

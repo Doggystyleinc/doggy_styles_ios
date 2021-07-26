@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "dog_bowl_splash@1x.png",
+      "filename" : "Splash.png",
       "idiom" : "iphone",
       "scale" : "1x"
     },
     {
-      "filename" : "dog_bowl_splash@2x.png",
+      "filename" : "Splash@2x.png",
       "idiom" : "iphone",
       "scale" : "2x"
     },
     {
-      "filename" : "dog_bowl_splash@3x.png",
+      "filename" : "Splash@3x.png",
       "idiom" : "iphone",
       "scale" : "3x"
     }

@@ -314,9 +314,9 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
        return tel
     }()
     
-    lazy var passwordTextField: CustomTextField = {
+    lazy var passwordTextField: CustomPasswordTextField = {
         
-        let etfc = CustomTextField()
+        let etfc = CustomPasswordTextField()
         etfc.translatesAutoresizingMaskIntoConstraints = false
         etfc.textAlignment = .left
         etfc.textColor = coreBlackColor
@@ -341,6 +341,8 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
         etfc.layer.shadowRadius = 9
         etfc.layer.shouldRasterize = false
+        etfc.isSecureTextEntry = true
+        etfc.setRightPaddingPoints(50)
         etfc.addTarget(self, action: #selector(self.handlePasswordTextFieldChange), for: .editingChanged)
         etfc.addTarget(self, action: #selector(self.handlePasswordTextFieldBegin), for: .touchDown)
         etfc.addTarget(self, action: #selector(self.handleManualScrolling), for: .touchDown)
@@ -520,7 +522,21 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
            return tv
            
        }()
-       
+    
+    lazy var showHideEyeButton : UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.backgroundColor = .clear
+        cbf.tintColor = UIColor.dsOrange
+        cbf.contentMode = .scaleAspectFill
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 18, style: .light)
+        cbf.setTitle(String.fontAwesomeIcon(name: .eyeSlash), for: .normal)
+        cbf.tintColor = coreOrangeColor
+        cbf.addTarget(self, action: #selector(self.showHidePassWord), for: UIControl.Event.touchUpInside)
+        return cbf
+        
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -544,6 +560,22 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
    
         self.scrollView.keyboardDismissMode = .interactive
         
+    }
+    
+    @objc func showHidePassWord() {
+        
+        self.passwordTextField.isSecureTextEntry = !self.passwordTextField.isSecureTextEntry
+        
+        if self.passwordTextField.isSecureTextEntry {
+            
+            self.showHideEyeButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 18, style: .light)
+            self.showHideEyeButton.setTitle(String.fontAwesomeIcon(name: .eyeSlash), for: .normal)
+            
+        } else {
+            
+            self.showHideEyeButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 18, style: .solid)
+            self.showHideEyeButton.setTitle(String.fontAwesomeIcon(name: .eye), for: .normal)
+        }
     }
     
    @objc func resignation() {
@@ -609,6 +641,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         self.scrollView.addSubview(self.phoneNumberTextField)
         self.scrollView.addSubview(self.emailTextField)
         self.scrollView.addSubview(self.passwordTextField)
+        self.scrollView.addSubview(self.showHideEyeButton)
 
         self.scrollView.addSubview(self.placeHolderFirstNameLabel)
         self.scrollView.addSubview(self.typingFirstNameLabel)
@@ -629,8 +662,8 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         
         self.scrollView.addSubview(self.termsTextView)
         
-        self.scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
-        self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -1).isActive = true
+        self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+        self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         self.scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         
@@ -710,6 +743,11 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         self.phoneNumberTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.phoneNumberTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
+        self.showHideEyeButton.rightAnchor.constraint(equalTo: self.passwordTextField.rightAnchor, constant: -10).isActive = true
+        self.showHideEyeButton.centerYAnchor.constraint(equalTo: self.passwordTextField.centerYAnchor, constant: 0).isActive = true
+        self.showHideEyeButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        self.showHideEyeButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
+
         self.placeHolderPhoneNumberLabel.leftAnchor.constraint(equalTo: self.phoneNumberTextField.leftAnchor, constant: 30).isActive = true
         self.placeHolderPhoneNumberLabel.centerYAnchor.constraint(equalTo: self.phoneNumberTextField.centerYAnchor, constant: 0).isActive = true
         self.placeHolderPhoneNumberLabel.sizeToFit()
