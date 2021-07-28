@@ -21,7 +21,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let decisionController = DecisionController()
 //        let decisionController = LocationFinder()
-
         
         let navigationController = UINavigationController(rootViewController: decisionController)
         

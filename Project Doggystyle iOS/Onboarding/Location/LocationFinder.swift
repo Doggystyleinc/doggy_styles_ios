@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import GooglePlaces
+import GoogleMaps
 
 struct GoogleMapData {
     
@@ -40,7 +41,8 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
     var placesHeightAnchor : NSLayoutConstraint?,
         placesClient: GMSPlacesClient!,
         arrayLocationNames : [String] = [String](),
-        locationServicesEnabled : Bool = false
+        locationServicesEnabled : Bool = false,
+        mapViewTopLayoutConstraint : NSLayoutConstraint?
     
     private var searchStates = SearchStates.idle
     
@@ -59,8 +61,8 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         cbf.tintColor = coreOrangeColor
         cbf.contentMode = .scaleAspectFit
         cbf.imageView?.contentMode = .scaleAspectFit
-        cbf.addTarget(self, action: #selector(self.grabUsersCurrentLocation), for: .touchUpInside)
-        
+        cbf.isUserInteractionEnabled = false
+
         return cbf
         
     }()
@@ -77,7 +79,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         cbf.layer.masksToBounds = true
         cbf.tintColor = coreOrangeColor
         cbf.backgroundColor = .clear
-        cbf.addTarget(self, action: #selector(self.grabUsersCurrentLocation), for: .touchUpInside)
+        cbf.isUserInteractionEnabled = false
         
         return cbf
         
@@ -112,16 +114,16 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
     }()
     
-    lazy var searchTextField : TextFieldWithImage = {
+    lazy var searchTextField : CustomTextFieldMaps = {
         
-        let etfc = TextFieldWithImage()
+        let etfc = CustomTextFieldMaps()
         etfc.translatesAutoresizingMaskIntoConstraints = false
         let placeholder = NSAttributedString(string: "Enter address", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
         etfc.attributedPlaceholder = placeholder
         etfc.textAlignment = .left
         etfc.backgroundColor = UIColor .white
         etfc.textColor = coreBlackColor
-        etfc.font = UIFont(name: rubikRegular, size: 18)
+        etfc.font = UIFont(name: rubikRegular, size: 16)
         etfc.allowsEditingTextAttributes = false
         etfc.autocorrectionType = .no
         etfc.delegate = self
@@ -131,20 +133,24 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         etfc.returnKeyType = UIReturnKeyType.done
         etfc.clipsToBounds = false
         etfc.layer.masksToBounds = false
+        
         etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
         etfc.layer.shadowOpacity = 0.05
         etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
         etfc.layer.shadowRadius = 9
         etfc.layer.shouldRasterize = false
         
-        let configHome = UIImage.SymbolConfiguration(pointSize: 8, weight: .light)
-        let image = UIImage(systemName: "magnifyingglass", withConfiguration: configHome)?.withTintColor(dividerGrey).withRenderingMode(.alwaysOriginal) ?? UIImage(named: "")
-        let imageView = UIImageView()
-        imageView.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
-        imageView.contentMode = .scaleAspectFit
-        imageView.image = image
-        etfc.leftView = imageView
-        etfc.leftViewMode = .always
+//        let configHome = UIImage.SymbolConfiguration(pointSize: 8, weight: .light)
+//        let image = UIImage(systemName: "magnifyingglass", withConfiguration: configHome)?.withTintColor(dividerGrey).withRenderingMode(.alwaysOriginal) ?? UIImage(named: "")
+//        let imageView = UIImageView()
+//        imageView.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+//        imageView.contentMode = .scaleAspectFit
+//        imageView.image = image
+//        etfc.leftView = imageView
+//        etfc.leftViewMode = .always
+//
+////        etfc.setRightPaddingPoints(50)
+//        etfc.setLeftPaddingPoints(10)
         
         etfc.addTarget(self, action: #selector(handleSearchTextFieldChange(textField:)), for: .editingChanged)
         
@@ -322,6 +328,32 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
     }()
     
+    lazy var confirmLocationButton : UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.setTitle("Continue with this address", for: UIControl.State.normal)
+        cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
+        cbf.titleLabel?.adjustsFontSizeToFitWidth = true
+        cbf.titleLabel?.numberOfLines = 1
+        cbf.titleLabel?.adjustsFontForContentSizeCategory = true
+        cbf.titleLabel?.textColor = coreWhiteColor
+        cbf.backgroundColor = coreOrangeColor
+        cbf.layer.cornerRadius = 14
+        cbf.layer.masksToBounds = false
+        cbf.tintColor = coreWhiteColor
+        cbf.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
+        cbf.layer.shadowOpacity = 0.05
+        cbf.layer.shadowOffset = CGSize(width: 2, height: 3)
+        cbf.layer.shadowRadius = 9
+        cbf.layer.shouldRasterize = false
+        cbf.isHidden = true
+        cbf.addTarget(self, action: #selector(self.handleConfirmAddressButton), for: UIControl.Event.touchUpInside)
+        
+        return cbf
+        
+    }()
+    
     let successImage : UIImageView = {
         
         let si = UIImageView()
@@ -358,6 +390,45 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
     }()
     
+    lazy var mapView : MapsSubview = {
+        
+        let mv = MapsSubview(frame: .zero)
+        mv.translatesAutoresizingMaskIntoConstraints = false
+        mv.backgroundColor = coreOrangeColor
+        mv.isUserInteractionEnabled = true
+        mv.layer.masksToBounds = true
+        mv.layer.cornerRadius = 12
+        mv.locationFinder = self
+        
+       return mv
+    }()
+    
+    lazy var cancelSearchButton: UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.backgroundColor = .clear
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 18, style: .solid)
+        cbf.setTitle(String.fontAwesomeIcon(name: .timesCircle), for: .normal)
+        cbf.tintColor = dividerGrey
+        cbf.contentMode = .scaleAspectFit
+        cbf.imageView?.contentMode = .scaleAspectFit
+        cbf.addTarget(self, action: #selector(self.handleCancelCurrentSearchButton), for: .touchUpInside)
+        
+        return cbf
+        
+    }()
+    
+    lazy var currentUserContainerButton : UIButton = {
+        
+        let cb = UIButton(type: .system)
+        cb.translatesAutoresizingMaskIntoConstraints = false
+        cb.backgroundColor = .clear
+        cb.addTarget(self, action: #selector(self.grabUsersCurrentLocation), for: .touchUpInside)
+
+       return cb
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -383,8 +454,15 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.view.addSubview(self.searchResultsTableView)
         self.view.addSubview(self.errorContainer)
         self.view.addSubview(self.successContainer)
-        self.view.addSubview(self.userCurrentLocationButton)
-        self.view.addSubview(self.userCurrentLocationIcon)
+        
+        self.view.addSubview(self.currentUserContainerButton)
+        self.currentUserContainerButton.addSubview(self.userCurrentLocationButton)
+        self.currentUserContainerButton.addSubview(self.userCurrentLocationIcon)
+        
+        self.view.addSubview(self.confirmLocationButton)
+
+        self.view.addSubview(self.mapView)
+        self.view.addSubview(self.cancelSearchButton)
         
         self.errorContainer.addSubview(self.orangePinIcon)
         self.errorContainer.addSubview(self.smsButton)
@@ -473,39 +551,41 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.placesHeightAnchor = searchResultsTableView.heightAnchor.constraint(equalToConstant: 0)
         self.placesHeightAnchor?.isActive = true
         
-        self.userCurrentLocationIcon.topAnchor.constraint(equalTo: self.searchResultsTableView.bottomAnchor, constant: 8).isActive = true
-        self.userCurrentLocationIcon.leftAnchor.constraint(equalTo: self.searchResultsTableView.leftAnchor, constant: 30).isActive = true
-        self.userCurrentLocationIcon.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        self.userCurrentLocationIcon.widthAnchor.constraint(equalToConstant: 15).isActive = true
+        self.currentUserContainerButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
+        self.currentUserContainerButton.topAnchor.constraint(equalTo: self.searchResultsTableView.bottomAnchor, constant: 3).isActive = true
+        self.currentUserContainerButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        self.currentUserContainerButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         
-        self.userCurrentLocationButton.centerYAnchor.constraint(equalTo: self.userCurrentLocationIcon.centerYAnchor, constant: 0).isActive = true
+        self.userCurrentLocationIcon.leftAnchor.constraint(equalTo: self.currentUserContainerButton.leftAnchor, constant: 10).isActive = true
+        self.userCurrentLocationIcon.centerYAnchor.constraint(equalTo: self.currentUserContainerButton.centerYAnchor, constant: 0).isActive = true
+        self.userCurrentLocationIcon.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.userCurrentLocationIcon.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        
         self.userCurrentLocationButton.leftAnchor.constraint(equalTo: self.userCurrentLocationIcon.rightAnchor, constant: 10).isActive = true
-        self.userCurrentLocationButton.sizeToFit()
+        self.userCurrentLocationButton.centerYAnchor.constraint(equalTo: self.currentUserContainerButton.centerYAnchor, constant: 0).isActive = true
+        self.userCurrentLocationButton.rightAnchor.constraint(equalTo: self.currentUserContainerButton.rightAnchor, constant: -10).isActive = true
+        self.userCurrentLocationButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+
+        self.mapViewTopLayoutConstraint = self.mapView.topAnchor.constraint(equalTo: self.currentUserContainerButton.bottomAnchor, constant: 10)
+        self.mapViewTopLayoutConstraint?.isActive = true
         
+        self.mapView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.mapView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.mapView.bottomAnchor.constraint(equalTo: self.confirmButton.topAnchor, constant: -20).isActive = true
+        
+        self.cancelSearchButton.centerYAnchor.constraint(equalTo: self.searchTextField.centerYAnchor, constant: 0).isActive = true
+        self.cancelSearchButton.rightAnchor.constraint(equalTo: self.searchTextField.rightAnchor, constant: -10).isActive = true
+        self.cancelSearchButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        self.cancelSearchButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        
+        self.confirmLocationButton.bottomAnchor.constraint(equalTo: self.successContainer.bottomAnchor, constant: -20).isActive = true
+        self.confirmLocationButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.confirmLocationButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.confirmLocationButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+
     }
     
-    @objc func grabUsersCurrentLocation() {
-        
-        self.resignation()
-        
-        self.resetTable()
-        
-        self.searchTextField.text = ""
-        
-        let lat = self.locationManager.location?.coordinate.latitude ?? 0.0
-        let long = self.locationManager.location?.coordinate.longitude ?? 0.0
-        
-        let stringCoordinates = "\(lat), \(long)"
-        
-        self.searchTextField.text = stringCoordinates
-        
-        self.userCurrentLocationButton.isHidden = true
-        self.userCurrentLocationIcon.isHidden = true
-        
-        self.successContainer.isHidden = false
-        
-    }
-    
+  
     //ENABLE LOCATION SERVICES OR ELSE DISMISS THE CONTROLLER
     @objc func handleLocationServicesAuthorization() {
         
@@ -612,9 +692,11 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
         
         if safeText.count == 0 {
-            UIView.animate(withDuration: 0.25) {
+            UIView.animate(withDuration: 0.45) {
                 self.placesHeightAnchor?.constant = 0
                 self.searchResultsTableView.superview?.layoutIfNeeded()
+                self.mapView.animate(toZoom: 5)
+                self.mapView.clear()
             }
         } else {
             let currentEnteredText = safeText
@@ -675,7 +757,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
     
     func resetTable() {
         self.searchTextField.text = ""
-        UIView.animate(withDuration: 0.25) {
+        UIView.animate(withDuration: 0.45) {
 
         self.placesHeightAnchor?.constant = 0
         self.searchResultsTableView.superview?.layoutIfNeeded()
@@ -688,12 +770,121 @@ extension LocationFinder {
     
     func handleLocationSelection(passedPlaceID : String, passedLocationAddress : String) {
         
+        self.placesClient.lookUpPlaceID(passedPlaceID) { place, error in
+            
+            if let error = error {
+                print("lookup place id query error: \(error.localizedDescription)")
+                self.handleCancelCurrentSearchButton()
+                return
+            }
+            
+            guard let place = place else {
+                print("No place details for \(passedPlaceID)")
+                self.handleCancelCurrentSearchButton()
+                return
+            }
+            
+            let latitude = place.coordinate.latitude
+            let longitude = place.coordinate.longitude
+            
+            self.mapView.clear()
+            
+            self.mapView.isHidden = false
+            
+            self.mapView.addCustomMarker(latitude: latitude, longitude: longitude)
+            
+        }
+        
         UIDevice.vibrateLight()
+        
+        self.currentUserContainerButton.isHidden = true
+        UIView.animate(withDuration: 0.45) {
+            self.mapViewTopLayoutConstraint?.constant = -30
+        }
+        self.confirmLocationButton.isHidden = false
         
         self.resignation()
         self.resetTable()
         self.searchTextField.text = passedLocationAddress
+        
+    }
+    
+    @objc func grabUsersCurrentLocation() {
+        
+        self.resignation()
+        self.resetTable()
+        self.searchTextField.text = ""
+        self.mapView.clear()
+        self.mapView.isHidden = false
+        self.currentUserContainerButton.isHidden = true
+        
+        let lat = self.locationManager.location?.coordinate.latitude ?? 0.0
+        let long = self.locationManager.location?.coordinate.longitude ?? 0.0
+        self.mapView.addCustomMarker(latitude: lat, longitude: long)
+
+        let coordinates = CLLocationCoordinate2DMake(lat, long)
+            
+            UIView.animate(withDuration: 0.45) {
+                self.mapViewTopLayoutConstraint?.constant = -30
+            }
+
+            self.confirmLocationButton.isHidden = false
+            
+            let geocoder = GMSGeocoder()
+            geocoder.reverseGeocodeCoordinate(coordinates) { response, error in
+                if error != nil {
+                    return
+                }
+                
+                if let result = response?.firstResult()?.lines {
+                    
+                    let finalResult = result[0]
+                    self.searchTextField.text = "\(finalResult)"
+                    print("RESULT: \(finalResult)")
+            }
+        }
+    }
+    
+    func fetchCountryAndCity(location: CLLocation, completion: @escaping (String, String) -> ()) {
+        CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
+            
+            if let _ = error {
+                
+            } else if let country = placemarks?.first?.country,
+                let city = placemarks?.first?.locality {
+                completion(country, city)
+            }
+        }
+    }
+    
+    
+    @objc func handleCancelCurrentSearchButton() {
+        
+        self.searchTextField.text = ""
+        self.currentUserContainerButton.isHidden = false
+        
+        UIView.animate(withDuration: 0.25) {
+            self.placesHeightAnchor?.constant = 0
+            self.searchResultsTableView.superview?.layoutIfNeeded()
+            self.mapView.animate(toZoom: 5)
+            self.mapView.clear()
+        }
+        
+        self.successContainer.isHidden = true
+        self.errorContainer.isHidden = true
+        self.confirmLocationButton.isHidden = true
+        
+        UIView.animate(withDuration: 0.25) {
+            self.mapViewTopLayoutConstraint?.constant = 10
+        }
+    }
+    
+    @objc func handleConfirmAddressButton() {
+        
+        self.mapView.isHidden = true
+        self.confirmLocationButton.isHidden = true
         self.successContainer.isHidden = false
+        
     }
     
     @objc func handleWhatsAppButton() {
@@ -718,57 +909,3 @@ extension LocationFinder {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    @objc func grabUsersCurrentLocation() {
-//
-//        if self.locationServicesEnabled == false {
-//
-//            self.handleLocationServicesAuthorization()
-//
-//            return
-//        }
-//
-//        let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.name.rawValue) | UInt(GMSPlaceField.placeID.rawValue))
-//
-//        placesClient?.findPlaceLikelihoodsFromCurrentLocation(withPlaceFields: fields, callback: { (placeLikelihoodList: Array<GMSPlaceLikelihood>?, error: Error?) in
-//
-//         if let error = error {
-//            print("An error occurred: \(error.localizedDescription)")
-//            return
-//          }
-//
-//          if let placeLikelihoodList = placeLikelihoodList {
-//            for likelihood in placeLikelihoodList {
-//              let place = likelihood.place
-//
-//               let currentLocation = ("Current Place name \(String(describing: place.name)) at likelihood \(likelihood.likelihood)")
-//
-//                let coordinates = place.coordinate
-//                let latitude = coordinates.latitude ?? 0.0
-//                let longitude = coordinates.longitude ?? 0.0
-//
-//
-//                print(place.name)
-//                print(place.coordinate)
-//                print(place.addressComponents)
-//                print(place.formattedAddress)
-//
-//                self.searchTextField.text = currentLocation
-//
-//            }
-//          }
-//        })
-//    }

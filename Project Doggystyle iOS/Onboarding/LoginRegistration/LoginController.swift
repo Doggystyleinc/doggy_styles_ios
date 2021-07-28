@@ -16,7 +16,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
     
     private let logo = LogoImageView(frame: .zero),
                 mainLoadingScreen = MainLoadingScreen()
-
+    
     let databaseRef = Database.database().reference()
     
     let pets: [Pet] = [Pet.petOne, Pet.petTwo, Pet.petThree]
@@ -60,7 +60,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         
-       return hl
+        return hl
     }()
     
     let placeHolderEmailLabel : UILabel = {
@@ -75,7 +75,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         tel.isHidden = false
         tel.textColor = dividerGrey
         
-       return tel
+        return tel
     }()
     
     let placeHolderPasswordLabel : UILabel = {
@@ -89,8 +89,8 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = false
         tel.textColor = dividerGrey
-
-       return tel
+        
+        return tel
     }()
     
     
@@ -106,7 +106,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         tel.isHidden = true
         tel.textColor = dividerGrey
         
-       return tel
+        return tel
     }()
     
     let typingPasswordLabel : UILabel = {
@@ -120,8 +120,8 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = true
         tel.textColor = dividerGrey
-
-       return tel
+        
+        return tel
     }()
     
     lazy var emailTextField: CustomTextField = {
@@ -153,11 +153,11 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         etfc.layer.shouldRasterize = false
         etfc.addTarget(self, action: #selector(self.handleEmailTextFieldChange), for: .editingChanged)
         etfc.addTarget(self, action: #selector(self.handleEmailTextFieldBegin), for: .touchDown)
-
+        
         return etfc
         
     }()
-   
+    
     lazy var passwordTextField: CustomTextField = {
         
         let etfc = CustomTextField()
@@ -188,7 +188,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         etfc.isSecureTextEntry = true
         etfc.addTarget(self, action: #selector(self.handlePasswordTextFieldChange), for: .editingChanged)
         etfc.addTarget(self, action: #selector(self.handlePasswordTextFieldBegin), for: .touchDown)
-
+        
         return etfc
         
     }()
@@ -289,7 +289,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         return cbf
         
     }()
-  
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -316,20 +316,20 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(self.headerLabel)
         self.view.addSubview(self.emailTextField)
         self.view.addSubview(self.typingEmailLabel)
-
+        
         self.view.addSubview(self.passwordTextField)
         self.view.addSubview(self.typingPasswordLabel)
         self.view.addSubview(self.showHideEyeButton)
-
+        
         self.view.addSubview(self.placeHolderEmailLabel)
         self.view.addSubview(self.placeHolderPasswordLabel)
-
-
+        
+        
         self.view.addSubview(self.loginButton)
         self.view.addSubview(self.forgortPasswordButton)
         self.view.addSubview(self.registerWithGoogleButton)
         self.view.addSubview(self.registerWithfacebookButton)
-
+        
         self.backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 57).isActive = true
         self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 11).isActive = true
         self.backButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
@@ -359,7 +359,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         self.typingPasswordLabel.leftAnchor.constraint(equalTo: self.passwordTextField.leftAnchor, constant: 25).isActive = true
         self.typingPasswordLabel.topAnchor.constraint(equalTo: self.passwordTextField.topAnchor, constant: 14).isActive = true
         self.typingPasswordLabel.sizeToFit()
-
+        
         self.passwordTextField.topAnchor.constraint(equalTo: self.emailTextField.bottomAnchor, constant: 25).isActive = true
         self.passwordTextField.leftAnchor.constraint(equalTo: self.headerLabel.leftAnchor, constant: 0).isActive = true
         self.passwordTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
@@ -393,7 +393,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         self.registerWithGoogleButton.leftAnchor.constraint(equalTo: self.loginButton.leftAnchor, constant: 0).isActive = true
         self.registerWithGoogleButton.rightAnchor.constraint(equalTo: self.loginButton.rightAnchor, constant: 0).isActive = true
         self.registerWithGoogleButton.heightAnchor.constraint(equalToConstant: 52).isActive = true
-
+        
     }
     
     func resignation() {
@@ -473,7 +473,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         
         emailTextField.layer.borderColor = emailText.isValidEmail ? UIColor.clear.cgColor : UIColor.dsError.cgColor
         passwordTextField.layer.borderColor = passwordText.isValidPassword ? UIColor.clear.cgColor : UIColor.dsError.cgColor
-
+        
         guard emailText.isValidEmail, passwordText.isValidPassword else {
             return
         }
@@ -499,7 +499,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         instructionsVC.navigationController?.navigationBar.isHidden = true
         self.navigationController?.pushViewController(instructionsVC, animated: true)
     }
-   
+    
     private func presentHomeController() {
         let homeVC = HomeViewController()
         let navVC = UINavigationController(rootViewController: homeVC)
@@ -577,17 +577,17 @@ extension LoginController {
             
             if let token = AccessToken.current {
                 
-            let credential = FacebookAuthProvider.credential(withAccessToken: token.tokenString)
-            
-            Service.shared.firebaseGoogleSignIn(credentials: credential, referralCode: "nil") { (hasSuccess, response) in
+                let credential = FacebookAuthProvider.credential(withAccessToken: token.tokenString)
                 
-                if hasSuccess {
-                    self.mainLoadingScreen.cancelMainLoadingScreen()
-                    self.presentHomeController()
-                } else {
-                    self.mainLoadingScreen.cancelMainLoadingScreen()
+                Service.shared.firebaseGoogleSignIn(credentials: credential, referralCode: "nil") { (hasSuccess, response) in
+                    
+                    if hasSuccess {
+                        self.mainLoadingScreen.cancelMainLoadingScreen()
+                        self.presentHomeController()
+                    } else {
+                        self.mainLoadingScreen.cancelMainLoadingScreen()
+                    }
                 }
-            }
                 
             } else {
                 print("No token present for FB auth, check the developers dashboard.")

@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		B9C4113B2E4DED8ACF4B9F44 /* Pods_Project_Doggystyle_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41D14D6AC9CE858765BD6462 /* Pods_Project_Doggystyle_iOS.framework */; };
 		CD203BF72667D3B900335D93 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BF62667D3B900335D93 /* PDFViewController.swift */; };
-		CD203BFA2667FA9F00335D93 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BF92667FA9F00335D93 /* DashboardViewController.swift */; };
+		CD203BFA2667FA9F00335D93 /* DashboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BF92667FA9F00335D93 /* DashboardController.swift */; };
 		CD203BFC2667FAB300335D93 /* ServicesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BFB2667FAB300335D93 /* ServicesController.swift */; };
 		CD203C002667FACC00335D93 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD203BFF2667FACC00335D93 /* ProfileViewController.swift */; };
 		CD319F6B26790AD900F48E3C /* DeleteLaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD319F6A26790AD900F48E3C /* DeleteLaterViewController.swift */; };
@@ -95,7 +95,7 @@
 		CDE8714A2652E4FE0082551B /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = CDE871492652E4FE0082551B /* FirebaseCrashlytics */; };
 		CDE8714C2652E4FE0082551B /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = CDE8714B2652E4FE0082551B /* FirebaseRemoteConfig */; };
 		CDE871502652E66A0082551B /* DecisionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE8714E2652E66A0082551B /* DecisionController.swift */; };
-		CDE871512652E66A0082551B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE8714F2652E66A0082551B /* HomeViewController.swift */; };
+		CDE871512652E66A0082551B /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE8714F2652E66A0082551B /* HomeController.swift */; };
 		CDE871612652E69B0082551B /* PasswordResetSuccessController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE8715E2652E69B0082551B /* PasswordResetSuccessController.swift */; };
 		CDE871622652E69B0082551B /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE8715F2652E69B0082551B /* ResetPasswordViewController.swift */; };
 		CDE871632652E69B0082551B /* PasswordResetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE871602652E69B0082551B /* PasswordResetController.swift */; };
@@ -112,6 +112,21 @@
 		E326571926AF2636004A15F6 /* Splash.png in Resources */ = {isa = PBXBuildFile; fileRef = E326571626AF2636004A15F6 /* Splash.png */; };
 		E326571A26AF2636004A15F6 /* Splash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E326571726AF2636004A15F6 /* Splash@2x.png */; };
 		E326571B26AF2636004A15F6 /* Splash@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E326571826AF2636004A15F6 /* Splash@3x.png */; };
+		E326571D26B1B7FD004A15F6 /* MapViewSubclass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E326571C26B1B7FD004A15F6 /* MapViewSubclass.swift */; };
+		E326572126B1BEF9004A15F6 /* frame.png in Resources */ = {isa = PBXBuildFile; fileRef = E326571E26B1BEF8004A15F6 /* frame.png */; };
+		E326572226B1BEF9004A15F6 /* frame@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E326571F26B1BEF9004A15F6 /* frame@3x.png */; };
+		E326572326B1BEF9004A15F6 /* frame@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E326572026B1BEF9004A15F6 /* frame@2x.png */; };
+		E326572826B20884004A15F6 /* emptydoggyprofile.png in Resources */ = {isa = PBXBuildFile; fileRef = E326572526B20884004A15F6 /* emptydoggyprofile.png */; };
+		E326572926B20884004A15F6 /* emptydoggyprofile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E326572626B20884004A15F6 /* emptydoggyprofile@2x.png */; };
+		E326572A26B20884004A15F6 /* emptydoggyprofile@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E326572726B20884004A15F6 /* emptydoggyprofile@3x.png */; };
+		E326572E26B2149D004A15F6 /* 65430TifDsVan1.png in Resources */ = {isa = PBXBuildFile; fileRef = E326572B26B2149D004A15F6 /* 65430TifDsVan1.png */; };
+		E326572F26B2149D004A15F6 /* 65430TifDsVan1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E326572C26B2149D004A15F6 /* 65430TifDsVan1@2x.png */; };
+		E326573026B2149D004A15F6 /* 65430TifDsVan1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E326572D26B2149D004A15F6 /* 65430TifDsVan1@3x.png */; };
+		E326573326B215DF004A15F6 /* EmptyStateOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = E326573226B215DF004A15F6 /* EmptyStateOne.swift */; };
+		E326573626B2187D004A15F6 /* NewDogOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = E326573526B2187D004A15F6 /* NewDogOne.swift */; };
+		E326573826B21898004A15F6 /* NewDogTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E326573726B21898004A15F6 /* NewDogTwo.swift */; };
+		E326573A26B218B0004A15F6 /* NewDogThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = E326573926B218B0004A15F6 /* NewDogThree.swift */; };
+		E326573C26B218CA004A15F6 /* NewDogFive.swift in Sources */ = {isa = PBXBuildFile; fileRef = E326573B26B218CA004A15F6 /* NewDogFive.swift */; };
 		E352FF6526A63369003BD59F /* group18322.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6226A63368003BD59F /* group18322.png */; };
 		E352FF6626A63369003BD59F /* group18322@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6326A63369003BD59F /* group18322@2x.png */; };
 		E352FF6726A63369003BD59F /* group18322@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6426A63369003BD59F /* group18322@3x.png */; };
@@ -158,7 +173,7 @@
 		41D14D6AC9CE858765BD6462 /* Pods_Project_Doggystyle_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Project_Doggystyle_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB384B464E20B6C31281433B /* Pods-Project Doggystyle iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Project Doggystyle iOS.release.xcconfig"; path = "Target Support Files/Pods-Project Doggystyle iOS/Pods-Project Doggystyle iOS.release.xcconfig"; sourceTree = "<group>"; };
 		CD203BF62667D3B900335D93 /* PDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
-		CD203BF92667FA9F00335D93 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
+		CD203BF92667FA9F00335D93 /* DashboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardController.swift; sourceTree = "<group>"; };
 		CD203BFB2667FAB300335D93 /* ServicesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesController.swift; sourceTree = "<group>"; };
 		CD203BFF2667FACC00335D93 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		CD319F6A26790AD900F48E3C /* DeleteLaterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteLaterViewController.swift; sourceTree = "<group>"; };
@@ -235,7 +250,7 @@
 		CDE8712A2652E3350082551B /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CDE8712B2652E3360082551B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CDE8714E2652E66A0082551B /* DecisionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecisionController.swift; sourceTree = "<group>"; };
-		CDE8714F2652E66A0082551B /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		CDE8714F2652E66A0082551B /* HomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		CDE8715E2652E69B0082551B /* PasswordResetSuccessController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetSuccessController.swift; sourceTree = "<group>"; };
 		CDE8715F2652E69B0082551B /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		CDE871602652E69B0082551B /* PasswordResetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetController.swift; sourceTree = "<group>"; };
@@ -248,6 +263,21 @@
 		E326571626AF2636004A15F6 /* Splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Splash.png; sourceTree = "<group>"; };
 		E326571726AF2636004A15F6 /* Splash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Splash@2x.png"; sourceTree = "<group>"; };
 		E326571826AF2636004A15F6 /* Splash@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Splash@3x.png"; sourceTree = "<group>"; };
+		E326571C26B1B7FD004A15F6 /* MapViewSubclass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewSubclass.swift; sourceTree = "<group>"; };
+		E326571E26B1BEF8004A15F6 /* frame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = frame.png; sourceTree = "<group>"; };
+		E326571F26B1BEF9004A15F6 /* frame@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frame@3x.png"; sourceTree = "<group>"; };
+		E326572026B1BEF9004A15F6 /* frame@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "frame@2x.png"; sourceTree = "<group>"; };
+		E326572526B20884004A15F6 /* emptydoggyprofile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = emptydoggyprofile.png; sourceTree = "<group>"; };
+		E326572626B20884004A15F6 /* emptydoggyprofile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "emptydoggyprofile@2x.png"; sourceTree = "<group>"; };
+		E326572726B20884004A15F6 /* emptydoggyprofile@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "emptydoggyprofile@3x.png"; sourceTree = "<group>"; };
+		E326572B26B2149D004A15F6 /* 65430TifDsVan1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 65430TifDsVan1.png; sourceTree = "<group>"; };
+		E326572C26B2149D004A15F6 /* 65430TifDsVan1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "65430TifDsVan1@2x.png"; sourceTree = "<group>"; };
+		E326572D26B2149D004A15F6 /* 65430TifDsVan1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "65430TifDsVan1@3x.png"; sourceTree = "<group>"; };
+		E326573226B215DF004A15F6 /* EmptyStateOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateOne.swift; sourceTree = "<group>"; };
+		E326573526B2187D004A15F6 /* NewDogOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogOne.swift; sourceTree = "<group>"; };
+		E326573726B21898004A15F6 /* NewDogTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogTwo.swift; sourceTree = "<group>"; };
+		E326573926B218B0004A15F6 /* NewDogThree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogThree.swift; sourceTree = "<group>"; };
+		E326573B26B218CA004A15F6 /* NewDogFive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogFive.swift; sourceTree = "<group>"; };
 		E352FF6226A63368003BD59F /* group18322.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group18322.png; sourceTree = "<group>"; };
 		E352FF6326A63369003BD59F /* group18322@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group18322@2x.png"; sourceTree = "<group>"; };
 		E352FF6426A63369003BD59F /* group18322@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group18322@3x.png"; sourceTree = "<group>"; };
@@ -631,6 +661,38 @@
 			path = Dev;
 			sourceTree = "<group>";
 		};
+		E326572426B20866004A15F6 /* DashboardIcons */ = {
+			isa = PBXGroup;
+			children = (
+				E326572B26B2149D004A15F6 /* 65430TifDsVan1.png */,
+				E326572C26B2149D004A15F6 /* 65430TifDsVan1@2x.png */,
+				E326572D26B2149D004A15F6 /* 65430TifDsVan1@3x.png */,
+				E326572526B20884004A15F6 /* emptydoggyprofile.png */,
+				E326572626B20884004A15F6 /* emptydoggyprofile@2x.png */,
+				E326572726B20884004A15F6 /* emptydoggyprofile@3x.png */,
+			);
+			path = DashboardIcons;
+			sourceTree = "<group>";
+		};
+		E326573126B215CE004A15F6 /* EmptyStateSubs */ = {
+			isa = PBXGroup;
+			children = (
+				E326573226B215DF004A15F6 /* EmptyStateOne.swift */,
+			);
+			path = EmptyStateSubs;
+			sourceTree = "<group>";
+		};
+		E326573426B21859004A15F6 /* NewDogFlow */ = {
+			isa = PBXGroup;
+			children = (
+				E326573526B2187D004A15F6 /* NewDogOne.swift */,
+				E326573726B21898004A15F6 /* NewDogTwo.swift */,
+				E326573926B218B0004A15F6 /* NewDogThree.swift */,
+				E326573B26B218CA004A15F6 /* NewDogFive.swift */,
+			);
+			path = NewDogFlow;
+			sourceTree = "<group>";
+		};
 		E352FF6126A62CF1003BD59F /* TutorialFlow */ = {
 			isa = PBXGroup;
 			children = (
@@ -690,6 +752,9 @@
 		E3AAE77326A6111B00D89064 /* OnboardingAssets */ = {
 			isa = PBXGroup;
 			children = (
+				E326571E26B1BEF8004A15F6 /* frame.png */,
+				E326572026B1BEF9004A15F6 /* frame@2x.png */,
+				E326571F26B1BEF9004A15F6 /* frame@3x.png */,
 				E326571626AF2636004A15F6 /* Splash.png */,
 				E326571726AF2636004A15F6 /* Splash@2x.png */,
 				E326571826AF2636004A15F6 /* Splash@3x.png */,
@@ -720,6 +785,7 @@
 		E3B11AB4268FA8C300B5B6F8 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				E326572426B20866004A15F6 /* DashboardIcons */,
 				E39C665D26A8CEE0004A0E93 /* Animations */,
 				E39C662F26A88C37004A0E93 /* AppIcon */,
 				E3AAE77326A6111B00D89064 /* OnboardingAssets */,
@@ -733,7 +799,7 @@
 			isa = PBXGroup;
 			children = (
 				CDE8714E2652E66A0082551B /* DecisionController.swift */,
-				CDE8714F2652E66A0082551B /* HomeViewController.swift */,
+				CDE8714F2652E66A0082551B /* HomeController.swift */,
 			);
 			path = HomeController;
 			sourceTree = "<group>";
@@ -750,7 +816,9 @@
 		E3B11AB7268FB88B00B5B6F8 /* TabOne */ = {
 			isa = PBXGroup;
 			children = (
-				CD203BF92667FA9F00335D93 /* DashboardViewController.swift */,
+				E326573426B21859004A15F6 /* NewDogFlow */,
+				E326573126B215CE004A15F6 /* EmptyStateSubs */,
+				CD203BF92667FA9F00335D93 /* DashboardController.swift */,
 			);
 			path = TabOne;
 			sourceTree = "<group>";
@@ -783,6 +851,7 @@
 				E3D53F3A26AA21D0003B4317 /* LocationFinder.swift */,
 				E3D53F3C26AA21EC003B4317 /* SearchLocationTableview.swift */,
 				E3D53F3E26AA2200003B4317 /* SearchLocationFeeder.swift */,
+				E326571C26B1B7FD004A15F6 /* MapViewSubclass.swift */,
 			);
 			path = Location;
 			sourceTree = "<group>";
@@ -909,16 +978,21 @@
 				CDE870EA2652E1640082551B /* LaunchScreen.storyboard in Resources */,
 				CD319F71267936AD00F48E3C /* Poppins-Bold.ttf in Resources */,
 				CDE870F42652E1FB0082551B /* ConcertOne-Regular.ttf in Resources */,
+				E326572826B20884004A15F6 /* emptydoggyprofile.png in Resources */,
 				CDE8710B2652E2080082551B /* Roboto-Bold.ttf in Resources */,
+				E326572226B1BEF9004A15F6 /* frame@3x.png in Resources */,
 				CDE871022652E2080082551B /* Roboto-Light.ttf in Resources */,
 				E352FF6B26A63373003BD59F /* group18323@3x.png in Resources */,
 				CD319F73267936AD00F48E3C /* Poppins-SemiBold.ttf in Resources */,
 				E376FDEF26AB4E4300902C36 /* ios_doggystyle_icon60.jpg in Resources */,
 				CDE871682652EA3B0082551B /* .gitignore in Resources */,
+				E326572E26B2149D004A15F6 /* 65430TifDsVan1.png in Resources */,
 				CDE871032652E2080082551B /* Roboto-Medium.ttf in Resources */,
 				E376FDED26AB4E4300902C36 /* ios_doggystyle_icon80.jpg in Resources */,
+				E326572926B20884004A15F6 /* emptydoggyprofile@2x.png in Resources */,
 				E376FDEE26AB4E4300902C36 /* ios_doggystyle_icon180.jpg in Resources */,
 				E376FDF326AB4F5800902C36 /* art_icon.jpg in Resources */,
+				E326572F26B2149D004A15F6 /* 65430TifDsVan1@2x.png in Resources */,
 				CDE8710C2652E2080082551B /* Roboto-Italic.ttf in Resources */,
 				E326571326AF24EF004A15F6 /* cpmbo1 shutterstock_355672793 1@3x.png in Resources */,
 				CDE871042652E2080082551B /* Roboto-MediumItalic.ttf in Resources */,
@@ -926,8 +1000,10 @@
 				CDE871072652E2080082551B /* Roboto-Black.ttf in Resources */,
 				CDE871082652E2080082551B /* Roboto-BoldItalic.ttf in Resources */,
 				E326571B26AF2636004A15F6 /* Splash@3x.png in Resources */,
+				E326572326B1BEF9004A15F6 /* frame@2x.png in Resources */,
 				E352FF6526A63369003BD59F /* group18322.png in Resources */,
 				E352FF6C26A63373003BD59F /* group18323@2x.png in Resources */,
+				E326572126B1BEF9004A15F6 /* frame.png in Resources */,
 				CDE871012652E2080082551B /* Roboto-LightItalic.ttf in Resources */,
 				CDE870E72652E1640082551B /* Assets.xcassets in Resources */,
 				E352FF6D26A63373003BD59F /* group18323.png in Resources */,
@@ -935,7 +1011,9 @@
 				E326571A26AF2636004A15F6 /* Splash@2x.png in Resources */,
 				E326571526AF24EF004A15F6 /* cpmbo1 shutterstock_355672793 1@2x.png in Resources */,
 				CDE8710A2652E2080082551B /* Roboto-ThinItalic.ttf in Resources */,
+				E326573026B2149D004A15F6 /* 65430TifDsVan1@3x.png in Resources */,
 				E376FDEA26AB4E4300902C36 /* ios_doggystyle_icon120.jpg in Resources */,
+				E326572A26B20884004A15F6 /* emptydoggyprofile@3x.png in Resources */,
 				E352FF6726A63369003BD59F /* group18322@3x.png in Resources */,
 				E352FF6626A63369003BD59F /* group18322@2x.png in Resources */,
 				CDE871272652E3310082551B /* Localizable.strings in Resources */,
@@ -1042,6 +1120,7 @@
 				CDCCD0B8265EB884007ABECF /* User.swift in Sources */,
 				CD6DD0182680DE2E00BC376B /* WelcomeController.swift in Sources */,
 				CD6DD0142680DDC900BC376B /* SlideOne.swift in Sources */,
+				E326571D26B1B7FD004A15F6 /* MapViewSubclass.swift in Sources */,
 				CD6DD00E267FC86000BC376B /* RefurAFriendController.swift in Sources */,
 				CD6DCFFC267A8DD200BC376B /* DSRegularLabel.swift in Sources */,
 				CD6DD01A2680FC4100BC376B /* GrabDeviceID.swift in Sources */,
@@ -1059,10 +1138,12 @@
 				CDCCD0B5265EB5DF007ABECF /* CreateDoggyProfileViewController.swift in Sources */,
 				E3D53F3D26AA21EC003B4317 /* SearchLocationTableview.swift in Sources */,
 				CD6DCFF2267A62D300BC376B /* Package.swift in Sources */,
+				E326573326B215DF004A15F6 /* EmptyStateOne.swift in Sources */,
 				CD6DD0162680DDC900BC376B /* SlideThree.swift in Sources */,
 				CD319F6B26790AD900F48E3C /* DeleteLaterViewController.swift in Sources */,
 				CD6DD010267FDEED00BC376B /* NotificationController.swift in Sources */,
 				CD6DD005267B9DAF00BC376B /* DSContainerView.swift in Sources */,
+				E326573A26B218B0004A15F6 /* NewDogThree.swift in Sources */,
 				CDE870DE2652E1610082551B /* AppDelegate.swift in Sources */,
 				CD6868842654373A0064ADFE /* UIButton+Ext.swift in Sources */,
 				CD6DD024268636DA00BC376B /* PinNumberEntryController.swift in Sources */,
@@ -1074,6 +1155,7 @@
 				CD6868902656EF920064ADFE /* LocationNotServicedViewController.swift in Sources */,
 				CD6DD00C267FC7DF00BC376B /* ContactUsController.swift in Sources */,
 				CDE871632652E69B0082551B /* PasswordResetController.swift in Sources */,
+				E326573C26B218CA004A15F6 /* NewDogFive.swift in Sources */,
 				CD6868922656EFB20064ADFE /* RequestUserLocationViewController.swift in Sources */,
 				E3B11ABA268FCBB200B5B6F8 /* ProfileController.swift in Sources */,
 				E3B11AC0268FCC0400B5B6F8 /* ProfilePhotoUploadExt.swift in Sources */,
@@ -1088,16 +1170,18 @@
 				CD319F7D26794D5E00F48E3C /* DSBoldLabel.swift in Sources */,
 				CD6DD026268643F500BC376B /* DSSMSTextField.swift in Sources */,
 				CD6DD008267FC0F500BC376B /* MyPetsController.swift in Sources */,
-				CDE871512652E66A0082551B /* HomeViewController.swift in Sources */,
+				CDE871512652E66A0082551B /* HomeController.swift in Sources */,
 				CD203BFC2667FAB300335D93 /* ServicesController.swift in Sources */,
 				E3B11AC2268FCC4600B5B6F8 /* Extensions.swift in Sources */,
 				CD6DD051268B9E8400BC376B /* ServiceSingleton.swift in Sources */,
+				E326573826B21898004A15F6 /* NewDogTwo.swift in Sources */,
 				CD6DCFF4267A648400BC376B /* ServiceOfTheWeekView.swift in Sources */,
 				CDE870E02652E1610082551B /* SceneDelegate.swift in Sources */,
 				CD6DD00A267FC7A800BC376B /* PaymentController.swift in Sources */,
 				CDCCD0B0265D4DB4007ABECF /* Constants.swift in Sources */,
-				CD203BFA2667FA9F00335D93 /* DashboardViewController.swift in Sources */,
+				CD203BFA2667FA9F00335D93 /* DashboardController.swift in Sources */,
 				CD319F7A2679462500F48E3C /* LogoImageView.swift in Sources */,
+				E326573626B2187D004A15F6 /* NewDogOne.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

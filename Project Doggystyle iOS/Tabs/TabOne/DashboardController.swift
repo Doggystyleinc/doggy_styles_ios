@@ -103,185 +103,52 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         
        return hl
     }()
-    
-    let welcomeContainer : UIView = {
+   
+    lazy var emptyStateOne : EmptyStateOne = {
         
-        let wc = UIView()
-        wc.translatesAutoresizingMaskIntoConstraints = false
-        wc.backgroundColor = coreOrangeColor
-        wc.isUserInteractionEnabled = true
-        wc.layer.masksToBounds = true
-        wc.layer.cornerRadius = 20
+        let eso = EmptyStateOne(frame: .zero)
+        eso.dashboardController = self
         
-       return wc
-    }()
-    
-    let welcomeSubContainer : UIView = {
-        
-        let wc = UIView()
-        wc.translatesAutoresizingMaskIntoConstraints = false
-        wc.backgroundColor = coreWhiteColor
-        wc.isUserInteractionEnabled = true
-        wc.layer.masksToBounds = true
-        wc.layer.cornerRadius = 20
-        wc.clipsToBounds = false
-        wc.layer.masksToBounds = false
-        wc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
-        wc.layer.shadowOpacity = 0.05
-        wc.layer.shadowOffset = CGSize(width: 2, height: 3)
-        wc.layer.shadowRadius = 9
-        wc.layer.shouldRasterize = false
-       return wc
+       return eso
         
     }()
-    
-    let welcomeContainerCreateDoggyprofileButton : UIButton = {
-        
-        let wcc = UIButton(type: .system)
-        wcc.translatesAutoresizingMaskIntoConstraints = false
-        wcc.backgroundColor = coreWhiteColor
-        wcc.isUserInteractionEnabled = true
-        wcc.layer.masksToBounds = true
-        
-       return wcc
-    }()
-    
-    let welcomeContainerLabel : UILabel = {
-        
-        let hl = UILabel()
-        hl.translatesAutoresizingMaskIntoConstraints = false
-        hl.backgroundColor = .clear
-        hl.text = "Create your\nDoggy’s profile"
-        hl.font = UIFont(name: dsHeaderFont, size: 18)
-        hl.numberOfLines = 2
-        hl.adjustsFontSizeToFitWidth = true
-        hl.textAlignment = .left
-        hl.textColor = coreWhiteColor
-        
-       return hl
-    }()
-    
-    let welcomeContainerAddIcon : UIButton = {
-        
-        let dcl = UIButton(type: .system)
-        dcl.translatesAutoresizingMaskIntoConstraints = false
-        dcl.backgroundColor = .clear
-        dcl.contentMode = .scaleAspectFit
-        dcl.isUserInteractionEnabled = true
-        dcl.clipsToBounds = false
-        dcl.titleLabel?.font = UIFont.fontAwesome(ofSize: 24, style: .solid)
-        dcl.setTitle(String.fontAwesomeIcon(name: .plus), for: .normal)
-        dcl.tintColor = coreOrangeColor
-        
-        return dcl
-    }()
-    
-    
-    private let petCollectionView: UICollectionView = {
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 74, height: 74)
-        layout.scrollDirection = .horizontal
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(PetCollectionViewCell.self, forCellWithReuseIdentifier: PetCollectionViewCell.reuseIdentifier)
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .dsViewBackground
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        return collectionView
-        
-    }()
-    
-    private let notificationsButton: UIButton = {
-        
-        let button = UIButton(type: .system)
-        let attrString = NSAttributedString(string: "99", attributes: [NSAttributedString.Key.font : UIFont.poppinsSemiBold(size: 11)])
-        button.setAttributedTitle(attrString, for: .normal)
-        button.backgroundColor = .dsError
-        button.layer.cornerRadius = 10.0
-        button.tintColor = .white
-        return button
-        
-    }()
-    
-    private let viewAllAppointmentsButton: UIButton = {
-        
-        let button = UIButton(type: .system)
-        let attrString = NSAttributedString(string: "View all", attributes: [NSAttributedString.Key.font : UIFont.poppinsSemiBold(size: 18.0)])
-        button.setAttributedTitle(attrString, for: .normal)
-        button.backgroundColor = .clear
-        button.tintColor = .dsGray
-        button.setTitle("View all", for: .normal)
-        button.addTarget(self, action: #selector(didTapViewAllAppointments), for: .touchUpInside)
-        return button
-        
-    }()
-    
-    private let viewAllServicesButton: UIButton = {
-        
-        let button = UIButton(type: .system)
-        let attrString = NSAttributedString(string: "View all", attributes: [NSAttributedString.Key.font : UIFont.poppinsSemiBold(size: 18.0)])
-        button.setAttributedTitle(attrString, for: .normal)
-        button.backgroundColor = .clear
-        button.tintColor = .dsGray
-        button.setTitle("View all", for: .normal)
-        button.addTarget(self, action: #selector(didTapViewAllServices), for: .touchUpInside)
-        return button
-        
-    }()
-    
-    private let editAppointmentButton: UIButton = {
-        
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(named: Constants.editIcon)?.withRenderingMode(.alwaysOriginal), for: .normal)
-        return button
-        
-    }()
-    
-    private lazy var appointmentDate = DSSemiBoldLabel(title: appointment.date, size: 15)
-    private lazy var appointmentTime = DSSemiBoldLabel(title: appointment.time, size: 15)
-    private lazy var appointmentCycle = DSRegularLabel(title: "\(appointment.cycle) week cycle", size: 12)
-    
+  
     override func viewDidLoad() {
         
-        self.configureVC()
+        self.navigationController?.navigationBar.isHidden = false
+        self.view.backgroundColor = .dsViewBackground
+        
+        self.fillValues()
         Service.shared.fetchCurrentUser()
         self.addViews()
-        
+       
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Service.shared.fetchCurrentUser()
+        
         self.navigationController?.navigationBar.isHidden = true
         self.fillValues()
+        Service.shared.fetchCurrentUser()
+        
     }
     
     func fillValues() {
-        
         let usersFirstName = userProfileStruct.user_first_name ?? "Dog Lover"
         self.headerLabel.text = "Welcome, \(usersFirstName)"
-        
     }
     
     func addViews() {
         
+        //HEADER
         self.view.addSubview(self.referButton)
         self.view.addSubview(self.dsCompanyLogoImage)
         self.view.addSubview(self.notificationIcon)
         self.view.addSubview(self.notificationBubble)
         self.view.addSubview(self.headerLabel)
-        self.view.addSubview(self.welcomeContainer)
-        self.view.addSubview(self.welcomeSubContainer)
-        self.welcomeContainer.addSubview(self.welcomeContainerCreateDoggyprofileButton)
-        self.welcomeContainer.addSubview(self.welcomeContainerLabel)
-        self.welcomeContainer.addSubview(self.welcomeContainerAddIcon)
-
         
-//        self.view.addSubview(self.petCollectionView)
-//        self.view.addSubview(appointmentHeader)
-//        self.view.addSubview(appointmentContainer)
+        //EMPTY STATE ONE
+        self.view.addSubview(self.emptyStateOne)
 
         self.referButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -20).isActive = true
         self.referButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
@@ -308,57 +175,22 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         self.headerLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.headerLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        self.welcomeContainer.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 15).isActive = true
-        self.welcomeContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.welcomeContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-        self.welcomeContainer.heightAnchor.constraint(equalToConstant: 153).isActive = true
-        
-        self.welcomeSubContainer.topAnchor.constraint(equalTo: self.welcomeContainer.bottomAnchor, constant: 33).isActive = true
-        self.welcomeSubContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.welcomeSubContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-        self.welcomeSubContainer.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
-        
-        self.welcomeContainerCreateDoggyprofileButton.leftAnchor.constraint(equalTo: self.welcomeContainer.leftAnchor, constant: 30).isActive = true
-        self.welcomeContainerCreateDoggyprofileButton.topAnchor.constraint(equalTo: self.welcomeContainer.topAnchor, constant: 28).isActive = true
-        self.welcomeContainerCreateDoggyprofileButton.heightAnchor.constraint(equalToConstant: 98).isActive = true
-        self.welcomeContainerCreateDoggyprofileButton.widthAnchor.constraint(equalToConstant: 98).isActive = true
-        self.welcomeContainerCreateDoggyprofileButton.layer.cornerRadius = 98/2
-        
-        self.welcomeContainerLabel.leftAnchor.constraint(equalTo: self.welcomeContainerCreateDoggyprofileButton.rightAnchor, constant: 15).isActive = true
-        self.welcomeContainerLabel.rightAnchor.constraint(equalTo: self.welcomeContainer.rightAnchor, constant: -10).isActive = true
-        self.welcomeContainerLabel.topAnchor.constraint(equalTo: self.welcomeContainer.topAnchor, constant: 5).isActive = true
-        self.welcomeContainerLabel.bottomAnchor.constraint(equalTo: self.welcomeContainer.bottomAnchor, constant: -5).isActive = true
-        
-        self.welcomeContainerAddIcon.centerYAnchor.constraint(equalTo: self.welcomeContainerCreateDoggyprofileButton.centerYAnchor, constant: 0).isActive = true
-        self.welcomeContainerAddIcon.centerXAnchor.constraint(equalTo: self.welcomeContainerCreateDoggyprofileButton.centerXAnchor, constant: 0).isActive = true
-        self.welcomeContainerAddIcon.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        self.welcomeContainerAddIcon.widthAnchor.constraint(equalToConstant: 30).isActive = true
-
-        
-//        self.petCollectionView.topAnchor.constraint(equalTo: self.dsCompanyLogoImage.bottomAnchor, constant: 30).isActive = true
-//        self.petCollectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
-//        self.petCollectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-//        self.petCollectionView.heightAnchor.constraint(equalToConstant: 120).isActive = true
-//
-//        self.appointmentHeader.left(to: view, offset: 30.0)
-//        self.appointmentHeader.right(to: view, offset: -30.0)
-//        self.appointmentHeader.topToBottom(of: petCollectionView, offset: 24)
-//
-//        self.appointmentContainer.topToBottom(of: appointmentHeader, offset: 10.0)
-//        self.appointmentContainer.left(to: appointmentHeader)
-//        self.appointmentContainer.height(152)
-//        self.appointmentContainer.right(to: appointmentHeader)
-
-        
+        self.emptyStateOne.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 10).isActive = true
+        self.emptyStateOne.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.emptyStateOne.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.emptyStateOne.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+       
     }
     
-    private func configureVC() {
-        self.navigationController?.navigationBar.isHidden = false
-        self.view.backgroundColor = .dsViewBackground
-        self.petCollectionView.dataSource = self
-        self.petCollectionView.delegate = self
+    @objc func handleReferAFriendButton() {
+        self.didTapRefur()
     }
     
+    @objc func handleNewDogFlow() {
+        let newDogOne = NewDogOne()
+        newDogOne.modalPresentationStyle = .fullScreen
+        self.navigationController?.present(newDogOne, animated: true, completion: nil)
+    }
     
     @objc private func didTapRefur() {
         let refurVC = RefurAFriendController()
@@ -393,6 +225,72 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         return cell
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//        self.welcomeContainerCreateDoggyprofileButton.leftAnchor.constraint(equalTo: self.welcomeContainer.leftAnchor, constant: 30).isActive = true
+//        self.welcomeContainerCreateDoggyprofileButton.topAnchor.constraint(equalTo: self.welcomeContainer.topAnchor, constant: 28).isActive = true
+//        self.welcomeContainerCreateDoggyprofileButton.heightAnchor.constraint(equalToConstant: 98).isActive = true
+//        self.welcomeContainerCreateDoggyprofileButton.widthAnchor.constraint(equalToConstant: 98).isActive = true
+//        self.welcomeContainerCreateDoggyprofileButton.layer.cornerRadius = 98/2
+//
+//        self.welcomeContainerLabel.leftAnchor.constraint(equalTo: self.welcomeContainerCreateDoggyprofileButton.rightAnchor, constant: 15).isActive = true
+//        self.welcomeContainerLabel.rightAnchor.constraint(equalTo: self.welcomeContainer.rightAnchor, constant: -10).isActive = true
+//        self.welcomeContainerLabel.topAnchor.constraint(equalTo: self.welcomeContainer.topAnchor, constant: 5).isActive = true
+//        self.welcomeContainerLabel.bottomAnchor.constraint(equalTo: self.welcomeContainer.bottomAnchor, constant: -5).isActive = true
+//
+//        self.welcomeContainerAddIcon.centerYAnchor.constraint(equalTo: self.welcomeContainerCreateDoggyprofileButton.centerYAnchor, constant: 0).isActive = true
+//        self.welcomeContainerAddIcon.centerXAnchor.constraint(equalTo: self.welcomeContainerCreateDoggyprofileButton.centerXAnchor, constant: 0).isActive = true
+//        self.welcomeContainerAddIcon.heightAnchor.constraint(equalToConstant: 30).isActive = true
+//        self.welcomeContainerAddIcon.widthAnchor.constraint(equalToConstant: 30).isActive = true
+
+
+//        self.petCollectionView.topAnchor.constraint(equalTo: self.dsCompanyLogoImage.bottomAnchor, constant: 30).isActive = true
+//        self.petCollectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+//        self.petCollectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+//        self.petCollectionView.heightAnchor.constraint(equalToConstant: 120).isActive = true
+//
+//        self.appointmentHeader.left(to: view, offset: 30.0)
+//        self.appointmentHeader.right(to: view, offset: -30.0)
+//        self.appointmentHeader.topToBottom(of: petCollectionView, offset: 24)
+//
+//        self.appointmentContainer.topToBottom(of: appointmentHeader, offset: 10.0)
+//        self.appointmentContainer.left(to: appointmentHeader)
+//        self.appointmentContainer.height(152)
+//        self.appointmentContainer.right(to: appointmentHeader)
 
 
 
@@ -464,3 +362,34 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
 // let serviceView = ServiceOfTheWeekView(package: package)
 // servicesContainer.addSubview(serviceView)
 // serviceView.edgesToSuperview()
+
+
+
+//    let welcomeContainerAddIcon : UIButton = {
+//
+//        let dcl = UIButton(type: .system)
+//        dcl.translatesAutoresizingMaskIntoConstraints = false
+//        dcl.backgroundColor = .clear
+//        dcl.contentMode = .scaleAspectFit
+//        dcl.isUserInteractionEnabled = true
+//        dcl.clipsToBounds = true
+//
+//        return dcl
+//    }()
+    
+    
+//    private let petCollectionView: UICollectionView = {
+//
+//        let layout = UICollectionViewFlowLayout()
+//        layout.itemSize = CGSize(width: 74, height: 74)
+//        layout.scrollDirection = .horizontal
+//        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+//
+//        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+//        collectionView.register(PetCollectionViewCell.self, forCellWithReuseIdentifier: PetCollectionViewCell.reuseIdentifier)
+//        collectionView.showsHorizontalScrollIndicator = false
+//        collectionView.backgroundColor = .dsViewBackground
+//        collectionView.translatesAutoresizingMaskIntoConstraints = false
+//        return collectionView
+//
+//    }()

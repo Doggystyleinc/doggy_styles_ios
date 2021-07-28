@@ -5,6 +5,15 @@
 //  Created by Charlie Arcodia on 7/2/21.
 //
 
+/*
+926: iPhone 12 Pro Max
+896: iPhone 11 : iPhone 11 Pro Max
+844: iPhone 12 : iPhone 12 Pro
+812: 12 mini : iPhone 11 Pro : iPhone 12 Mini
+736: iPhone 8 Plus
+667: iPhone 8
+*/
+
 import Foundation
 import UIKit
 import AVFoundation
@@ -94,6 +103,8 @@ class CustomTextField: UITextField {
     }
 }
 
+
+
 class CustomPasswordTextField: UITextField {
 
     let padding = UIEdgeInsets(top: 15, left: 25, bottom: 0, right: 70);
@@ -128,6 +139,65 @@ class PhoneTextFieldWithPadding: PhoneNumberTextField {
         return bounds.inset(by: padding)
     }
 }
+
+class CustomTextFieldMaps: TextFieldWithImage {
+
+    let padding = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 50);
+
+    override func textRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
+
+    override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
+
+    override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
+}
+
+public enum CurrentDevice {
+    
+    case iPhone8
+    case iPhone8Plus
+    
+    case iPhone11
+    case iPhone11Pro
+    case iPhone11Promax
+
+    case iPhone12Mini
+    case iPhone12
+    case iPhone12Pro
+    case iPhone12ProMax
+    
+}
+
+//
+//func determineDeviceType () {
+//    
+//    /*
+//    926: iPhone 12 Pro Max
+//    896: iPhone 11 : iPhone 11 Pro Max
+//    844: iPhone 12 : iPhone 12 Pro
+//    812: 12 mini : iPhone 11 Pro
+//    736: iPhone 8 Plus
+//    667: iPhone 8
+//    */
+//    
+//    let screenHeight = UIScreen.main.bounds.height
+//    
+//    switch screenHeight {
+//    
+//    case 926: CurrentDevice.iPhone12ProMax
+//    case 896:
+//    case 844:
+//    case 812:
+//    case 736:
+//    case 667:
+//    default: print("no phone found")
+//    }
+//}
 
 
 

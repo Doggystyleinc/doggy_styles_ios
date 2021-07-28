@@ -11,6 +11,9 @@ target 'Project Doggystyle iOS' do
   #Places API
   pod 'GooglePlaces'
   
+  #Google Maps
+  pod 'GoogleMaps'
+  
   #Symbols for icons
   pod 'FontAwesome.swift'
   

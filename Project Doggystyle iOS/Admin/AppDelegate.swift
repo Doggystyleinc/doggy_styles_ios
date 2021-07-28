@@ -10,6 +10,7 @@ import Firebase
 import SDWebImage
 import GoogleSignIn
 import GooglePlaces
+import GoogleMaps
 import FBSDKCoreKit
 
 @main
@@ -23,6 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //GOOGLE PLACES KEY
         GMSPlacesClient.provideAPIKey("AIzaSyBBe3beW4gVBST98T2oHFdqrNeCJV-GWKM")
+        
+        //GOOGLE MAPS KEY
+        GMSServices.provideAPIKey("AIzaSyD0QooK2JJuDUBU0MSlRBLU0FT3STJoFVw")
         
         //FACEBOOK CALLBACK
         ApplicationDelegate.shared.application(
