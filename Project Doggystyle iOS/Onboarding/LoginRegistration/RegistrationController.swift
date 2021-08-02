@@ -17,12 +17,14 @@ extension UIScrollView {
 
 final class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate, UITextViewDelegate {
     
-    private let logo = LogoImageView(frame: .zero)
-    private let containerView = UIView(frame: .zero)
-    private let phoneNumberKit = PhoneNumberKit()
-    let mainLoadingScreen = MainLoadingScreen()
-    var screenHeight = UIScreen.main.bounds.height
+    private let logo = LogoImageView(frame: .zero),
+                containerView = UIView(frame: .zero),
+                phoneNumberKit = PhoneNumberKit()
     
+    let mainLoadingScreen = MainLoadingScreen()
+    
+    var screenHeight = UIScreen.main.bounds.height,
+        isKeyboardPresented : Bool = false
     
     lazy var backButton : UIButton = {
         
@@ -603,11 +605,14 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
     
     @objc func keyboardWillShow() {
         self.scrollView.isScrollEnabled = true
+        self.isKeyboardPresented = true
     }
     
     @objc func keyboardWillHide() {
         self.scrollView.isScrollEnabled = false
         self.scrollView.scrollToTop()
+        self.isKeyboardPresented = false
+
     }
     
     @objc func showHidePassWord() {
@@ -843,6 +848,8 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
     
     
     @objc func handleManualScrolling(sender : UITextField) {
+        
+        if self.isKeyboardPresented == false {return}
         
         if sender == self.phoneNumberTextField {
             

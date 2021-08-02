@@ -482,7 +482,6 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.layer.cornerRadius = 15
         cbf.layer.masksToBounds = true
         cbf.tintColor = coreWhiteColor
-        
         cbf.addTarget(self, action: #selector(self.handleNextButton), for: .touchUpInside)
         
         return cbf
@@ -747,14 +746,13 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
     }
     
     @objc func handleBackButton() {
-        print("touch 1")
-        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     @objc func handleNextButton() {
-        print("touch 2")
         let newDogTwo = NewDogTwo()
-        let nav = UINavigationController(rootViewController: newDogTwo)
-        self.navigationController?.pushViewController(nav, animated: true)
+        newDogTwo.modalPresentationStyle = .fullScreen
+        newDogTwo.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.pushViewController(newDogTwo, animated: true)
     }
 }

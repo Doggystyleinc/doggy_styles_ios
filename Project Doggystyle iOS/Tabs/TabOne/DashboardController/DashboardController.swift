@@ -55,7 +55,7 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         dcl.contentMode = .scaleAspectFit
         dcl.isUserInteractionEnabled = true
         dcl.clipsToBounds = false
-        dcl.titleLabel?.font = UIFont.fontAwesome(ofSize: 18, style: .solid)
+        dcl.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
         dcl.setTitle(String.fontAwesomeIcon(name: .bell), for: .normal)
         dcl.tintColor = dividerGrey
         
@@ -69,10 +69,12 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         nb.translatesAutoresizingMaskIntoConstraints = false
         nb.isUserInteractionEnabled = false
         nb.layer.masksToBounds = true
-        nb.font = UIFont.poppinsRegular(size: 12)
+        nb.font = UIFont(name: dsHeaderFont, size: 11)
         nb.textAlignment = .center
         nb.layer.borderColor = coreWhiteColor.cgColor
         nb.layer.borderWidth = 1.5
+        nb.text = "1"
+        nb.textColor = coreWhiteColor
         
        return nb
     }()
@@ -112,6 +114,24 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
        return eso
         
     }()
+    
+    lazy var emptyStateTwo : EmptyStateTwo = {
+        
+        let eso = EmptyStateTwo(frame: .zero)
+        eso.dashboardController = self
+        
+       return eso
+        
+    }()
+    
+    lazy var dashMainView : DashMainView = {
+        
+        let eso = DashMainView(frame: .zero)
+        eso.dashboardController = self
+        
+       return eso
+        
+    }()
   
     override func viewDidLoad() {
         
@@ -121,6 +141,10 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         self.fillValues()
         Service.shared.fetchCurrentUser()
         self.addViews()
+        
+        self.emptyStateOne.isHidden = true
+        self.emptyStateTwo.isHidden = true
+        self.dashMainView.isHidden = false
        
     }
     
@@ -149,6 +173,10 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         
         //EMPTY STATE ONE
         self.view.addSubview(self.emptyStateOne)
+        self.view.addSubview(self.emptyStateTwo)
+        
+        //DASH VIEWS
+        self.view.addSubview(self.dashMainView)
 
         self.referButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -20).isActive = true
         self.referButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
@@ -166,9 +194,9 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         
         self.notificationBubble.topAnchor.constraint(equalTo: self.notificationIcon.topAnchor, constant: 7).isActive = true
         self.notificationBubble.rightAnchor.constraint(equalTo: self.notificationIcon.rightAnchor, constant: -7).isActive = true
-        self.notificationBubble.heightAnchor.constraint(equalToConstant: 18).isActive = true
-        self.notificationBubble.widthAnchor.constraint(equalToConstant: 18).isActive = true
-        self.notificationBubble.layer.cornerRadius = 18/2
+        self.notificationBubble.heightAnchor.constraint(equalToConstant: 23).isActive = true
+        self.notificationBubble.widthAnchor.constraint(equalToConstant: 23).isActive = true
+        self.notificationBubble.layer.cornerRadius = 23/2
         
         self.headerLabel.topAnchor.constraint(equalTo: self.dsCompanyLogoImage.bottomAnchor, constant: 50).isActive = true
         self.headerLabel.leftAnchor.constraint(equalTo: self.referButton.leftAnchor, constant: 5).isActive = true
@@ -179,7 +207,18 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         self.emptyStateOne.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.emptyStateOne.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.emptyStateOne.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
-       
+        
+        self.emptyStateTwo.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 10).isActive = true
+        self.emptyStateTwo.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.emptyStateTwo.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.emptyStateTwo.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        
+        self.dashMainView.topAnchor.constraint(equalTo: self.headerLabel.topAnchor, constant: -10).isActive = true
+        self.dashMainView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.dashMainView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.dashMainView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        
+        
     }
     
     @objc func handleReferAFriendButton() {
@@ -187,9 +226,12 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
     }
     
     @objc func handleNewDogFlow() {
-        let newDogOne = NewDogOne()
-        newDogOne.modalPresentationStyle = .fullScreen
-        self.navigationController?.present(newDogOne, animated: true, completion: nil)
+        
+        let newDogEntry = NewDogEntry()
+        let navigationController = UINavigationController(rootViewController: newDogEntry)
+        navigationController.modalPresentationStyle = .fullScreen
+        navigationController.navigationBar.isHidden = true
+        self.navigationController?.present(navigationController, animated: true, completion: nil)
     }
     
     @objc private func didTapRefur() {
@@ -200,6 +242,10 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
     @objc private func didTapNotification() {
         let notificationVC = NotificationController()
         self.present(notificationVC, animated: true)
+    }
+    
+    @objc func handleTourTruckButton() {
+        print("Handle tour")
     }
     
     @objc private func didTapAll() {

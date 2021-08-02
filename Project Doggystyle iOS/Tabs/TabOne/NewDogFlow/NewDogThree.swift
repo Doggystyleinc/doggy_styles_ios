@@ -53,7 +53,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
        return hc
     }()
     
-    let cancelButton : UIButton = {
+    lazy var cancelButton : UIButton = {
         
         let dcl = UIButton(type: .system)
         dcl.translatesAutoresizingMaskIntoConstraints = false
@@ -72,7 +72,8 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         dcl.tintColor = coreOrangeColor
         dcl.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
         dcl.setTitle(String.fontAwesomeIcon(name: .times), for: .normal)
-        
+        dcl.addTarget(self, action: #selector(self.handleBackButton), for: .touchUpInside)
+
         return dcl
     }()
     
@@ -301,7 +302,8 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         cbf.layer.cornerRadius = 15
         cbf.layer.masksToBounds = true
         cbf.tintColor = coreWhiteColor
-        
+        cbf.addTarget(self, action: #selector(self.handleNextButton), for: .touchUpInside)
+
         return cbf
         
     }()
@@ -320,7 +322,8 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         cbf.layer.cornerRadius = 15
         cbf.layer.masksToBounds = true
         cbf.tintColor = coreBlackColor
-        
+        cbf.addTarget(self, action: #selector(self.handleBackTextButton), for: .touchUpInside)
+
         return cbf
         
     }()
@@ -464,13 +467,21 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         
     }
     
-    @objc func handleBackButton() {
+    @objc func handleBackTextButton() {
+        
         self.navigationController?.popViewController(animated: true)
     }
     
+    @objc func handleBackButton() {
+        print("touch 1")
+        self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
     @objc func handleNextButton() {
+        print("touch 2")
         let newDogFive = NewDogFive()
-        let nav = UINavigationController(rootViewController: newDogFive)
-        self.navigationController?.pushViewController(nav, animated: true)
+        newDogFive.modalPresentationStyle = .fullScreen
+        newDogFive.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.pushViewController(newDogFive, animated: true)
     }
 }

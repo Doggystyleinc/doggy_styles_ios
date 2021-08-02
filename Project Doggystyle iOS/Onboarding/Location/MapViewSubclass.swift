@@ -20,7 +20,7 @@ class MapsSubview : GMSMapView {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.layer.masksToBounds = true
         self.isUserInteractionEnabled = true
-        self.isMyLocationEnabled = false
+        self.isMyLocationEnabled = true
         self.isUserInteractionEnabled = true
 
         self.setupMap()
@@ -37,38 +37,6 @@ class MapsSubview : GMSMapView {
         //self.mapStyle(withFilename: "NightTimeStyle", andType: "json")
 
         self.backgroundColor = coreWhiteColor
-    }
-
-    func addMapInsets() {
-
-        if UIScreen.main.bounds.height == 896 {
-
-            let mapInsets = UIEdgeInsets(top: -35, left: 175, bottom: 10, right: 155)
-            self.padding = mapInsets
-
-        } else if UIScreen.main.bounds.height == 812 {
-
-            let mapInsets = UIEdgeInsets(top: -35, left: 155, bottom: 10, right: 155)
-            self.padding = mapInsets
-
-        } else if UIScreen.main.bounds.height == 736 {
-
-            let mapInsets = UIEdgeInsets(top: -35, left: 180, bottom: 10, right: 180)
-            self.padding = mapInsets
-
-        } else if UIScreen.main.bounds.height == 667 {
-
-
-            let mapInsets = UIEdgeInsets(top: -35, left: 155, bottom: 10, right: 155)
-            self.padding = mapInsets
-
-        } else if UIScreen.main.bounds.height == 568 {
-
-            let mapInsets = UIEdgeInsets(top: -35, left: 155, bottom: 10, right: 155)
-            self.padding = mapInsets
-
-        }
-
     }
 
     //REMOVED FOR VERSION 1 WHEN WE TOOK AWAY MAP TAPS.

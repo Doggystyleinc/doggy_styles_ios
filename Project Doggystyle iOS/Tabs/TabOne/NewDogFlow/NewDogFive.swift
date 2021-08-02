@@ -75,7 +75,8 @@ class NewDogFive : UIViewController {
         cbf.layer.cornerRadius = 15
         cbf.layer.masksToBounds = true
         cbf.tintColor = coreWhiteColor
-        
+        cbf.addTarget(self, action: #selector(self.handleContinueButton), for: .touchUpInside)
+
         return cbf
         
     }()

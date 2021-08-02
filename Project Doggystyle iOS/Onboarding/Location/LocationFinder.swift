@@ -899,7 +899,7 @@ extension LocationFinder {
     @objc func handleConfirmButton() {
         
         //FROM HERE WE NEED TO GO THROUGH THE LOCATION SCREENS
-        let homeVC = HomeViewController()
+        let homeVC = NotificationsController()
         let navVC = UINavigationController(rootViewController: homeVC)
         navVC.modalPresentationStyle = .fullScreen
         navigationController?.present(navVC, animated: true)

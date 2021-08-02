@@ -133,6 +133,22 @@
 		E352FF6B26A63373003BD59F /* group18323@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6826A63372003BD59F /* group18323@3x.png */; };
 		E352FF6C26A63373003BD59F /* group18323@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6926A63373003BD59F /* group18323@2x.png */; };
 		E352FF6D26A63373003BD59F /* group18323.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6A26A63373003BD59F /* group18323.png */; };
+		E36EE54626B7036B0009A0EF /* NewDogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE54526B7036B0009A0EF /* NewDogEntry.swift */; };
+		E36EE54826B778CE0009A0EF /* EmptyStateTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE54726B778CE0009A0EF /* EmptyStateTwo.swift */; };
+		E36EE54C26B77CBC0009A0EF /* dsComboShutterstock530718881@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E36EE54926B77CBB0009A0EF /* dsComboShutterstock530718881@2x.png */; };
+		E36EE54D26B77CBC0009A0EF /* dsComboShutterstock530718881@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E36EE54A26B77CBB0009A0EF /* dsComboShutterstock530718881@3x.png */; };
+		E36EE54E26B77CBC0009A0EF /* dsComboShutterstock530718881.png in Resources */ = {isa = PBXBuildFile; fileRef = E36EE54B26B77CBC0009A0EF /* dsComboShutterstock530718881.png */; };
+		E36EE55226B77D9B0009A0EF /* hoverLight1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E36EE54F26B77D9A0009A0EF /* hoverLight1@2x.png */; };
+		E36EE55326B77D9B0009A0EF /* hoverLight1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E36EE55026B77D9B0009A0EF /* hoverLight1@3x.png */; };
+		E36EE55426B77D9B0009A0EF /* hoverLight1.png in Resources */ = {isa = PBXBuildFile; fileRef = E36EE55126B77D9B0009A0EF /* hoverLight1.png */; };
+		E36EE55626B77F8F0009A0EF /* DashMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE55526B77F8F0009A0EF /* DashMainView.swift */; };
+		E36EE55B26B781050009A0EF /* RegisteredPetCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE55A26B781050009A0EF /* RegisteredPetCollection.swift */; };
+		E36EE55F26B789A60009A0EF /* group18328.png in Resources */ = {isa = PBXBuildFile; fileRef = E36EE55C26B789A50009A0EF /* group18328.png */; };
+		E36EE56026B789A60009A0EF /* group18328@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E36EE55D26B789A50009A0EF /* group18328@3x.png */; };
+		E36EE56126B789A60009A0EF /* group18328@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E36EE55E26B789A60009A0EF /* group18328@2x.png */; };
+		E36EE56426B7907C0009A0EF /* SelectorSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE56326B7907C0009A0EF /* SelectorSwitch.swift */; };
+		E36EE56626B793FB0009A0EF /* MainDashboardCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE56526B793FB0009A0EF /* MainDashboardCollectionView.swift */; };
+		E36EE56826B7A75F0009A0EF /* NotificationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE56726B7A75F0009A0EF /* NotificationsController.swift */; };
 		E376FDEA26AB4E4300902C36 /* ios_doggystyle_icon120.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E376FDE226AB4E4100902C36 /* ios_doggystyle_icon120.jpg */; };
 		E376FDEB26AB4E4300902C36 /* ios_doggystyle_icon58.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E376FDE326AB4E4100902C36 /* ios_doggystyle_icon58.jpg */; };
 		E376FDEC26AB4E4300902C36 /* ios_doggystyle_icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E376FDE426AB4E4100902C36 /* ios_doggystyle_icon.jpg */; };
@@ -284,6 +300,22 @@
 		E352FF6826A63372003BD59F /* group18323@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group18323@3x.png"; sourceTree = "<group>"; };
 		E352FF6926A63373003BD59F /* group18323@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group18323@2x.png"; sourceTree = "<group>"; };
 		E352FF6A26A63373003BD59F /* group18323.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group18323.png; sourceTree = "<group>"; };
+		E36EE54526B7036B0009A0EF /* NewDogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogEntry.swift; sourceTree = "<group>"; };
+		E36EE54726B778CE0009A0EF /* EmptyStateTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateTwo.swift; sourceTree = "<group>"; };
+		E36EE54926B77CBB0009A0EF /* dsComboShutterstock530718881@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dsComboShutterstock530718881@2x.png"; sourceTree = "<group>"; };
+		E36EE54A26B77CBB0009A0EF /* dsComboShutterstock530718881@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dsComboShutterstock530718881@3x.png"; sourceTree = "<group>"; };
+		E36EE54B26B77CBC0009A0EF /* dsComboShutterstock530718881.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dsComboShutterstock530718881.png; sourceTree = "<group>"; };
+		E36EE54F26B77D9A0009A0EF /* hoverLight1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hoverLight1@2x.png"; sourceTree = "<group>"; };
+		E36EE55026B77D9B0009A0EF /* hoverLight1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "hoverLight1@3x.png"; sourceTree = "<group>"; };
+		E36EE55126B77D9B0009A0EF /* hoverLight1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hoverLight1.png; sourceTree = "<group>"; };
+		E36EE55526B77F8F0009A0EF /* DashMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashMainView.swift; sourceTree = "<group>"; };
+		E36EE55A26B781050009A0EF /* RegisteredPetCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredPetCollection.swift; sourceTree = "<group>"; };
+		E36EE55C26B789A50009A0EF /* group18328.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group18328.png; sourceTree = "<group>"; };
+		E36EE55D26B789A50009A0EF /* group18328@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group18328@3x.png"; sourceTree = "<group>"; };
+		E36EE55E26B789A60009A0EF /* group18328@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group18328@2x.png"; sourceTree = "<group>"; };
+		E36EE56326B7907C0009A0EF /* SelectorSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectorSwitch.swift; sourceTree = "<group>"; };
+		E36EE56526B793FB0009A0EF /* MainDashboardCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDashboardCollectionView.swift; sourceTree = "<group>"; };
+		E36EE56726B7A75F0009A0EF /* NotificationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsController.swift; sourceTree = "<group>"; };
 		E376FDE226AB4E4100902C36 /* ios_doggystyle_icon120.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ios_doggystyle_icon120.jpg; sourceTree = "<group>"; };
 		E376FDE326AB4E4100902C36 /* ios_doggystyle_icon58.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ios_doggystyle_icon58.jpg; sourceTree = "<group>"; };
 		E376FDE426AB4E4100902C36 /* ios_doggystyle_icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ios_doggystyle_icon.jpg; sourceTree = "<group>"; };
@@ -664,6 +696,15 @@
 		E326572426B20866004A15F6 /* DashboardIcons */ = {
 			isa = PBXGroup;
 			children = (
+				E36EE55C26B789A50009A0EF /* group18328.png */,
+				E36EE55E26B789A60009A0EF /* group18328@2x.png */,
+				E36EE55D26B789A50009A0EF /* group18328@3x.png */,
+				E36EE55126B77D9B0009A0EF /* hoverLight1.png */,
+				E36EE54F26B77D9A0009A0EF /* hoverLight1@2x.png */,
+				E36EE55026B77D9B0009A0EF /* hoverLight1@3x.png */,
+				E36EE54B26B77CBC0009A0EF /* dsComboShutterstock530718881.png */,
+				E36EE54926B77CBB0009A0EF /* dsComboShutterstock530718881@2x.png */,
+				E36EE54A26B77CBB0009A0EF /* dsComboShutterstock530718881@3x.png */,
 				E326572B26B2149D004A15F6 /* 65430TifDsVan1.png */,
 				E326572C26B2149D004A15F6 /* 65430TifDsVan1@2x.png */,
 				E326572D26B2149D004A15F6 /* 65430TifDsVan1@3x.png */,
@@ -674,17 +715,19 @@
 			path = DashboardIcons;
 			sourceTree = "<group>";
 		};
-		E326573126B215CE004A15F6 /* EmptyStateSubs */ = {
+		E326573126B215CE004A15F6 /* DashboardStates */ = {
 			isa = PBXGroup;
 			children = (
-				E326573226B215DF004A15F6 /* EmptyStateOne.swift */,
+				E36EE55726B780420009A0EF /* EmptyStates */,
+				E36EE55826B7804F0009A0EF /* DashStates */,
 			);
-			path = EmptyStateSubs;
+			path = DashboardStates;
 			sourceTree = "<group>";
 		};
 		E326573426B21859004A15F6 /* NewDogFlow */ = {
 			isa = PBXGroup;
 			children = (
+				E36EE54526B7036B0009A0EF /* NewDogEntry.swift */,
 				E326573526B2187D004A15F6 /* NewDogOne.swift */,
 				E326573726B21898004A15F6 /* NewDogTwo.swift */,
 				E326573926B218B0004A15F6 /* NewDogThree.swift */,
@@ -702,6 +745,42 @@
 				CD6DD0122680DDC900BC376B /* SlideTwo.swift */,
 			);
 			path = TutorialFlow;
+			sourceTree = "<group>";
+		};
+		E36EE55726B780420009A0EF /* EmptyStates */ = {
+			isa = PBXGroup;
+			children = (
+				E326573226B215DF004A15F6 /* EmptyStateOne.swift */,
+				E36EE54726B778CE0009A0EF /* EmptyStateTwo.swift */,
+			);
+			path = EmptyStates;
+			sourceTree = "<group>";
+		};
+		E36EE55826B7804F0009A0EF /* DashStates */ = {
+			isa = PBXGroup;
+			children = (
+				E36EE56226B790690009A0EF /* MainDash */,
+			);
+			path = DashStates;
+			sourceTree = "<group>";
+		};
+		E36EE55926B780640009A0EF /* DashboardController */ = {
+			isa = PBXGroup;
+			children = (
+				CD203BF92667FA9F00335D93 /* DashboardController.swift */,
+			);
+			path = DashboardController;
+			sourceTree = "<group>";
+		};
+		E36EE56226B790690009A0EF /* MainDash */ = {
+			isa = PBXGroup;
+			children = (
+				E36EE55526B77F8F0009A0EF /* DashMainView.swift */,
+				E36EE55A26B781050009A0EF /* RegisteredPetCollection.swift */,
+				E36EE56326B7907C0009A0EF /* SelectorSwitch.swift */,
+				E36EE56526B793FB0009A0EF /* MainDashboardCollectionView.swift */,
+			);
+			path = MainDash;
 			sourceTree = "<group>";
 		};
 		E39C662F26A88C37004A0E93 /* AppIcon */ = {
@@ -816,9 +895,9 @@
 		E3B11AB7268FB88B00B5B6F8 /* TabOne */ = {
 			isa = PBXGroup;
 			children = (
+				E36EE55926B780640009A0EF /* DashboardController */,
 				E326573426B21859004A15F6 /* NewDogFlow */,
-				E326573126B215CE004A15F6 /* EmptyStateSubs */,
-				CD203BF92667FA9F00335D93 /* DashboardController.swift */,
+				E326573126B215CE004A15F6 /* DashboardStates */,
 			);
 			path = TabOne;
 			sourceTree = "<group>";
@@ -841,6 +920,7 @@
 				CD6DD01E26827EA500BC376B /* RegistrationController.swift */,
 				CD6DD023268636DA00BC376B /* PinNumberEntryController.swift */,
 				CDE871602652E69B0082551B /* PasswordResetController.swift */,
+				E36EE56726B7A75F0009A0EF /* NotificationsController.swift */,
 			);
 			path = LoginRegistration;
 			sourceTree = "<group>";
@@ -960,6 +1040,7 @@
 				E39C665026A899F0004A0E93 /* Rubik-BlackItalic.ttf in Resources */,
 				E376FDEB26AB4E4300902C36 /* ios_doggystyle_icon58.jpg in Resources */,
 				E39C665126A899F0004A0E93 /* Rubik-Bold.ttf in Resources */,
+				E36EE56026B789A60009A0EF /* group18328@3x.png in Resources */,
 				E39C665226A899F0004A0E93 /* Rubik-BoldItalic.ttf in Resources */,
 				E39C665326A899F0004A0E93 /* Rubik-ExtraBold.ttf in Resources */,
 				E39C665426A899F0004A0E93 /* Rubik-ExtraBoldItalic.ttf in Resources */,
@@ -976,12 +1057,16 @@
 				E39C665B26A899F0004A0E93 /* Rubik-SemiBold.ttf in Resources */,
 				E39C665C26A899F0004A0E93 /* Rubik-SemiBoldItalic.ttf in Resources */,
 				CDE870EA2652E1640082551B /* LaunchScreen.storyboard in Resources */,
+				E36EE55F26B789A60009A0EF /* group18328.png in Resources */,
 				CD319F71267936AD00F48E3C /* Poppins-Bold.ttf in Resources */,
 				CDE870F42652E1FB0082551B /* ConcertOne-Regular.ttf in Resources */,
 				E326572826B20884004A15F6 /* emptydoggyprofile.png in Resources */,
+				E36EE54C26B77CBC0009A0EF /* dsComboShutterstock530718881@2x.png in Resources */,
 				CDE8710B2652E2080082551B /* Roboto-Bold.ttf in Resources */,
+				E36EE55426B77D9B0009A0EF /* hoverLight1.png in Resources */,
 				E326572226B1BEF9004A15F6 /* frame@3x.png in Resources */,
 				CDE871022652E2080082551B /* Roboto-Light.ttf in Resources */,
+				E36EE55326B77D9B0009A0EF /* hoverLight1@3x.png in Resources */,
 				E352FF6B26A63373003BD59F /* group18323@3x.png in Resources */,
 				CD319F73267936AD00F48E3C /* Poppins-SemiBold.ttf in Resources */,
 				E376FDEF26AB4E4300902C36 /* ios_doggystyle_icon60.jpg in Resources */,
@@ -993,9 +1078,12 @@
 				E376FDEE26AB4E4300902C36 /* ios_doggystyle_icon180.jpg in Resources */,
 				E376FDF326AB4F5800902C36 /* art_icon.jpg in Resources */,
 				E326572F26B2149D004A15F6 /* 65430TifDsVan1@2x.png in Resources */,
+				E36EE55226B77D9B0009A0EF /* hoverLight1@2x.png in Resources */,
 				CDE8710C2652E2080082551B /* Roboto-Italic.ttf in Resources */,
 				E326571326AF24EF004A15F6 /* cpmbo1 shutterstock_355672793 1@3x.png in Resources */,
+				E36EE54E26B77CBC0009A0EF /* dsComboShutterstock530718881.png in Resources */,
 				CDE871042652E2080082551B /* Roboto-MediumItalic.ttf in Resources */,
+				E36EE54D26B77CBC0009A0EF /* dsComboShutterstock530718881@3x.png in Resources */,
 				E376FDF026AB4E4300902C36 /* ios_doggystyle_icon87.jpg in Resources */,
 				CDE871072652E2080082551B /* Roboto-Black.ttf in Resources */,
 				CDE871082652E2080082551B /* Roboto-BoldItalic.ttf in Resources */,
@@ -1007,6 +1095,7 @@
 				CDE871012652E2080082551B /* Roboto-LightItalic.ttf in Resources */,
 				CDE870E72652E1640082551B /* Assets.xcassets in Resources */,
 				E352FF6D26A63373003BD59F /* group18323.png in Resources */,
+				E36EE56126B789A60009A0EF /* group18328@2x.png in Resources */,
 				CDE871062652E2080082551B /* Roboto-BlackItalic.ttf in Resources */,
 				E326571A26AF2636004A15F6 /* Splash@2x.png in Resources */,
 				E326571526AF24EF004A15F6 /* cpmbo1 shutterstock_355672793 1@2x.png in Resources */,
@@ -1114,6 +1203,7 @@
 				CD6DD01F26827EA500BC376B /* RegistrationController.swift in Sources */,
 				CDE8711E2652E3030082551B /* UIColor+Ext.swift in Sources */,
 				CDE871222652E3030082551B /* UIViewController+Ext.swift in Sources */,
+				E36EE55626B77F8F0009A0EF /* DashMainView.swift in Sources */,
 				CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */,
 				CDE8711F2652E3030082551B /* Firebase+Ext.swift in Sources */,
 				CD203BF72667D3B900335D93 /* PDFViewController.swift in Sources */,
@@ -1123,10 +1213,12 @@
 				E326571D26B1B7FD004A15F6 /* MapViewSubclass.swift in Sources */,
 				CD6DD00E267FC86000BC376B /* RefurAFriendController.swift in Sources */,
 				CD6DCFFC267A8DD200BC376B /* DSRegularLabel.swift in Sources */,
+				E36EE56626B793FB0009A0EF /* MainDashboardCollectionView.swift in Sources */,
 				CD6DD01A2680FC4100BC376B /* GrabDeviceID.swift in Sources */,
 				E3D53F3F26AA2200003B4317 /* SearchLocationFeeder.swift in Sources */,
 				CDE871622652E69B0082551B /* ResetPasswordViewController.swift in Sources */,
 				E3B11ABE268FCBE300B5B6F8 /* ProfileCollectionFeeder.swift in Sources */,
+				E36EE56826B7A75F0009A0EF /* NotificationsController.swift in Sources */,
 				CDE871652652E6E60082551B /* DSButton.swift in Sources */,
 				CDE871232652E3030082551B /* String + Ext.swift in Sources */,
 				CD6DCFFA267A8D7400BC376B /* DSSemiBoldLabel.swift in Sources */,
@@ -1135,6 +1227,7 @@
 				E3107F8626961A6B00CDBB37 /* MainLoadingScreen.swift in Sources */,
 				CD319F782679435900F48E3C /* DSNavButton.swift in Sources */,
 				E3D53F3B26AA21D0003B4317 /* LocationFinder.swift in Sources */,
+				E36EE56426B7907C0009A0EF /* SelectorSwitch.swift in Sources */,
 				CDCCD0B5265EB5DF007ABECF /* CreateDoggyProfileViewController.swift in Sources */,
 				E3D53F3D26AA21EC003B4317 /* SearchLocationTableview.swift in Sources */,
 				CD6DCFF2267A62D300BC376B /* Package.swift in Sources */,
@@ -1150,6 +1243,7 @@
 				CD6DD02226839ED600BC376B /* DSTextField.swift in Sources */,
 				CD6DCFF6267A820700BC376B /* Pet.swift in Sources */,
 				CDE8711C2652E3030082551B /* TextField+Ext.swift in Sources */,
+				E36EE55B26B781050009A0EF /* RegisteredPetCollection.swift in Sources */,
 				CD6DD001267AD81100BC376B /* AppointmentsViewController.swift in Sources */,
 				E3B11ABC268FCBC900B5B6F8 /* ProfileCollectionView.swift in Sources */,
 				CD6868902656EF920064ADFE /* LocationNotServicedViewController.swift in Sources */,
@@ -1160,6 +1254,7 @@
 				E3B11ABA268FCBB200B5B6F8 /* ProfileController.swift in Sources */,
 				E3B11AC0268FCC0400B5B6F8 /* ProfilePhotoUploadExt.swift in Sources */,
 				CDE871112652E2DC0082551B /* DividerView.swift in Sources */,
+				E36EE54626B7036B0009A0EF /* NewDogEntry.swift in Sources */,
 				CDE871502652E66A0082551B /* DecisionController.swift in Sources */,
 				CD203C002667FACC00335D93 /* ProfileViewController.swift in Sources */,
 				CD686882265412BB0064ADFE /* DSAlertViewController.swift in Sources */,
@@ -1179,6 +1274,7 @@
 				CDE870E02652E1610082551B /* SceneDelegate.swift in Sources */,
 				CD6DD00A267FC7A800BC376B /* PaymentController.swift in Sources */,
 				CDCCD0B0265D4DB4007ABECF /* Constants.swift in Sources */,
+				E36EE54826B778CE0009A0EF /* EmptyStateTwo.swift in Sources */,
 				CD203BFA2667FA9F00335D93 /* DashboardController.swift in Sources */,
 				CD319F7A2679462500F48E3C /* LogoImageView.swift in Sources */,
 				E326573626B2187D004A15F6 /* NewDogOne.swift in Sources */,
@@ -1336,7 +1432,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.3;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1357,7 +1453,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = 1.0.3;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

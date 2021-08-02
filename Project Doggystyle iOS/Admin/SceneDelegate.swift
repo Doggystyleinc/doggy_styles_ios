@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
         
         let decisionController = DecisionController()
-//        let decisionController = LocationFinder()
+//        let decisionController = NotificationsController()
         
         let navigationController = UINavigationController(rootViewController: decisionController)
         
