@@ -14,9 +14,10 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         
         let sv = UIScrollView()
         sv.translatesAutoresizingMaskIntoConstraints = false
-        sv.backgroundColor = .white
+        sv.backgroundColor = coreBackgroundWhite
+        sv.isScrollEnabled = false
         sv.minimumZoomScale = 1.0
-        sv.maximumZoomScale = 2.0
+        sv.maximumZoomScale = 1.0
         sv.bounces = true
         sv.bouncesZoom = true
         sv.isHidden = false
@@ -24,10 +25,6 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         sv.contentMode = .scaleAspectFit
         sv.isUserInteractionEnabled = true
         sv.delaysContentTouches = false
-        sv.backgroundColor = .clear
-        sv.isScrollEnabled = true
-        sv.isUserInteractionEnabled = true
-        sv.delaysContentTouches = true
         return sv
         
     }()
@@ -55,26 +52,113 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
     
     lazy var cancelButton : UIButton = {
         
-        let dcl = UIButton(type: .system)
-        dcl.translatesAutoresizingMaskIntoConstraints = false
-        dcl.backgroundColor = coreWhiteColor
-        dcl.contentMode = .scaleAspectFit
-        dcl.isUserInteractionEnabled = true
-        dcl.clipsToBounds = false
-        dcl.layer.masksToBounds = false
-        dcl.layer.shadowColor = coreBlackColor.cgColor
-        dcl.layer.shadowOpacity = 0.05
-        dcl.layer.shadowOffset = CGSize(width: 2, height: 3)
-        dcl.layer.shadowRadius = 9
-        dcl.layer.shouldRasterize = false
-        dcl.layer.cornerRadius = 15
-        dcl.titleLabel?.textColor = coreOrangeColor
-        dcl.tintColor = coreOrangeColor
-        dcl.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
-        dcl.setTitle(String.fontAwesomeIcon(name: .times), for: .normal)
-        dcl.addTarget(self, action: #selector(self.handleBackButton), for: .touchUpInside)
-
-        return dcl
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.backgroundColor = .clear
+        cbf.tintColor = UIColor.dsOrange
+        cbf.contentMode = .scaleAspectFill
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 24, style: .solid)
+        cbf.setTitle(String.fontAwesomeIcon(name: .chevronLeft), for: .normal)
+        cbf.addTarget(self, action: #selector(self.handleBackButton), for: UIControl.Event.touchUpInside)
+        return cbf
+        
+    }()
+    
+    let basicDetailsLabel : UILabel = {
+        
+        let nl = UILabel()
+        nl.translatesAutoresizingMaskIntoConstraints = false
+        nl.backgroundColor = .clear
+        nl.text = "<name> Foodz"
+        nl.font = UIFont(name: dsHeaderFont, size: 24)
+        nl.textColor = coreBlackColor
+        nl.textAlignment = .left
+        nl.adjustsFontSizeToFitWidth = true
+        
+       return nl
+    }()
+    
+    lazy var favoriteTreatTextField : CustomTextFieldMaps = {
+        
+        let etfc = CustomTextFieldMaps()
+        etfc.translatesAutoresizingMaskIntoConstraints = false
+        let placeholder = NSAttributedString(string: "Search by keyword or name", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
+        etfc.attributedPlaceholder = placeholder
+        etfc.textAlignment = .left
+        etfc.backgroundColor = UIColor .white
+        etfc.textColor = coreBlackColor
+        etfc.font = UIFont(name: rubikRegular, size: 18)
+        etfc.allowsEditingTextAttributes = false
+        etfc.autocorrectionType = .no
+        etfc.delegate = self
+        etfc.layer.cornerRadius = 10
+        etfc.layer.masksToBounds = false
+        etfc.keyboardAppearance = UIKeyboardAppearance.light
+        etfc.returnKeyType = UIReturnKeyType.done
+        etfc.clipsToBounds = false
+        etfc.layer.masksToBounds = false
+        etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
+        etfc.layer.shadowOpacity = 0.05
+        etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
+        etfc.layer.shadowRadius = 9
+        etfc.layer.shouldRasterize = false
+        etfc.layer.borderColor = dividerGrey.cgColor
+        etfc.layer.borderWidth = 0.5
+        
+        return etfc
+        
+    }()
+    
+    lazy var dogFoodTextField : CustomTextFieldMaps = {
+        
+        let etfc = CustomTextFieldMaps()
+        etfc.translatesAutoresizingMaskIntoConstraints = false
+        let placeholder = NSAttributedString(string: "Search by keyword or name", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
+        etfc.attributedPlaceholder = placeholder
+        etfc.textAlignment = .left
+        etfc.backgroundColor = UIColor .white
+        etfc.textColor = coreBlackColor
+        etfc.font = UIFont(name: rubikRegular, size: 18)
+        etfc.allowsEditingTextAttributes = false
+        etfc.autocorrectionType = .no
+        etfc.delegate = self
+        etfc.layer.cornerRadius = 10
+        etfc.layer.masksToBounds = false
+        etfc.keyboardAppearance = UIKeyboardAppearance.light
+        etfc.returnKeyType = UIReturnKeyType.done
+        etfc.clipsToBounds = false
+        etfc.layer.masksToBounds = false
+        etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
+        etfc.layer.shadowOpacity = 0.05
+        etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
+        etfc.layer.shadowRadius = 9
+        etfc.layer.shouldRasterize = false
+        etfc.layer.borderColor = dividerGrey.cgColor
+        etfc.layer.borderWidth = 0.5
+        
+        return etfc
+        
+    }()
+    
+    
+    lazy var nextButton : UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.setTitle("Next", for: UIControl.State.normal)
+        cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
+        cbf.titleLabel?.adjustsFontSizeToFitWidth = true
+        cbf.titleLabel?.numberOfLines = 1
+        cbf.titleLabel?.adjustsFontForContentSizeCategory = true
+        cbf.titleLabel?.textColor = coreBlackColor
+        cbf.backgroundColor = coreOrangeColor
+        cbf.layer.cornerRadius = 15
+        cbf.layer.masksToBounds = true
+        cbf.tintColor = coreWhiteColor
+        cbf.addTarget(self, action: #selector(self.handleNextButton), for: .touchUpInside)
+        
+        return cbf
+        
     }()
     
     let headerBarOne : UIView = {
@@ -82,6 +166,8 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
         hbo.backgroundColor = coreOrangeColor
+        hbo.layer.masksToBounds = true
+        
        return hbo
     }()
     
@@ -105,7 +191,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
-        hbo.backgroundColor = coreWhiteColor
+        hbo.backgroundColor = dividerGrey.withAlphaComponent(0.5)
        return hbo
     }()
     
@@ -118,231 +204,73 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
        return tc
     }()
     
-    let additionalInfoLabel : UILabel = {
+    lazy var toolBar : UIToolbar = {
+        
+        let bar = UIToolbar()
+        
+        let upImage = UIImage(named : "toolbarUpArrow")?.withRenderingMode(.alwaysOriginal)
+        let downImage = UIImage(named : "toolBarDownArrow")?.withRenderingMode(.alwaysOriginal)
+        let next = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(self.handleNextArrowButton))
+        let flexButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        bar.items = [flexButton,next]
+        bar.backgroundColor = coreWhiteColor
+        bar.sizeToFit()
+        
+        return bar
+        
+    }()
+    
+    let treatLabel : UILabel = {
         
         let nl = UILabel()
         nl.translatesAutoresizingMaskIntoConstraints = false
         nl.backgroundColor = .clear
-        nl.text = "Additional Info"
-        nl.font = UIFont(name: dsHeaderFont, size: 24)
-        nl.textColor = dsFlatBlack
+        nl.text = "Favorite treat"
+        nl.font = UIFont(name: rubikMedium, size: 21)
+        nl.textColor = coreBlackColor
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
         
        return nl
     }()
     
-    let selectDoggyDeliveryTypeLabel : UILabel = {
+    let foodLabel : UILabel = {
         
         let nl = UILabel()
         nl.translatesAutoresizingMaskIntoConstraints = false
         nl.backgroundColor = .clear
-        nl.text = "Select doggy delivery type"
-        nl.font = UIFont(name: dsSubHeaderFont, size: 21)
-        nl.textColor = dsFlatBlack
+        nl.text = "Dog food"
+        nl.font = UIFont(name: rubikMedium, size: 21)
+        nl.textColor = coreBlackColor
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
         
        return nl
     }()
     
-    let toggleOneView : UIView = {
-        
-        let tov = UIView()
-        tov.translatesAutoresizingMaskIntoConstraints = false
-        tov.backgroundColor = coreWhiteColor
-        tov.clipsToBounds = false
-        tov.layer.masksToBounds = false
-        tov.layer.shadowColor = coreBlackColor.cgColor
-        tov.layer.shadowOpacity = 0.2
-        tov.layer.shadowOffset = CGSize(width: 0, height: 0)
-        tov.layer.shadowRadius = 3
-        tov.layer.shouldRasterize = false
-        
-       return tov
-    }()
-    
-    let toggleTwoView : UIView = {
-        
-        let tov = UIView()
-        tov.translatesAutoresizingMaskIntoConstraints = false
-        tov.backgroundColor = coreWhiteColor
-        tov.clipsToBounds = false
-        tov.layer.masksToBounds = false
-        tov.layer.shadowColor = coreBlackColor.cgColor
-        tov.layer.shadowOpacity = 0.2
-        tov.layer.shadowOffset = CGSize(width: 0, height: 0)
-        tov.layer.shadowRadius = 3
-        tov.layer.shouldRasterize = false
-        
-       return tov
-    }()
-    
-    let valetPickupLabel : UILabel = {
-        
-        let nl = UILabel()
-        nl.translatesAutoresizingMaskIntoConstraints = false
-        nl.backgroundColor = .clear
-        nl.text = "Valet pick up and drop off"
-        nl.font = UIFont(name: dsSubHeaderFont, size: 16)
-        nl.textColor = dsFlatBlack
-        nl.textAlignment = .left
-        nl.adjustsFontSizeToFitWidth = true
-        
-       return nl
-    }()
-    
-    let ownerPickupLabel : UILabel = {
-        
-        let nl = UILabel()
-        nl.translatesAutoresizingMaskIntoConstraints = false
-        nl.backgroundColor = .clear
-        nl.text = "Owner pick up and drop off"
-        nl.font = UIFont(name: dsSubHeaderFont, size: 16)
-        nl.textColor = dsFlatBlack
-        nl.textAlignment = .left
-        nl.adjustsFontSizeToFitWidth = true
-        
-       return nl
-    }()
-    
-    lazy var suiteTextField : UITextField = {
-        
-        let etfc = UITextField()
-        etfc.translatesAutoresizingMaskIntoConstraints = false
-        let placeholder = NSAttributedString(string: "Suite #", attributes: [NSAttributedString.Key.foregroundColor: dsFlatBlack.withAlphaComponent(0.4)])
-        etfc.attributedPlaceholder = placeholder
-        etfc.textAlignment = .left
-        etfc.textColor = coreBlackColor
-        etfc.font = UIFont(name: dsSubHeaderFont, size: 18)
-        etfc.allowsEditingTextAttributes = false
-        etfc.autocorrectionType = .no
-        etfc.delegate = self
-        etfc.backgroundColor = coreWhiteColor
-        etfc.keyboardAppearance = UIKeyboardAppearance.light
-        etfc.returnKeyType = UIReturnKeyType.done
-        etfc.keyboardType = .alphabet
-        etfc.layer.masksToBounds = true
-        etfc.layer.cornerRadius = 10
-        etfc.leftViewMode = .always
-        etfc.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
-        etfc.clipsToBounds = false
-        etfc.layer.masksToBounds = false
-        etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
-        etfc.layer.shadowOpacity = 0.05
-        etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
-        etfc.layer.shadowRadius = 9
-        etfc.layer.shouldRasterize = false
-        return etfc
-        
-    }()
-    
-    lazy var buzzerTextField : UITextField = {
-        
-        let etfc = UITextField()
-        etfc.translatesAutoresizingMaskIntoConstraints = false
-        let placeholder = NSAttributedString(string: "Buzzer code", attributes: [NSAttributedString.Key.foregroundColor: dsFlatBlack.withAlphaComponent(0.4)])
-        etfc.attributedPlaceholder = placeholder
-        etfc.textAlignment = .left
-        etfc.textColor = coreBlackColor
-        etfc.font = UIFont(name: dsSubHeaderFont, size: 18)
-        etfc.allowsEditingTextAttributes = false
-        etfc.autocorrectionType = .no
-        etfc.delegate = self
-        etfc.backgroundColor = coreWhiteColor
-        etfc.keyboardAppearance = UIKeyboardAppearance.light
-        etfc.returnKeyType = UIReturnKeyType.done
-        etfc.keyboardType = .alphabet
-        etfc.layer.masksToBounds = true
-        etfc.layer.cornerRadius = 10
-        etfc.leftViewMode = .always
-        etfc.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
-        etfc.clipsToBounds = false
-        etfc.layer.masksToBounds = false
-        etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
-        etfc.layer.shadowOpacity = 0.05
-        etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
-        etfc.layer.shadowRadius = 9
-        etfc.layer.shouldRasterize = false
-        return etfc
-        
-    }()
-    
-    let additionalNotesTextView : UITextView = {
-        
-        let tv = UITextView()
-        tv.backgroundColor = coreWhiteColor
-        tv.translatesAutoresizingMaskIntoConstraints = false
-        tv.clipsToBounds = false
-        tv.layer.masksToBounds = false
-        tv.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
-        tv.layer.shadowOpacity = 0.05
-        tv.layer.shadowOffset = CGSize(width: 2, height: 3)
-        tv.layer.shadowRadius = 9
-        tv.layer.shouldRasterize = false
-        tv.text = "   Additional notes (optional)"
-        tv.font = UIFont(name: dsSubHeaderFont, size: 18)
-        tv.layer.cornerRadius = 10
-        tv.textColor = dsFlatBlack.withAlphaComponent(0.4)
-        
-       return tv
-    }()
-    
-    lazy var nextButton : UIButton = {
-        
-        let cbf = UIButton(type: .system)
-        cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.setTitle("Next", for: UIControl.State.normal)
-        cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
-        cbf.titleLabel?.adjustsFontSizeToFitWidth = true
-        cbf.titleLabel?.numberOfLines = 1
-        cbf.titleLabel?.adjustsFontForContentSizeCategory = true
-        cbf.titleLabel?.textColor = coreBlackColor
-        cbf.backgroundColor = coreOrangeColor
-        cbf.layer.cornerRadius = 15
-        cbf.layer.masksToBounds = true
-        cbf.tintColor = coreWhiteColor
-        cbf.addTarget(self, action: #selector(self.handleNextButton), for: .touchUpInside)
-
-        return cbf
-        
-    }()
-    
-    lazy var backButton : UIButton = {
-        
-        let cbf = UIButton(type: .system)
-        cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.setTitle("Back", for: UIControl.State.normal)
-        cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
-        cbf.titleLabel?.adjustsFontSizeToFitWidth = true
-        cbf.titleLabel?.numberOfLines = 1
-        cbf.titleLabel?.adjustsFontForContentSizeCategory = true
-        cbf.titleLabel?.textColor = coreBlackColor
-        cbf.backgroundColor = .clear
-        cbf.layer.cornerRadius = 15
-        cbf.layer.masksToBounds = true
-        cbf.tintColor = coreBlackColor
-        cbf.addTarget(self, action: #selector(self.handleBackTextButton), for: .touchUpInside)
-
-        return cbf
-        
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
+        
+        //SET TEXTFIELD CONTENT TYPES
+        self.favoriteTreatTextField.textContentType = UITextContentType(rawValue: "")
+        self.dogFoodTextField.textContentType = UITextContentType(rawValue: "")
+        
+        self.favoriteTreatTextField.inputAccessoryView = self.toolBar
+        self.dogFoodTextField.inputAccessoryView = self.toolBar
+        
         self.scrollView.keyboardDismissMode = .interactive
 
     }
     
     func addViews() {
         
-        
         self.view.addSubview(scrollView)
         self.view.addSubview(self.stackView)
-        self.view.addSubview(timeCover)
 
         self.stackView.addArrangedSubview(self.headerBarOne)
         self.stackView.addArrangedSubview(self.headerBarTwo)
@@ -351,42 +279,58 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         
         self.scrollView.addSubview(self.headerContainer)
         self.scrollView.addSubview(self.cancelButton)
+        self.scrollView.addSubview(self.basicDetailsLabel)
         
-        self.scrollView.addSubview(self.additionalInfoLabel)
-        self.scrollView.addSubview(self.selectDoggyDeliveryTypeLabel)
-        
-        self.scrollView.addSubview(self.toggleOneView)
-        self.scrollView.addSubview(self.toggleTwoView)
-        
-        self.scrollView.addSubview(self.valetPickupLabel)
-        self.scrollView.addSubview(self.ownerPickupLabel)
-        
-        self.scrollView.addSubview(self.suiteTextField)
-        self.scrollView.addSubview(self.buzzerTextField)
-        
-        self.scrollView.addSubview(self.additionalNotesTextView)
+        self.scrollView.addSubview(self.treatLabel)
+        self.scrollView.addSubview(self.foodLabel)
+
+        self.scrollView.addSubview(self.favoriteTreatTextField)
+        self.scrollView.addSubview(self.dogFoodTextField)
         
         self.scrollView.addSubview(self.nextButton)
-        self.scrollView.addSubview(self.backButton)
-
-
-        self.scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
+        
+        self.view.addSubview(timeCover)
+        
+        self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         self.scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.05)
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.5)
         
-        self.headerBarOne.widthAnchor.constraint(equalToConstant: self.view.frame.width / 5.0).isActive = true
-        self.headerBarOne.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        let screenHeight = UIScreen.main.bounds.height
+        print("screen height is: \(screenHeight)")
         
-        self.headerBarTwo.widthAnchor.constraint(equalToConstant: self.view.frame.width / 5.0).isActive = true
-        self.headerBarTwo.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        switch screenHeight {
         
-        self.headerBarThree.widthAnchor.constraint(equalToConstant: self.view.frame.width / 5.0).isActive = true
-        self.headerBarThree.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        //MANUAL CONFIGURATION - REFACTOR FOR UNNIVERSAL FITMENT
+        case 926 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.13)
+        case 896 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.14)
+        case 844 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.02)
+        case 812 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.27)
+        case 736 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.34)
+        case 667 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.47)
+        case 568 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.47)
+        case 480 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.47)
+            
+        default : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.5)
+            
+        }
         
-        self.headerBarFour.widthAnchor.constraint(equalToConstant: self.view.frame.width / 5.0).isActive = true
-        self.headerBarFour.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        self.headerBarOne.widthAnchor.constraint(equalToConstant: 9).isActive = true
+        self.headerBarOne.heightAnchor.constraint(equalToConstant: 9).isActive = true
+        self.headerBarOne.layer.cornerRadius = 4.5
+        
+        self.headerBarTwo.widthAnchor.constraint(equalToConstant: 9).isActive = true
+        self.headerBarTwo.heightAnchor.constraint(equalToConstant: 9).isActive = true
+        self.headerBarTwo.layer.cornerRadius = 4.5
+        
+        self.headerBarThree.widthAnchor.constraint(equalToConstant: 9).isActive = true
+        self.headerBarThree.heightAnchor.constraint(equalToConstant: 9).isActive = true
+        self.headerBarThree.layer.cornerRadius = 4.5
+        
+        self.headerBarFour.widthAnchor.constraint(equalToConstant: 9).isActive = true
+        self.headerBarFour.heightAnchor.constraint(equalToConstant: 9).isActive = true
+        self.headerBarFour.layer.cornerRadius = 4.5
         
         self.headerContainer.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 0).isActive = true
         self.headerContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
@@ -394,94 +338,116 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         self.headerContainer.heightAnchor.constraint(equalToConstant: 100).isActive = true
         
         self.cancelButton.centerYAnchor.constraint(equalTo: self.headerContainer.centerYAnchor, constant: 0).isActive = true
-        self.cancelButton.rightAnchor.constraint(equalTo: self.headerContainer.rightAnchor, constant: -30).isActive = true
-        self.cancelButton.heightAnchor.constraint(equalToConstant: 53).isActive = true
-        self.cancelButton.widthAnchor.constraint(equalToConstant: 53).isActive = true
+        self.cancelButton.leftAnchor.constraint(equalTo: self.headerContainer.leftAnchor, constant: 11).isActive = true
+        self.cancelButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
+        self.cancelButton.widthAnchor.constraint(equalToConstant: 54).isActive = true
         
-        self.stackView.topAnchor.constraint(equalTo: self.headerContainer.bottomAnchor, constant: 0).isActive = true
-        self.stackView.leftAnchor.constraint(equalTo: self.headerContainer.leftAnchor, constant: 30).isActive = true
+        self.basicDetailsLabel.topAnchor.constraint(equalTo: self.cancelButton.bottomAnchor, constant: 25).isActive = true
+        self.basicDetailsLabel.leftAnchor.constraint(equalTo: self.cancelButton.leftAnchor, constant: 22).isActive = true
+        self.basicDetailsLabel.sizeToFit()
+        
+        self.stackView.centerYAnchor.constraint(equalTo: self.basicDetailsLabel.centerYAnchor, constant: 0).isActive = true
         self.stackView.rightAnchor.constraint(equalTo: self.headerContainer.rightAnchor, constant: -30).isActive = true
         self.stackView.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        self.stackView.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        self.nextButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
+        self.nextButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.nextButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         self.timeCover.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         self.timeCover.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         self.timeCover.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.timeCover.heightAnchor.constraint(equalToConstant: globalStatusBarHeight).isActive = true
         
-        self.additionalInfoLabel.topAnchor.constraint(equalTo: self.stackView.bottomAnchor, constant: 30).isActive = true
-        self.additionalInfoLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.additionalInfoLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-        self.additionalInfoLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        self.treatLabel.topAnchor.constraint(equalTo: self.basicDetailsLabel.bottomAnchor, constant: 48).isActive = true
+        self.treatLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.treatLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        self.treatLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
-        self.selectDoggyDeliveryTypeLabel.topAnchor.constraint(equalTo: self.additionalInfoLabel.bottomAnchor, constant: 23).isActive = true
-        self.selectDoggyDeliveryTypeLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.selectDoggyDeliveryTypeLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-        self.selectDoggyDeliveryTypeLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        self.favoriteTreatTextField.topAnchor.constraint(equalTo: self.treatLabel.bottomAnchor, constant: 20).isActive = true
+        self.favoriteTreatTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.favoriteTreatTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.favoriteTreatTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
-        self.toggleOneView.topAnchor.constraint(equalTo: self.selectDoggyDeliveryTypeLabel.bottomAnchor, constant: 25).isActive = true
-        self.toggleOneView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.toggleOneView.heightAnchor.constraint(equalToConstant: 27).isActive = true
-        self.toggleOneView.widthAnchor.constraint(equalToConstant: 27).isActive = true
-        self.toggleOneView.layer.cornerRadius = 27/2
+        self.foodLabel.topAnchor.constraint(equalTo: self.favoriteTreatTextField.bottomAnchor, constant: 25).isActive = true
+        self.foodLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.foodLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        self.foodLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
-        self.toggleTwoView.topAnchor.constraint(equalTo: self.toggleOneView.bottomAnchor, constant: 25).isActive = true
-        self.toggleTwoView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.toggleTwoView.heightAnchor.constraint(equalToConstant: 27).isActive = true
-        self.toggleTwoView.widthAnchor.constraint(equalToConstant: 27).isActive = true
-        self.toggleTwoView.layer.cornerRadius = 27/2
+        self.dogFoodTextField.topAnchor.constraint(equalTo: self.foodLabel.bottomAnchor, constant: 20).isActive = true
+        self.dogFoodTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.dogFoodTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.dogFoodTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
 
-        self.valetPickupLabel.centerYAnchor.constraint(equalTo: self.toggleOneView.centerYAnchor, constant: 0).isActive = true
-        self.valetPickupLabel.leftAnchor.constraint(equalTo: self.toggleOneView.rightAnchor, constant: 10).isActive = true
-        self.valetPickupLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-        self.valetPickupLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+    }
+    
+    func resignation() {
         
-        self.ownerPickupLabel.centerYAnchor.constraint(equalTo: self.toggleTwoView.centerYAnchor, constant: 0).isActive = true
-        self.ownerPickupLabel.leftAnchor.constraint(equalTo: self.toggleTwoView.rightAnchor, constant: 10).isActive = true
-        self.ownerPickupLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-        self.ownerPickupLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        
-        self.suiteTextField.topAnchor.constraint(equalTo: self.ownerPickupLabel.bottomAnchor, constant: 28).isActive = true
-        self.suiteTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.suiteTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-        self.suiteTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        
-        self.buzzerTextField.topAnchor.constraint(equalTo: self.suiteTextField.bottomAnchor, constant: 20).isActive = true
-        self.buzzerTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.buzzerTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-        self.buzzerTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        
-        self.additionalNotesTextView.topAnchor.constraint(equalTo: self.buzzerTextField.bottomAnchor, constant: 20).isActive = true
-        self.additionalNotesTextView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.additionalNotesTextView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-        self.additionalNotesTextView.heightAnchor.constraint(equalToConstant: 144).isActive = true
-        
-        self.nextButton.topAnchor.constraint(equalTo: self.additionalNotesTextView.bottomAnchor, constant: 26).isActive = true
-        self.nextButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.nextButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-        self.nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        self.backButton.topAnchor.constraint(equalTo: self.nextButton.bottomAnchor, constant: 30).isActive = true
-        self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.backButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-        self.backButton.sizeToFit()
+        self.favoriteTreatTextField.resignFirstResponder()
+        self.dogFoodTextField.resignFirstResponder()
         
     }
     
-    @objc func handleBackTextButton() {
+    @objc func handleManualScrolling(sender : UITextField) {
+       
+        if sender == self.favoriteTreatTextField {
         
-        self.navigationController?.popViewController(animated: true)
+            self.scrollView.scrollToTop()
+            
+        } else if sender == self.dogFoodTextField {
+            
+            let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
+            self.scrollView.setContentOffset(bottomOffset, animated: true)
+            
+        } else {
+            
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        self.resignation()
+        self.scrollView.scrollToTop()
+        return false
+        
+    }
+    
+    @objc func handleNextArrowButton() {
+        
+        if self.favoriteTreatTextField.isFirstResponder {
+            
+            self.favoriteTreatTextField.resignFirstResponder()
+            self.dogFoodTextField.becomeFirstResponder()
+            let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
+            self.scrollView.setContentOffset(bottomOffset, animated: true)
+
+        } else if dogFoodTextField.isFirstResponder {
+            
+            self.dogFoodTextField.resignFirstResponder()
+            self.favoriteTreatTextField.becomeFirstResponder()
+
+            let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
+            self.scrollView.setContentOffset(bottomOffset, animated: true)
+        
+        } else {
+            
+        }
+        
     }
     
     @objc func handleBackButton() {
-        print("touch 1")
+        
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     @objc func handleNextButton() {
-        print("touch 2")
-        let newDogFive = NewDogFive()
-        newDogFive.modalPresentationStyle = .fullScreen
-        newDogFive.navigationController?.navigationBar.isHidden = true
-        self.navigationController?.pushViewController(newDogFive, animated: true)
+        
+        let newDogTwo = NewDogTwo()
+        newDogTwo.modalPresentationStyle = .fullScreen
+        newDogTwo.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.pushViewController(newDogTwo, animated: true)
+        
     }
 }

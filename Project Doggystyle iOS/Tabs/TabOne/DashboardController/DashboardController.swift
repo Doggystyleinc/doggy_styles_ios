@@ -47,7 +47,7 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         
     }()
     
-    let notificationIcon : UIButton = {
+    lazy var notificationIcon : UIButton = {
         
         let dcl = UIButton(type: .system)
         dcl.translatesAutoresizingMaskIntoConstraints = false
@@ -58,6 +58,7 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         dcl.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
         dcl.setTitle(String.fontAwesomeIcon(name: .bell), for: .normal)
         dcl.tintColor = dividerGrey
+        dcl.addTarget(self, action: #selector(self.handleNotificationsController), for: .touchUpInside)
         
         return dcl
     }()
@@ -132,6 +133,15 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
        return eso
         
     }()
+    
+    lazy var todaysDashView : TodaysDashView = {
+        
+        let eso = TodaysDashView(frame: .zero)
+        eso.dashboardController = self
+        
+       return eso
+        
+    }()
   
     override func viewDidLoad() {
         
@@ -142,9 +152,10 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         Service.shared.fetchCurrentUser()
         self.addViews()
         
-        self.emptyStateOne.isHidden = true
-        self.emptyStateTwo.isHidden = true
-        self.dashMainView.isHidden = false
+        self.emptyStateOne.isHidden = false
+        self.emptyStateTwo.isHidden = true //TOUR THE DOGGYSTYLE TRUCK
+        self.dashMainView.isHidden = true
+        self.todaysDashView.isHidden = true
        
     }
     
@@ -177,8 +188,9 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         
         //DASH VIEWS
         self.view.addSubview(self.dashMainView)
+        self.view.addSubview(self.todaysDashView)
 
-        self.referButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -20).isActive = true
+        self.referButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         self.referButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.referButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         self.referButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
@@ -218,6 +230,12 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         self.dashMainView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.dashMainView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
         
+        self.todaysDashView.topAnchor.constraint(equalTo: self.headerLabel.topAnchor, constant: -10).isActive = true
+        self.todaysDashView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.todaysDashView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.todaysDashView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        
+        
         
     }
     
@@ -239,9 +257,9 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         self.present(refurVC, animated: true)
     }
     
-    @objc private func didTapNotification() {
-        let notificationVC = NotificationController()
-        self.present(notificationVC, animated: true)
+    @objc func handleNotificationsController() {
+        let notificationVC = YourNotificationController()
+        self.navigationController?.pushViewController(notificationVC, animated: true)
     }
     
     @objc func handleTourTruckButton() {

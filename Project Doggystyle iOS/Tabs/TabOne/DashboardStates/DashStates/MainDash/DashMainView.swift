@@ -33,7 +33,6 @@ class DashMainView : UIView {
        return rpc
     }()
     
-    
     lazy var selectorSwitch : SelectorSwitch = {
         
         let ss = SelectorSwitch()
@@ -46,8 +45,6 @@ class DashMainView : UIView {
         
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.setTitle("Book now", for: UIControl.State.normal)
-        cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
         cbf.titleLabel?.adjustsFontSizeToFitWidth = true
         cbf.titleLabel?.numberOfLines = 1
         cbf.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -58,10 +55,29 @@ class DashMainView : UIView {
         cbf.layer.masksToBounds = false
         cbf.tintColor = coreWhiteColor
         cbf.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
-        cbf.layer.shadowOpacity = 0.5
+        cbf.layer.shadowOpacity = 0.2
         cbf.layer.shadowOffset = CGSize(width: 2, height: 3)
         cbf.layer.shadowRadius = 4
         cbf.layer.shouldRasterize = false
+       
+        
+        let str = String.fontAwesomeIcon(name: .calendarPlus) + "   Book now"
+        let attributedStr = NSMutableAttributedString(string: str)
+
+        //Apply FontAwesome to the first character
+        let range1 = NSRange(location: 0, length: 1)
+        attributedStr.addAttribute(.font,
+                                   value: UIFont.fontAwesome(ofSize: 18, style: .solid),
+                                   range: range1)
+
+        //Apply the system font to the rest of the string
+        let range2 = NSRange(location: 1, length: (str as NSString).length - 1)
+        attributedStr.addAttribute(.font,
+                                   value: UIFont(name: dsHeaderFont, size: 18)!,
+                                   range: range2)
+
+        //Set the attributed text for the button
+        cbf.setAttributedTitle(attributedStr, for: .normal)
         
         return cbf
         
@@ -98,7 +114,7 @@ class DashMainView : UIView {
         self.mainDashCollectionView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
         self.mainDashCollectionView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         
-        self.bookNowButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -100).isActive = true
+        self.bookNowButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -120).isActive = true
         self.bookNowButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.bookNowButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
         self.bookNowButton.heightAnchor.constraint(equalToConstant: 60).isActive = true

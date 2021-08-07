@@ -50,8 +50,8 @@ class NewDogEntry : UIViewController {
         vi.backgroundColor = .clear
         vi.contentMode = .scaleAspectFit
         vi.isUserInteractionEnabled = false
-//        let image = UIImage(named: "vehicle_image")?.withRenderingMode(.alwaysOriginal)
-//        vi.image = image
+        let image = UIImage(named: "doggy_profile_image")?.withRenderingMode(.alwaysOriginal)
+        vi.image = image
         
        return vi
     }()
@@ -104,7 +104,7 @@ class NewDogEntry : UIViewController {
         self.dogImage.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 20).isActive = true
         self.dogImage.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.dogImage.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.dogImage.bottomAnchor.constraint(equalTo: self.confirmButton.topAnchor, constant: 0).isActive = true
+        self.dogImage.bottomAnchor.constraint(equalTo: self.confirmButton.topAnchor, constant: 90).isActive = true
         
     }
     

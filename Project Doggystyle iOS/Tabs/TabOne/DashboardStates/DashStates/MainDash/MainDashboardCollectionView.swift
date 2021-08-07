@@ -33,13 +33,14 @@ class MainDashboardCollectionView : UICollectionView, UICollectionViewDelegateFl
         self.canCancelContentTouches = false
         self.contentInsetAdjustmentBehavior = .never
         self.delaysContentTouches = true
+        self.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 110, right: 0)
         
         self.register(MainCollectionFeeder.self, forCellWithReuseIdentifier: self.mainCollectionID)
         
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -138,7 +139,7 @@ class MainCollectionFeeder : UICollectionViewCell {
         hl.font = UIFont(name: dsSubHeaderFont, size: 18)
         hl.numberOfLines = 2
         hl.adjustsFontSizeToFitWidth = true
-        hl.textAlignment = .left
+        hl.textAlignment = .right
         hl.textColor = coreBlackColor
         
         return hl
@@ -221,7 +222,7 @@ class MainCollectionFeeder : UICollectionViewCell {
         self.dateLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         self.timeLabel.topAnchor.constraint(equalTo: self.dogOneImage.bottomAnchor, constant: 16).isActive = true
-        self.timeLabel.rightAnchor.constraint(equalTo: self.container.rightAnchor, constant: -10).isActive = true
+        self.timeLabel.rightAnchor.constraint(equalTo: self.container.rightAnchor, constant: -30).isActive = true
         self.timeLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 2.5).isActive = true
         self.timeLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         

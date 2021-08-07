@@ -98,7 +98,7 @@ class NotificationsController : UIViewController, UNUserNotificationCenterDelega
         vi.backgroundColor = .clear
         vi.contentMode = .scaleAspectFit
         vi.isUserInteractionEnabled = false
-        let image = UIImage(named: "vehicle_image")?.withRenderingMode(.alwaysOriginal)
+        let image = UIImage(named: "notifications_image")?.withRenderingMode(.alwaysOriginal)
         vi.image = image
         
        return vi
@@ -109,7 +109,6 @@ class NotificationsController : UIViewController, UNUserNotificationCenterDelega
         
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
-        
         
     }
     

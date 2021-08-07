@@ -129,7 +129,10 @@ class ProfileController : UIViewController {
         self.view.addSubview(self.activityIndicator)
         self.view.addSubview(self.notificationIcon)
         
-        self.notificationIcon.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -20).isActive = true
+        
+//        self.referButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+
+        self.notificationIcon.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         self.notificationIcon.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.notificationIcon.heightAnchor.constraint(equalToConstant: 44).isActive = true
         self.notificationIcon.widthAnchor.constraint(equalToConstant: 44).isActive = true

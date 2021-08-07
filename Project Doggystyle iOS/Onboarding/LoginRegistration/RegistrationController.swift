@@ -867,7 +867,6 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         }
     }
     
-    
     //MARK: - FIRST NAME TEXT FIELD
     @objc func handleFirstNameTextFieldChange() {
         if self.firstNameTextField.text != "" {

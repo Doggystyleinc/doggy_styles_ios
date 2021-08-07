@@ -27,7 +27,9 @@ var friends_array_phone_number = [String](),
     
     //MARK: - Global Color Variables
     coreWhiteColor = UIColor(hex: 0xFFFFFF),
-    coreBlackColor = UIColor(hex: 0x000000),
+//    coreBlackColor = UIColor(hex: 0x000000),
+    coreBlackColor = UIColor(hex: 0x353535),
+    
     coreGrayColor = UIColor(hex: 0x414141),
     coreLightGrayColor = UIColor(hex: 0xF0F0F0),
     coreRedColor = UIColor(hex: 0xFF0000),
@@ -43,7 +45,10 @@ var friends_array_phone_number = [String](),
     recordCharcoalGrey = UIColor(hex: 0x4A4A4A),
     loadingBlueProgress = UIColor(hex: 0x0062FF),
     predictionGrey = UIColor(hex: 0x707070),
-    dividerGrey = UIColor(hex: 0xBCBCBC),
+//    dividerGrey = UIColor(hex: 0xBCBCBC),
+    dividerGrey = UIColor(hex: 0xACACB0).withAlphaComponent(0.8),
+
+    
     imageBorderBlue = UIColor(hex: 0x1F5FC5),
     dsFlatBlack = UIColor(hex: 0x302F3C),
     dsButtonLightGrey = UIColor(hex: 0xEDEDED),
