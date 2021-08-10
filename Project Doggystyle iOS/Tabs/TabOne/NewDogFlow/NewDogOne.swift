@@ -10,6 +10,14 @@ import UIKit
 
 class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
     
+    var selectedDate : String = ""
+    var dogBreedJsonGrabber = DogBreed()
+    var dogBreedJson : [String] = []
+    var predictionString : String = ""
+    var selectedImage : UIImage?
+    
+    var ageTopConstraint : NSLayoutConstraint?
+    
     lazy var scrollView : UIScrollView = {
         
         let sv = UIScrollView()
@@ -30,7 +38,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
     }()
     
     lazy var stackView : UIStackView = {
-              
+        
         let sv = UIStackView()
         sv.translatesAutoresizingMaskIntoConstraints = false
         sv.axis = .horizontal
@@ -47,7 +55,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         hc.backgroundColor = .clear
         hc.isUserInteractionEnabled = false
         
-       return hc
+        return hc
     }()
     
     lazy var cancelButton : UIButton = {
@@ -75,7 +83,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
         
-       return nl
+        return nl
     }()
     
     lazy var profileImageViewContainer : UIButton = {
@@ -93,7 +101,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         pv.layer.shadowOffset = CGSize(width: 2, height: 3)
         pv.layer.shadowRadius = 9
         pv.layer.shouldRasterize = false
-
+        
         let fillerImage = UIImage(named: "doggy_profile_filler")?.withRenderingMode(.alwaysOriginal)
         pv.setBackgroundImage(fillerImage, for: .normal)
         
@@ -110,13 +118,13 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.backgroundColor = coreOrangeColor
         cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 11, style: .solid)
         cbf.setTitle(String.fontAwesomeIcon(name: .pencilAlt), for: .normal)
-        cbf.addTarget(self, action: #selector(self.handleBackButton), for: UIControl.Event.touchUpInside)
+        cbf.addTarget(self, action: #selector(self.checkForGalleryAuth), for: .touchUpInside)
         return cbf
         
     }()
     
     lazy var profileImageView : UIImageView = {
-
+        
         let pv = UIImageView()
         pv.translatesAutoresizingMaskIntoConstraints = false
         pv.backgroundColor = .clear
@@ -124,6 +132,8 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         pv.isUserInteractionEnabled = true
         pv.layer.masksToBounds = true
         pv.clipsToBounds = true
+        pv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.checkForGalleryAuth)))
+
         return pv
     }()
     
@@ -159,7 +169,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         etfc.layer.borderWidth = 0.5
         etfc.isUserInteractionEnabled = true
         etfc.addTarget(self, action: #selector(self.handleManualScrolling), for: .touchDown)
-
+        
         return etfc
         
     }()
@@ -194,6 +204,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         etfc.layer.borderColor = dividerGrey.cgColor
         etfc.layer.borderWidth = 0.5
         etfc.addTarget(self, action: #selector(self.handleManualScrolling), for: .touchDown)
+        etfc.addTarget(self, action: #selector(self.monitorChangesForBreed(textField:)), for: .editingChanged)
 
         return etfc
         
@@ -203,7 +214,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let etfc = UITextField()
         etfc.translatesAutoresizingMaskIntoConstraints = false
-        let placeholder = NSAttributedString(string: "Birthday or (guesstimate)", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
+        let placeholder = NSAttributedString(string: "Birthday", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
         etfc.attributedPlaceholder = placeholder
         etfc.textAlignment = .left
         etfc.textColor = coreBlackColor
@@ -228,6 +239,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         etfc.layer.shouldRasterize = false
         etfc.layer.borderColor = dividerGrey.cgColor
         etfc.layer.borderWidth = 0.5
+        etfc.isUserInteractionEnabled = false
         etfc.addTarget(self, action: #selector(self.handleManualScrolling), for: .touchDown)
 
         return etfc
@@ -261,7 +273,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         hbo.backgroundColor = coreOrangeColor
         hbo.layer.masksToBounds = true
         
-       return hbo
+        return hbo
     }()
     
     let headerBarTwo : UIView = {
@@ -269,7 +281,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
         hbo.backgroundColor = dividerGrey.withAlphaComponent(0.5)
-       return hbo
+        return hbo
     }()
     
     let headerBarThree : UIView = {
@@ -277,7 +289,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
         hbo.backgroundColor = dividerGrey.withAlphaComponent(0.5)
-       return hbo
+        return hbo
     }()
     
     let headerBarFour : UIView = {
@@ -285,7 +297,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
         hbo.backgroundColor = dividerGrey.withAlphaComponent(0.5)
-       return hbo
+        return hbo
     }()
     
     let timeCover : UIView = {
@@ -294,7 +306,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         tc.translatesAutoresizingMaskIntoConstraints = false
         tc.backgroundColor = coreBackgroundWhite
         
-       return tc
+        return tc
     }()
     
     lazy var toolBar : UIToolbar = {
@@ -314,6 +326,49 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
     }()
     
+    lazy var datePicker : UIDatePicker = {
+        
+        let dp = UIDatePicker()
+        dp.translatesAutoresizingMaskIntoConstraints = false
+        let minus20Years = Calendar.current.date(byAdding: .year, value: -20, to: Date())!
+        let minusEightWeeks = Calendar.current.date(byAdding: .month, value: -2, to: Date())!
+        dp.minimumDate = minus20Years
+        dp.maximumDate = minusEightWeeks
+        dp.datePickerMode = .date
+        dp.preferredDatePickerStyle = .automatic
+        dp.tintColor = dividerGrey
+        dp.backgroundColor = dividerGrey
+        dp.alpha = 0.1
+        dp.addTarget(self, action: #selector(self.handleDatePicker(sender:)), for: UIControl.Event.valueChanged)
+        
+        return dp
+        
+    }()
+    
+    lazy var predictionLabel : UILabel = {
+        
+        let pl = UILabel()
+        pl.translatesAutoresizingMaskIntoConstraints = false
+        pl.textColor = coreBlackColor
+        pl.font = UIFont(name: dsSubHeaderFont, size: 14)
+        pl.textAlignment = .center
+        pl.isUserInteractionEnabled = true
+        pl.clipsToBounds = true
+        pl.layer.masksToBounds = true
+        pl.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
+        pl.layer.shadowOpacity = 0.05
+        pl.layer.shadowOffset = CGSize(width: 2, height: 3)
+        pl.layer.shadowRadius = 9
+        pl.layer.shouldRasterize = false
+        pl.layer.borderColor = dividerGrey.cgColor
+        pl.layer.borderWidth = 0.5
+        pl.backgroundColor = coreGreenColor.withAlphaComponent(0.2)
+        pl.isHidden = true
+        pl.layer.cornerRadius = 10
+        pl.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.tappedPrediction)))
+       return pl
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -331,14 +386,15 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.ageTextField.inputAccessoryView = self.toolBar
         
         self.scrollView.keyboardDismissMode = .interactive
-
+        
+        self.dogBreedJson = self.dogBreedJsonGrabber.dogBreedJSON
     }
     
     func addViews() {
         
         self.view.addSubview(scrollView)
         self.view.addSubview(self.stackView)
-
+        
         self.stackView.addArrangedSubview(self.headerBarOne)
         self.stackView.addArrangedSubview(self.headerBarTwo)
         self.stackView.addArrangedSubview(self.headerBarThree)
@@ -350,11 +406,13 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.scrollView.addSubview(self.profileImageViewContainer)
         self.scrollView.addSubview(self.profileImageView)
         self.scrollView.addSubview(self.pencilIconButton)
+        self.scrollView.addSubview(self.datePicker)
 
         self.scrollView.addSubview(self.nameTextField)
         self.scrollView.addSubview(self.breedTextField)
         self.scrollView.addSubview(self.ageTextField)
-        
+        self.scrollView.addSubview(self.predictionLabel)
+
         self.scrollView.addSubview(self.nextButton)
         
         self.view.addSubview(timeCover)
@@ -366,19 +424,19 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.5)
         
         let screenHeight = UIScreen.main.bounds.height
-        print("screen height is: \(screenHeight)")
+        print("Screen height: \(screenHeight)")
         
         switch screenHeight {
         
         //MANUAL CONFIGURATION - REFACTOR FOR UNNIVERSAL FITMENT
-        case 926 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.13)
-        case 896 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.14)
+        case 926 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.0)
+        case 896 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.0)
         case 844 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.02)
-        case 812 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.27)
-        case 736 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.34)
-        case 667 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.47)
-        case 568 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.47)
-        case 480 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.47)
+        case 812 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.03)
+        case 736 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.11)
+        case 667 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.21)
+        case 568 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.21)
+        case 480 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.21)
             
         default : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.5)
             
@@ -391,15 +449,15 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.headerBarTwo.widthAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarTwo.heightAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarTwo.layer.cornerRadius = 4.5
-
+        
         self.headerBarThree.widthAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarThree.heightAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarThree.layer.cornerRadius = 4.5
-
+        
         self.headerBarFour.widthAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarFour.heightAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarFour.layer.cornerRadius = 4.5
-
+        
         self.headerContainer.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 0).isActive = true
         self.headerContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.headerContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
@@ -409,7 +467,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.cancelButton.leftAnchor.constraint(equalTo: self.headerContainer.leftAnchor, constant: 11).isActive = true
         self.cancelButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
         self.cancelButton.widthAnchor.constraint(equalToConstant: 54).isActive = true
-       
+        
         self.basicDetailsLabel.topAnchor.constraint(equalTo: self.cancelButton.bottomAnchor, constant: 25).isActive = true
         self.basicDetailsLabel.leftAnchor.constraint(equalTo: self.cancelButton.leftAnchor, constant: 22).isActive = true
         self.basicDetailsLabel.sizeToFit()
@@ -418,7 +476,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.stackView.rightAnchor.constraint(equalTo: self.headerContainer.rightAnchor, constant: -30).isActive = true
         self.stackView.heightAnchor.constraint(equalToConstant: 14).isActive = true
         self.stackView.widthAnchor.constraint(equalToConstant: 60).isActive = true
-
+        
         self.profileImageViewContainer.topAnchor.constraint(equalTo: self.basicDetailsLabel.bottomAnchor, constant: 21).isActive = true
         self.profileImageViewContainer.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
         self.profileImageViewContainer.heightAnchor.constraint(equalToConstant: 98).isActive = true
@@ -436,7 +494,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.pencilIconButton.heightAnchor.constraint(equalToConstant: 23).isActive = true
         self.pencilIconButton.widthAnchor.constraint(equalToConstant: 23).isActive = true
         self.pencilIconButton.layer.cornerRadius = 23/2
-
+        
         self.nameTextField.topAnchor.constraint(equalTo: self.profileImageViewContainer.bottomAnchor, constant: 25).isActive = true
         self.nameTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.nameTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
@@ -447,21 +505,47 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.breedTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.breedTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
-        self.ageTextField.topAnchor.constraint(equalTo: self.breedTextField.bottomAnchor, constant: 20).isActive = true
+        self.ageTopConstraint = self.ageTextField.topAnchor.constraint(equalTo: self.breedTextField.bottomAnchor, constant: 20)
+        self.ageTopConstraint?.isActive = true
         self.ageTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.ageTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.ageTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
-
+        
         self.nextButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
         self.nextButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.nextButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-
+        
         self.timeCover.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         self.timeCover.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         self.timeCover.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.timeCover.heightAnchor.constraint(equalToConstant: globalStatusBarHeight).isActive = true
-
+        
+        self.datePicker.topAnchor.constraint(equalTo: self.ageTextField.topAnchor, constant: 0).isActive = true
+        self.datePicker.leftAnchor.constraint(equalTo: self.ageTextField.leftAnchor, constant: 0).isActive = true
+        self.datePicker.rightAnchor.constraint(equalTo: self.ageTextField.rightAnchor, constant: 0).isActive = true
+        self.datePicker.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        
+        self.predictionLabel.topAnchor.constraint(equalTo: self.breedTextField.bottomAnchor, constant: 5).isActive = true
+        self.predictionLabel.leftAnchor.constraint(equalTo: self.breedTextField.leftAnchor, constant: 0).isActive = true
+        self.predictionLabel.rightAnchor.constraint(equalTo: self.breedTextField.rightAnchor, constant: 0).isActive = true
+        self.predictionLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+    }
+    
+    func adjustAgeConstraint(moveDown : Bool) {
+        
+        if moveDown {
+            UIView.animate(withDuration: 0.25) {
+                self.ageTopConstraint?.constant = 60
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            UIView.animate(withDuration: 0.25) {
+                self.ageTopConstraint?.constant = 20
+                self.view.layoutIfNeeded()
+            }
+        }
     }
     
     func resignation() {
@@ -472,10 +556,77 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
     }
     
-    @objc func handleManualScrolling(sender : UITextField) {
-       
-        if sender == self.nameTextField {
+    @objc func tappedPrediction() {
         
+        if self.predictionString != "" {
+            self.breedTextField.text = self.predictionString
+            self.predictionLabel.isHidden = true
+            self.adjustAgeConstraint(moveDown: false)
+        }
+    }
+    
+    @objc func monitorChangesForBreed(textField : UITextField) {
+        
+        guard let text = self.breedTextField.text else {return}
+        
+        if text.count > 0 {
+
+            let matchingTerms = self.dogBreedJson.filter({
+                $0.range(of: text, options: .caseInsensitive) != nil
+            })
+            
+            if matchingTerms.count > 0 {
+                self.predictionLabel.text = matchingTerms[0]
+                self.predictionString = matchingTerms[0]
+                self.adjustAgeConstraint(moveDown: true)
+                self.predictionLabel.isHidden = false
+
+            } else {
+                self.predictionLabel.text = ""
+                self.predictionString = ""
+                self.adjustAgeConstraint(moveDown: false)
+                self.predictionLabel.isHidden = true
+
+            }
+            print(matchingTerms)
+        } else {
+            self.predictionLabel.text = ""
+            self.predictionString = ""
+            self.adjustAgeConstraint(moveDown: false)
+            self.predictionLabel.isHidden = true
+
+        }
+    }
+    
+    
+    @objc func handleDatePicker(sender: UIDatePicker) {
+          
+        let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: sender.date)
+        let month = dateComponents.month ?? 0
+        let day = dateComponents.day ?? 0
+        let year = dateComponents.year ?? 0
+        
+        var dayFixed : String = "\(day)"
+        var monthFixed : String = "\(month)"
+
+        if day < 10 {
+            dayFixed = "0\(day)"
+        }
+        
+        if month < 10 {
+            monthFixed = "0\(month)"
+        }
+        
+        self.selectedDate = "\(year)-\(monthFixed)-\(dayFixed)"
+        print("Selected date: ", selectedDate)
+        self.ageTextField.text = self.selectedDate
+          
+      }
+    
+    @objc func handleManualScrolling(sender : UITextField) {
+        
+        if sender == self.nameTextField {
+            
             self.scrollView.scrollToTop()
             
         } else if sender == self.breedTextField {
@@ -507,24 +658,21 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
             self.breedTextField.becomeFirstResponder()
             let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
             self.scrollView.setContentOffset(bottomOffset, animated: true)
-
+            
         } else if breedTextField.isFirstResponder {
             
             self.breedTextField.resignFirstResponder()
             self.ageTextField.becomeFirstResponder()
             let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
             self.scrollView.setContentOffset(bottomOffset, animated: true)
-        
+            
         } else if ageTextField.isFirstResponder {
             
             self.ageTextField.resignFirstResponder()
             self.nameTextField.becomeFirstResponder()
-            
             self.scrollView.scrollToTop()
-
             
         }
-        
     }
     
     @objc func handleBackButton() {
@@ -534,11 +682,172 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
     
     @objc func handleNextButton() {
         
-        let newDogTwo = NewDogTwo()
-        newDogTwo.modalPresentationStyle = .fullScreen
-        newDogTwo.navigationController?.navigationBar.isHidden = true
-        self.navigationController?.pushViewController(newDogTwo, animated: true)
+        guard let dogName = self.nameTextField.text else {
+            print("Guarded empty dog")
+            return
+        }
+        guard let dogBreed = self.breedTextField.text else {
+            print("Guarded breed")
+            return
+            
+        }
+        guard let dogBirthday = self.ageTextField.text else {
+            print("Guarded birthday")
+            return
+        }
         
+        let safeName = dogName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let safeBreed = dogBreed.trimmingCharacters(in: .whitespacesAndNewlines)
+        let safeBirthday = dogBirthday.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if safeName.count > 1 {
+            if safeBreed.count > 1 {
+                if safeBirthday.count > 1 {
+                    if self.selectedImage != nil {
+                    
+                    //PROFILE BUILDER, NEEDS TO BE CALLED EVERYTIME A USER MOVES FORWARD
+                    globalNewDogBuilder.dogBuilderName = safeName
+                    globalNewDogBuilder.dogBuilderBreed = safeBreed
+                    globalNewDogBuilder.dogBuilderBirthday = safeBirthday
+                    globalNewDogBuilder.dogBuilderProfileImage = self.selectedImage
+                    
+                    UIDevice.vibrateLight()
+
+                    let newDogTwo = NewDogTwo()
+                    newDogTwo.modalPresentationStyle = .fullScreen
+                    newDogTwo.navigationController?.navigationBar.isHidden = true
+                    self.navigationController?.pushViewController(newDogTwo, animated: true)
+                        
+                    } else {
+                        self.presentAlertOnMainThread(title: "Profile photo", message: "Please add a photo of your pup.", buttonTitle: "Ok")
+                    }
+                    
+                } else {
+                    self.presentAlertOnMainThread(title: "Birthday", message: "Seems incorrect. Please try again.", buttonTitle: "Ok")
+                }
+            } else {
+                self.presentAlertOnMainThread(title: "Breed", message: "Seems incorrect. Please try again.", buttonTitle: "Ok")
+            }
+        } else {
+            self.presentAlertOnMainThread(title: "Name", message: "Please make sure your pup's name is at least two characters.", buttonTitle: "Ok")
+        }
+    }
+}
+
+import AVFoundation
+import MobileCoreServices
+import Photos
+
+
+extension NewDogOne : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    @objc func checkForGalleryAuth() {
+        
+        UIDevice.vibrateLight()
+        
+        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+        switch photoAuthorizationStatus {
+        
+        case .authorized:
+            self.openGallery()
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization({
+                (newStatus) in
+                
+                if newStatus ==  PHAuthorizationStatus.authorized {
+                    self.openGallery()
+                }
+            })
+            
+        case .restricted:
+            AlertControllerCompletion.handleAlertWithCompletion(title: "Permissions", message: "Please allow Photo Library Permissions in the Settings application.") { (complete) in
+                print("Alert presented")
+            }
+        case .denied:
+            AlertControllerCompletion.handleAlertWithCompletion(title: "Permissions", message: "Please allow Photo Library Permissions in the Settings application.") { (complete) in
+                print("Alert presented")
+            }
+        default :
+            AlertControllerCompletion.handleAlertWithCompletion(title: "Permissions", message: "Please allow Photo Library Permissions in the Settings application.") { (complete) in
+                print("Alert presented")
+            }
+        }
+    }
+    
+    func openCameraOptions() {
+        
+        DispatchQueue.main.async {
+            
+            let ip = UIImagePickerController()
+            ip.sourceType = .camera
+            ip.mediaTypes = [kUTTypeImage as String]
+            ip.allowsEditing = true
+            ip.delegate = self
+            
+            if let topViewController = UIApplication.getTopMostViewController() {
+                topViewController.present(ip, animated: true) {
+                    
+                }
+            }
+        }
+    }
+    
+    func openGallery() {
+        
+        DispatchQueue.main.async {
+            
+            let imagePicker = UIImagePickerController()
+            imagePicker.allowsEditing = true
+            imagePicker.sourceType = .photoLibrary
+            imagePicker.delegate = self
+            
+            if let topViewController = UIApplication.getTopMostViewController() {
+                topViewController.present(imagePicker, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        
+        picker.dismiss(animated: true) {
+            print("Dismissed the image picker or camera")
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        picker.dismiss(animated: true) {
+            
+            let mediaType = info[.mediaType] as! CFString
+            
+            switch mediaType {
+            
+            case kUTTypeImage :
+                
+                if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+                    
+                    self.profileImageView.image = editedImage
+                    self.selectedImage = editedImage
+                    
+                    UIDevice.vibrateLight()
+                    
+                    
+                } else if let originalImage = info[.originalImage] as? UIImage  {
+                   
+                    self.profileImageView.image = originalImage
+                    self.selectedImage = originalImage
+                    
+                    UIDevice.vibrateLight()
+
+                    
+                } else {
+                    print("Failed grabbing the photo")
+                }
+                
+            default : print("SHOULD NOT HIT FOR THE CAMERA PICKER")
+                
+            }
+        }
     }
 }
 
@@ -549,348 +858,3 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
 
 
 
-
-
-
-
-
-
-
-
-//        self.genderLabel.topAnchor.constraint(equalTo: self.ageTextField.bottomAnchor, constant: 30).isActive = true
-//        self.genderLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-//        self.genderLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-//        self.genderLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
-//
-//        self.maleButton.rightAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -8).isActive = true
-//        self.maleButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-//        self.maleButton.topAnchor.constraint(equalTo: self.genderLabel.bottomAnchor, constant: 20).isActive = true
-//        self.maleButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
-//
-//        self.femaleButton.leftAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 8).isActive = true
-//        self.femaleButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-//        self.femaleButton.topAnchor.constraint(equalTo: self.genderLabel.bottomAnchor, constant: 20).isActive = true
-//        self.femaleButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
-//
-//        self.sizeLabel.topAnchor.constraint(equalTo: self.femaleButton.bottomAnchor, constant: 30).isActive = true
-//        self.sizeLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-//        self.sizeLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-//        self.sizeLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
-//
-//        self.weightSmallButton.rightAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -8).isActive = true
-//        self.weightSmallButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-//        self.weightSmallButton.topAnchor.constraint(equalTo: self.sizeLabel.bottomAnchor, constant: 10).isActive = true
-//        self.weightSmallButton.heightAnchor.constraint(equalToConstant: 92).isActive = true
-//
-//        self.weightMediumButton.leftAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 8).isActive = true
-//        self.weightMediumButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-//        self.weightMediumButton.topAnchor.constraint(equalTo: self.sizeLabel.bottomAnchor, constant: 10).isActive = true
-//        self.weightMediumButton.heightAnchor.constraint(equalToConstant: 92).isActive = true
-//
-//        self.weightLargeButton.rightAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -8).isActive = true
-//        self.weightLargeButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-//        self.weightLargeButton.topAnchor.constraint(equalTo: self.weightMediumButton.bottomAnchor, constant: 16).isActive = true
-//        self.weightLargeButton.heightAnchor.constraint(equalToConstant: 92).isActive = true
-//
-//        self.weightExtraLargeButton.leftAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 8).isActive = true
-//        self.weightExtraLargeButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-//        self.weightExtraLargeButton.topAnchor.constraint(equalTo: self.weightMediumButton.bottomAnchor, constant: 16).isActive = true
-//        self.weightExtraLargeButton.heightAnchor.constraint(equalToConstant: 92).isActive = true
-//
-//        self.groomingFrequencyLabel.topAnchor.constraint(equalTo: self.weightExtraLargeButton.bottomAnchor, constant: 30).isActive = true
-//        self.groomingFrequencyLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-//        self.groomingFrequencyLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
-//        self.groomingFrequencyLabel.sizeToFit()
-//
-//        self.informationButton.centerYAnchor.constraint(equalTo: self.groomingFrequencyLabel.centerYAnchor, constant: 0).isActive = true
-//        self.informationButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-//        self.informationButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-//        self.informationButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-//
-//        self.fourWeeksButton.rightAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -8).isActive = true
-//        self.fourWeeksButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-//        self.fourWeeksButton.topAnchor.constraint(equalTo: self.groomingFrequencyLabel.bottomAnchor, constant: 20).isActive = true
-//        self.fourWeeksButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
-//
-//        self.eightWeeksButton.leftAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 8).isActive = true
-//        self.eightWeeksButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-//        self.eightWeeksButton.topAnchor.constraint(equalTo: self.groomingFrequencyLabel.bottomAnchor, constant: 20).isActive = true
-//        self.eightWeeksButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
-//
-//        self.nextButton.topAnchor.constraint(equalTo: self.fourWeeksButton.bottomAnchor, constant: 40).isActive = true
-//        self.nextButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-//        self.nextButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-//        self.nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-//
-//        self.timeCover.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-//        self.timeCover.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-//        self.timeCover.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-//        self.timeCover.heightAnchor.constraint(equalToConstant: globalStatusBarHeight).isActive = true
-//
-//
-//let informationButton : UIButton = {
-//
-//    let dcl = UIButton(type: .system)
-//    dcl.translatesAutoresizingMaskIntoConstraints = false
-//    dcl.backgroundColor = coreWhiteColor
-//    dcl.contentMode = .scaleAspectFit
-//    dcl.isUserInteractionEnabled = true
-//    dcl.clipsToBounds = false
-//    dcl.layer.masksToBounds = false
-//    dcl.layer.shadowColor = coreBlackColor.cgColor
-//    dcl.layer.shadowOpacity = 0.05
-//    dcl.layer.shadowOffset = CGSize(width: 2, height: 3)
-//    dcl.layer.shadowRadius = 9
-//    dcl.layer.shouldRasterize = false
-//    dcl.layer.cornerRadius = 15
-//    dcl.titleLabel?.textColor = coreBlackColor
-//    dcl.tintColor = coreBlackColor
-//    dcl.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
-//    dcl.setTitle(String.fontAwesomeIcon(name: .infoCircle), for: .normal)
-//
-//    return dcl
-//}()
-
-//
-//
-//let genderLabel : UILabel = {
-//
-//    let nl = UILabel()
-//    nl.translatesAutoresizingMaskIntoConstraints = false
-//    nl.backgroundColor = .clear
-//    nl.text = "Gender"
-//    nl.font = UIFont(name: dsHeaderFont, size: 24)
-//    nl.textColor = dsFlatBlack
-//    nl.textAlignment = .left
-//    nl.adjustsFontSizeToFitWidth = true
-//
-//   return nl
-//}()
-//
-//let maleButton : UIButton = {
-//
-//    let dcl = UIButton(type: .system)
-//    dcl.translatesAutoresizingMaskIntoConstraints = false
-//    dcl.backgroundColor = coreWhiteColor
-//    dcl.contentMode = .scaleAspectFit
-//    dcl.isUserInteractionEnabled = true
-//    dcl.clipsToBounds = false
-//    dcl.layer.masksToBounds = false
-//    dcl.layer.shadowColor = coreBlackColor.cgColor
-//    dcl.layer.shadowOpacity = 0.05
-//    dcl.layer.shadowOffset = CGSize(width: 2, height: 3)
-//    dcl.layer.shadowRadius = 9
-//    dcl.layer.shouldRasterize = false
-//    dcl.layer.cornerRadius = 14
-//
-//    dcl.setTitle("Male", for: .normal)
-//    dcl.titleLabel?.textColor = coreOrangeColor
-//    dcl.tintColor = coreOrangeColor
-//    dcl.titleLabel?.font = UIFont(name: dsHeaderFont, size: 18)
-//
-//    return dcl
-//}()
-//
-//let femaleButton : UIButton = {
-//
-//    let dcl = UIButton(type: .system)
-//    dcl.translatesAutoresizingMaskIntoConstraints = false
-//    dcl.backgroundColor = coreWhiteColor
-//    dcl.contentMode = .scaleAspectFit
-//    dcl.isUserInteractionEnabled = true
-//    dcl.clipsToBounds = false
-//    dcl.layer.masksToBounds = false
-//    dcl.layer.shadowColor = coreBlackColor.cgColor
-//    dcl.layer.shadowOpacity = 0.05
-//    dcl.layer.shadowOffset = CGSize(width: 2, height: 3)
-//    dcl.layer.shadowRadius = 9
-//    dcl.layer.shouldRasterize = false
-//    dcl.layer.cornerRadius = 14
-//
-//    dcl.setTitle("Female", for: .normal)
-//    dcl.titleLabel?.textColor = coreOrangeColor
-//    dcl.tintColor = dsFlatBlack.withAlphaComponent(0.4)
-//    dcl.titleLabel?.font = UIFont(name: dsHeaderFont, size: 18)
-//
-//    return dcl
-//}()
-//
-//let sizeLabel : UILabel = {
-//
-//    let nl = UILabel()
-//    nl.translatesAutoresizingMaskIntoConstraints = false
-//    nl.backgroundColor = .clear
-//    nl.text = "Size"
-//    nl.font = UIFont(name: dsHeaderFont, size: 24)
-//    nl.textColor = dsFlatBlack
-//    nl.textAlignment = .left
-//    nl.adjustsFontSizeToFitWidth = true
-//
-//   return nl
-//}()
-//
-//let weightSmallButton : UIButton = {
-//
-//    let dcl = UIButton(type: .system)
-//    dcl.translatesAutoresizingMaskIntoConstraints = false
-//    dcl.backgroundColor = coreWhiteColor
-//    dcl.contentMode = .scaleAspectFit
-//    dcl.isUserInteractionEnabled = true
-//    dcl.clipsToBounds = false
-//    dcl.layer.masksToBounds = false
-//    dcl.layer.shadowColor = coreBlackColor.cgColor
-//    dcl.layer.shadowOpacity = 0.05
-//    dcl.layer.shadowOffset = CGSize(width: 2, height: 3)
-//    dcl.layer.shadowRadius = 9
-//    dcl.layer.shouldRasterize = false
-//    dcl.layer.cornerRadius = 14
-//    dcl.titleLabel?.numberOfLines = 2
-//    dcl.titleLabel?.textAlignment = .center
-//
-//    dcl.setTitle("Small\n<15kg", for: .normal)
-//    dcl.titleLabel?.textColor = coreOrangeColor
-//    dcl.tintColor = coreOrangeColor
-//    dcl.titleLabel?.font = UIFont(name: dsHeaderFont, size: 18)
-//
-//    return dcl
-//}()
-//
-//let weightMediumButton : UIButton = {
-//
-//    let dcl = UIButton(type: .system)
-//    dcl.translatesAutoresizingMaskIntoConstraints = false
-//    dcl.backgroundColor = coreWhiteColor
-//    dcl.contentMode = .scaleAspectFit
-//    dcl.isUserInteractionEnabled = true
-//    dcl.clipsToBounds = false
-//    dcl.layer.masksToBounds = false
-//    dcl.layer.shadowColor = coreBlackColor.cgColor
-//    dcl.layer.shadowOpacity = 0.05
-//    dcl.layer.shadowOffset = CGSize(width: 2, height: 3)
-//    dcl.layer.shadowRadius = 9
-//    dcl.layer.shouldRasterize = false
-//    dcl.layer.cornerRadius = 14
-//    dcl.titleLabel?.numberOfLines = 2
-//    dcl.titleLabel?.textAlignment = .center
-//
-//    dcl.setTitle("Medium\n15-25kg", for: .normal)
-//    dcl.titleLabel?.textColor = coreOrangeColor
-//    dcl.tintColor = dsFlatBlack.withAlphaComponent(0.4)
-//    dcl.titleLabel?.font = UIFont(name: dsHeaderFont, size: 18)
-//
-//    return dcl
-//}()
-//
-//let weightLargeButton : UIButton = {
-//
-//    let dcl = UIButton(type: .system)
-//    dcl.translatesAutoresizingMaskIntoConstraints = false
-//    dcl.backgroundColor = coreWhiteColor
-//    dcl.contentMode = .scaleAspectFit
-//    dcl.isUserInteractionEnabled = true
-//    dcl.clipsToBounds = false
-//    dcl.layer.masksToBounds = false
-//    dcl.layer.shadowColor = coreBlackColor.cgColor
-//    dcl.layer.shadowOpacity = 0.05
-//    dcl.layer.shadowOffset = CGSize(width: 2, height: 3)
-//    dcl.layer.shadowRadius = 9
-//    dcl.layer.shouldRasterize = false
-//    dcl.layer.cornerRadius = 14
-//    dcl.titleLabel?.numberOfLines = 2
-//    dcl.titleLabel?.textAlignment = .center
-//
-//    dcl.setTitle("Large\n26-35kg", for: .normal)
-//    dcl.titleLabel?.textColor = coreOrangeColor
-//    dcl.tintColor = dsFlatBlack.withAlphaComponent(0.4)
-//    dcl.titleLabel?.font = UIFont(name: dsHeaderFont, size: 18)
-//
-//    return dcl
-//}()
-//
-//let weightExtraLargeButton : UIButton = {
-//
-//    let dcl = UIButton(type: .system)
-//    dcl.translatesAutoresizingMaskIntoConstraints = false
-//    dcl.backgroundColor = coreWhiteColor
-//    dcl.contentMode = .scaleAspectFit
-//    dcl.isUserInteractionEnabled = true
-//    dcl.clipsToBounds = false
-//    dcl.layer.masksToBounds = false
-//    dcl.layer.shadowColor = coreBlackColor.cgColor
-//    dcl.layer.shadowOpacity = 0.05
-//    dcl.layer.shadowOffset = CGSize(width: 2, height: 3)
-//    dcl.layer.shadowRadius = 9
-//    dcl.layer.shouldRasterize = false
-//    dcl.layer.cornerRadius = 14
-//
-//    dcl.setTitle("X-Large\n>35kg", for: .normal)
-//    dcl.titleLabel?.textColor = coreOrangeColor
-//    dcl.titleLabel?.numberOfLines = 2
-//    dcl.titleLabel?.textAlignment = .center
-//    dcl.tintColor = dsFlatBlack.withAlphaComponent(0.4)
-//    dcl.titleLabel?.font = UIFont(name: dsHeaderFont, size: 18)
-//
-//    return dcl
-//}()
-//
-//let groomingFrequencyLabel : UILabel = {
-//
-//    let nl = UILabel()
-//    nl.translatesAutoresizingMaskIntoConstraints = false
-//    nl.backgroundColor = .clear
-//    nl.text = "Grooming Frequency"
-//    nl.font = UIFont(name: dsHeaderFont, size: 24)
-//    nl.textColor = dsFlatBlack
-//    nl.textAlignment = .left
-//    nl.adjustsFontSizeToFitWidth = true
-//
-//   return nl
-//}()
-//
-//let fourWeeksButton : UIButton = {
-//
-//    let dcl = UIButton(type: .system)
-//    dcl.translatesAutoresizingMaskIntoConstraints = false
-//    dcl.backgroundColor = coreWhiteColor
-//    dcl.contentMode = .scaleAspectFit
-//    dcl.isUserInteractionEnabled = true
-//    dcl.clipsToBounds = false
-//    dcl.layer.masksToBounds = false
-//    dcl.layer.shadowColor = coreBlackColor.cgColor
-//    dcl.layer.shadowOpacity = 0.05
-//    dcl.layer.shadowOffset = CGSize(width: 2, height: 3)
-//    dcl.layer.shadowRadius = 9
-//    dcl.layer.shouldRasterize = false
-//    dcl.layer.cornerRadius = 14
-//
-//    dcl.setTitle("4 weeks", for: .normal)
-//    dcl.titleLabel?.textColor = coreOrangeColor
-//    dcl.tintColor = coreOrangeColor
-//    dcl.titleLabel?.font = UIFont(name: dsHeaderFont, size: 18)
-//
-//    return dcl
-//}()
-//
-//let eightWeeksButton : UIButton = {
-//
-//    let dcl = UIButton(type: .system)
-//    dcl.translatesAutoresizingMaskIntoConstraints = false
-//    dcl.backgroundColor = coreWhiteColor
-//    dcl.contentMode = .scaleAspectFit
-//    dcl.isUserInteractionEnabled = true
-//    dcl.clipsToBounds = false
-//    dcl.layer.masksToBounds = false
-//    dcl.layer.shadowColor = coreBlackColor.cgColor
-//    dcl.layer.shadowOpacity = 0.05
-//    dcl.layer.shadowOffset = CGSize(width: 2, height: 3)
-//    dcl.layer.shadowRadius = 9
-//    dcl.layer.shouldRasterize = false
-//    dcl.layer.cornerRadius = 14
-//
-//    dcl.setTitle("8 weeks", for: .normal)
-//    dcl.titleLabel?.textColor = coreOrangeColor
-//    dcl.tintColor = dsFlatBlack.withAlphaComponent(0.4)
-//    dcl.titleLabel?.font = UIFont(name: dsHeaderFont, size: 18)
-//
-//    return dcl
-//}()

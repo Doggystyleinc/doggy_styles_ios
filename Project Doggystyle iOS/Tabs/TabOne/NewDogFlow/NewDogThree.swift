@@ -15,7 +15,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         let sv = UIScrollView()
         sv.translatesAutoresizingMaskIntoConstraints = false
         sv.backgroundColor = coreBackgroundWhite
-        sv.isScrollEnabled = false
+        sv.isScrollEnabled = true
         sv.minimumZoomScale = 1.0
         sv.maximumZoomScale = 1.0
         sv.bounces = true
@@ -69,7 +69,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         let nl = UILabel()
         nl.translatesAutoresizingMaskIntoConstraints = false
         nl.backgroundColor = .clear
-        nl.text = "<name> Foodz"
+        nl.text = ""
         nl.font = UIFont(name: dsHeaderFont, size: 24)
         nl.textColor = coreBlackColor
         nl.textAlignment = .left
@@ -104,7 +104,8 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         etfc.layer.shouldRasterize = false
         etfc.layer.borderColor = dividerGrey.cgColor
         etfc.layer.borderWidth = 0.5
-        
+        etfc.addTarget(self, action: #selector(self.handleManualScrolling), for: .touchDown)
+
         return etfc
         
     }()
@@ -135,7 +136,8 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         etfc.layer.shouldRasterize = false
         etfc.layer.borderColor = dividerGrey.cgColor
         etfc.layer.borderWidth = 0.5
-        
+        etfc.addTarget(self, action: #selector(self.handleManualScrolling), for: .touchDown)
+
         return etfc
         
     }()
@@ -255,6 +257,12 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
+        self.fillValues()
+
+    }
+    
+    func fillValues() {
+        
         
         //SET TEXTFIELD CONTENT TYPES
         self.favoriteTreatTextField.textContentType = UITextContentType(rawValue: "")
@@ -264,7 +272,10 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         self.dogFoodTextField.inputAccessoryView = self.toolBar
         
         self.scrollView.keyboardDismissMode = .interactive
-
+        
+        let dogsName = globalNewDogBuilder.dogBuilderName ?? "Dog"
+        self.basicDetailsLabel.text = "\(dogsName)'s Foodz"
+        
     }
     
     func addViews() {
@@ -306,7 +317,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         case 926 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.13)
         case 896 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.14)
         case 844 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.02)
-        case 812 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.27)
+        case 812 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.001)
         case 736 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.34)
         case 667 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.47)
         case 568 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.47)
@@ -431,20 +442,44 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
             let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
             self.scrollView.setContentOffset(bottomOffset, animated: true)
         
-        } else {
-            
         }
-        
     }
     
     @objc func handleBackButton() {
         
-        self.navigationController?.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @objc func handleNextButton() {
         
-        let newDogTwo = NewDogTwo()
+        guard let favoriteTreat = self.favoriteTreatTextField.text else {return}
+        guard let favoriteFood = self.dogFoodTextField.text else {return}
+        
+        let cleanTreat = favoriteTreat.trimmingCharacters(in: .whitespacesAndNewlines)
+        let cleanFood = favoriteFood.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if cleanTreat.count > 2 {
+            if cleanFood.count > 2 {
+                
+                globalNewDogBuilder.dogBuilderFavoriteTreat = cleanTreat
+                globalNewDogBuilder.dogBuilderFavoriteFood = cleanFood
+                
+                self.moveToNewDogFour()
+                
+            } else {
+                presentAlertOnMainThread(title: "Treat", message: "Please make sure the treat is more than two characters.", buttonTitle: "ok")
+            }
+            
+        } else {
+            presentAlertOnMainThread(title: "Treat", message: "Please make sure the treat is more than two characters.", buttonTitle: "ok")
+        }
+    }
+    
+    @objc func moveToNewDogFour() {
+        
+        UIDevice.vibrateLight()
+
+        let newDogTwo = NewDogFour()
         newDogTwo.modalPresentationStyle = .fullScreen
         newDogTwo.navigationController?.navigationBar.isHidden = true
         self.navigationController?.pushViewController(newDogTwo, animated: true)

@@ -50,7 +50,6 @@ class NewDogSix : UIViewController {
         let nl = UILabel()
         nl.translatesAutoresizingMaskIntoConstraints = false
         nl.backgroundColor = .clear
-        nl.text = "Welcome, <name> Get ready to get the Doggystyle treatment!"
         nl.font = UIFont(name: rubikRegular, size: 16)
         nl.textColor = coreBlackColor
         nl.textAlignment = .center
@@ -133,6 +132,7 @@ class NewDogSix : UIViewController {
         cbf.titleLabel?.textColor = dividerGrey
         cbf.backgroundColor = .clear
         cbf.tintColor = dividerGrey
+        cbf.addTarget(self, action: #selector(self.handleReturnToDashboard), for: .touchUpInside)
         
         return cbf
         
@@ -142,6 +142,19 @@ class NewDogSix : UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
+        self.fillValues()
+    }
+    
+    func fillValues() {
+        
+        //HEADER
+        let dogsName = globalNewDogBuilder.dogBuilderName ?? "Dog"
+        self.profileLabel.text = "\(dogsName)'s Profile Created"
+        self.profileSubHeaderLabel.text = "Welcome, \(dogsName)! Get ready to get the Doggystyle treatment!"
+
+        let image = globalNewDogBuilder.dogBuilderProfileImage ?? UIImage(named: "doggy_profile_filler")?.withRenderingMode(.alwaysOriginal)
+        self.profilePhoto.image = image
+        
     }
     
     func addViews() {
@@ -188,6 +201,14 @@ class NewDogSix : UIViewController {
     }
     
     @objc func handleContinueButton() {
+        UIDevice.vibrateLight()
+
+        self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func handleReturnToDashboard() {
+        UIDevice.vibrateLight()
+
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
 }

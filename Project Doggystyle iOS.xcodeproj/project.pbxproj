@@ -182,9 +182,11 @@
 		E39C665B26A899F0004A0E93 /* Rubik-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E39C664B26A89942004A0E93 /* Rubik-SemiBold.ttf */; };
 		E39C665C26A899F0004A0E93 /* Rubik-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E39C664326A89940004A0E93 /* Rubik-SemiBoldItalic.ttf */; };
 		E39C665F26A8CEEF004A0E93 /* paw_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = E39C665E26A8CEEF004A0E93 /* paw_animation.json */; };
+		E39FDE2126C1F7CF004C089D /* DashboardDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39FDE2026C1F7CE004C089D /* DashboardDatasource.swift */; };
 		E3A0AD5426BDAA2000E813D5 /* NewDogFour.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A0AD5326BDAA2000E813D5 /* NewDogFour.swift */; };
 		E3A0AD5626BDC8BD00E813D5 /* NewDogFive.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A0AD5526BDC8BD00E813D5 /* NewDogFive.swift */; };
 		E3A0AD5926BDD29400E813D5 /* NewDogFiveCollectionview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A0AD5826BDD29400E813D5 /* NewDogFiveCollectionview.swift */; };
+		E3A0AD5B26C0446500E813D5 /* DogBreedHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A0AD5A26C0446500E813D5 /* DogBreedHelper.swift */; };
 		E3B11ABA268FCBB200B5B6F8 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B11AB9268FCBB200B5B6F8 /* ProfileController.swift */; };
 		E3B11ABC268FCBC900B5B6F8 /* ProfileCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B11ABB268FCBC900B5B6F8 /* ProfileCollectionView.swift */; };
 		E3B11ABE268FCBE300B5B6F8 /* ProfileCollectionFeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B11ABD268FCBE300B5B6F8 /* ProfileCollectionFeeder.swift */; };
@@ -364,9 +366,11 @@
 		E39C664D26A89943004A0E93 /* Rubik-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
 		E39C664E26A89944004A0E93 /* Rubik-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Italic.ttf"; sourceTree = "<group>"; };
 		E39C665E26A8CEEF004A0E93 /* paw_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = paw_animation.json; sourceTree = "<group>"; };
+		E39FDE2026C1F7CE004C089D /* DashboardDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDatasource.swift; sourceTree = "<group>"; };
 		E3A0AD5326BDAA2000E813D5 /* NewDogFour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogFour.swift; sourceTree = "<group>"; };
 		E3A0AD5526BDC8BD00E813D5 /* NewDogFive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogFive.swift; sourceTree = "<group>"; };
 		E3A0AD5826BDD29400E813D5 /* NewDogFiveCollectionview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogFiveCollectionview.swift; sourceTree = "<group>"; };
+		E3A0AD5A26C0446500E813D5 /* DogBreedHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogBreedHelper.swift; sourceTree = "<group>"; };
 		E3B11AB9268FCBB200B5B6F8 /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		E3B11ABB268FCBC900B5B6F8 /* ProfileCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollectionView.swift; sourceTree = "<group>"; };
 		E3B11ABD268FCBE300B5B6F8 /* ProfileCollectionFeeder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollectionFeeder.swift; sourceTree = "<group>"; };
@@ -664,6 +668,7 @@
 				CDE871192652E3030082551B /* UIViewController+Ext.swift */,
 				E3107F8526961A6B00CDBB37 /* MainLoadingScreen.swift */,
 				E3B582112698ACE900EC469B /* Notes.swift */,
+				E3A0AD5A26C0446500E813D5 /* DogBreedHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -809,6 +814,7 @@
 			children = (
 				CD203BF92667FA9F00335D93 /* DashboardController.swift */,
 				E36EE57926B87B0E0009A0EF /* YourNotificationsControllers */,
+				E39FDE2026C1F7CE004C089D /* DashboardDatasource.swift */,
 			);
 			path = DashboardController;
 			sourceTree = "<group>";
@@ -1276,6 +1282,7 @@
 				E36EE55626B77F8F0009A0EF /* DashMainView.swift in Sources */,
 				CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */,
 				CDE8711F2652E3030082551B /* Firebase+Ext.swift in Sources */,
+				E39FDE2126C1F7CF004C089D /* DashboardDatasource.swift in Sources */,
 				CD203BF72667D3B900335D93 /* PDFViewController.swift in Sources */,
 				CDCCD0B8265EB884007ABECF /* User.swift in Sources */,
 				CD6DD0182680DE2E00BC376B /* WelcomeController.swift in Sources */,
@@ -1318,6 +1325,7 @@
 				CDE8711C2652E3030082551B /* TextField+Ext.swift in Sources */,
 				E36EE55B26B781050009A0EF /* RegisteredPetCollection.swift in Sources */,
 				CD6DD001267AD81100BC376B /* AppointmentsViewController.swift in Sources */,
+				E3A0AD5B26C0446500E813D5 /* DogBreedHelper.swift in Sources */,
 				E3B11ABC268FCBC900B5B6F8 /* ProfileCollectionView.swift in Sources */,
 				CD6868902656EF920064ADFE /* LocationNotServicedViewController.swift in Sources */,
 				CD6DD00C267FC7DF00BC376B /* ContactUsController.swift in Sources */,

@@ -15,6 +15,8 @@ class MainDashboardCollectionView : UICollectionView, UICollectionViewDelegateFl
     
     var dashMainView : DashMainView?
     
+    var doggyProfileDataSource = [DoggyProfileDataSource]()
+    
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         
@@ -40,7 +42,7 @@ class MainDashboardCollectionView : UICollectionView, UICollectionViewDelegateFl
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return doggyProfileDataSource.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

@@ -13,8 +13,12 @@ import SDWebImage
 
 final class DashboardViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    var homeController: HomeViewController?
     
+    var observingRefOne = Database.database().reference(),
+        handleOne = DatabaseHandle(),
+        childCounter : Int = 0,
+        homeController: HomeViewController?
+        
     private let package = Package.examplePackage
     private let databaseRef = Database.database().reference()
     private let pets: [Pet] = [Pet.allPets, Pet.petOne, Pet.petTwo, Pet.petThree, Pet.petFour]
@@ -25,6 +29,8 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
     private let serviceHeader = DSBoldLabel(title: "Service of the Week", size: 22.0)
     private let appointmentContainer = DSContainerView(frame: .zero)
     private let servicesContainer = DSContainerView(frame: .zero)
+    
+    var doggyProfileDataSource = [DoggyProfileDataSource]()
     
     lazy var referButton : UIButton = {
         
@@ -152,10 +158,12 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         Service.shared.fetchCurrentUser()
         self.addViews()
         
-        self.emptyStateOne.isHidden = false
-        self.emptyStateTwo.isHidden = true //TOUR THE DOGGYSTYLE TRUCK
+        self.emptyStateOne.isHidden = true
+        self.emptyStateTwo.isHidden = true
         self.dashMainView.isHidden = true
         self.todaysDashView.isHidden = true
+        
+        self.callDataEngine()
        
     }
     
@@ -163,9 +171,92 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         super.viewWillAppear(animated)
         
         self.navigationController?.navigationBar.isHidden = true
-        self.fillValues()
         Service.shared.fetchCurrentUser()
+        self.fillValues()
         
+    }
+    
+    func callDataEngine() {
+        
+        self.fetchDataSource { isSuccess in
+            
+            if isSuccess {
+                self.handleDatasourceSuccess()
+            } else {
+                self.handleDatasourceFailure()
+            }
+        }
+    }
+  
+    func fetchDataSource(completion : @escaping (_ isSuccess : Bool)->()) {
+        
+        guard let user_uid = Auth.auth().currentUser?.uid else {return}
+        let countingRef = self.databaseRef.child("doggy_profile_builder").child(user_uid)
+        self.observingRefOne = self.databaseRef.child("doggy_profile_builder").child(user_uid)
+        
+        countingRef.observeSingleEvent(of: .value) { snapCount in
+            
+            if snapCount.exists() {
+                
+                let childrenCount = Int(snapCount.childrenCount)
+
+                self.handleOne = self.observingRefOne.observe(.childAdded, with: { snapLoop in
+                    
+                    self.childCounter += 1
+                    
+                    guard let JSON = snapLoop.value as? [String : Any] else {return}
+                    
+                    let post = DoggyProfileDataSource(json: JSON)
+                    
+                    self.doggyProfileDataSource.append(post)
+                    
+                    if childrenCount == self.childCounter {
+                        completion(true)
+                    }
+                })
+                
+            } else {
+                completion(false)
+            }
+        }
+    }
+    
+    func handleDatasourceFailure() {
+        
+        print("Failed to grab a profile, show empty state one")
+        
+        self.emptyStateOne.isHidden = false
+        self.emptyStateTwo.isHidden = true
+        self.dashMainView.isHidden = true
+        self.todaysDashView.isHidden = true
+        
+        self.observingRefOne.removeObserver(withHandle: self.handleOne)
+        self.childCounter = 0
+        
+        self.dashMainView.mainDashCollectionView.doggyProfileDataSource.removeAll()
+        
+        DispatchQueue.main.async {
+            self.dashMainView.mainDashCollectionView.reloadData()
+        }
+    }
+    
+    func handleDatasourceSuccess() {
+        
+        print("Success, show the dash view")
+        
+        self.emptyStateOne.isHidden = true
+        self.emptyStateTwo.isHidden = true
+        self.dashMainView.isHidden = false
+        self.todaysDashView.isHidden = true
+        
+        self.observingRefOne.removeObserver(withHandle: self.handleOne)
+        self.childCounter = 0
+        
+        self.dashMainView.mainDashCollectionView.doggyProfileDataSource = self.doggyProfileDataSource
+        
+        DispatchQueue.main.async {
+            self.dashMainView.mainDashCollectionView.reloadData()
+        }
     }
     
     func fillValues() {

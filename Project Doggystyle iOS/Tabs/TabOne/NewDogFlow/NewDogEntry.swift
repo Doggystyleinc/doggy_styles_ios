@@ -5,6 +5,46 @@
 //  Created by Charlie Arcodia on 8/1/21.
 //
 
+
+struct NewDogBuilder {
+    
+    //NEWDOGONE
+    var dogBuilderName : String?
+    var dogBuilderBreed : String?
+    var dogBuilderBirthday : String?
+    var dogBuilderProfileImage : UIImage?
+    
+    //NEWDOGTWO
+    enum dogSize {
+        case small
+        case medium
+        case large
+        case xlarge
+    }
+    
+    var dogBuilderSize = dogSize.small
+    
+    enum groomingFrequency {
+        case fourWeeks
+        case eightWeeks
+    }
+    
+    var dogBuilderGroomingFrequency = groomingFrequency.fourWeeks
+    
+    //NEWDOGTHREE
+    var dogBuilderFavoriteTreat : String?
+    var dogBuilderFavoriteFood : String?
+    
+    //NEWDOGFOUR
+    var dogBuilderHasMedicalConditions : Bool?
+    var dogBuilderHasBehaviouralConditions : Bool?
+    var dogBuilderHasUploadedVaccineCard : Bool? = false
+    var dogBuilderHasUploadedVaccineImage: UIImage?
+    
+}
+
+var globalNewDogBuilder = NewDogBuilder()
+
 import Foundation
 import UIKit
 
@@ -79,12 +119,19 @@ class NewDogEntry : UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        //RESET THE DOG BUILDER STRUCT EVERYTIME THEY HIT THE PROFILE BUILDER
+        globalNewDogBuilder = NewDogBuilder()
+    }
+    
     func addViews() {
         
         self.view.addSubview(self.backButton)
-        self.view.addSubview(self.confirmButton)
         self.view.addSubview(self.headerLabel)
         self.view.addSubview(self.dogImage)
+        self.view.addSubview(self.confirmButton)
 
         self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 11).isActive = true
@@ -113,6 +160,9 @@ class NewDogEntry : UIViewController {
     }
     
     @objc func handleCreateDoggyProfile() {
+        
+        UIDevice.vibrateLight()
+
         let newDogOne = NewDogOne()
         newDogOne.modalPresentationStyle = .fullScreen
         newDogOne.navigationController?.navigationBar.isHidden = true

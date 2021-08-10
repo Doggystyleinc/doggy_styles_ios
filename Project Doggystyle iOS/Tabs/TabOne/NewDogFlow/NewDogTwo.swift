@@ -50,7 +50,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         let nl = UILabel()
         nl.translatesAutoresizingMaskIntoConstraints = false
         nl.backgroundColor = .clear
-        nl.text = "<name> basics"
+        nl.text = ""
         nl.font = UIFont(name: dsHeaderFont, size: 24)
         nl.textColor = coreBlackColor
         nl.textAlignment = .left
@@ -160,11 +160,13 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.titleLabel?.numberOfLines = 2
         cbf.titleLabel?.adjustsFontForContentSizeCategory = true
         cbf.titleLabel?.textColor = dividerGrey
-        cbf.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+        cbf.backgroundColor = coreWhiteColor
         cbf.layer.cornerRadius = 15
         cbf.layer.masksToBounds = true
-        cbf.tintColor = dividerGrey
+        cbf.tintColor = coreOrangeColor
         cbf.titleLabel?.textAlignment = .center
+        cbf.tag = 1
+        cbf.addTarget(self, action: #selector(self.handleSizeSelection), for: .touchUpInside)
         
         return cbf
         
@@ -185,6 +187,8 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.layer.masksToBounds = true
         cbf.tintColor = dividerGrey
         cbf.titleLabel?.textAlignment = .center
+        cbf.tag = 2
+        cbf.addTarget(self, action: #selector(self.handleSizeSelection), for: .touchUpInside)
 
         
         return cbf
@@ -206,6 +210,8 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.layer.masksToBounds = true
         cbf.tintColor = dividerGrey
         cbf.titleLabel?.textAlignment = .center
+        cbf.tag = 3
+        cbf.addTarget(self, action: #selector(self.handleSizeSelection), for: .touchUpInside)
 
         
         return cbf
@@ -227,12 +233,14 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.layer.masksToBounds = true
         cbf.tintColor = dividerGrey
         cbf.titleLabel?.textAlignment = .center
-        
+        cbf.tag = 4
+        cbf.addTarget(self, action: #selector(self.handleSizeSelection), for: .touchUpInside)
+
         return cbf
         
     }()
     
-    let informationButton : UIButton = {
+    lazy var informationButton : UIButton = {
     
         let dcl = UIButton(type: .system)
         dcl.translatesAutoresizingMaskIntoConstraints = false
@@ -251,11 +259,12 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         dcl.tintColor = coreBlackColor
         dcl.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
         dcl.setTitle(String.fontAwesomeIcon(name: .infoCircle), for: .normal)
+        dcl.addTarget(self, action: #selector(self.handleInformationButton), for: .touchUpInside)
     
         return dcl
     }()
     
-    let fourWeeksButton : UIButton = {
+    lazy var fourWeeksButton : UIButton = {
         
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
@@ -265,16 +274,18 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.titleLabel?.numberOfLines = 2
         cbf.titleLabel?.adjustsFontForContentSizeCategory = true
         cbf.titleLabel?.textColor = dividerGrey
-        cbf.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+        cbf.backgroundColor = coreWhiteColor
         cbf.layer.cornerRadius = 15
         cbf.layer.masksToBounds = true
-        cbf.tintColor = dividerGrey
+        cbf.tintColor = coreOrangeColor
         cbf.titleLabel?.textAlignment = .center
+        cbf.tag = 1
+        cbf.addTarget(self, action: #selector(self.handleGroomingFrequency), for: .touchUpInside)
     
         return cbf
     }()
     
-    let eightWeeksButton : UIButton = {
+    lazy var eightWeeksButton : UIButton = {
     
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
@@ -289,7 +300,8 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.layer.masksToBounds = true
         cbf.tintColor = dividerGrey
         cbf.titleLabel?.textAlignment = .center
-    
+        cbf.tag = 2
+        cbf.addTarget(self, action: #selector(self.handleGroomingFrequency), for: .touchUpInside)
         return cbf
     }()
     
@@ -300,6 +312,17 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        let dogsName = globalNewDogBuilder.dogBuilderName ?? "Dog"
+        self.basicDetailsLabel.text = "\(dogsName)'s basics"
+        
+        globalNewDogBuilder.dogBuilderSize = .small
+        globalNewDogBuilder.dogBuilderGroomingFrequency = .fourWeeks
+
     }
     
     func addViews() {
@@ -421,14 +444,130 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
 
     }
     
+    @objc func handleGroomingFrequency(sender : UIButton) {
+        
+        UIDevice.vibrateLight()
+
+        switch sender.tag {
+        
+        case 1:
+            
+            globalNewDogBuilder.dogBuilderGroomingFrequency = .fourWeeks
+            
+            self.fourWeeksButton.backgroundColor = coreWhiteColor
+            self.fourWeeksButton.tintColor = coreOrangeColor
+            
+            self.eightWeeksButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+            self.eightWeeksButton.tintColor = dividerGrey
+            
+        case 2:
+            
+            globalNewDogBuilder.dogBuilderGroomingFrequency = .eightWeeks
+
+            self.fourWeeksButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+            self.fourWeeksButton.tintColor = dividerGrey
+            
+            self.eightWeeksButton.backgroundColor = coreWhiteColor
+            self.eightWeeksButton.tintColor = coreOrangeColor
+            
+
+        default: print("Only 2 buttons here")
+        
+        }
+    }
+    
+    @objc func handleSizeSelection(sender : UIButton) {
+        
+        UIDevice.vibrateLight()
+        
+        switch sender.tag {
+        
+        case 1:
+            
+            globalNewDogBuilder.dogBuilderSize = .small
+            
+            self.weightSmallButton.backgroundColor = coreWhiteColor
+            self.weightSmallButton.tintColor = coreOrangeColor
+            
+            self.weightMediumButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+            self.weightMediumButton.tintColor = dividerGrey
+            
+            self.weightLargeButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+            self.weightLargeButton.tintColor = dividerGrey
+            
+            self.weightExtraLargeButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+            self.weightExtraLargeButton.tintColor = dividerGrey
+
+        case 2:
+            
+            globalNewDogBuilder.dogBuilderSize = .medium
+            
+            self.weightSmallButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+            self.weightSmallButton.tintColor = dividerGrey
+            
+            self.weightMediumButton.backgroundColor = coreWhiteColor
+            self.weightMediumButton.tintColor = coreOrangeColor
+            
+            self.weightLargeButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+            self.weightLargeButton.tintColor = dividerGrey
+            
+            self.weightExtraLargeButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+            self.weightExtraLargeButton.tintColor = dividerGrey
+            
+        case 3:
+            
+            globalNewDogBuilder.dogBuilderSize = .large
+            
+            self.weightSmallButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+            self.weightSmallButton.tintColor = dividerGrey
+            
+            self.weightMediumButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+            self.weightMediumButton.tintColor = dividerGrey
+            
+            self.weightLargeButton.backgroundColor = coreWhiteColor
+            self.weightLargeButton.tintColor = coreOrangeColor
+            
+            self.weightExtraLargeButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+            self.weightExtraLargeButton.tintColor = dividerGrey
+            
+        case 4:
+            
+            globalNewDogBuilder.dogBuilderSize = .xlarge
+            
+            self.weightSmallButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+            self.weightSmallButton.tintColor = dividerGrey
+            
+            self.weightMediumButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+            self.weightMediumButton.tintColor = dividerGrey
+            
+            self.weightLargeButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+            self.weightLargeButton.tintColor = dividerGrey
+            
+            self.weightExtraLargeButton.backgroundColor = coreWhiteColor
+            self.weightExtraLargeButton.tintColor = coreOrangeColor
+            
+        default: print("only 4 buttons, this will never hit")
+        
+        }
+    }
+    
+    @objc func handleInformationButton() {
+        
+        AlertControllerCompletion.handleAlertWithCompletion(title: "Frequency", message: "grooming frequency description") { done in
+            print("done")
+        }
+    }
+    
     @objc func handleBackButton() {
         
-        self.navigationController?.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @objc func handleNextButton() {
         
-        let newDogTwo = NewDogTwo()
+        UIDevice.vibrateLight()
+
+        let newDogTwo = NewDogThree()
         newDogTwo.modalPresentationStyle = .fullScreen
         newDogTwo.navigationController?.navigationBar.isHidden = true
         self.navigationController?.pushViewController(newDogTwo, animated: true)

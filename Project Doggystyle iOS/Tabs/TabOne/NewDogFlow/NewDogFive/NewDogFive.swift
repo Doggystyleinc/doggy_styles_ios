@@ -7,9 +7,14 @@
 
 import Foundation
 import UIKit
+import Firebase
 
 
 class NewDogFive : UIViewController {
+    
+    let mainLoadingScreen = MainLoadingScreen(),
+        storageRef = Storage.storage().reference(),
+        databaseRef = Database.database().reference()
     
     var headerContainer : UIView = {
         
@@ -63,7 +68,7 @@ class NewDogFive : UIViewController {
         cbf.layer.cornerRadius = 15
         cbf.layer.masksToBounds = true
         cbf.tintColor = coreWhiteColor
-        cbf.addTarget(self, action: #selector(self.handleNextButton), for: .touchUpInside)
+        cbf.addTarget(self, action: #selector(self.doggyProfileUploader), for: .touchUpInside)
         
         return cbf
         
@@ -119,7 +124,7 @@ class NewDogFive : UIViewController {
         let nl = UILabel()
         nl.translatesAutoresizingMaskIntoConstraints = false
         nl.backgroundColor = .clear
-        nl.text = "<name>"
+        nl.text = ""
         nl.font = UIFont(name: dsSubHeaderFont, size: 18)
         nl.textColor = coreBlackColor
         nl.textAlignment = .left
@@ -151,7 +156,57 @@ class NewDogFive : UIViewController {
         
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
+        self.fillValues()
         
+    }
+    
+    func fillValues() {
+        
+        //HEADER
+        let dogsName = globalNewDogBuilder.dogBuilderName ?? "Dog"
+        self.basicDetailsLabel.text = "Confirm \(dogsName)'s details"
+        
+        let image = globalNewDogBuilder.dogBuilderProfileImage ?? UIImage(named: "doggy_profile_filler")?.withRenderingMode(.alwaysOriginal)
+        self.dogImage.image = image
+        
+        //BODY
+        self.k9Name.text = dogsName
+        
+        let size = globalNewDogBuilder.dogBuilderSize
+        let breed = globalNewDogBuilder.dogBuilderBreed ?? "Unknown"
+        let age = globalNewDogBuilder.dogBuilderBirthday ?? "Unknown"
+        let frequency = globalNewDogBuilder.dogBuilderGroomingFrequency
+        let favoriteTreat = globalNewDogBuilder.dogBuilderFavoriteTreat ?? "n/a"
+        let favoriteFood = globalNewDogBuilder.dogBuilderFavoriteFood ?? "n/a"
+        let hasMedicalConditions = globalNewDogBuilder.dogBuilderHasMedicalConditions ?? false
+        let hasBehavoirConcerns = globalNewDogBuilder.dogBuilderHasBehaviouralConditions ?? false
+        
+        var frequencyString : String = ""
+        var sizeString : String = ""
+
+        
+        if frequency == .fourWeeks {
+            frequencyString = "4 weeks"
+        } else {
+            frequencyString = "8 weeks"
+        }
+        
+        if size == .small {
+            sizeString = "Small"
+        } else if size == .medium {
+            sizeString = "Medium"
+        } else if size == .large {
+            sizeString = "Large"
+        } else if size == .xlarge {
+            sizeString = "X-Large"
+        }
+
+        let fetchedArray = ["\(sizeString)", "\(breed)", "\(age)", "\(frequencyString)", "\(favoriteTreat)", "\(favoriteFood)", "\(hasMedicalConditions)", "\(hasBehavoirConcerns)"]
+        self.newDogCollection.valueArray = fetchedArray
+        
+        DispatchQueue.main.async {
+            self.newDogCollection.reloadData()
+        }
     }
     
     func addViews() {
@@ -218,22 +273,6 @@ class NewDogFive : UIViewController {
         self.newDogCollection.rightAnchor.constraint(equalTo: self.mainContainer.rightAnchor, constant: 0).isActive = true
         self.newDogCollection.bottomAnchor.constraint(equalTo: self.mainContainer.bottomAnchor, constant: -10).isActive = true
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-     
-        
     }
     
     @objc func handlePencilButton() {
@@ -246,10 +285,168 @@ class NewDogFive : UIViewController {
     
     @objc func handleNextButton() {
         
+        UIDevice.vibrateLight()
+        
         let newDogSix = NewDogSix()
         newDogSix.modalPresentationStyle = .fullScreen
         newDogSix.navigationController?.navigationBar.isHidden = true
         self.navigationController?.pushViewController(newDogSix, animated: true)
         
+    }
+}
+
+extension NewDogFive {
+    
+    @objc func doggyProfileUploader() {
+        
+        self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
+        guard let user_uid = Auth.auth().currentUser?.uid else {return}
+        
+        let path = self.databaseRef.child("doggy_profile_builder").child(user_uid).childByAutoId()
+        let time_stamp : Double = NSDate().timeIntervalSince1970
+        
+        let profileImageFetch = globalNewDogBuilder.dogBuilderProfileImage ?? UIImage(named: "doggy_profile_filler")?.withRenderingMode(.alwaysOriginal)
+        let vaccineImage = globalNewDogBuilder.dogBuilderHasUploadedVaccineImage
+        
+        let dog_builder_name = globalNewDogBuilder.dogBuilderName ?? "n/a"
+        let dog_builder_breed = globalNewDogBuilder.dogBuilderBreed ?? "n/a"
+        let dog_builder_birthday = globalNewDogBuilder.dogBuilderBirthday ?? "n/a"
+        let dog_builder_favorite_treat = globalNewDogBuilder.dogBuilderFavoriteTreat ?? "n/a"
+        let dog_builder_favorite_food = globalNewDogBuilder.dogBuilderFavoriteFood ?? "n/a"
+        let dog_builder_has_medical_conditions = globalNewDogBuilder.dogBuilderHasMedicalConditions ?? false
+        let dog_builder_has_behavioral_conditions = globalNewDogBuilder.dogBuilderHasBehaviouralConditions ?? false
+        let dog_builder_has_vaccine_card = globalNewDogBuilder.dogBuilderHasUploadedVaccineCard ?? false
+
+        var dog_builder_size = ""
+        var dog_builder_frequency = ""
+
+        switch globalNewDogBuilder.dogBuilderSize {
+        
+        case .small : dog_builder_size = "Small"
+        case .medium : dog_builder_size = "Medium"
+        case .large : dog_builder_size = "Large"
+        case .xlarge : dog_builder_size = "X-Large"
+            
+        }
+        
+        switch globalNewDogBuilder.dogBuilderGroomingFrequency {
+        
+        case .fourWeeks : dog_builder_frequency = "4 Weeks"
+        case .eightWeeks : dog_builder_frequency = "8 Weeks"
+
+        }
+        
+        self.uploadPhotoWithCustomPath(path: "dog_profile_images", imageToUpload: profileImageFetch!) { isComplete, profileURL in
+            
+            if isComplete {
+                
+                if dog_builder_has_vaccine_card == true {
+                    
+                    self.uploadPhotoWithCustomPath(path: "vaccine_images", imageToUpload: vaccineImage!) { isComplete, vaccineURL in
+                        
+                        let values : [String : Any] = ["dog_builder_name" : dog_builder_name,
+                                                       "dog_builder_breed" : dog_builder_breed,
+                                                       "dog_builder_birthday" : dog_builder_birthday,
+                                                       "dog_builder_favorite_treat" : dog_builder_favorite_treat,
+                                                       "dog_builder_favorite_food" : dog_builder_favorite_food,
+                                                       "dog_builder_has_medical_conditions" : dog_builder_has_medical_conditions,
+                                                       "dog_builder_has_behavioral_conditions" : dog_builder_has_behavioral_conditions,
+                                                       "dog_builder_has_vaccine_card" : false,
+                                                       "dog_builder_size" : dog_builder_size,
+                                                       "dog_builder_frequency" : dog_builder_frequency,
+                                                       "dog_builder_profile_url" : profileURL ?? "nil",
+                                                       "dog_builder_vaccine_card_url" : "nil",
+                                                       "ref_key" : path.key ?? "nil",
+                                                       "user_uid" : user_uid,
+                                                       "parent_key" : path.parent?.key ?? "nil",
+                                                       "time_stamp" : time_stamp
+                                                       ]
+                        
+                        let path = self.databaseRef.child("doggy_profile_builder").child(user_uid).childByAutoId()
+                        path.updateChildValues(values) { error, ref in
+                            
+                            if error != nil {
+                                print(error?.localizedDescription as Any)
+                                self.mainLoadingScreen.cancelMainLoadingScreen()
+                                self.presentAlertOnMainThread(title: "Failed", message: "Seems something wen't wrong, please try again.", buttonTitle: "Ok")
+                                return
+                            }
+                            
+                            print("Successful upload with vaccine card")
+                            self.mainLoadingScreen.cancelMainLoadingScreen()
+                            self.handleNextButton()
+                        }
+                    }
+
+                } else {
+                   
+                    let values : [String : Any] = ["dog_builder_name" : dog_builder_name,
+                                                   "dog_builder_breed" : dog_builder_breed,
+                                                   "dog_builder_birthday" : dog_builder_birthday,
+                                                   "dog_builder_favorite_treat" : dog_builder_favorite_treat,
+                                                   "dog_builder_favorite_food" : dog_builder_favorite_food,
+                                                   "dog_builder_has_medical_conditions" : dog_builder_has_medical_conditions,
+                                                   "dog_builder_has_behavioral_conditions" : dog_builder_has_behavioral_conditions,
+                                                   "dog_builder_has_vaccine_card" : false,
+                                                   "dog_builder_size" : dog_builder_size,
+                                                   "dog_builder_frequency" : dog_builder_frequency,
+                                                   "dog_builder_profile_url" : profileURL ?? "nil",
+                                                   "dog_builder_vaccine_card_url" : "nil",
+                                                   "ref_key" : path.key ?? "nil",
+                                                   "user_uid" : user_uid,
+                                                   "parent_key" : path.parent?.key ?? "nil",
+                                                   "time_stamp" : time_stamp
+                                                   ]
+                    
+                    path.updateChildValues(values) { error, ref in
+                        
+                        if error != nil {
+                            print(error?.localizedDescription as Any)
+                            self.mainLoadingScreen.cancelMainLoadingScreen()
+                            self.presentAlertOnMainThread(title: "Failed", message: "That's odd, please try again.", buttonTitle: "Ok")
+                            return
+                        }
+                        
+                        print("Successful upload without vaccine card")
+                        self.mainLoadingScreen.cancelMainLoadingScreen()
+                        self.handleNextButton()
+                    }
+                }
+            } else {
+                self.mainLoadingScreen.cancelMainLoadingScreen()
+                self.presentAlertOnMainThread(title: "Failed", message: "That's odd, please try again.", buttonTitle: "Ok")
+            }
+        }
+    }
+    
+    func uploadPhotoWithCustomPath(path : String, imageToUpload : UIImage, completion : @escaping (_ isComplete : Bool, _ url : String?) -> ()) {
+        
+        guard let userUid = Auth.auth().currentUser?.uid else {return}
+        guard let imageDataToUpload = imageToUpload.jpegData(compressionQuality: 0.15) else {return}
+        
+        let randomString = NSUUID().uuidString
+        let imageRef = self.storageRef.child(path).child(userUid).child(randomString)
+        
+        imageRef.putData(imageDataToUpload, metadata: nil) { (metaDataPass, error) in
+            
+            if error != nil {
+                completion(false, nil);
+                return
+            }
+            
+            imageRef.downloadURL(completion: { (urlGRab, error) in
+                
+                if error != nil {
+                    completion(false, nil);
+                    return
+                }
+                
+                if let uploadUrl = urlGRab?.absoluteString {
+                    
+                    completion(true, uploadUrl)
+
+                }
+            })
+        }
     }
 }
