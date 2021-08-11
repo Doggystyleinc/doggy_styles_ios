@@ -139,19 +139,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
         etfc.layer.shadowRadius = 9
         etfc.layer.shouldRasterize = false
-        
-//        let configHome = UIImage.SymbolConfiguration(pointSize: 8, weight: .light)
-//        let image = UIImage(systemName: "magnifyingglass", withConfiguration: configHome)?.withTintColor(dividerGrey).withRenderingMode(.alwaysOriginal) ?? UIImage(named: "")
-//        let imageView = UIImageView()
-//        imageView.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
-//        imageView.contentMode = .scaleAspectFit
-//        imageView.image = image
-//        etfc.leftView = imageView
-//        etfc.leftViewMode = .always
-//
-////        etfc.setRightPaddingPoints(50)
-//        etfc.setLeftPaddingPoints(10)
-        
+       
         etfc.addTarget(self, action: #selector(handleSearchTextFieldChange(textField:)), for: .editingChanged)
         
         return etfc
@@ -708,7 +696,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
         let token = GMSAutocompleteSessionToken.init(),
             filter = GMSAutocompleteFilter()
-        filter.type = .address
+            filter.type = .address
         
         placesClient?.findAutocompletePredictions(fromQuery: passedPlace, filter: filter, sessionToken: token, callback: { (results, error) in
             if let error = error {

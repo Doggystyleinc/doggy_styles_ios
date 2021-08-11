@@ -18,7 +18,7 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         handleOne = DatabaseHandle(),
         childCounter : Int = 0,
         homeController: HomeViewController?
-        
+    
     private let package = Package.examplePackage
     private let databaseRef = Database.database().reference()
     private let pets: [Pet] = [Pet.allPets, Pet.petOne, Pet.petTwo, Pet.petThree, Pet.petFour]
@@ -83,7 +83,7 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         nb.text = "1"
         nb.textColor = coreWhiteColor
         
-       return nb
+        return nb
     }()
     
     let dsCompanyLogoImage : UIImageView = {
@@ -110,15 +110,15 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         
-       return hl
+        return hl
     }()
-   
+    
     lazy var emptyStateOne : EmptyStateOne = {
         
         let eso = EmptyStateOne(frame: .zero)
         eso.dashboardController = self
         
-       return eso
+        return eso
         
     }()
     
@@ -127,7 +127,7 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         let eso = EmptyStateTwo(frame: .zero)
         eso.dashboardController = self
         
-       return eso
+        return eso
         
     }()
     
@@ -136,7 +136,7 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         let eso = DashMainView(frame: .zero)
         eso.dashboardController = self
         
-       return eso
+        return eso
         
     }()
     
@@ -145,10 +145,10 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         let eso = TodaysDashView(frame: .zero)
         eso.dashboardController = self
         
-       return eso
+        return eso
         
     }()
-  
+    
     override func viewDidLoad() {
         
         self.navigationController?.navigationBar.isHidden = false
@@ -164,7 +164,7 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         self.todaysDashView.isHidden = true
         
         self.callDataEngine()
-       
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -187,19 +187,35 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
             }
         }
     }
-  
+    
     func fetchDataSource(completion : @escaping (_ isSuccess : Bool)->()) {
         
         guard let user_uid = Auth.auth().currentUser?.uid else {return}
-        let countingRef = self.databaseRef.child("doggy_profile_builder").child(user_uid)
-        self.observingRefOne = self.databaseRef.child("doggy_profile_builder").child(user_uid)
         
-        countingRef.observeSingleEvent(of: .value) { snapCount in
+        let countingRef = self.databaseRef.child("doggy_profile_builder").child(user_uid)
+        
+        let observingRef = self.databaseRef.child("doggy_profile_builder").child(user_uid)
+
+        self.observingRefOne = self.databaseRef.child("doggy_profile_builder").child(user_uid)
+      
+        //FOREVER LISTEN FOR CHANGES
+        observingRef.observe(.value) { listener in
+            
+            self.doggyProfileDataSource.removeAll()
+            
+            self.dashMainView.mainDashCollectionView.doggyProfileDataSource.removeAll()
+            
+            self.dashMainView.registeredPetCollection.doggyProfileDataSource.removeAll()
+            
+            self.childCounter = 0
+        
+            //CHECK COUNTS TP MATCH UP
+            countingRef.observeSingleEvent(of: .value) { snapCount in
             
             if snapCount.exists() {
                 
                 let childrenCount = Int(snapCount.childrenCount)
-
+                
                 self.handleOne = self.observingRefOne.observe(.childAdded, with: { snapLoop in
                     
                     self.childCounter += 1
@@ -219,11 +235,11 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
                 completion(false)
             }
         }
+            
+        }
     }
     
     func handleDatasourceFailure() {
-        
-        print("Failed to grab a profile, show empty state one")
         
         self.emptyStateOne.isHidden = false
         self.emptyStateTwo.isHidden = true
@@ -233,16 +249,17 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         self.observingRefOne.removeObserver(withHandle: self.handleOne)
         self.childCounter = 0
         
-        self.dashMainView.mainDashCollectionView.doggyProfileDataSource.removeAll()
-        
+//        self.dashMainView.mainDashCollectionView.doggyProfileDataSource.removeAll()
+        self.dashMainView.registeredPetCollection.doggyProfileDataSource.removeAll()
+        self.doggyProfileDataSource.removeAll()
+
         DispatchQueue.main.async {
-            self.dashMainView.mainDashCollectionView.reloadData()
+//            self.dashMainView.mainDashCollectionView.reloadData()
+            self.dashMainView.registeredPetCollection.reloadData()
         }
     }
     
     func handleDatasourceSuccess() {
-        
-        print("Success, show the dash view")
         
         self.emptyStateOne.isHidden = true
         self.emptyStateTwo.isHidden = true
@@ -252,10 +269,17 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         self.observingRefOne.removeObserver(withHandle: self.handleOne)
         self.childCounter = 0
         
-        self.dashMainView.mainDashCollectionView.doggyProfileDataSource = self.doggyProfileDataSource
+//        self.dashMainView.mainDashCollectionView.doggyProfileDataSource = self.doggyProfileDataSource
+        
+        var datasourceReplica = self.doggyProfileDataSource
+        let post = DoggyProfileDataSource(json: ["dog":"dog"])
+        datasourceReplica.insert(post, at: 0)
+        
+        self.dashMainView.registeredPetCollection.doggyProfileDataSource = datasourceReplica
         
         DispatchQueue.main.async {
-            self.dashMainView.mainDashCollectionView.reloadData()
+//            self.dashMainView.mainDashCollectionView.reloadData()
+            self.dashMainView.registeredPetCollection.reloadData()
         }
     }
     
@@ -280,7 +304,7 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         //DASH VIEWS
         self.view.addSubview(self.dashMainView)
         self.view.addSubview(self.todaysDashView)
-
+        
         self.referButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         self.referButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.referButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
@@ -325,8 +349,6 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         self.todaysDashView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.todaysDashView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.todaysDashView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
-        
-        
         
     }
     
@@ -409,142 +431,3 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
 
 
 
-
-
-
-
-
-
-//
-//        self.welcomeContainerCreateDoggyprofileButton.leftAnchor.constraint(equalTo: self.welcomeContainer.leftAnchor, constant: 30).isActive = true
-//        self.welcomeContainerCreateDoggyprofileButton.topAnchor.constraint(equalTo: self.welcomeContainer.topAnchor, constant: 28).isActive = true
-//        self.welcomeContainerCreateDoggyprofileButton.heightAnchor.constraint(equalToConstant: 98).isActive = true
-//        self.welcomeContainerCreateDoggyprofileButton.widthAnchor.constraint(equalToConstant: 98).isActive = true
-//        self.welcomeContainerCreateDoggyprofileButton.layer.cornerRadius = 98/2
-//
-//        self.welcomeContainerLabel.leftAnchor.constraint(equalTo: self.welcomeContainerCreateDoggyprofileButton.rightAnchor, constant: 15).isActive = true
-//        self.welcomeContainerLabel.rightAnchor.constraint(equalTo: self.welcomeContainer.rightAnchor, constant: -10).isActive = true
-//        self.welcomeContainerLabel.topAnchor.constraint(equalTo: self.welcomeContainer.topAnchor, constant: 5).isActive = true
-//        self.welcomeContainerLabel.bottomAnchor.constraint(equalTo: self.welcomeContainer.bottomAnchor, constant: -5).isActive = true
-//
-//        self.welcomeContainerAddIcon.centerYAnchor.constraint(equalTo: self.welcomeContainerCreateDoggyprofileButton.centerYAnchor, constant: 0).isActive = true
-//        self.welcomeContainerAddIcon.centerXAnchor.constraint(equalTo: self.welcomeContainerCreateDoggyprofileButton.centerXAnchor, constant: 0).isActive = true
-//        self.welcomeContainerAddIcon.heightAnchor.constraint(equalToConstant: 30).isActive = true
-//        self.welcomeContainerAddIcon.widthAnchor.constraint(equalToConstant: 30).isActive = true
-
-
-//        self.petCollectionView.topAnchor.constraint(equalTo: self.dsCompanyLogoImage.bottomAnchor, constant: 30).isActive = true
-//        self.petCollectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
-//        self.petCollectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-//        self.petCollectionView.heightAnchor.constraint(equalToConstant: 120).isActive = true
-//
-//        self.appointmentHeader.left(to: view, offset: 30.0)
-//        self.appointmentHeader.right(to: view, offset: -30.0)
-//        self.appointmentHeader.topToBottom(of: petCollectionView, offset: 24)
-//
-//        self.appointmentContainer.topToBottom(of: appointmentHeader, offset: 10.0)
-//        self.appointmentContainer.left(to: appointmentHeader)
-//        self.appointmentContainer.height(152)
-//        self.appointmentContainer.right(to: appointmentHeader)
-
-
-
-//
-//
-//let imageViewOne = UIImageView(frame: .zero)
-//imageViewOne.sd_setImage(with: URL(string: pets[1].imageURL), placeholderImage: UIImage(named: Constants.petProfilePlaceholder), options: .continueInBackground, context: nil)
-//imageViewOne.contentMode = .scaleToFill
-//imageViewOne.clipsToBounds = true
-//imageViewOne.layer.cornerRadius = 23
-//
-//self.appointmentContainer.addSubview(imageViewOne)
-//imageViewOne.height(46)
-//imageViewOne.width(46)
-//imageViewOne.top(to: appointmentContainer, offset: 20)
-//imageViewOne.left(to: appointmentContainer, offset: 20)
-//
-////Must check if user numberOfPets > 2 before displaying this
-//let imageViewTwo = UIImageView(frame: .zero)
-//imageViewTwo.sd_setImage(with: URL(string: pets[2].imageURL), placeholderImage: UIImage(named: Constants.petProfilePlaceholder), options: .continueInBackground, context: nil)
-//imageViewTwo.contentMode = .scaleToFill
-//imageViewTwo.clipsToBounds = true
-//imageViewTwo.layer.cornerRadius = 23
-//
-//self.appointmentContainer.addSubview(imageViewTwo)
-//imageViewTwo.height(46)
-//imageViewTwo.width(46)
-//imageViewTwo.top(to: imageViewOne)
-//imageViewTwo.leftToRight(of: imageViewOne, offset: 10)
-//
-//self.appointmentContainer.addSubview(editAppointmentButton)
-//editAppointmentButton.top(to: imageViewOne)
-//editAppointmentButton.right(to: appointmentContainer, offset: -20)
-//editAppointmentButton.height(38)
-//editAppointmentButton.width(38)
-//
-//self.appointmentContainer.addSubview(appointmentDate)
-//appointmentDate.topToBottom(of: imageViewOne, offset: 12)
-//appointmentDate.left(to: imageViewOne)
-//
-//self.appointmentContainer.addSubview(appointmentTime)
-//appointmentTime.top(to: appointmentDate)
-//appointmentTime.right(to: editAppointmentButton)
-//
-//self.appointmentContainer.addSubview(appointmentCycle)
-//appointmentCycle.left(to: appointmentDate)
-//appointmentCycle.topToBottom(of: appointmentDate, offset: 5)
-//
-//self.view.addSubview(viewAllAppointmentsButton)
-//viewAllAppointmentsButton.centerX(to: appointmentContainer)
-//viewAllAppointmentsButton.topToBottom(of: appointmentContainer, offset: 2.0)
-//viewAllAppointmentsButton.width(150)
-//
-// self.view.addSubview(serviceHeader)
-// serviceHeader.topToBottom(of: viewAllAppointmentsButton, offset: 12.0)
-// serviceHeader.left(to: appointmentHeader)
-//
-// self.view.addSubview(servicesContainer)
-// servicesContainer.topToBottom(of: serviceHeader, offset: 10.0)
-// servicesContainer.left(to: appointmentContainer)
-// servicesContainer.right(to: appointmentContainer)
-// servicesContainer.height(152)
-//
-// self.view.addSubview(viewAllServicesButton)
-// viewAllServicesButton.centerX(to: servicesContainer)
-// viewAllServicesButton.topToBottom(of: servicesContainer, offset: 2.0)
-// viewAllServicesButton.width(150)
-//
-// let serviceView = ServiceOfTheWeekView(package: package)
-// servicesContainer.addSubview(serviceView)
-// serviceView.edgesToSuperview()
-
-
-
-//    let welcomeContainerAddIcon : UIButton = {
-//
-//        let dcl = UIButton(type: .system)
-//        dcl.translatesAutoresizingMaskIntoConstraints = false
-//        dcl.backgroundColor = .clear
-//        dcl.contentMode = .scaleAspectFit
-//        dcl.isUserInteractionEnabled = true
-//        dcl.clipsToBounds = true
-//
-//        return dcl
-//    }()
-    
-    
-//    private let petCollectionView: UICollectionView = {
-//
-//        let layout = UICollectionViewFlowLayout()
-//        layout.itemSize = CGSize(width: 74, height: 74)
-//        layout.scrollDirection = .horizontal
-//        layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-//
-//        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//        collectionView.register(PetCollectionViewCell.self, forCellWithReuseIdentifier: PetCollectionViewCell.reuseIdentifier)
-//        collectionView.showsHorizontalScrollIndicator = false
-//        collectionView.backgroundColor = .dsViewBackground
-//        collectionView.translatesAutoresizingMaskIntoConstraints = false
-//        return collectionView
-//
-//    }()

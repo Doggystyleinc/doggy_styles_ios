@@ -96,7 +96,8 @@ class NewDogSix : UIViewController {
 
         //Set the attributed text for the button
         cbf.setAttributedTitle(attributedStr, for: .normal)
-        
+        cbf.addTarget(self, action: #selector(self.handleReturnToDashboard), for: .touchUpInside)
+
         return cbf
         
     }()
@@ -115,7 +116,8 @@ class NewDogSix : UIViewController {
         cbf.layer.cornerRadius = 15
         cbf.layer.masksToBounds = true
         cbf.tintColor = coreWhiteColor
-        
+        cbf.addTarget(self, action: #selector(self.handleReturnToDashboard), for: .touchUpInside)
+
         return cbf
         
     }()

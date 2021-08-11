@@ -52,6 +52,23 @@ class MainDashboardCollectionView : UICollectionView, UICollectionViewDelegateFl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = self.dequeueReusableCell(withReuseIdentifier: self.mainCollectionID, for: indexPath) as! MainCollectionFeeder
+            
+        let feeder = self.doggyProfileDataSource[indexPath.item]
+        
+        let dogProfileImage = feeder.dog_builder_profile_url ?? "nil"
+        
+        cell.dogTwoImage.isHidden = true
+        
+        cell.dogOneImage.loadImageGeneralUse(dogProfileImage) { loaded in
+            print("Loaded")
+        }
+            
+        
+        
+        
+        
+        
+        
         
         return cell
         
@@ -122,7 +139,7 @@ class MainCollectionFeeder : UICollectionViewCell {
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
-        hl.text = "Tue, Dec 3 2021"
+        hl.text = "..."
         hl.font = UIFont(name: dsSubHeaderFont, size: 18)
         hl.numberOfLines = 2
         hl.adjustsFontSizeToFitWidth = true
@@ -137,7 +154,7 @@ class MainCollectionFeeder : UICollectionViewCell {
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
-        hl.text = "12:30 PM"
+        hl.text = "..."
         hl.font = UIFont(name: dsSubHeaderFont, size: 18)
         hl.numberOfLines = 2
         hl.adjustsFontSizeToFitWidth = true
@@ -152,7 +169,7 @@ class MainCollectionFeeder : UICollectionViewCell {
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
-        hl.text = "Recurring - 8 weeks"
+        hl.text = "..."
         hl.font = UIFont(name: rubikRegular, size: 16)
         hl.numberOfLines = 2
         hl.adjustsFontSizeToFitWidth = true

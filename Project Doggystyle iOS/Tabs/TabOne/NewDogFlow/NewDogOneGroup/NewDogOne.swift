@@ -15,8 +15,18 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
     var dogBreedJson : [String] = []
     var predictionString : String = ""
     var selectedImage : UIImage?
+    var breedHeightAnchor : NSLayoutConstraint?
     
     var ageTopConstraint : NSLayoutConstraint?
+
+    lazy var newDogSearchBreedSubview : NewDogSearchBreedSubview = {
+        
+        let ndsb = NewDogSearchBreedSubview(frame: .zero)
+        ndsb.newDogOne = self
+        ndsb.isHidden = true
+        return ndsb
+        
+    }()
     
     lazy var scrollView : UIScrollView = {
         
@@ -178,22 +188,27 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let etfc = UITextField()
         etfc.translatesAutoresizingMaskIntoConstraints = false
-        let placeholder = NSAttributedString(string: "Breed", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
-        etfc.attributedPlaceholder = placeholder
+        etfc.placeholder = "Search for Breed"
         etfc.textAlignment = .left
-        etfc.textColor = coreBlackColor
+        etfc.backgroundColor = coreWhiteColor
+        etfc.textColor = UIColor .darkGray.withAlphaComponent(1.0)
         etfc.font = UIFont(name: rubikRegular, size: 18)
         etfc.allowsEditingTextAttributes = false
         etfc.autocorrectionType = .no
         etfc.delegate = self
-        etfc.backgroundColor = coreWhiteColor
+        etfc.layer.masksToBounds = true
         etfc.keyboardAppearance = UIKeyboardAppearance.light
         etfc.returnKeyType = UIReturnKeyType.done
-        etfc.keyboardType = .alphabet
-        etfc.layer.masksToBounds = true
-        etfc.layer.cornerRadius = 10
         etfc.leftViewMode = .always
-        etfc.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
+        
+        let image = UIImage(named: "magnifyingGlass")?.withRenderingMode(.alwaysOriginal)
+        let imageView = UIImageView()
+        imageView.frame = CGRect(x: 200, y: 200, width: 100, height: 100)
+        imageView.contentMode = .center
+        etfc.contentMode = .center
+        imageView.image = image
+        etfc.leftView = imageView
+        
         etfc.clipsToBounds = false
         etfc.layer.masksToBounds = false
         etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
@@ -203,12 +218,15 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         etfc.layer.shouldRasterize = false
         etfc.layer.borderColor = dividerGrey.cgColor
         etfc.layer.borderWidth = 0.5
-        etfc.addTarget(self, action: #selector(self.handleManualScrolling), for: .touchDown)
-        etfc.addTarget(self, action: #selector(self.monitorChangesForBreed(textField:)), for: .editingChanged)
-
+        etfc.layer.cornerRadius = 10
+        
+        etfc.addTarget(self, action: #selector(self.handleBreedTap), for: .touchDown)
+//        etfc.addTarget(self, action: #selector(handleSearchTextFieldChange(textField:)), for: .editingChanged)
+        
         return etfc
         
     }()
+    
     
     lazy var ageTextField : UITextField = {
         
@@ -345,31 +363,6 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
     }()
     
-    lazy var predictionLabel : UILabel = {
-        
-        let pl = UILabel()
-        pl.translatesAutoresizingMaskIntoConstraints = false
-        pl.textColor = coreBlackColor
-        pl.font = UIFont(name: dsSubHeaderFont, size: 14)
-        pl.textAlignment = .center
-        pl.isUserInteractionEnabled = true
-        pl.clipsToBounds = true
-        pl.layer.masksToBounds = true
-        pl.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
-        pl.layer.shadowOpacity = 0.05
-        pl.layer.shadowOffset = CGSize(width: 2, height: 3)
-        pl.layer.shadowRadius = 9
-        pl.layer.shouldRasterize = false
-        pl.layer.borderColor = dividerGrey.cgColor
-        pl.layer.borderWidth = 0.5
-        pl.backgroundColor = coreGreenColor.withAlphaComponent(0.2)
-        pl.isHidden = true
-        pl.layer.cornerRadius = 10
-        pl.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.tappedPrediction)))
-       return pl
-    }()
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -388,7 +381,34 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.scrollView.keyboardDismissMode = .interactive
         
         self.dogBreedJson = self.dogBreedJsonGrabber.dogBreedJSON
+        self.breedTextField.setUpImage(imageName: "magnifyingGlass", on: .left)
+        
+        self.breedTextField.inputView = UIView()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+            
+        self.breedTextField.endEditing(true)
+
+    }
+    
+    @objc func handleBreedTap() {
+        
+        self.newDogSearchBreedSubview.isHidden = false
+        
+        self.newDogSearchBreedSubview.moveConstraints()
+
+        UIView.animate(withDuration: 0.25) {
+            self.newDogSearchBreedSubview.alpha = 1
+        } completion: { complete in
+            
+        }
+    }
+    
+    
+    var breedTopConstraint : NSLayoutConstraint?
     
     func addViews() {
         
@@ -411,11 +431,11 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.scrollView.addSubview(self.nameTextField)
         self.scrollView.addSubview(self.breedTextField)
         self.scrollView.addSubview(self.ageTextField)
-        self.scrollView.addSubview(self.predictionLabel)
 
         self.scrollView.addSubview(self.nextButton)
         
         self.view.addSubview(timeCover)
+        self.view.addSubview(self.newDogSearchBreedSubview)
         
         self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
@@ -500,7 +520,8 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.nameTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.nameTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
-        self.breedTextField.topAnchor.constraint(equalTo: self.nameTextField.bottomAnchor, constant: 20).isActive = true
+        self.breedTopConstraint = self.breedTextField.topAnchor.constraint(equalTo: self.nameTextField.bottomAnchor, constant: 20)
+        self.breedTopConstraint?.isActive = true
         self.breedTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.breedTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.breedTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -526,28 +547,13 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.datePicker.rightAnchor.constraint(equalTo: self.ageTextField.rightAnchor, constant: 0).isActive = true
         self.datePicker.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
-        self.predictionLabel.topAnchor.constraint(equalTo: self.breedTextField.bottomAnchor, constant: 5).isActive = true
-        self.predictionLabel.leftAnchor.constraint(equalTo: self.breedTextField.leftAnchor, constant: 0).isActive = true
-        self.predictionLabel.rightAnchor.constraint(equalTo: self.breedTextField.rightAnchor, constant: 0).isActive = true
-        self.predictionLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
+        self.newDogSearchBreedSubview.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
+        self.newDogSearchBreedSubview.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.newDogSearchBreedSubview.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.newDogSearchBreedSubview.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+
     }
-    
-    func adjustAgeConstraint(moveDown : Bool) {
-        
-        if moveDown {
-            UIView.animate(withDuration: 0.25) {
-                self.ageTopConstraint?.constant = 60
-                self.view.layoutIfNeeded()
-            }
-        } else {
-            UIView.animate(withDuration: 0.25) {
-                self.ageTopConstraint?.constant = 20
-                self.view.layoutIfNeeded()
-            }
-        }
-    }
-    
+   
     func resignation() {
         
         self.nameTextField.resignFirstResponder()
@@ -560,44 +566,11 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         if self.predictionString != "" {
             self.breedTextField.text = self.predictionString
-            self.predictionLabel.isHidden = true
-            self.adjustAgeConstraint(moveDown: false)
+            self.isSelectedNameChosen = true
         }
     }
     
-    @objc func monitorChangesForBreed(textField : UITextField) {
-        
-        guard let text = self.breedTextField.text else {return}
-        
-        if text.count > 0 {
-
-            let matchingTerms = self.dogBreedJson.filter({
-                $0.range(of: text, options: .caseInsensitive) != nil
-            })
-            
-            if matchingTerms.count > 0 {
-                self.predictionLabel.text = matchingTerms[0]
-                self.predictionString = matchingTerms[0]
-                self.adjustAgeConstraint(moveDown: true)
-                self.predictionLabel.isHidden = false
-
-            } else {
-                self.predictionLabel.text = ""
-                self.predictionString = ""
-                self.adjustAgeConstraint(moveDown: false)
-                self.predictionLabel.isHidden = true
-
-            }
-            print(matchingTerms)
-        } else {
-            self.predictionLabel.text = ""
-            self.predictionString = ""
-            self.adjustAgeConstraint(moveDown: false)
-            self.predictionLabel.isHidden = true
-
-        }
-    }
-    
+    var isSelectedNameChosen : Bool = false
     
     @objc func handleDatePicker(sender: UIDatePicker) {
           
@@ -704,6 +677,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
             if safeBreed.count > 1 {
                 if safeBirthday.count > 1 {
                     if self.selectedImage != nil {
+                        if self.isSelectedNameChosen == true {
                     
                     //PROFILE BUILDER, NEEDS TO BE CALLED EVERYTIME A USER MOVES FORWARD
                     globalNewDogBuilder.dogBuilderName = safeName
@@ -717,6 +691,10 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
                     newDogTwo.modalPresentationStyle = .fullScreen
                     newDogTwo.navigationController?.navigationBar.isHidden = true
                     self.navigationController?.pushViewController(newDogTwo, animated: true)
+                            
+                        } else {
+                            self.presentAlertOnMainThread(title: "Breed", message: "Please select a pre-populated breed.", buttonTitle: "Ok")
+                      }
                         
                     } else {
                         self.presentAlertOnMainThread(title: "Profile photo", message: "Please add a photo of your pup.", buttonTitle: "Ok")

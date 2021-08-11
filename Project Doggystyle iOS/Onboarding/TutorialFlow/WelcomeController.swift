@@ -123,18 +123,18 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
         
         self.addViews()
         
-
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
+        
         navigationController?.navigationBar.barStyle = .black
         self.initializeGoogleAuthentication()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
         self.navigationController?.navigationBar.isHidden = true
         self.navigationController?.navigationBar.barStyle = .default
         self.navigationItem.setHidesBackButton(true, animated: false)
