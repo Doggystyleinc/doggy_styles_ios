@@ -57,21 +57,27 @@ class RegisteredPetCollection : UICollectionView, UICollectionViewDelegateFlowLa
         
         cell.registeredPetCollection = self
         
+        let lastIndex = self.doggyProfileDataSource.count - 1
+        
         switch indexPath.item {
         
-        case 0:
+        case lastIndex:
             
             let image = UIImage(named: "add_dog_logo_image")?.withRenderingMode(.alwaysOriginal)
             cell.addDogImage.image = image
-            cell.nameLabel.isHidden = false
-
+            cell.nameLabel.text = "Add"
+            cell.nameLabel.font = UIFont(name: dsHeaderFont, size: 16)
+            cell.nameLabel.textColor = coreOrangeColor
+            
         default:
             
-            let feeder = self.doggyProfileDataSource[indexPath.item]
+            let feeder = self.doggyProfileDataSource[indexPath.item + 1]
             let profileImage = feeder.dog_builder_profile_url ?? "nil"
-            
-            print(profileImage, " URL")
-            cell.nameLabel.isHidden = true
+            let dogsName = feeder.dog_builder_name ?? ""
+            cell.nameLabel.text = dogsName
+            cell.nameLabel.font = UIFont(name: dsHeaderFont, size: 16)
+            cell.nameLabel.textColor = coreBlackColor
+
             cell.addDogImage.loadImageGeneralUse(profileImage) { isComplete in
                 print("image loaded")
             }
@@ -84,21 +90,24 @@ class RegisteredPetCollection : UICollectionView, UICollectionViewDelegateFlowLa
         
         let selectedButtonCell = sender.superview as! UICollectionViewCell
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
-        
-        print(indexPath.item)
-        
-        let feeder = self.doggyProfileDataSource[indexPath.item]
-        guard let user_uid = Auth.auth().currentUser?.uid else {return}
-        let refKey = feeder.ref_key ?? "nil"
-        let parentKey = feeder.parent_key ?? "nil"
-        let dogName = feeder.dog_builder_name ?? "nil"
-        
+       
+        let lastIndex = self.doggyProfileDataSource.count - 1
+
         switch indexPath.item {
         
-        case 0 :
+        case lastIndex :
+            
             self.dashMainView?.dashboardController?.handleNewDogFlow()
+            
         default:
-            self.removeDoggyProfileAlert(passedDogName: dogName, refKey: refKey, parentKey: parentKey, userUID: user_uid)
+            
+            let feeder = self.doggyProfileDataSource[indexPath.item + 1]
+            guard let user_uid = Auth.auth().currentUser?.uid else {return}
+            let refKey = feeder.ref_key ?? "nil"
+            let parentKey = feeder.parent_key ?? "nil"
+            let dogName = feeder.dog_builder_name ?? "nil"
+            
+//            self.removeDoggyProfileAlert(passedDogName: dogName, refKey: refKey, parentKey: parentKey, userUID: user_uid)
         }
     }
     
@@ -124,12 +133,9 @@ class RegisteredPetCollection : UICollectionView, UICollectionViewDelegateFlowLa
     func removeDogProfile(passedDogName : String, refKey : String, parentKey : String, userUID : String) {
         
         let path = self.databaseRef.child("doggy_profile_builder").child(userUID).child(refKey)
-        
-        print("removing")
-        print("refKey: ", refKey)
-        print("userUID: ", userUID)
-        
+
         path.removeValue { error, ref in
+            
             if error != nil {
                 print("ERROR: ", error?.localizedDescription as Any)
                 return

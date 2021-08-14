@@ -99,6 +99,7 @@ class DogBreed : NSObject {
             "curly retriever",
             "flatcoated retriever",
             "golden retriever",
+            "golden doodle",
             "ridgeback",
             "rhodesian",
             "rottweiler",

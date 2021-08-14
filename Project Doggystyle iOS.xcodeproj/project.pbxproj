@@ -173,6 +173,12 @@
 		E38B7FDB26C457640013D72D /* invalidName@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E38B7FD826C457640013D72D /* invalidName@2x.png */; };
 		E38B7FDE26C45C6D0013D72D /* NewDogOnceCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FDD26C45C6D0013D72D /* NewDogOnceCollection.swift */; };
 		E38B7FE026C469600013D72D /* NewDogSearchSubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FDF26C469600013D72D /* NewDogSearchSubView.swift */; };
+		E38B7FE226C5A1F80013D72D /* DogTreatHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FE126C5A1F80013D72D /* DogTreatHelper.swift */; };
+		E38B7FE426C5A24A0013D72D /* DogFoodHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FE326C5A24A0013D72D /* DogFoodHelper.swift */; };
+		E38B7FE926C5A3DD0013D72D /* NewDogTreatSearchSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FE826C5A3DD0013D72D /* NewDogTreatSearchSubview.swift */; };
+		E38B7FEB26C5A4590013D72D /* NewDogTreatCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FEA26C5A4590013D72D /* NewDogTreatCollection.swift */; };
+		E38B7FED26C5AF4E0013D72D /* NewDogFoodSearchSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FEC26C5AF4E0013D72D /* NewDogFoodSearchSubview.swift */; };
+		E38B7FEF26C5AF5E0013D72D /* NewDogFoodCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FEE26C5AF5E0013D72D /* NewDogFoodCollection.swift */; };
 		E39C664F26A899F0004A0E93 /* Rubik-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E39C664826A89942004A0E93 /* Rubik-Black.ttf */; };
 		E39C665026A899F0004A0E93 /* Rubik-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E39C664126A89940004A0E93 /* Rubik-BlackItalic.ttf */; };
 		E39C665126A899F0004A0E93 /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E39C664726A89941004A0E93 /* Rubik-Bold.ttf */; };
@@ -363,6 +369,12 @@
 		E38B7FD826C457640013D72D /* invalidName@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invalidName@2x.png"; sourceTree = "<group>"; };
 		E38B7FDD26C45C6D0013D72D /* NewDogOnceCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogOnceCollection.swift; sourceTree = "<group>"; };
 		E38B7FDF26C469600013D72D /* NewDogSearchSubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogSearchSubView.swift; sourceTree = "<group>"; };
+		E38B7FE126C5A1F80013D72D /* DogTreatHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogTreatHelper.swift; sourceTree = "<group>"; };
+		E38B7FE326C5A24A0013D72D /* DogFoodHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogFoodHelper.swift; sourceTree = "<group>"; };
+		E38B7FE826C5A3DD0013D72D /* NewDogTreatSearchSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogTreatSearchSubview.swift; sourceTree = "<group>"; };
+		E38B7FEA26C5A4590013D72D /* NewDogTreatCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogTreatCollection.swift; sourceTree = "<group>"; };
+		E38B7FEC26C5AF4E0013D72D /* NewDogFoodSearchSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogFoodSearchSubview.swift; sourceTree = "<group>"; };
+		E38B7FEE26C5AF5E0013D72D /* NewDogFoodCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogFoodCollection.swift; sourceTree = "<group>"; };
 		E39C664126A89940004A0E93 /* Rubik-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-BlackItalic.ttf"; sourceTree = "<group>"; };
 		E39C664226A89940004A0E93 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Regular.ttf"; sourceTree = "<group>"; };
 		E39C664326A89940004A0E93 /* Rubik-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
@@ -682,6 +694,8 @@
 				E3B582112698ACE900EC469B /* Notes.swift */,
 				E3A0AD5A26C0446500E813D5 /* DogBreedHelper.swift */,
 				E38B7FD426C453130013D72D /* BorderSingleton.swift */,
+				E38B7FE126C5A1F80013D72D /* DogTreatHelper.swift */,
+				E38B7FE326C5A24A0013D72D /* DogFoodHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -789,7 +803,7 @@
 				E36EE54526B7036B0009A0EF /* NewDogEntry.swift */,
 				E38B7FDC26C45C530013D72D /* NewDogOneGroup */,
 				E326573726B21898004A15F6 /* NewDogTwo.swift */,
-				E326573926B218B0004A15F6 /* NewDogThree.swift */,
+				E38B7FE726C5A3C10013D72D /* NewDogThreeGroup */,
 				E3A0AD5326BDAA2000E813D5 /* NewDogFour.swift */,
 				E3A0AD5726BDD22200E813D5 /* NewDogFive */,
 				E326573B26B218CA004A15F6 /* NewDogSix.swift */,
@@ -865,6 +879,18 @@
 				E38B7FDD26C45C6D0013D72D /* NewDogOnceCollection.swift */,
 			);
 			path = NewDogOneGroup;
+			sourceTree = "<group>";
+		};
+		E38B7FE726C5A3C10013D72D /* NewDogThreeGroup */ = {
+			isa = PBXGroup;
+			children = (
+				E326573926B218B0004A15F6 /* NewDogThree.swift */,
+				E38B7FE826C5A3DD0013D72D /* NewDogTreatSearchSubview.swift */,
+				E38B7FEA26C5A4590013D72D /* NewDogTreatCollection.swift */,
+				E38B7FEC26C5AF4E0013D72D /* NewDogFoodSearchSubview.swift */,
+				E38B7FEE26C5AF5E0013D72D /* NewDogFoodCollection.swift */,
+			);
+			path = NewDogThreeGroup;
 			sourceTree = "<group>";
 		};
 		E39C662F26A88C37004A0E93 /* AppIcon */ = {
@@ -1308,6 +1334,8 @@
 				CD6DD01F26827EA500BC376B /* RegistrationController.swift in Sources */,
 				CDE8711E2652E3030082551B /* UIColor+Ext.swift in Sources */,
 				CDE871222652E3030082551B /* UIViewController+Ext.swift in Sources */,
+				E38B7FEB26C5A4590013D72D /* NewDogTreatCollection.swift in Sources */,
+				E38B7FE426C5A24A0013D72D /* DogFoodHelper.swift in Sources */,
 				E36EE55626B77F8F0009A0EF /* DashMainView.swift in Sources */,
 				CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */,
 				CDE8711F2652E3030082551B /* Firebase+Ext.swift in Sources */,
@@ -1334,13 +1362,16 @@
 				CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */,
 				E3107F8626961A6B00CDBB37 /* MainLoadingScreen.swift in Sources */,
 				E38B7FD526C453130013D72D /* BorderSingleton.swift in Sources */,
+				E38B7FE226C5A1F80013D72D /* DogTreatHelper.swift in Sources */,
 				E36EE56A26B872790009A0EF /* YourNotificationsController.swift in Sources */,
 				CD319F782679435900F48E3C /* DSNavButton.swift in Sources */,
 				E3D53F3B26AA21D0003B4317 /* LocationFinder.swift in Sources */,
 				E36EE56426B7907C0009A0EF /* SelectorSwitch.swift in Sources */,
+				E38B7FED26C5AF4E0013D72D /* NewDogFoodSearchSubview.swift in Sources */,
 				CDCCD0B5265EB5DF007ABECF /* CreateDoggyProfileViewController.swift in Sources */,
 				E3D53F3D26AA21EC003B4317 /* SearchLocationTableview.swift in Sources */,
 				CD6DCFF2267A62D300BC376B /* Package.swift in Sources */,
+				E38B7FEF26C5AF5E0013D72D /* NewDogFoodCollection.swift in Sources */,
 				E326573326B215DF004A15F6 /* EmptyStateOne.swift in Sources */,
 				CD6DD0162680DDC900BC376B /* SlideThree.swift in Sources */,
 				CD319F6B26790AD900F48E3C /* DeleteLaterViewController.swift in Sources */,
@@ -1360,6 +1391,7 @@
 				E3B11ABC268FCBC900B5B6F8 /* ProfileCollectionView.swift in Sources */,
 				CD6868902656EF920064ADFE /* LocationNotServicedViewController.swift in Sources */,
 				CD6DD00C267FC7DF00BC376B /* ContactUsController.swift in Sources */,
+				E38B7FE926C5A3DD0013D72D /* NewDogTreatSearchSubview.swift in Sources */,
 				CDE871632652E69B0082551B /* PasswordResetController.swift in Sources */,
 				E326573C26B218CA004A15F6 /* NewDogSix.swift in Sources */,
 				CD6868922656EFB20064ADFE /* RequestUserLocationViewController.swift in Sources */,
@@ -1548,7 +1580,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.4;
+				CURRENT_PROJECT_VERSION = 1.0.5;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1569,7 +1601,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.4;
+				CURRENT_PROJECT_VERSION = 1.0.5;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

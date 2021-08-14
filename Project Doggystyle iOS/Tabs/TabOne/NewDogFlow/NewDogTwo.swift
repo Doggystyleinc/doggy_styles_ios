@@ -154,7 +154,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.setTitle("Small\n<15kg", for: UIControl.State.normal)
+        cbf.setTitle("Small\n<15 lbs", for: UIControl.State.normal)
         cbf.titleLabel?.font = UIFont.init(name: dsSubHeaderFont, size: 18)
         cbf.titleLabel?.adjustsFontSizeToFitWidth = true
         cbf.titleLabel?.numberOfLines = 2
@@ -176,7 +176,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.setTitle("Medium\n15 - 25 kg", for: UIControl.State.normal)
+        cbf.setTitle("Medium\n15 - 25 lbs", for: UIControl.State.normal)
         cbf.titleLabel?.font = UIFont.init(name: dsSubHeaderFont, size: 18)
         cbf.titleLabel?.adjustsFontSizeToFitWidth = true
         cbf.titleLabel?.numberOfLines = 2
@@ -199,7 +199,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.setTitle("Large\n26 - 35 kg", for: UIControl.State.normal)
+        cbf.setTitle("Large\n26 - 35 lbs", for: UIControl.State.normal)
         cbf.titleLabel?.font = UIFont.init(name: dsSubHeaderFont, size: 18)
         cbf.titleLabel?.adjustsFontSizeToFitWidth = true
         cbf.titleLabel?.numberOfLines = 2
@@ -222,7 +222,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.setTitle("X-Large\n> 35kg", for: UIControl.State.normal)
+        cbf.setTitle("X-Large\n> 35 lbs", for: UIControl.State.normal)
         cbf.titleLabel?.font = UIFont.init(name: dsSubHeaderFont, size: 18)
         cbf.titleLabel?.adjustsFontSizeToFitWidth = true
         cbf.titleLabel?.numberOfLines = 2

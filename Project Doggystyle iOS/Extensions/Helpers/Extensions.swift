@@ -90,6 +90,84 @@ var friends_array_phone_number = [String](),
     onboardingPath = OnboardingPath.fromLogin,
     chatEntryPath = ChatEntryPath.fromMessagesController
 
+class fileUPloader : NSObject {
+    
+   static func upload(localFilePath : URL, completion : @escaping (_ isComplete : Bool, _ urlToStoreInDatabase : String)->()) {
+        
+            let storageRef = Storage.storage().reference()
+            
+            guard let user_uid = Auth.auth().currentUser?.uid else {return}
+            
+            let randomUUID = NSUUID().uuidString
+            
+            let storageReference = storageRef.child("vaccine_files").child(user_uid).child(randomUUID)
+            
+//            let metadata  = StorageMetadata()
+//
+//            metadata.contentType = "text/plain"
+            
+            let uploadTask = storageReference.putFile(from: localFilePath, metadata: nil)
+
+            uploadTask.observe(.failure) { snapshot in
+                print("FAILED HERE ONE")
+                completion(false, "nil")
+                return
+            }
+                
+            uploadTask.observe(.progress) { snapshot in
+                let percentComplete = Double(snapshot.progress!.completedUnitCount)
+                    / Double(snapshot.progress!.totalUnitCount)
+                print("PROGRESS: ", CGFloat(percentComplete))
+            }
+            
+            uploadTask.observe(.success) { snapshot in
+
+                storageReference.downloadURL { (url, error) in
+                    
+                    if error != nil {
+                        print(error?.localizedDescription as Any, "Error 1")
+                        print("ERROR RAN")
+                        completion(false, "nil")
+                        return
+                    }
+                    
+                    guard let safeUrl = url else {return}
+                    print("Uploaded audio clip successfully to Firebase Storage")
+                    completion(true, "\(safeUrl)")
+                    
+                }
+            }
+        }
+    }
+
+
+enum TextFieldImageSide {
+    case left
+    case right
+}
+
+extension UITextField {
+    func setUpImage(imageName: String, on side: TextFieldImageSide) {
+        let imageView = UIImageView(frame: CGRect(x: 20, y: 10, width: 20, height: 20))
+        if let imageWithSystemName = UIImage(systemName: imageName) {
+            imageView.image = imageWithSystemName.withRenderingMode(.alwaysOriginal).withTintColor(dividerGrey)
+        } else {
+            imageView.image = UIImage(named: imageName)?.withRenderingMode(.alwaysOriginal).withTintColor(dividerGrey)
+        }
+        
+        let imageContainerView = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 40))
+        imageContainerView.addSubview(imageView)
+        
+        switch side {
+        case .left:
+            leftView = imageContainerView
+            leftViewMode = .always
+        case .right:
+            rightView = imageContainerView
+            rightViewMode = .always
+        }
+    }
+}
 
 class CustomTextField: UITextField {
 

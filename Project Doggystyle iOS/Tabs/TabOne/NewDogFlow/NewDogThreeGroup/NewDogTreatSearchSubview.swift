@@ -1,29 +1,29 @@
 //
-//  NewDogSearchSubView.swift
+//  NewDogThreeSearchSubview.swift
 //  Project Doggystyle iOS
 //
-//  Created by Charlie Arcodia on 8/11/21.
+//  Created by Charlie Arcodia on 8/12/21.
 //
+
 
 import Foundation
 import UIKit
 
-
-class NewDogSearchBreedSubview : UIView, UITextFieldDelegate {
+class NewDogTreatSubview : UIView, UITextFieldDelegate {
     
-    var newDogOne : NewDogOne?,
-        breedHeightAnchor : NSLayoutConstraint?,
-        dogBreedJsonGrabber = DogBreed(),
-        dogBreedJson : [String] = [],
+    var newDogThree : NewDogThree?,
+        treatHeightAnchor : NSLayoutConstraint?,
+        dogTreatJsonGrabber = DogTreatHelper(),
+        dogTreatJson : [String] = [],
         predictionString : String = "",
-        currentBreedArray : [String] = [String](),
+        currentTreatArray : [String] = [String](),
         centerConstraint : NSLayoutConstraint?,
         topConstraint : NSLayoutConstraint?
     
-    lazy var breedTableView : NewDogTableView = {
+    lazy var treatTableView : NewDogTreatTableView = {
         
-        let mc = NewDogTableView(frame: .zero, style: .plain)
-        mc.newDogSearchBreedSubview = self
+        let mc = NewDogTreatTableView(frame: .zero, style: .plain)
+        mc.newDogTreatSubview = self
         return mc
         
     }()
@@ -32,7 +32,7 @@ class NewDogSearchBreedSubview : UIView, UITextFieldDelegate {
         
         let etfc = UITextField()
         etfc.translatesAutoresizingMaskIntoConstraints = false
-        etfc.placeholder = "Breed"
+        etfc.placeholder = "Treat"
         etfc.textAlignment = .left
         etfc.backgroundColor = coreWhiteColor
         etfc.textColor = UIColor .darkGray.withAlphaComponent(1.0)
@@ -78,7 +78,9 @@ class NewDogSearchBreedSubview : UIView, UITextFieldDelegate {
         
         self.breedTextField.setUpImage(imageName: "magnifyingGlass", on: .left)
         self.breedTextField.textContentType = UITextContentType(rawValue: "")
-        self.dogBreedJson = self.dogBreedJsonGrabber.dogBreedJSON
+        
+        self.dogTreatJson = self.dogTreatJsonGrabber.dogTreatJSON
+        
         self.addViews()
         
     }
@@ -86,7 +88,7 @@ class NewDogSearchBreedSubview : UIView, UITextFieldDelegate {
     func addViews() {
         
         self.addSubview(self.breedTextField)
-        self.addSubview(self.breedTableView)
+        self.addSubview(self.treatTableView)
         
         self.centerConstraint = self.breedTextField.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0)
         self.centerConstraint?.isActive = true
@@ -95,11 +97,11 @@ class NewDogSearchBreedSubview : UIView, UITextFieldDelegate {
         self.breedTextField.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
         self.breedTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
-        self.breedTableView.topAnchor.constraint(equalTo: self.breedTextField.bottomAnchor, constant: 10).isActive = true
-        self.breedTableView.leftAnchor.constraint(equalTo: self.breedTextField.leftAnchor, constant: 0).isActive = true
-        self.breedTableView.rightAnchor.constraint(equalTo: self.breedTextField.rightAnchor, constant: 0).isActive = true
-        self.breedHeightAnchor = self.breedTableView.heightAnchor.constraint(equalToConstant: 48.0)
-        self.breedHeightAnchor?.isActive = true
+        self.treatTableView.topAnchor.constraint(equalTo: self.breedTextField.bottomAnchor, constant: 10).isActive = true
+        self.treatTableView.leftAnchor.constraint(equalTo: self.breedTextField.leftAnchor, constant: 0).isActive = true
+        self.treatTableView.rightAnchor.constraint(equalTo: self.breedTextField.rightAnchor, constant: 0).isActive = true
+        self.treatHeightAnchor = self.treatTableView.heightAnchor.constraint(equalToConstant: 48.0)
+        self.treatHeightAnchor?.isActive = true
     }
     
     func moveConstraints() {
@@ -120,21 +122,23 @@ class NewDogSearchBreedSubview : UIView, UITextFieldDelegate {
         
         guard let breedSafeText = self.breedTextField.text else {return}
         
+        self.breedTextField.layer.borderColor = dividerGrey.withAlphaComponent(0.2).cgColor
+        
         let safeText = breedSafeText.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if safeText.count == 0 {
             
             UIView.animate(withDuration: 0.45) {
                 
-                self.breedTableView.newDogArray.removeAll()
-                self.currentBreedArray.removeAll()
-                self.breedHeightAnchor?.constant = 0.0
-                self.breedTableView.superview?.layoutIfNeeded()
+                self.treatTableView.newDogTreatArray.removeAll()
+                self.currentTreatArray.removeAll()
+                self.treatHeightAnchor?.constant = 48.0
+                self.treatTableView.superview?.layoutIfNeeded()
                 
             }
             
             DispatchQueue.main.async {
-                self.breedTableView.reloadData()
+                self.treatTableView.reloadData()
             }
             
         } else {
@@ -148,7 +152,7 @@ class NewDogSearchBreedSubview : UIView, UITextFieldDelegate {
     
     func listBreeds(passedText : String) {
         
-        let matchingTerms = self.dogBreedJson.filter({
+        let matchingTerms = self.dogTreatJson.filter({
             $0.range(of: passedText, options: .caseInsensitive) != nil
         })
         
@@ -156,48 +160,48 @@ class NewDogSearchBreedSubview : UIView, UITextFieldDelegate {
             
             self.predictionString = matchingTerms[0]
             
-            if self.currentBreedArray.count > 4 && !self.currentBreedArray.contains(self.predictionString) {
+            if self.currentTreatArray.count > 4 && !self.currentTreatArray.contains(self.predictionString) {
                 
-                self.currentBreedArray.insert(self.predictionString, at: 0)
-                self.currentBreedArray.removeLast()
+                self.currentTreatArray.insert(self.predictionString, at: 0)
+                self.currentTreatArray.removeLast()
                 
-                self.breedTableView.newDogArray.insert(self.predictionString, at: 0)
-                self.breedTableView.newDogArray.removeLast()
+                self.treatTableView.newDogTreatArray.insert(self.predictionString, at: 0)
+                self.treatTableView.newDogTreatArray.removeLast()
                 
                 DispatchQueue.main.async {
-                    self.breedTableView.reloadData()
+                    self.treatTableView.reloadData()
                 }
                 
                 UIView.animate(withDuration: 0.15) {
-                    self.breedHeightAnchor?.constant = (CGFloat(self.currentBreedArray.count) * 48.0)
+                    self.treatHeightAnchor?.constant = (CGFloat(self.currentTreatArray.count) * 48.0) + 48.0
                 }
                 
-            } else if !self.currentBreedArray.contains(self.predictionString) {
+            } else if !self.currentTreatArray.contains(self.predictionString) {
                 
-                self.currentBreedArray.append(self.predictionString)
-                self.breedTableView.newDogArray.append(self.predictionString)
+                self.currentTreatArray.append(self.predictionString)
+                self.treatTableView.newDogTreatArray.append(self.predictionString)
                 
                 DispatchQueue.main.async {
-                    self.breedTableView.reloadData()
+                    self.treatTableView.reloadData()
                 }
                 
                 UIView.animate(withDuration: 0.15) {
-                    self.breedHeightAnchor?.constant = (CGFloat(self.currentBreedArray.count) * 48.0)
+                    self.treatHeightAnchor?.constant = (CGFloat(self.currentTreatArray.count) * 48.0) + 48.0
                 }
             }
             
         } else {
             
             self.predictionString = ""
-            self.currentBreedArray.removeAll()
-            self.breedTableView.newDogArray.removeAll()
-            self.breedHeightAnchor?.constant = 0.0
+            self.currentTreatArray.removeAll()
+            self.treatTableView.newDogTreatArray.removeAll()
+            self.treatHeightAnchor?.constant = 48.0
             
             DispatchQueue.main.async {
-                self.breedTableView.reloadData()
+                self.treatTableView.reloadData()
             }
             UIView.animate(withDuration: 0.25) {
-                self.breedHeightAnchor?.constant = 0.0
+                self.treatHeightAnchor?.constant = 48.0
             }
         }
     }

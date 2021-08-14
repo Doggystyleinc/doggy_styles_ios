@@ -9,40 +9,56 @@
 import Foundation
 import UIKit
 
+import Foundation
+import UIKit
+
 class NotificationsSelector : UIView {
     
     var yourNotificationController : YourNotificationController?
     
-    let upcomingLabel : UILabel = {
+    lazy var upcomingLabel : UIButton = {
         
-        let ul = UILabel()
+        let ul = UIButton(type : .system)
         ul.translatesAutoresizingMaskIntoConstraints = false
-        ul.text = "New"
-        ul.textColor = coreOrangeColor
-        ul.font = UIFont(name: rubikBold, size: 13)
-        ul.backgroundColor = coreOrangeColor.withAlphaComponent(0.1)
-        ul.textAlignment = .center
+        ul.setTitle("New", for: .normal)
+        ul.tintColor = coreOrangeColor
+        ul.titleLabel?.font = UIFont(name: rubikBold, size: 13)
+        ul.backgroundColor = .clear
         ul.layer.masksToBounds = true
         ul.layer.cornerRadius = 26 / 2
+        ul.tag = 1
+        ul.addTarget(self, action: #selector(self.selectorChange(sender:)), for: .touchUpInside)
         
        return ul
         
     }()
     
-    let previousLabel : UILabel = {
+    lazy var previousLabel : UIButton = {
         
-        let ul = UILabel()
+        let ul = UIButton(type : .system)
         ul.translatesAutoresizingMaskIntoConstraints = false
-        ul.text = "Read"
-        ul.textColor = coreBlackColor
-        ul.font = UIFont(name: rubikBold, size: 13)
+        ul.setTitle("Read", for: .normal)
+        ul.tintColor = coreBlackColor
+        ul.titleLabel?.font = UIFont(name: rubikBold, size: 13)
         ul.backgroundColor = .clear
-        ul.textAlignment = .center
         ul.layer.masksToBounds = true
         ul.layer.cornerRadius = 26 / 2
-        
+        ul.tag = 2
+        ul.addTarget(self, action: #selector(self.selectorChange(sender:)), for: .touchUpInside)
+
        return ul
         
+    }()
+    
+    let orangeView : UIView = {
+        
+        let ov = UIView()
+        ov.translatesAutoresizingMaskIntoConstraints = false
+        ov.backgroundColor = coreOrangeColor.withAlphaComponent(0.1)
+        ov.layer.masksToBounds = true
+        ov.layer.cornerRadius = 26 / 2
+
+       return ov
     }()
   
     override init(frame: CGRect) {
@@ -57,10 +73,13 @@ class NotificationsSelector : UIView {
         self.addViews()
     }
     
+    var leftConstraint : NSLayoutConstraint?
+    
     func addViews() {
         
         self.addSubview(self.upcomingLabel)
         self.addSubview(self.previousLabel)
+        self.addSubview(self.orangeView)
 
         let width = UIScreen.main.bounds.width - 60
         
@@ -73,6 +92,46 @@ class NotificationsSelector : UIView {
         self.previousLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 3).isActive = true
         self.previousLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -3).isActive = true
         self.previousLabel.widthAnchor.constraint(equalToConstant: width / 2).isActive = true
+        
+        leftConstraint = self.orangeView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 3)
+        self.leftConstraint?.isActive = true
+        self.orangeView.topAnchor.constraint(equalTo: self.topAnchor, constant: 3).isActive = true
+        self.orangeView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -3).isActive = true
+        self.orangeView.widthAnchor.constraint(equalToConstant: width / 2).isActive = true
+        
+    }
+    
+    @objc func selectorChange(sender : UIButton) {
+        
+        UIDevice.vibrateLight()
+        
+        let width = UIScreen.main.bounds.width - 60
+        
+        switch sender.tag {
+        
+        case 1:
+            
+            UIView.animate(withDuration: 0.2) {
+                self.leftConstraint?.constant = 3
+                self.layoutIfNeeded()
+            }
+
+            self.upcomingLabel.tintColor = coreOrangeColor
+            self.previousLabel.tintColor = coreBlackColor
+            
+        case 2:
+            
+            UIView.animate(withDuration: 0.2) {
+                self.leftConstraint?.constant = (width / 2) - 3
+                self.layoutIfNeeded()
+            }
+
+            self.upcomingLabel.tintColor = coreBlackColor
+            self.previousLabel.tintColor = coreOrangeColor
+            
+        default: print("Never called")
+        
+        }
         
     }
     

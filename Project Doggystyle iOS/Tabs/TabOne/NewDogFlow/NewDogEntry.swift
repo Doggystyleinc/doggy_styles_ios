@@ -5,7 +5,6 @@
 //  Created by Charlie Arcodia on 8/1/21.
 //
 
-
 struct NewDogBuilder {
     
     //NEWDOGONE
@@ -15,18 +14,18 @@ struct NewDogBuilder {
     var dogBuilderProfileImage : UIImage?
     
     //NEWDOGTWO
-    enum dogSize {
-        case small
-        case medium
-        case large
-        case xlarge
+    enum dogSize : String {
+        case small = "Small"
+        case medium = "Medium"
+        case large = "Large"
+        case xlarge = "X-Large"
     }
     
     var dogBuilderSize = dogSize.small
     
-    enum groomingFrequency {
-        case fourWeeks
-        case eightWeeks
+    enum groomingFrequency : String {
+        case fourWeeks = "4 weeks"
+        case eightWeeks = "8 weeks"
     }
     
     var dogBuilderGroomingFrequency = groomingFrequency.fourWeeks
@@ -40,7 +39,10 @@ struct NewDogBuilder {
     var dogBuilderHasBehaviouralConditions : Bool?
     var dogBuilderHasUploadedVaccineCard : Bool? = false
     var dogBuilderHasUploadedVaccineImage: UIImage?
-    
+    var dogBuilderHasUploadedVaccineFilePath: String?
+    var medicalConditionDescription : String?
+    var behavioralConditionDescription : String?
+
 }
 
 var globalNewDogBuilder = NewDogBuilder()
@@ -148,10 +150,10 @@ class NewDogEntry : UIViewController {
         self.confirmButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.confirmButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        self.dogImage.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 20).isActive = true
+        self.dogImage.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 2.2).isActive = true
         self.dogImage.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.dogImage.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.dogImage.bottomAnchor.constraint(equalTo: self.confirmButton.topAnchor, constant: 90).isActive = true
+        self.dogImage.bottomAnchor.constraint(equalTo: self.confirmButton.bottomAnchor, constant: 0).isActive = true
         
     }
     

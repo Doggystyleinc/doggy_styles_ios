@@ -10,15 +10,13 @@ import UIKit
 
 class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
     
-    var selectedDate : String = ""
-    var dogBreedJsonGrabber = DogBreed()
-    var dogBreedJson : [String] = []
-    var predictionString : String = ""
-    var selectedImage : UIImage?
-    var breedHeightAnchor : NSLayoutConstraint?
+    var selectedDate : String = "",
+        dogBreedJsonGrabber = DogBreed(),
+        dogBreedJson : [String] = [],
+        predictionString : String = "",
+        selectedImage : UIImage?,
+        isSelectedNameChosen : Bool = false
     
-    var ageTopConstraint : NSLayoutConstraint?
-
     lazy var newDogSearchBreedSubview : NewDogSearchBreedSubview = {
         
         let ndsb = NewDogSearchBreedSubview(frame: .zero)
@@ -143,7 +141,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         pv.layer.masksToBounds = true
         pv.clipsToBounds = true
         pv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.checkForGalleryAuth)))
-
+        
         return pv
     }()
     
@@ -168,6 +166,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         etfc.layer.cornerRadius = 10
         etfc.leftViewMode = .always
         etfc.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
+        
         etfc.clipsToBounds = false
         etfc.layer.masksToBounds = false
         etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
@@ -175,10 +174,9 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
         etfc.layer.shadowRadius = 9
         etfc.layer.shouldRasterize = false
-        etfc.layer.borderColor = dividerGrey.cgColor
-        etfc.layer.borderWidth = 0.5
-        etfc.isUserInteractionEnabled = true
-        etfc.addTarget(self, action: #selector(self.handleManualScrolling), for: .touchDown)
+        etfc.layer.borderColor = dividerGrey.withAlphaComponent(0.2).cgColor
+        etfc.layer.borderWidth = 1.0
+        etfc.layer.cornerRadius = 10
         
         return etfc
         
@@ -188,7 +186,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let etfc = UITextField()
         etfc.translatesAutoresizingMaskIntoConstraints = false
-        etfc.placeholder = "Search for Breed"
+        etfc.placeholder = "Breed"
         etfc.textAlignment = .left
         etfc.backgroundColor = coreWhiteColor
         etfc.textColor = UIColor .darkGray.withAlphaComponent(1.0)
@@ -199,16 +197,10 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         etfc.layer.masksToBounds = true
         etfc.keyboardAppearance = UIKeyboardAppearance.light
         etfc.returnKeyType = UIReturnKeyType.done
+        
         etfc.leftViewMode = .always
-        
-        let image = UIImage(named: "magnifyingGlass")?.withRenderingMode(.alwaysOriginal)
-        let imageView = UIImageView()
-        imageView.frame = CGRect(x: 200, y: 200, width: 100, height: 100)
-        imageView.contentMode = .center
-        etfc.contentMode = .center
-        imageView.image = image
-        etfc.leftView = imageView
-        
+        etfc.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
+
         etfc.clipsToBounds = false
         etfc.layer.masksToBounds = false
         etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
@@ -216,12 +208,11 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
         etfc.layer.shadowRadius = 9
         etfc.layer.shouldRasterize = false
-        etfc.layer.borderColor = dividerGrey.cgColor
-        etfc.layer.borderWidth = 0.5
+        etfc.layer.borderColor = dividerGrey.withAlphaComponent(0.2).cgColor
+        etfc.layer.borderWidth = 1.0
         etfc.layer.cornerRadius = 10
         
         etfc.addTarget(self, action: #selector(self.handleBreedTap), for: .touchDown)
-//        etfc.addTarget(self, action: #selector(handleSearchTextFieldChange(textField:)), for: .editingChanged)
         
         return etfc
         
@@ -232,7 +223,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let etfc = UITextField()
         etfc.translatesAutoresizingMaskIntoConstraints = false
-        let placeholder = NSAttributedString(string: "Birthday", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
+        let placeholder = NSAttributedString(string: "Birthday (or guesstimate)", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
         etfc.attributedPlaceholder = placeholder
         etfc.textAlignment = .left
         etfc.textColor = coreBlackColor
@@ -248,6 +239,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         etfc.layer.cornerRadius = 10
         etfc.leftViewMode = .always
         etfc.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
+       
         etfc.clipsToBounds = false
         etfc.layer.masksToBounds = false
         etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
@@ -255,11 +247,11 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
         etfc.layer.shadowRadius = 9
         etfc.layer.shouldRasterize = false
-        etfc.layer.borderColor = dividerGrey.cgColor
-        etfc.layer.borderWidth = 0.5
+        etfc.layer.borderColor = dividerGrey.withAlphaComponent(0.2).cgColor
+        etfc.layer.borderWidth = 1.0
+        etfc.layer.cornerRadius = 10
         etfc.isUserInteractionEnabled = false
-        etfc.addTarget(self, action: #selector(self.handleManualScrolling), for: .touchDown)
-
+        
         return etfc
         
     }()
@@ -333,7 +325,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let upImage = UIImage(named : "toolbarUpArrow")?.withRenderingMode(.alwaysOriginal)
         let downImage = UIImage(named : "toolBarDownArrow")?.withRenderingMode(.alwaysOriginal)
-        let next = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(self.handleNextArrowButton))
+        let next = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(self.handleNextArrowButton))
         let flexButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
         bar.items = [flexButton,next]
@@ -381,34 +373,29 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.scrollView.keyboardDismissMode = .interactive
         
         self.dogBreedJson = self.dogBreedJsonGrabber.dogBreedJSON
-        self.breedTextField.setUpImage(imageName: "magnifyingGlass", on: .left)
+        
+//        self.breedTextField.setUpImage(imageName: "magnifyingGlass", on: .left)
         
         self.breedTextField.inputView = UIView()
-
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
-            
         self.breedTextField.endEditing(true)
-
+        self.ageTextField.endEditing(true)
     }
     
     @objc func handleBreedTap() {
         
+        self.resignation()
         self.newDogSearchBreedSubview.isHidden = false
-        
         self.newDogSearchBreedSubview.moveConstraints()
-
-        UIView.animate(withDuration: 0.25) {
+        
+        UIView.animate(withDuration: 0.2) {
             self.newDogSearchBreedSubview.alpha = 1
-        } completion: { complete in
-            
         }
     }
-    
-    
-    var breedTopConstraint : NSLayoutConstraint?
     
     func addViews() {
         
@@ -427,11 +414,11 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.scrollView.addSubview(self.profileImageView)
         self.scrollView.addSubview(self.pencilIconButton)
         self.scrollView.addSubview(self.datePicker)
-
+        
         self.scrollView.addSubview(self.nameTextField)
         self.scrollView.addSubview(self.breedTextField)
         self.scrollView.addSubview(self.ageTextField)
-
+        
         self.scrollView.addSubview(self.nextButton)
         
         self.view.addSubview(timeCover)
@@ -520,14 +507,12 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.nameTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.nameTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
-        self.breedTopConstraint = self.breedTextField.topAnchor.constraint(equalTo: self.nameTextField.bottomAnchor, constant: 20)
-        self.breedTopConstraint?.isActive = true
+        self.breedTextField.topAnchor.constraint(equalTo: self.nameTextField.bottomAnchor, constant: 20).isActive = true
         self.breedTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.breedTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.breedTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
-        self.ageTopConstraint = self.ageTextField.topAnchor.constraint(equalTo: self.breedTextField.bottomAnchor, constant: 20)
-        self.ageTopConstraint?.isActive = true
+        self.ageTextField.topAnchor.constraint(equalTo: self.breedTextField.bottomAnchor, constant: 20).isActive = true
         self.ageTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.ageTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.ageTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -551,9 +536,9 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.newDogSearchBreedSubview.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.newDogSearchBreedSubview.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.newDogSearchBreedSubview.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
-
+        
     }
-   
+    
     func resignation() {
         
         self.nameTextField.resignFirstResponder()
@@ -570,10 +555,9 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         }
     }
     
-    var isSelectedNameChosen : Bool = false
     
     @objc func handleDatePicker(sender: UIDatePicker) {
-          
+        
         let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: sender.date)
         let month = dateComponents.month ?? 0
         let day = dateComponents.day ?? 0
@@ -581,7 +565,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         var dayFixed : String = "\(day)"
         var monthFixed : String = "\(month)"
-
+        
         if day < 10 {
             dayFixed = "0\(day)"
         }
@@ -591,28 +575,8 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         }
         
         self.selectedDate = "\(year)-\(monthFixed)-\(dayFixed)"
-        print("Selected date: ", selectedDate)
         self.ageTextField.text = self.selectedDate
-          
-      }
-    
-    @objc func handleManualScrolling(sender : UITextField) {
         
-        if sender == self.nameTextField {
-            
-            self.scrollView.scrollToTop()
-            
-        } else if sender == self.breedTextField {
-            
-            let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
-            self.scrollView.setContentOffset(bottomOffset, animated: true)
-            
-        } else if sender == self.ageTextField {
-            
-            let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
-            self.scrollView.setContentOffset(bottomOffset, animated: true)
-            
-        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -625,49 +589,31 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
     
     @objc func handleNextArrowButton() {
         
-        if self.nameTextField.isFirstResponder {
-            
-            self.nameTextField.resignFirstResponder()
-            self.breedTextField.becomeFirstResponder()
-            let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
-            self.scrollView.setContentOffset(bottomOffset, animated: true)
-            
-        } else if breedTextField.isFirstResponder {
-            
-            self.breedTextField.resignFirstResponder()
-            self.ageTextField.becomeFirstResponder()
-            let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
-            self.scrollView.setContentOffset(bottomOffset, animated: true)
-            
-        } else if ageTextField.isFirstResponder {
-            
-            self.ageTextField.resignFirstResponder()
-            self.nameTextField.becomeFirstResponder()
-            self.scrollView.scrollToTop()
-            
+        self.resignation()
+        self.scrollView.scrollToTop()
+        
+    }
+    
+    @objc func fillBreed(breedType : String) {
+        
+        self.breedTextField.text = breedType
+        self.isSelectedNameChosen = true
+        self.newDogSearchBreedSubview.breedTextField.resignFirstResponder()
+        
+        UIView.animate(withDuration: 0.025) {
+            self.newDogSearchBreedSubview.alpha = 0
         }
     }
     
     @objc func handleBackButton() {
-        
-        self.navigationController?.dismiss(animated: true, completion: nil)
+            self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     @objc func handleNextButton() {
         
-        guard let dogName = self.nameTextField.text else {
-            print("Guarded empty dog")
-            return
-        }
-        guard let dogBreed = self.breedTextField.text else {
-            print("Guarded breed")
-            return
-            
-        }
-        guard let dogBirthday = self.ageTextField.text else {
-            print("Guarded birthday")
-            return
-        }
+        guard let dogName = self.nameTextField.text else {return}
+        guard let dogBreed = self.breedTextField.text else {return}
+        guard let dogBirthday = self.ageTextField.text else {return}
         
         let safeName = dogName.trimmingCharacters(in: .whitespacesAndNewlines)
         let safeBreed = dogBreed.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -678,23 +624,23 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
                 if safeBirthday.count > 1 {
                     if self.selectedImage != nil {
                         if self.isSelectedNameChosen == true {
-                    
-                    //PROFILE BUILDER, NEEDS TO BE CALLED EVERYTIME A USER MOVES FORWARD
-                    globalNewDogBuilder.dogBuilderName = safeName
-                    globalNewDogBuilder.dogBuilderBreed = safeBreed
-                    globalNewDogBuilder.dogBuilderBirthday = safeBirthday
-                    globalNewDogBuilder.dogBuilderProfileImage = self.selectedImage
-                    
-                    UIDevice.vibrateLight()
-
-                    let newDogTwo = NewDogTwo()
-                    newDogTwo.modalPresentationStyle = .fullScreen
-                    newDogTwo.navigationController?.navigationBar.isHidden = true
-                    self.navigationController?.pushViewController(newDogTwo, animated: true)
+                            
+                            //PROFILE BUILDER, NEEDS TO BE CALLED EVERYTIME A USER MOVES FORWARD
+                            globalNewDogBuilder.dogBuilderName = safeName
+                            globalNewDogBuilder.dogBuilderBreed = safeBreed
+                            globalNewDogBuilder.dogBuilderBirthday = safeBirthday
+                            globalNewDogBuilder.dogBuilderProfileImage = self.selectedImage
+                            
+                            UIDevice.vibrateLight()
+                            
+                            let newDogTwo = NewDogTwo()
+                            newDogTwo.modalPresentationStyle = .fullScreen
+                            newDogTwo.navigationController?.navigationBar.isHidden = true
+                            self.navigationController?.pushViewController(newDogTwo, animated: true)
                             
                         } else {
                             self.presentAlertOnMainThread(title: "Breed", message: "Please select a pre-populated breed.", buttonTitle: "Ok")
-                      }
+                        }
                         
                     } else {
                         self.presentAlertOnMainThread(title: "Profile photo", message: "Please add a photo of your pup.", buttonTitle: "Ok")
@@ -716,12 +662,12 @@ import AVFoundation
 import MobileCoreServices
 import Photos
 
-
 extension NewDogOne : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @objc func checkForGalleryAuth() {
         
         UIDevice.vibrateLight()
+        self.resignation()
         
         let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
         switch photoAuthorizationStatus {
@@ -811,12 +757,12 @@ extension NewDogOne : UIImagePickerControllerDelegate, UINavigationControllerDel
                     
                     
                 } else if let originalImage = info[.originalImage] as? UIImage  {
-                   
+                    
                     self.profileImageView.image = originalImage
                     self.selectedImage = originalImage
                     
                     UIDevice.vibrateLight()
-
+                    
                     
                 } else {
                     print("Failed grabbing the photo")

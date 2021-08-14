@@ -19,8 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: sceneWindow)
         window.makeKeyAndVisible()
         
-        let decisionController = NewDogOne()
-//        let decisionController = DecisionController()
+//        let decisionController = NewDogFive()
+        let decisionController = DecisionController()
         
         let navigationController = UINavigationController(rootViewController: decisionController)
         

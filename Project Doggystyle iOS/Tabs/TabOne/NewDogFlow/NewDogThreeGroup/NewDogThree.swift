@@ -10,6 +10,33 @@ import UIKit
 
 class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
     
+    var dogTreatJsonGrabber = DogTreatHelper(),
+        dogTreatJson : [String] = [],
+        predictionStringTreat : String = "",
+        
+        dogFoodJsonGrabber = DogFoodHelper(),
+        dogFoodJson : [String] = [],
+        predictionStringFood : String = ""
+    
+    lazy var newDogTreatSubview : NewDogTreatSubview = {
+        
+        let ndsb = NewDogTreatSubview(frame: .zero)
+        ndsb.newDogThree = self
+        ndsb.isHidden = true
+        return ndsb
+        
+    }()
+    
+    lazy var newDogFoodSubview : NewDogFoodSubview = {
+        
+        let ndsb = NewDogFoodSubview(frame: .zero)
+        ndsb.newDogThree = self
+        ndsb.isHidden = true
+        return ndsb
+        
+    }()
+    
+    
     lazy var scrollView : UIScrollView = {
         
         let sv = UIScrollView()
@@ -78,23 +105,31 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
        return nl
     }()
     
-    lazy var favoriteTreatTextField : CustomTextFieldMaps = {
+    lazy var favoriteTreatTextField : UITextField = {
         
-        let etfc = CustomTextFieldMaps()
+        let etfc = UITextField()
         etfc.translatesAutoresizingMaskIntoConstraints = false
-        let placeholder = NSAttributedString(string: "Search by keyword or name", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
-        etfc.attributedPlaceholder = placeholder
+        etfc.placeholder = "Search by keyword or name"
         etfc.textAlignment = .left
-        etfc.backgroundColor = UIColor .white
-        etfc.textColor = coreBlackColor
+        etfc.backgroundColor = coreWhiteColor
+        etfc.textColor = UIColor .darkGray.withAlphaComponent(1.0)
         etfc.font = UIFont(name: rubikRegular, size: 18)
         etfc.allowsEditingTextAttributes = false
         etfc.autocorrectionType = .no
         etfc.delegate = self
-        etfc.layer.cornerRadius = 10
-        etfc.layer.masksToBounds = false
+        etfc.layer.masksToBounds = true
         etfc.keyboardAppearance = UIKeyboardAppearance.light
         etfc.returnKeyType = UIReturnKeyType.done
+        etfc.leftViewMode = .always
+        
+        let image = UIImage(named: "magnifyingGlass")?.withRenderingMode(.alwaysOriginal)
+        let imageView = UIImageView()
+        imageView.frame = CGRect(x: 200, y: 200, width: 100, height: 100)
+        imageView.contentMode = .center
+        etfc.contentMode = .center
+        imageView.image = image
+        etfc.leftView = imageView
+        
         etfc.clipsToBounds = false
         etfc.layer.masksToBounds = false
         etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
@@ -102,31 +137,42 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
         etfc.layer.shadowRadius = 9
         etfc.layer.shouldRasterize = false
-        etfc.layer.borderColor = dividerGrey.cgColor
-        etfc.layer.borderWidth = 0.5
-        etfc.addTarget(self, action: #selector(self.handleManualScrolling), for: .touchDown)
+        etfc.layer.borderColor = dividerGrey.withAlphaComponent(0.2).cgColor
+        etfc.layer.borderWidth = 1.0
+        etfc.layer.cornerRadius = 10
+        
+        etfc.addTarget(self, action: #selector(self.handleTreatTap), for: .touchDown)
+
 
         return etfc
         
     }()
     
-    lazy var dogFoodTextField : CustomTextFieldMaps = {
+    lazy var dogFoodTextField : UITextField = {
         
-        let etfc = CustomTextFieldMaps()
+        let etfc = UITextField()
         etfc.translatesAutoresizingMaskIntoConstraints = false
-        let placeholder = NSAttributedString(string: "Search by keyword or name", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
-        etfc.attributedPlaceholder = placeholder
+        etfc.placeholder = "Search by keyword or name"
         etfc.textAlignment = .left
-        etfc.backgroundColor = UIColor .white
-        etfc.textColor = coreBlackColor
+        etfc.backgroundColor = coreWhiteColor
+        etfc.textColor = UIColor .darkGray.withAlphaComponent(1.0)
         etfc.font = UIFont(name: rubikRegular, size: 18)
         etfc.allowsEditingTextAttributes = false
         etfc.autocorrectionType = .no
         etfc.delegate = self
-        etfc.layer.cornerRadius = 10
-        etfc.layer.masksToBounds = false
+        etfc.layer.masksToBounds = true
         etfc.keyboardAppearance = UIKeyboardAppearance.light
         etfc.returnKeyType = UIReturnKeyType.done
+        etfc.leftViewMode = .always
+        
+        let image = UIImage(named: "magnifyingGlass")?.withRenderingMode(.alwaysOriginal)
+        let imageView = UIImageView()
+        imageView.frame = CGRect(x: 200, y: 200, width: 100, height: 100)
+        imageView.contentMode = .center
+        etfc.contentMode = .center
+        imageView.image = image
+        etfc.leftView = imageView
+        
         etfc.clipsToBounds = false
         etfc.layer.masksToBounds = false
         etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
@@ -134,9 +180,11 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
         etfc.layer.shadowRadius = 9
         etfc.layer.shouldRasterize = false
-        etfc.layer.borderColor = dividerGrey.cgColor
-        etfc.layer.borderWidth = 0.5
-        etfc.addTarget(self, action: #selector(self.handleManualScrolling), for: .touchDown)
+        etfc.layer.borderColor = dividerGrey.withAlphaComponent(0.2).cgColor
+        etfc.layer.borderWidth = 1.0
+        etfc.layer.cornerRadius = 10
+        
+        etfc.addTarget(self, action: #selector(self.handleFoodTap), for: .touchDown)
 
         return etfc
         
@@ -251,6 +299,27 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
        return nl
     }()
     
+    @objc func handleTreatTap() {
+        
+        self.resignation()
+        self.newDogTreatSubview.isHidden = false
+        self.newDogTreatSubview.moveConstraints()
+        
+        UIView.animate(withDuration: 0.2) {
+            self.newDogTreatSubview.alpha = 1
+        }
+    }
+    
+    @objc func handleFoodTap() {
+        
+        self.resignation()
+        self.newDogFoodSubview.isHidden = false
+        self.newDogFoodSubview.moveConstraints()
+        
+        UIView.animate(withDuration: 0.2) {
+            self.newDogFoodSubview.alpha = 1
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -258,7 +327,27 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
         self.fillValues()
+        
+        self.dogTreatJson = self.dogTreatJsonGrabber.dogTreatJSON
+        self.dogFoodJson = self.dogFoodJsonGrabber.dogFoodJSON
+        
+        //SET TEXTFIELD CONTENT TYPES
+        self.favoriteTreatTextField.textContentType = UITextContentType(rawValue: "")
+        self.dogFoodTextField.textContentType = UITextContentType(rawValue: "")
 
+        self.favoriteTreatTextField.setUpImage(imageName: "magnifyingGlass", on: .left)
+        self.dogFoodTextField.setUpImage(imageName: "magnifyingGlass", on: .left)
+        
+        self.favoriteTreatTextField.inputView = UIView()
+        self.dogFoodTextField.inputView = UIView()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        self.favoriteTreatTextField.endEditing(true)
+        self.dogFoodTextField.endEditing(true)
     }
     
     func fillValues() {
@@ -301,7 +390,9 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         self.scrollView.addSubview(self.nextButton)
         
         self.view.addSubview(timeCover)
-        
+        self.view.addSubview(newDogTreatSubview)
+        self.view.addSubview(newDogFoodSubview)
+
         self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         self.scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
@@ -391,14 +482,43 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         self.dogFoodTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.dogFoodTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.dogFoodTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        
+        self.newDogTreatSubview.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
+        self.newDogTreatSubview.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.newDogTreatSubview.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.newDogTreatSubview.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        
+        self.newDogFoodSubview.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
+        self.newDogFoodSubview.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.newDogFoodSubview.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.newDogFoodSubview.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
 
+    }
+    
+    @objc func fillBreed(breedType : String) {
+        
+        self.favoriteTreatTextField.text = breedType
+        self.newDogTreatSubview.breedTextField.resignFirstResponder()
+        
+        UIView.animate(withDuration: 0.025) {
+            self.newDogTreatSubview.alpha = 0
+        }
+    }
+    
+    @objc func fillDogs(breedType : String) {
+        
+        self.dogFoodTextField.text = breedType
+        self.newDogFoodSubview.breedTextField.resignFirstResponder()
+        
+        UIView.animate(withDuration: 0.025) {
+            self.newDogFoodSubview.alpha = 0
+        }
     }
     
     func resignation() {
         
         self.favoriteTreatTextField.resignFirstResponder()
         self.dogFoodTextField.resignFirstResponder()
-        
     }
     
     @objc func handleManualScrolling(sender : UITextField) {
