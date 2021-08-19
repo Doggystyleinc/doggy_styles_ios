@@ -150,7 +150,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let etfc = UITextField()
         etfc.translatesAutoresizingMaskIntoConstraints = false
-        let placeholder = NSAttributedString(string: "Name", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
+        let placeholder = NSAttributedString(string: "Name", attributes: [NSAttributedString.Key.foregroundColor: dsFlatBlack.withAlphaComponent(0.4)])
         etfc.attributedPlaceholder = placeholder
         etfc.textAlignment = .left
         etfc.textColor = coreBlackColor
@@ -186,7 +186,8 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let etfc = UITextField()
         etfc.translatesAutoresizingMaskIntoConstraints = false
-        etfc.placeholder = "Breed"
+        let placeholder = NSAttributedString(string: "Breed", attributes: [NSAttributedString.Key.foregroundColor: dsFlatBlack.withAlphaComponent(0.4)])
+        etfc.attributedPlaceholder = placeholder
         etfc.textAlignment = .left
         etfc.backgroundColor = coreWhiteColor
         etfc.textColor = UIColor .darkGray.withAlphaComponent(1.0)
@@ -223,7 +224,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let etfc = UITextField()
         etfc.translatesAutoresizingMaskIntoConstraints = false
-        let placeholder = NSAttributedString(string: "Birthday (or guesstimate)", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
+        let placeholder = NSAttributedString(string: "Birthday (or guesstimate)", attributes: [NSAttributedString.Key.foregroundColor: dsFlatBlack.withAlphaComponent(0.4)])
         etfc.attributedPlaceholder = placeholder
         etfc.textAlignment = .left
         etfc.textColor = coreBlackColor
@@ -290,7 +291,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
-        hbo.backgroundColor = dividerGrey.withAlphaComponent(0.5)
+        hbo.backgroundColor = circleGrey
         return hbo
     }()
     
@@ -298,7 +299,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
-        hbo.backgroundColor = dividerGrey.withAlphaComponent(0.5)
+        hbo.backgroundColor = circleGrey
         return hbo
     }()
     
@@ -306,7 +307,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
-        hbo.backgroundColor = dividerGrey.withAlphaComponent(0.5)
+        hbo.backgroundColor = circleGrey
         return hbo
     }()
     

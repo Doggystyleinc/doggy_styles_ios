@@ -217,6 +217,7 @@ class PetCollectionFeeder : UICollectionViewCell {
         if let tappableArea = sender.view as? UIImageView {
             
             self.registeredPetCollection?.handleAddDog(sender:tappableArea)
+            
         }
     }
     

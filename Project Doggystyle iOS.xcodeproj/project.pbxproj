@@ -132,6 +132,7 @@
 		E352FF6B26A63373003BD59F /* group18323@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6826A63372003BD59F /* group18323@3x.png */; };
 		E352FF6C26A63373003BD59F /* group18323@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6926A63373003BD59F /* group18323@2x.png */; };
 		E352FF6D26A63373003BD59F /* group18323.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6A26A63373003BD59F /* group18323.png */; };
+		E369559C26CAEC1500806D73 /* ServicesCollectionSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E369559B26CAEC1500806D73 /* ServicesCollectionSubview.swift */; };
 		E36EE54626B7036B0009A0EF /* NewDogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE54526B7036B0009A0EF /* NewDogEntry.swift */; };
 		E36EE54826B778CE0009A0EF /* EmptyStateTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE54726B778CE0009A0EF /* EmptyStateTwo.swift */; };
 		E36EE54C26B77CBC0009A0EF /* dsComboShutterstock530718881@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E36EE54926B77CBB0009A0EF /* dsComboShutterstock530718881@2x.png */; };
@@ -328,6 +329,7 @@
 		E352FF6826A63372003BD59F /* group18323@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group18323@3x.png"; sourceTree = "<group>"; };
 		E352FF6926A63373003BD59F /* group18323@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group18323@2x.png"; sourceTree = "<group>"; };
 		E352FF6A26A63373003BD59F /* group18323.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group18323.png; sourceTree = "<group>"; };
+		E369559B26CAEC1500806D73 /* ServicesCollectionSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesCollectionSubview.swift; sourceTree = "<group>"; };
 		E36EE54526B7036B0009A0EF /* NewDogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogEntry.swift; sourceTree = "<group>"; };
 		E36EE54726B778CE0009A0EF /* EmptyStateTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateTwo.swift; sourceTree = "<group>"; };
 		E36EE54926B77CBB0009A0EF /* dsComboShutterstock530718881@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dsComboShutterstock530718881@2x.png"; sourceTree = "<group>"; };
@@ -455,7 +457,6 @@
 			isa = PBXGroup;
 			children = (
 				CD203BFF2667FACC00335D93 /* ProfileViewController.swift */,
-				CD203BFB2667FAB300335D93 /* ServicesController.swift */,
 				CD6DD000267AD81100BC376B /* AppointmentsViewController.swift */,
 			);
 			path = "Tab Bar";
@@ -822,6 +823,23 @@
 			path = TutorialFlow;
 			sourceTree = "<group>";
 		};
+		E369559926CAE8DD00806D73 /* TabTwo */ = {
+			isa = PBXGroup;
+			children = (
+				E369559A26CAEB8F00806D73 /* ServicesControllers */,
+			);
+			path = TabTwo;
+			sourceTree = "<group>";
+		};
+		E369559A26CAEB8F00806D73 /* ServicesControllers */ = {
+			isa = PBXGroup;
+			children = (
+				CD203BFB2667FAB300335D93 /* ServicesController.swift */,
+				E369559B26CAEC1500806D73 /* ServicesCollectionSubview.swift */,
+			);
+			path = ServicesControllers;
+			sourceTree = "<group>";
+		};
 		E36EE55726B780420009A0EF /* EmptyStates */ = {
 			isa = PBXGroup;
 			children = (
@@ -1006,6 +1024,7 @@
 			isa = PBXGroup;
 			children = (
 				E3B11AB7268FB88B00B5B6F8 /* TabOne */,
+				E369559926CAE8DD00806D73 /* TabTwo */,
 				E3B11AB8268FC9C700B5B6F8 /* TabFour */,
 			);
 			path = Tabs;
@@ -1372,6 +1391,7 @@
 				E3D53F3D26AA21EC003B4317 /* SearchLocationTableview.swift in Sources */,
 				CD6DCFF2267A62D300BC376B /* Package.swift in Sources */,
 				E38B7FEF26C5AF5E0013D72D /* NewDogFoodCollection.swift in Sources */,
+				E369559C26CAEC1500806D73 /* ServicesCollectionSubview.swift in Sources */,
 				E326573326B215DF004A15F6 /* EmptyStateOne.swift in Sources */,
 				CD6DD0162680DDC900BC376B /* SlideThree.swift in Sources */,
 				CD319F6B26790AD900F48E3C /* DeleteLaterViewController.swift in Sources */,
@@ -1580,7 +1600,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.5;
+				CURRENT_PROJECT_VERSION = 1.0.6;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1601,7 +1621,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.5;
+				CURRENT_PROJECT_VERSION = 1.0.6;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

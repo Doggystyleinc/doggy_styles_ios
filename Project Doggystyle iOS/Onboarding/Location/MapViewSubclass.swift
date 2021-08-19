@@ -34,7 +34,6 @@ class MapsSubview : GMSMapView {
         self.camera = camera
         
         self.mapStyle = .none
-        //self.mapStyle(withFilename: "NightTimeStyle", andType: "json")
 
         self.backgroundColor = coreWhiteColor
     }

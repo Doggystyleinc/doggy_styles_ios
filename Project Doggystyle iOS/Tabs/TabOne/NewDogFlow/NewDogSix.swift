@@ -131,9 +131,9 @@ class NewDogSix : UIViewController {
         cbf.titleLabel?.adjustsFontSizeToFitWidth = true
         cbf.titleLabel?.numberOfLines = 1
         cbf.titleLabel?.adjustsFontForContentSizeCategory = true
-        cbf.titleLabel?.textColor = dividerGrey
+        cbf.titleLabel?.textColor = dsGreyMedium
         cbf.backgroundColor = .clear
-        cbf.tintColor = dividerGrey
+        cbf.tintColor = dsGreyMedium
         cbf.addTarget(self, action: #selector(self.handleReturnToDashboard), for: .touchUpInside)
         
         return cbf

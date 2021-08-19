@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  Project Doggystyle iOS
 //
-//  Created by Stanley Miller on 5/17/21.
+//  Created by Charlie Arcodia on 5/17/21.
 //
 
 import UIKit
@@ -19,7 +19,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: sceneWindow)
         window.makeKeyAndVisible()
         
-//        let decisionController = NewDogFive()
         let decisionController = DecisionController()
         
         let navigationController = UINavigationController(rootViewController: decisionController)

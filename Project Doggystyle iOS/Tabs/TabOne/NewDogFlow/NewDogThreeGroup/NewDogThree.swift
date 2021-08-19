@@ -241,7 +241,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
-        hbo.backgroundColor = dividerGrey.withAlphaComponent(0.5)
+        hbo.backgroundColor = circleGrey
        return hbo
     }()
     

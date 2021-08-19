@@ -101,7 +101,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
-        hbo.backgroundColor = dividerGrey.withAlphaComponent(0.5)
+        hbo.backgroundColor = circleGrey
        return hbo
     }()
     
@@ -109,7 +109,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
-        hbo.backgroundColor = dividerGrey.withAlphaComponent(0.5)
+        hbo.backgroundColor = circleGrey
        return hbo
     }()
     
@@ -162,10 +162,19 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.titleLabel?.textColor = dividerGrey
         cbf.backgroundColor = coreWhiteColor
         cbf.layer.cornerRadius = 15
-        cbf.layer.masksToBounds = true
-        cbf.tintColor = coreOrangeColor
+        cbf.layer.masksToBounds = false
+        cbf.tintColor = coreBlackColor
         cbf.titleLabel?.textAlignment = .center
         cbf.tag = 1
+        
+        cbf.layer.borderWidth = 1
+        cbf.layer.borderColor = coreOrangeColor.cgColor
+        cbf.layer.shadowColor = coreOrangeColor.cgColor
+        cbf.layer.shadowOpacity = 0.35
+        cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
+        cbf.layer.shadowRadius = 4
+        cbf.layer.shouldRasterize = false
+        
         cbf.addTarget(self, action: #selector(self.handleSizeSelection), for: .touchUpInside)
         
         return cbf
@@ -182,12 +191,21 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.titleLabel?.numberOfLines = 2
         cbf.titleLabel?.adjustsFontForContentSizeCategory = true
         cbf.titleLabel?.textColor = dividerGrey
-        cbf.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+        cbf.backgroundColor = dividerGrey
         cbf.layer.cornerRadius = 15
-        cbf.layer.masksToBounds = true
-        cbf.tintColor = dividerGrey
+        cbf.layer.masksToBounds = false
+        cbf.tintColor = coreBlackColor
         cbf.titleLabel?.textAlignment = .center
         cbf.tag = 2
+
+        cbf.layer.borderWidth = 1
+        cbf.layer.borderColor = UIColor .clear.cgColor
+        cbf.layer.shadowColor = coreOrangeColor.cgColor
+        cbf.layer.shadowOpacity = 0.35
+        cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
+        cbf.layer.shadowRadius = 0
+        cbf.layer.shouldRasterize = false
+        
         cbf.addTarget(self, action: #selector(self.handleSizeSelection), for: .touchUpInside)
 
         
@@ -205,12 +223,21 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.titleLabel?.numberOfLines = 2
         cbf.titleLabel?.adjustsFontForContentSizeCategory = true
         cbf.titleLabel?.textColor = dividerGrey
-        cbf.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+        cbf.backgroundColor = dividerGrey
         cbf.layer.cornerRadius = 15
-        cbf.layer.masksToBounds = true
-        cbf.tintColor = dividerGrey
+        cbf.layer.masksToBounds = false
+        cbf.tintColor = coreBlackColor
         cbf.titleLabel?.textAlignment = .center
         cbf.tag = 3
+        cbf.layer.borderWidth = 1
+        cbf.layer.borderColor = UIColor .clear.cgColor
+
+        cbf.layer.shadowColor = coreOrangeColor.cgColor
+        cbf.layer.shadowOpacity = 0.35
+        cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
+        cbf.layer.shadowRadius = 0
+        cbf.layer.shouldRasterize = false
+        
         cbf.addTarget(self, action: #selector(self.handleSizeSelection), for: .touchUpInside)
 
         
@@ -228,12 +255,21 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.titleLabel?.numberOfLines = 2
         cbf.titleLabel?.adjustsFontForContentSizeCategory = true
         cbf.titleLabel?.textColor = dividerGrey
-        cbf.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+        cbf.backgroundColor = dividerGrey
         cbf.layer.cornerRadius = 15
-        cbf.layer.masksToBounds = true
-        cbf.tintColor = dividerGrey
+        cbf.layer.masksToBounds = false
+        cbf.tintColor = coreBlackColor
         cbf.titleLabel?.textAlignment = .center
         cbf.tag = 4
+        cbf.layer.borderWidth = 1
+        cbf.layer.borderColor = UIColor .clear.cgColor
+
+        cbf.layer.shadowColor = coreOrangeColor.cgColor
+        cbf.layer.shadowOpacity = 0.35
+        cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
+        cbf.layer.shadowRadius = 0
+        cbf.layer.shouldRasterize = false
+        
         cbf.addTarget(self, action: #selector(self.handleSizeSelection), for: .touchUpInside)
 
         return cbf
@@ -276,10 +312,20 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.titleLabel?.textColor = dividerGrey
         cbf.backgroundColor = coreWhiteColor
         cbf.layer.cornerRadius = 15
-        cbf.layer.masksToBounds = true
-        cbf.tintColor = coreOrangeColor
+        cbf.layer.masksToBounds = false
+        cbf.tintColor = coreBlackColor
         cbf.titleLabel?.textAlignment = .center
         cbf.tag = 1
+        cbf.layer.borderWidth = 1
+        cbf.layer.borderColor = coreOrangeColor.cgColor
+
+        cbf.layer.shadowColor = coreOrangeColor.cgColor
+        cbf.layer.shadowOpacity = 0.35
+        cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
+        cbf.layer.shadowRadius = 4
+        cbf.layer.shouldRasterize = false
+        
+        
         cbf.addTarget(self, action: #selector(self.handleGroomingFrequency), for: .touchUpInside)
     
         return cbf
@@ -295,12 +341,21 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.titleLabel?.numberOfLines = 2
         cbf.titleLabel?.adjustsFontForContentSizeCategory = true
         cbf.titleLabel?.textColor = dividerGrey
-        cbf.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+        cbf.backgroundColor = dividerGrey
         cbf.layer.cornerRadius = 15
-        cbf.layer.masksToBounds = true
-        cbf.tintColor = dividerGrey
+        cbf.tintColor = coreBlackColor
         cbf.titleLabel?.textAlignment = .center
         cbf.tag = 2
+        cbf.layer.borderWidth = 1
+        cbf.layer.masksToBounds = false
+        cbf.layer.borderColor = UIColor .clear.cgColor
+
+        cbf.layer.shadowColor = coreOrangeColor.cgColor
+        cbf.layer.shadowOpacity = 0.35
+        cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
+        cbf.layer.shadowRadius = 0
+        cbf.layer.shouldRasterize = false
+        
         cbf.addTarget(self, action: #selector(self.handleGroomingFrequency), for: .touchUpInside)
         return cbf
     }()
@@ -455,21 +510,24 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
             globalNewDogBuilder.dogBuilderGroomingFrequency = .fourWeeks
             
             self.fourWeeksButton.backgroundColor = coreWhiteColor
-            self.fourWeeksButton.tintColor = coreOrangeColor
+            self.fourWeeksButton.layer.borderColor = coreOrangeColor.cgColor
+            self.fourWeeksButton.layer.shadowRadius = 4
             
-            self.eightWeeksButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.eightWeeksButton.tintColor = dividerGrey
-            
+            self.eightWeeksButton.backgroundColor = dividerGrey
+            self.eightWeeksButton.layer.borderColor = UIColor .clear.cgColor
+            self.eightWeeksButton.layer.shadowRadius = 0
+
         case 2:
             
             globalNewDogBuilder.dogBuilderGroomingFrequency = .eightWeeks
 
-            self.fourWeeksButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.fourWeeksButton.tintColor = dividerGrey
-            
+            self.fourWeeksButton.backgroundColor = dividerGrey
+            self.fourWeeksButton.layer.shadowRadius = 0
+            self.fourWeeksButton.layer.borderColor = UIColor .clear.cgColor
+
             self.eightWeeksButton.backgroundColor = coreWhiteColor
-            self.eightWeeksButton.tintColor = coreOrangeColor
-            
+            self.eightWeeksButton.layer.borderColor = coreOrangeColor.cgColor
+            self.eightWeeksButton.layer.shadowRadius = 4
 
         default: print("Only 2 buttons here")
         
@@ -487,65 +545,81 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
             globalNewDogBuilder.dogBuilderSize = .small
             
             self.weightSmallButton.backgroundColor = coreWhiteColor
-            self.weightSmallButton.tintColor = coreOrangeColor
+            self.weightSmallButton.layer.borderColor = coreOrangeColor.cgColor
+            self.weightSmallButton.layer.shadowRadius = 4
             
-            self.weightMediumButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.weightMediumButton.tintColor = dividerGrey
-            
-            self.weightLargeButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.weightLargeButton.tintColor = dividerGrey
-            
-            self.weightExtraLargeButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.weightExtraLargeButton.tintColor = dividerGrey
+            self.weightMediumButton.backgroundColor = dividerGrey
+            self.weightMediumButton.layer.borderColor = UIColor .clear.cgColor
+            self.weightMediumButton.layer.shadowRadius = 0
+
+            self.weightLargeButton.backgroundColor = dividerGrey
+            self.weightLargeButton.layer.borderColor = UIColor .clear.cgColor
+            self.weightLargeButton.layer.shadowRadius = 0
+
+            self.weightExtraLargeButton.backgroundColor = dividerGrey
+            self.weightExtraLargeButton.layer.borderColor = UIColor .clear.cgColor
+            self.weightExtraLargeButton.layer.shadowRadius = 0
 
         case 2:
             
             globalNewDogBuilder.dogBuilderSize = .medium
             
-            self.weightSmallButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.weightSmallButton.tintColor = dividerGrey
-            
+            self.weightSmallButton.backgroundColor = dividerGrey
+            self.weightSmallButton.layer.borderColor = UIColor .clear.cgColor
+            self.weightSmallButton.layer.shadowRadius = 0
+
             self.weightMediumButton.backgroundColor = coreWhiteColor
-            self.weightMediumButton.tintColor = coreOrangeColor
-            
-            self.weightLargeButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.weightLargeButton.tintColor = dividerGrey
-            
-            self.weightExtraLargeButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.weightExtraLargeButton.tintColor = dividerGrey
-            
+            self.weightMediumButton.layer.borderColor = coreOrangeColor.cgColor
+            self.weightMediumButton.layer.shadowRadius = 4
+
+            self.weightLargeButton.backgroundColor = dividerGrey
+            self.weightLargeButton.layer.borderColor = UIColor .clear.cgColor
+            self.weightLargeButton.layer.shadowRadius = 0
+
+            self.weightExtraLargeButton.backgroundColor = dividerGrey
+            self.weightExtraLargeButton.layer.borderColor = UIColor .clear.cgColor
+            self.weightExtraLargeButton.layer.shadowRadius = 0
+
         case 3:
             
             globalNewDogBuilder.dogBuilderSize = .large
             
-            self.weightSmallButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.weightSmallButton.tintColor = dividerGrey
-            
-            self.weightMediumButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.weightMediumButton.tintColor = dividerGrey
-            
+            self.weightSmallButton.backgroundColor = dividerGrey
+            self.weightSmallButton.layer.borderColor = UIColor .clear.cgColor
+            self.weightSmallButton.layer.shadowRadius = 0
+
+            self.weightMediumButton.backgroundColor = dividerGrey
+            self.weightMediumButton.layer.borderColor = UIColor .clear.cgColor
+            self.weightMediumButton.layer.shadowRadius = 0
+
             self.weightLargeButton.backgroundColor = coreWhiteColor
-            self.weightLargeButton.tintColor = coreOrangeColor
-            
-            self.weightExtraLargeButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.weightExtraLargeButton.tintColor = dividerGrey
-            
+            self.weightLargeButton.layer.borderColor = coreOrangeColor.cgColor
+            self.weightLargeButton.layer.shadowRadius = 4
+
+            self.weightExtraLargeButton.backgroundColor = dividerGrey
+            self.weightExtraLargeButton.layer.borderColor = UIColor .clear.cgColor
+            self.weightExtraLargeButton.layer.shadowRadius = 0
+
         case 4:
             
             globalNewDogBuilder.dogBuilderSize = .xlarge
             
-            self.weightSmallButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.weightSmallButton.tintColor = dividerGrey
-            
-            self.weightMediumButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.weightMediumButton.tintColor = dividerGrey
-            
-            self.weightLargeButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.weightLargeButton.tintColor = dividerGrey
-            
+            self.weightSmallButton.backgroundColor = dividerGrey
+            self.weightSmallButton.layer.borderColor = UIColor .clear.cgColor
+            self.weightSmallButton.layer.shadowRadius = 0
+
+            self.weightMediumButton.backgroundColor = dividerGrey
+            self.weightMediumButton.layer.borderColor = UIColor .clear.cgColor
+            self.weightMediumButton.layer.shadowRadius = 0
+
+            self.weightLargeButton.backgroundColor = dividerGrey
+            self.weightLargeButton.layer.borderColor = UIColor .clear.cgColor
+            self.weightLargeButton.layer.shadowRadius = 0
+
             self.weightExtraLargeButton.backgroundColor = coreWhiteColor
-            self.weightExtraLargeButton.tintColor = coreOrangeColor
-            
+            self.weightExtraLargeButton.layer.borderColor = coreOrangeColor.cgColor
+            self.weightExtraLargeButton.layer.shadowRadius = 4
+
         default: print("only 4 buttons, this will never hit")
         
         }

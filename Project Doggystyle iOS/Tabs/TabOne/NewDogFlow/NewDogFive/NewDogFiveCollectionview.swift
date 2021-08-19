@@ -151,9 +151,9 @@ class NewDogFeeder : UICollectionViewCell {
         ll.translatesAutoresizingMaskIntoConstraints = false
         ll.backgroundColor = .clear
         ll.text = ""
-        ll.textColor = dividerGrey
+        ll.textColor = dsGreyMedium
         ll.textAlignment = .left
-        ll.font = UIFont(name: dsSubHeaderFont, size: 18)
+        ll.font = UIFont(name: rubikRegular, size: 18)
         ll.adjustsFontSizeToFitWidth = true
         ll.numberOfLines = 1
         
@@ -168,7 +168,7 @@ class NewDogFeeder : UICollectionViewCell {
         ll.text = ""
         ll.textColor = coreBlackColor
         ll.textAlignment = .right
-        ll.font = UIFont(name: dsSubHeaderFont, size: 18)
+        ll.font = UIFont(name: rubikMedium, size: 18)
         ll.adjustsFontSizeToFitWidth = false
         ll.clipsToBounds = true
         ll.numberOfLines = 1

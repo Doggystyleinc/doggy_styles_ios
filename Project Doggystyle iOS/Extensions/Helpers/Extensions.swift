@@ -45,15 +45,17 @@ var friends_array_phone_number = [String](),
     recordCharcoalGrey = UIColor(hex: 0x4A4A4A),
     loadingBlueProgress = UIColor(hex: 0x0062FF),
     predictionGrey = UIColor(hex: 0x707070),
-//    dividerGrey = UIColor(hex: 0xBCBCBC),
-    dividerGrey = UIColor(hex: 0xACACB0).withAlphaComponent(0.8),
-
-    
+    dividerGrey = UIColor(hex: 0xEDEDED),
+    //dividerGrey = UIColor(hex: 0xBCBCBC),
+    //dividerGrey = UIColor(hex: 0xACACB0).withAlphaComponent(0.8)
     imageBorderBlue = UIColor(hex: 0x1F5FC5),
     dsFlatBlack = UIColor(hex: 0x302F3C),
     dsButtonLightGrey = UIColor(hex: 0xEDEDED),
     dsTransparentOrange = UIColor(hex: 0xF7EAE3),
+    dsGreyMedium = UIColor(hex: 0x7D7D7D),
+    circleGrey = UIColor(hex: 0xE2E1E1),
 
+    
     globalStatusBarHeight : CGFloat = 0.0,
     globalFooterHeight : CGFloat = 0.0,
     
@@ -150,9 +152,9 @@ extension UITextField {
     func setUpImage(imageName: String, on side: TextFieldImageSide) {
         let imageView = UIImageView(frame: CGRect(x: 20, y: 10, width: 20, height: 20))
         if let imageWithSystemName = UIImage(systemName: imageName) {
-            imageView.image = imageWithSystemName.withRenderingMode(.alwaysOriginal).withTintColor(dividerGrey)
+            imageView.image = imageWithSystemName.withRenderingMode(.alwaysOriginal).withTintColor(dsFlatBlack.withAlphaComponent(0.4))
         } else {
-            imageView.image = UIImage(named: imageName)?.withRenderingMode(.alwaysOriginal).withTintColor(dividerGrey)
+            imageView.image = UIImage(named: imageName)?.withRenderingMode(.alwaysOriginal).withTintColor(dsFlatBlack.withAlphaComponent(0.4))
         }
         
         let imageContainerView = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 40))

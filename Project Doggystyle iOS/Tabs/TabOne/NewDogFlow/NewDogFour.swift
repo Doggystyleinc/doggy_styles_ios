@@ -192,10 +192,20 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
         cbf.titleLabel?.textColor = dividerGrey
         cbf.backgroundColor = coreWhiteColor
         cbf.layer.cornerRadius = 15
-        cbf.layer.masksToBounds = true
-        cbf.tintColor = coreOrangeColor
+        cbf.layer.masksToBounds = false
+        cbf.tintColor = coreBlackColor
         cbf.titleLabel?.textAlignment = .center
         cbf.tag = 1
+        
+        cbf.layer.borderWidth = 1
+        cbf.layer.borderColor = coreOrangeColor.cgColor
+        cbf.layer.shadowColor = coreOrangeColor.cgColor
+        cbf.layer.shadowOpacity = 0.35
+        cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
+        cbf.layer.shadowRadius = 4
+        cbf.layer.shouldRasterize = false
+        
+        
         cbf.addTarget(self, action: #selector(self.handleMedicalConditionSelection(sender:)), for: .touchUpInside)
         
         return cbf
@@ -212,12 +222,21 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
         cbf.titleLabel?.numberOfLines = 2
         cbf.titleLabel?.adjustsFontForContentSizeCategory = true
         cbf.titleLabel?.textColor = dividerGrey
-        cbf.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+        cbf.backgroundColor = dividerGrey
         cbf.layer.cornerRadius = 15
-        cbf.layer.masksToBounds = true
-        cbf.tintColor = dividerGrey
+        cbf.layer.masksToBounds = false
+        cbf.tintColor = coreBlackColor
         cbf.titleLabel?.textAlignment = .center
         cbf.tag = 2
+        
+        cbf.layer.borderWidth = 1
+        cbf.layer.borderColor = UIColor .clear.cgColor
+        cbf.layer.shadowColor = coreOrangeColor.cgColor
+        cbf.layer.shadowOpacity = 0.35
+        cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
+        cbf.layer.shadowRadius = 0
+        cbf.layer.shouldRasterize = false
+        
         cbf.addTarget(self, action: #selector(self.handleMedicalConditionSelection(sender:)), for: .touchUpInside)
         return cbf
         
@@ -249,10 +268,19 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
         cbf.titleLabel?.textColor = dividerGrey
         cbf.backgroundColor = coreWhiteColor
         cbf.layer.cornerRadius = 15
-        cbf.layer.masksToBounds = true
-        cbf.tintColor = coreOrangeColor
+        cbf.layer.masksToBounds = false
+        cbf.tintColor = coreBlackColor
         cbf.titleLabel?.textAlignment = .center
         cbf.tag = 1
+        
+        cbf.layer.borderWidth = 1
+        cbf.layer.borderColor = coreOrangeColor.cgColor
+        cbf.layer.shadowColor = coreOrangeColor.cgColor
+        cbf.layer.shadowOpacity = 0.35
+        cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
+        cbf.layer.shadowRadius = 4
+        cbf.layer.shouldRasterize = false
+        
         cbf.addTarget(self, action: #selector(self.handleBehavioralConcernsSelection(sender:)), for: .touchUpInside)
         return cbf
         
@@ -268,12 +296,21 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
         cbf.titleLabel?.numberOfLines = 2
         cbf.titleLabel?.adjustsFontForContentSizeCategory = true
         cbf.titleLabel?.textColor = dividerGrey
-        cbf.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+        cbf.backgroundColor = dividerGrey
         cbf.layer.cornerRadius = 15
-        cbf.layer.masksToBounds = true
-        cbf.tintColor = dividerGrey
+        cbf.layer.masksToBounds = false
+        cbf.tintColor = coreBlackColor
         cbf.titleLabel?.textAlignment = .center
         cbf.tag = 2
+        
+        cbf.layer.borderWidth = 1
+        cbf.layer.borderColor = UIColor .clear.cgColor
+        cbf.layer.shadowColor = coreOrangeColor.cgColor
+        cbf.layer.shadowOpacity = 0.35
+        cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
+        cbf.layer.shadowRadius = 0
+        cbf.layer.shouldRasterize = false
+        
         cbf.addTarget(self, action: #selector(self.handleBehavioralConcernsSelection(sender:)), for: .touchUpInside)
         return cbf
         
@@ -303,10 +340,10 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
         cbf.titleLabel?.numberOfLines = 2
         cbf.titleLabel?.adjustsFontForContentSizeCategory = true
         cbf.titleLabel?.textColor = dividerGrey
-        cbf.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+        cbf.backgroundColor = dividerGrey
         cbf.layer.cornerRadius = 15
         cbf.layer.masksToBounds = true
-        cbf.tintColor = dividerGrey
+        cbf.tintColor = dsFlatBlack.withAlphaComponent(0.4)
         cbf.titleLabel?.textAlignment = .center
         cbf.layer.borderWidth = 1.0
         cbf.layer.borderColor = UIColor.clear.cgColor
@@ -319,7 +356,7 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
     lazy var selectedVaccineButton: UITextField = {
         
         let etfc = UITextField()
-        let placeholder = NSAttributedString(string: "...", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
+        let placeholder = NSAttributedString(string: "...", attributes: [NSAttributedString.Key.foregroundColor:  dsFlatBlack.withAlphaComponent(0.4)])
         etfc.attributedPlaceholder = placeholder
         etfc.translatesAutoresizingMaskIntoConstraints = false
         etfc.textAlignment = .left
@@ -409,7 +446,7 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
     lazy var medicalConditionTextField: UITextField = {
         
         let etfc = UITextField()
-        let placeholder = NSAttributedString(string: "Description", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
+        let placeholder = NSAttributedString(string: "Description", attributes: [NSAttributedString.Key.foregroundColor:  dsFlatBlack.withAlphaComponent(0.4)])
         etfc.attributedPlaceholder = placeholder
         etfc.translatesAutoresizingMaskIntoConstraints = false
         etfc.textAlignment = .left
@@ -461,7 +498,7 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
     lazy var behavioralConditionTextField: UITextField = {
         
         let etfc = UITextField()
-        let placeholder = NSAttributedString(string: "Description", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
+        let placeholder = NSAttributedString(string: "Description", attributes: [NSAttributedString.Key.foregroundColor:  dsFlatBlack.withAlphaComponent(0.4)])
         etfc.attributedPlaceholder = placeholder
         etfc.translatesAutoresizingMaskIntoConstraints = false
         etfc.textAlignment = .left
@@ -808,10 +845,19 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
             globalNewDogBuilder.dogBuilderHasMedicalConditions = false
             
             self.medicalNoButton.backgroundColor = coreWhiteColor
-            self.medicalNoButton.tintColor = coreOrangeColor
+            self.medicalNoButton.layer.borderColor = coreOrangeColor.cgColor
+            self.medicalNoButton.layer.shadowRadius = 4
             
-            self.medicalYesButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.medicalYesButton.tintColor = dividerGrey
+            
+//            self.medicalNoButton.backgroundColor = coreWhiteColor
+//            self.medicalNoButton.tintColor = coreOrangeColor
+            
+//            self.medicalYesButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
+//            self.medicalYesButton.tintColor = dividerGrey
+            
+            self.medicalYesButton.backgroundColor = dividerGrey
+            self.medicalYesButton.layer.borderColor = UIColor .clear.cgColor
+            self.medicalYesButton.layer.shadowRadius = 0
             
         case 2:
             
@@ -828,11 +874,15 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
             
             globalNewDogBuilder.dogBuilderHasMedicalConditions = true
             
-            self.medicalNoButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.medicalNoButton.tintColor = dividerGrey
+            self.medicalNoButton.backgroundColor = dividerGrey
+            self.medicalNoButton.layer.borderColor = UIColor .clear.cgColor
+            self.medicalNoButton.layer.shadowRadius = 0
             
             self.medicalYesButton.backgroundColor = coreWhiteColor
-            self.medicalYesButton.tintColor = coreOrangeColor
+            self.medicalYesButton.layer.borderColor = coreOrangeColor.cgColor
+            self.medicalYesButton.layer.shadowRadius = 4
+            
+            
             
         default: print("only 2 items here")
         }
@@ -855,12 +905,15 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
             self.resetContentView()
             
             globalNewDogBuilder.dogBuilderHasBehaviouralConditions = false
-            
+          
             self.behaviorNoButton.backgroundColor = coreWhiteColor
-            self.behaviorNoButton.tintColor = coreOrangeColor
+            self.behaviorNoButton.layer.borderColor = coreOrangeColor.cgColor
+            self.behaviorNoButton.layer.shadowRadius = 4
+           
+            self.behaviorYesButton.backgroundColor = dividerGrey
+            self.behaviorYesButton.layer.borderColor = UIColor .clear.cgColor
+            self.behaviorYesButton.layer.shadowRadius = 0
             
-            self.behaviorYesButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.behaviorYesButton.tintColor = dividerGrey
             
         case 2:
             
@@ -877,11 +930,15 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
             
             globalNewDogBuilder.dogBuilderHasBehaviouralConditions = true
             
-            self.behaviorNoButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-            self.behaviorNoButton.tintColor = dividerGrey
+            self.behaviorNoButton.backgroundColor = dividerGrey
+            self.behaviorNoButton.layer.borderColor = UIColor .clear.cgColor
+            self.behaviorNoButton.layer.shadowRadius = 0
             
+           
             self.behaviorYesButton.backgroundColor = coreWhiteColor
-            self.behaviorYesButton.tintColor = coreOrangeColor
+            self.behaviorYesButton.layer.borderColor = coreOrangeColor.cgColor
+            self.behaviorYesButton.layer.shadowRadius = 4
+            
             
         default: print("only 2 items here")
             
