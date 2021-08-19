@@ -11,6 +11,8 @@ import UIKit
 
 class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDelegate {
     
+    var doggyProfileDataSource = [DoggyProfileDataSource]()
+    
     lazy var stackView : UIStackView = {
               
         let sv = UIStackView()
@@ -103,19 +105,30 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
        return hc
     }()
     
+    lazy var petAppointmentCollection : PetAppointmentsCollection = {
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let rpc = PetAppointmentsCollection(frame: .zero, collectionViewLayout: layout)
+        rpc.appointmentOne = self
+        
+       return rpc
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
+        self.callPetsCollection()
         
     }
 
     func addViews() {
         
-        
         self.view.addSubview(self.stackView)
+        self.view.addSubview(self.petAppointmentCollection)
         
         self.stackView.addArrangedSubview(self.headerBarOne)
         self.stackView.addArrangedSubview(self.headerBarTwo)
@@ -163,7 +176,25 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.stackView.heightAnchor.constraint(equalToConstant: 14).isActive = true
         self.stackView.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
+        self.petAppointmentCollection.topAnchor.constraint(equalTo: self.basicDetailsLabel.bottomAnchor, constant: 32).isActive = true
+        self.petAppointmentCollection.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        self.petAppointmentCollection.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        self.petAppointmentCollection.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        
     }
+    
+    @objc func callPetsCollection() {
+        
+        var datasourceReplica = self.doggyProfileDataSource
+        let post = DoggyProfileDataSource(json: ["dog":"dog"])
+        datasourceReplica.insert(post, at: 0)
+        
+        self.petAppointmentCollection.doggyProfileDataSource = datasourceReplica
+            
+            DispatchQueue.main.async {
+                self.petAppointmentCollection.reloadData()
+            }
+        }
     
     @objc func handleBackButton() {
         self.navigationController?.dismiss(animated: true, completion: nil)

@@ -27,7 +27,6 @@ var friends_array_phone_number = [String](),
     
     //MARK: - Global Color Variables
     coreWhiteColor = UIColor(hex: 0xFFFFFF),
-//    coreBlackColor = UIColor(hex: 0x000000),
     coreBlackColor = UIColor(hex: 0x353535),
     
     coreGrayColor = UIColor(hex: 0x414141),
@@ -46,8 +45,6 @@ var friends_array_phone_number = [String](),
     loadingBlueProgress = UIColor(hex: 0x0062FF),
     predictionGrey = UIColor(hex: 0x707070),
     dividerGrey = UIColor(hex: 0xEDEDED),
-    //dividerGrey = UIColor(hex: 0xBCBCBC),
-    //dividerGrey = UIColor(hex: 0xACACB0).withAlphaComponent(0.8)
     imageBorderBlue = UIColor(hex: 0x1F5FC5),
     dsFlatBlack = UIColor(hex: 0x302F3C),
     dsButtonLightGrey = UIColor(hex: 0xEDEDED),
@@ -92,6 +89,9 @@ var friends_array_phone_number = [String](),
     onboardingPath = OnboardingPath.fromLogin,
     chatEntryPath = ChatEntryPath.fromMessagesController
 
+ 
+var globalPetDataSource = [DoggyProfileDataSource]()
+
 class fileUPloader : NSObject {
     
    static func upload(localFilePath : URL, completion : @escaping (_ isComplete : Bool, _ urlToStoreInDatabase : String)->()) {
@@ -103,10 +103,6 @@ class fileUPloader : NSObject {
             let randomUUID = NSUUID().uuidString
             
             let storageReference = storageRef.child("vaccine_files").child(user_uid).child(randomUUID)
-            
-//            let metadata  = StorageMetadata()
-//
-//            metadata.contentType = "text/plain"
             
             let uploadTask = storageReference.putFile(from: localFilePath, metadata: nil)
 

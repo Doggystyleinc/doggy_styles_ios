@@ -1,21 +1,23 @@
 //
-//  RegisteredPetCollection.swift
+//  PetsApointmentCollection.swift
 //  Project Doggystyle iOS
 //
-//  Created by Charlie Arcodia on 8/1/21.
+//  Created by Charlie Arcodia on 8/19/21.
 //
+
 
 import Foundation
 import UIKit
 import Firebase
 
-class RegisteredPetCollection : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
+class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
-    private let petID = "petID"
+    private let petAptID = "petAptID"
     
-    var dashMainView : DashMainView?
+    var appointmentOne : AppointmentOne?
 
     var doggyProfileDataSource = [DoggyProfileDataSource]()
+    
     let databaseRef = Database.database().reference()
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
@@ -38,7 +40,7 @@ class RegisteredPetCollection : UICollectionView, UICollectionViewDelegateFlowLa
         self.delaysContentTouches = true
         self.contentInset = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
         
-        self.register(PetCollectionFeeder.self, forCellWithReuseIdentifier: self.petID)
+        self.register(PetAppointmentsFeeder.self, forCellWithReuseIdentifier: self.petAptID)
         
     }
     
@@ -54,95 +56,50 @@ class RegisteredPetCollection : UICollectionView, UICollectionViewDelegateFlowLa
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = self.dequeueReusableCell(withReuseIdentifier: self.petID, for: indexPath) as! PetCollectionFeeder
+        let cell = self.dequeueReusableCell(withReuseIdentifier: self.petAptID, for: indexPath) as! PetAppointmentsFeeder
         
-        cell.registeredPetCollection = self
+        cell.petAppointmentsCollection = self
         
-        let lastIndex = self.doggyProfileDataSource.count - 1
+        let firstIndex = 0
         
         switch indexPath.item {
         
-        case lastIndex:
+        case firstIndex:
             
-            let image = UIImage(named: "add_dog_logo_image")?.withRenderingMode(.alwaysOriginal)
-            cell.addDogImage.image = image
-            cell.nameLabel.text = "Add"
+            cell.addDogImage.setImage(UIImage(), for: .normal)
+            
+            cell.addDogImage.titleLabel?.font = UIFont.fontAwesome(ofSize: 30, style: .solid)
+            cell.addDogImage.setTitle(String.fontAwesomeIcon(name: .dog), for: .normal)
+            
+            cell.nameLabel.text = "All"
             cell.nameLabel.font = UIFont(name: dsHeaderFont, size: 16)
             cell.nameLabel.textColor = coreOrangeColor
             
         default:
             
-            let feeder = self.doggyProfileDataSource[indexPath.item + 1]
+            let feeder = self.doggyProfileDataSource[indexPath.item]
             let profileImage = feeder.dog_builder_profile_url ?? "nil"
             let dogsName = feeder.dog_builder_name ?? ""
+            
             cell.nameLabel.text = dogsName
             cell.nameLabel.font = UIFont(name: dsHeaderFont, size: 16)
             cell.nameLabel.textColor = coreBlackColor
 
-            cell.addDogImage.loadImageGeneralUse(profileImage) { isComplete in
-                print("image loaded")
+            let imageView = UIImageView()
+            imageView.loadImageGeneralUse(profileImage) { complete in
+                cell.addDogImage.setImage(imageView.image, for: .normal)
             }
         }
         
         return cell
     }
     
-    @objc func handleAddDog(sender : UIImageView) {
+    @objc func handleAddDog(sender : UIButton) {
         
         let selectedButtonCell = sender.superview as! UICollectionViewCell
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
-       
-        let lastIndex = self.doggyProfileDataSource.count - 1
+        print(indexPath)
 
-        switch indexPath.item {
-        
-        case lastIndex :
-            
-            self.dashMainView?.dashboardController?.handleNewDogFlow()
-            
-        default:
-            
-            let feeder = self.doggyProfileDataSource[indexPath.item + 1]
-            guard let user_uid = Auth.auth().currentUser?.uid else {return}
-            let refKey = feeder.ref_key ?? "nil"
-            let parentKey = feeder.parent_key ?? "nil"
-            let dogName = feeder.dog_builder_name ?? "nil"
-            
-//            self.removeDoggyProfileAlert(passedDogName: dogName, refKey: refKey, parentKey: parentKey, userUID: user_uid)
-        }
-    }
-    
-    func removeDoggyProfileAlert(passedDogName : String, refKey : String, parentKey : String, userUID : String) {
-        
-        let alertController = UIAlertController(title: "Remove", message: "Would you like to remove \(passedDogName)?", preferredStyle: .actionSheet)
-        
-        let actionOne = UIAlertAction(title: "Ok", style: .default) { res in
-            self.removeDogProfile(passedDogName: passedDogName, refKey: refKey, parentKey: parentKey, userUID: userUID)
-        }
-        
-        let actionTwo = UIAlertAction(title: "Cancel", style: .destructive) { res in
-            
-        }
-        
-        alertController.addAction(actionOne)
-        alertController.addAction(actionTwo)
-        
-        self.dashMainView?.dashboardController?.present(alertController, animated: true, completion: nil)
-        
-    }
-    
-    func removeDogProfile(passedDogName : String, refKey : String, parentKey : String, userUID : String) {
-        
-        let path = self.databaseRef.child("doggy_profile_builder").child(userUID).child(refKey)
-
-        path.removeValue { error, ref in
-            
-            if error != nil {
-                print("ERROR: ", error?.localizedDescription as Any)
-                return
-            }
-            print("Success")
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -150,25 +107,24 @@ class RegisteredPetCollection : UICollectionView, UICollectionViewDelegateFlowLa
     }
 }
 
-class PetCollectionFeeder : UICollectionViewCell {
+class PetAppointmentsFeeder : UICollectionViewCell {
     
-    var registeredPetCollection : RegisteredPetCollection?
+    var petAppointmentsCollection : PetAppointmentsCollection?
     
-    lazy var addDogImage : UIImageView = {
+    lazy var addDogImage : UIButton = {
         
-        let vi = UIImageView()
+        let vi = UIButton()
         vi.translatesAutoresizingMaskIntoConstraints = false
         vi.backgroundColor = .clear
         vi.contentMode = .scaleAspectFill
         vi.isUserInteractionEnabled = true
-        let image = UIImage(named: "add_dog_logo_image")?.withRenderingMode(.alwaysOriginal)
-        vi.image = image
         vi.layer.masksToBounds = true
         vi.layer.cornerRadius = 40
-        vi.backgroundColor = coreOrangeColor.withAlphaComponent(0.1)
-        vi.layer.borderWidth = 2
-        vi.layer.borderColor = coreWhiteColor.cgColor
-        vi.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleAddDog(sender:))))
+        vi.backgroundColor = coreOrangeColor
+        vi.tintColor = coreWhiteColor
+        vi.layer.borderWidth = 1
+        vi.layer.borderColor = coreOrangeColor.cgColor
+        vi.addTarget(self, action: #selector(self.handleAddDog(sender:)), for: .touchUpInside)
         
        return vi
     }()
@@ -213,13 +169,8 @@ class PetCollectionFeeder : UICollectionViewCell {
         
     }
     
-    @objc func handleAddDog(sender : UITapGestureRecognizer) {
-        
-        if let tappableArea = sender.view as? UIImageView {
-            
-            self.registeredPetCollection?.handleAddDog(sender:tappableArea)
-            
-        }
+    @objc func handleAddDog(sender : UIButton) {
+        self.petAppointmentsCollection?.handleAddDog(sender: sender)
     }
     
     required init?(coder: NSCoder) {

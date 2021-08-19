@@ -13,7 +13,6 @@ import SDWebImage
 
 final class DashboardViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    
     var observingRefOne = Database.database().reference(),
         handleOne = DatabaseHandle(),
         childCounter : Int = 0,
@@ -246,15 +245,15 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         self.dashMainView.isHidden = true
         self.todaysDashView.isHidden = true
         
+        globalPetDataSource.removeAll()
+        
         self.observingRefOne.removeObserver(withHandle: self.handleOne)
         self.childCounter = 0
         
-//        self.dashMainView.mainDashCollectionView.doggyProfileDataSource.removeAll()
         self.dashMainView.registeredPetCollection.doggyProfileDataSource.removeAll()
         self.doggyProfileDataSource.removeAll()
 
         DispatchQueue.main.async {
-//            self.dashMainView.mainDashCollectionView.reloadData()
             self.dashMainView.registeredPetCollection.reloadData()
         }
     }
@@ -269,16 +268,15 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         self.observingRefOne.removeObserver(withHandle: self.handleOne)
         self.childCounter = 0
         
-//        self.dashMainView.mainDashCollectionView.doggyProfileDataSource = self.doggyProfileDataSource
-        
         var datasourceReplica = self.doggyProfileDataSource
+        globalPetDataSource = self.doggyProfileDataSource
+
         let post = DoggyProfileDataSource(json: ["dog":"dog"])
         datasourceReplica.insert(post, at: 0)
         
         self.dashMainView.registeredPetCollection.doggyProfileDataSource = datasourceReplica
         
         DispatchQueue.main.async {
-//            self.dashMainView.mainDashCollectionView.reloadData()
             self.dashMainView.registeredPetCollection.reloadData()
         }
     }
@@ -379,6 +377,10 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
             self.navigationController?.present(navigationController, animated: true, completion: nil)
             
         }
+    }
+    
+    @objc func presentAppointmentsController() {
+        self.homeController?.presentBookingController()
     }
     
     @objc private func didTapRefur() {

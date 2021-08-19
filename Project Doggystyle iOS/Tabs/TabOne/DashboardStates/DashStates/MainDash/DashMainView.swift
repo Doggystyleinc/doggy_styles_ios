@@ -123,8 +123,7 @@ class DashMainView : UIView {
     }
     
     @objc func handleBookingController() {
-        
-        self.dashboardController?.homeController?.presentBookingController()
+        self.dashboardController?.presentAppointmentsController()
     }
    
     required init?(coder: NSCoder) {

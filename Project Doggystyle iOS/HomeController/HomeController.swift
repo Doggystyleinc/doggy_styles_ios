@@ -126,9 +126,9 @@ extension HomeViewController {
     }
     
     func presentBookingController() {
-        print("two")
 
         let bookingController = AppointmentOne()
+        bookingController.doggyProfileDataSource = globalPetDataSource
         let nav = UINavigationController(rootViewController: bookingController)
         nav.modalPresentationStyle = .fullScreen
         self.navigationController?.present(nav, animated: true, completion: nil)
