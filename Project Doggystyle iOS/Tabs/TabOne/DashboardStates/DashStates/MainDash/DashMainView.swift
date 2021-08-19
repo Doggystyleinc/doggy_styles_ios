@@ -78,6 +78,7 @@ class DashMainView : UIView {
 
         //Set the attributed text for the button
         cbf.setAttributedTitle(attributedStr, for: .normal)
+        cbf.addTarget(self, action: #selector(self.handleBookingController), for: .touchUpInside)
         
         return cbf
         
@@ -121,6 +122,11 @@ class DashMainView : UIView {
         
     }
     
+    @objc func handleBookingController() {
+        
+        self.dashboardController?.homeController?.presentBookingController()
+    }
+   
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

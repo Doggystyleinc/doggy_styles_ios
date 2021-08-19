@@ -13,6 +13,7 @@ final class HomeViewController: UITabBarController {
     private let dashboardController = DashboardViewController()
     private let appointmentController = AppointmentsViewController()
     private let profileController = ProfileController()
+    private let servicesController = ServicesController()
     let storageRef = Storage.storage().reference()
     let databaseRef = Database.database().reference()
 
@@ -55,7 +56,8 @@ extension HomeViewController {
         let tabTwoIcon = UIImage(named: "Services Icon")?.withTintColor(.deselectedTab).withRenderingMode(.alwaysOriginal)
         let tabTwoFillIcon = UIImage(named: "Services Icon")?.withTintColor(.dsOrange).withRenderingMode(.alwaysOriginal)
         
-        let tabTwo = UINavigationController(rootViewController: ServicesController())
+        let tabTwo = UINavigationController(rootViewController: servicesController)
+        servicesController.homeController = self
         tabTwo.navigationBar.isHidden = true
         tabTwo.tabBarItem = UITabBarItem(title: nil, image: tabTwoIcon, selectedImage: tabTwoFillIcon)
         
@@ -121,5 +123,14 @@ extension HomeViewController {
                 }
             })
         }
+    }
+    
+    func presentBookingController() {
+        print("two")
+
+        let bookingController = AppointmentOne()
+        let nav = UINavigationController(rootViewController: bookingController)
+        nav.modalPresentationStyle = .fullScreen
+        self.navigationController?.present(nav, animated: true, completion: nil)
     }
 }

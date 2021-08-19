@@ -85,6 +85,7 @@ final class ServicesController: UIViewController {
 
         //Set the attributed text for the button
         cbf.setAttributedTitle(attributedStr, for: .normal)
+        cbf.addTarget(self, action: #selector(self.handleBookingController), for: .touchUpInside)
         
         return cbf
         
@@ -126,5 +127,11 @@ final class ServicesController: UIViewController {
         self.bookNowButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.bookNowButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
+    }
+    
+    @objc func handleBookingController() {
+        print("ONE")
+        
+        self.homeController?.presentBookingController()
     }
 }

@@ -375,8 +375,6 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         self.dogBreedJson = self.dogBreedJsonGrabber.dogBreedJSON
         
-//        self.breedTextField.setUpImage(imageName: "magnifyingGlass", on: .left)
-        
         self.breedTextField.inputView = UIView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
