@@ -18,7 +18,7 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
 
     var doggyProfileDataSource = [DoggyProfileDataSource]()
     
-    let databaseRef = Database.database().reference()
+    var selectionIndexArray : [IndexPath] = [IndexPath]()
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -67,9 +67,9 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
         case firstIndex:
             
             cell.addDogImage.setImage(UIImage(), for: .normal)
-            
             cell.addDogImage.titleLabel?.font = UIFont.fontAwesome(ofSize: 30, style: .solid)
             cell.addDogImage.setTitle(String.fontAwesomeIcon(name: .dog), for: .normal)
+            cell.addDogImage.layer.borderColor = coreWhiteColor.cgColor
             
             cell.nameLabel.text = "All"
             cell.nameLabel.font = UIFont(name: dsHeaderFont, size: 16)
@@ -91,15 +91,69 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
             }
         }
         
+        
+        if !self.selectionIndexArray.contains(indexPath) {
+            cell.addDogImage.layer.borderColor = coreWhiteColor.cgColor
+        } else {
+            cell.addDogImage.layer.borderColor = coreOrangeColor.cgColor
+        }
+        
+        
         return cell
     }
     
+    var isAllSelected : Bool = false
+    
     @objc func handleAddDog(sender : UIButton) {
+        
+        UIDevice.vibrateLight()
         
         let selectedButtonCell = sender.superview as! UICollectionViewCell
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
-        print(indexPath)
+        
+        switch indexPath.item {
+        
+        case 0 :
+            
+            self.selectionIndexArray.removeAll()
+            
+            if self.isAllSelected == false {
+                self.isAllSelected = true
+            
+            for s in 0..<self.numberOfSections {
+                for i in 0..<self.numberOfItems(inSection: s) {
+                    
+                    let indexed = IndexPath(item: i, section: s)
+                    self.selectionIndexArray.append(indexed)
+                }
+            }
+                DispatchQueue.main.async {
+                    self.reloadItems(at: self.selectionIndexArray)
+                }
+            } else {
+                self.isAllSelected = false
+                DispatchQueue.main.async {
+                    self.reloadData()
+                }
+            }
 
+        default :
+            
+            if !self.selectionIndexArray.contains(indexPath) {
+                self.selectionIndexArray.append(indexPath)
+                
+            } else if self.selectionIndexArray.contains(indexPath) {
+                
+                if let index = self.selectionIndexArray.firstIndex(of: indexPath) {
+                self.selectionIndexArray.remove(at: index)
+                    
+                }
+            }
+            
+            DispatchQueue.main.async {
+                self.reloadData()
+            }
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -122,7 +176,7 @@ class PetAppointmentsFeeder : UICollectionViewCell {
         vi.layer.cornerRadius = 40
         vi.backgroundColor = coreOrangeColor
         vi.tintColor = coreWhiteColor
-        vi.layer.borderWidth = 1
+        vi.layer.borderWidth = 2
         vi.layer.borderColor = coreOrangeColor.cgColor
         vi.addTarget(self, action: #selector(self.handleAddDog(sender:)), for: .touchUpInside)
         
@@ -134,7 +188,6 @@ class PetAppointmentsFeeder : UICollectionViewCell {
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
-        hl.text = "Add"
         hl.font = UIFont(name: dsHeaderFont, size: 16)
         hl.numberOfLines = 1
         hl.adjustsFontSizeToFitWidth = true

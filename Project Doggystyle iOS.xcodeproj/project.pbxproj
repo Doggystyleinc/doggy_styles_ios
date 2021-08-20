@@ -135,6 +135,7 @@
 		E361FBF726CEEEBE00026DE3 /* BreedHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBF626CEEEBE00026DE3 /* BreedHelper.swift */; };
 		E361FBFA26CEF51800026DE3 /* AppointmentOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBF926CEF51800026DE3 /* AppointmentOne.swift */; };
 		E361FBFC26CF078100026DE3 /* PetsApointmentCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */; };
+		E361FBFF26D0182B00026DE3 /* SelectServicesCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBFE26D0182B00026DE3 /* SelectServicesCollection.swift */; };
 		E369559C26CAEC1500806D73 /* ServicesCollectionSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E369559B26CAEC1500806D73 /* ServicesCollectionSubview.swift */; };
 		E36EE54626B7036B0009A0EF /* NewDogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE54526B7036B0009A0EF /* NewDogEntry.swift */; };
 		E36EE54826B778CE0009A0EF /* EmptyStateTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE54726B778CE0009A0EF /* EmptyStateTwo.swift */; };
@@ -335,6 +336,7 @@
 		E361FBF626CEEEBE00026DE3 /* BreedHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedHelper.swift; sourceTree = "<group>"; };
 		E361FBF926CEF51800026DE3 /* AppointmentOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentOne.swift; sourceTree = "<group>"; };
 		E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetsApointmentCollection.swift; sourceTree = "<group>"; };
+		E361FBFE26D0182B00026DE3 /* SelectServicesCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectServicesCollection.swift; sourceTree = "<group>"; };
 		E369559B26CAEC1500806D73 /* ServicesCollectionSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesCollectionSubview.swift; sourceTree = "<group>"; };
 		E36EE54526B7036B0009A0EF /* NewDogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogEntry.swift; sourceTree = "<group>"; };
 		E36EE54726B778CE0009A0EF /* EmptyStateTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateTwo.swift; sourceTree = "<group>"; };
@@ -833,10 +835,19 @@
 		E361FBF826CEF4FE00026DE3 /* Booking */ = {
 			isa = PBXGroup;
 			children = (
-				E361FBF926CEF51800026DE3 /* AppointmentOne.swift */,
-				E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */,
+				E361FBFD26D0180500026DE3 /* AppointmentOneControllers */,
 			);
 			path = Booking;
+			sourceTree = "<group>";
+		};
+		E361FBFD26D0180500026DE3 /* AppointmentOneControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E361FBF926CEF51800026DE3 /* AppointmentOne.swift */,
+				E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */,
+				E361FBFE26D0182B00026DE3 /* SelectServicesCollection.swift */,
+			);
+			path = AppointmentOneControllers;
 			sourceTree = "<group>";
 		};
 		E369559926CAE8DD00806D73 /* TabTwo */ = {
@@ -1399,6 +1410,7 @@
 				CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */,
 				E3107F8626961A6B00CDBB37 /* MainLoadingScreen.swift in Sources */,
 				E38B7FD526C453130013D72D /* BorderSingleton.swift in Sources */,
+				E361FBFF26D0182B00026DE3 /* SelectServicesCollection.swift in Sources */,
 				E38B7FE226C5A1F80013D72D /* DogTreatHelper.swift in Sources */,
 				E36EE56A26B872790009A0EF /* YourNotificationsController.swift in Sources */,
 				CD319F782679435900F48E3C /* DSNavButton.swift in Sources */,

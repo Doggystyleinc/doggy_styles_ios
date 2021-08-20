@@ -115,6 +115,29 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
        return rpc
     }()
     
+    lazy var selectServicesCollection : SelectServicesCollection = {
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        let rpc = SelectServicesCollection(frame: .zero, collectionViewLayout: layout)
+        rpc.appointmentOne = self
+        
+       return rpc
+    }()
+    
+    let selectServicesLabel : UILabel = {
+        
+        let nl = UILabel()
+        nl.translatesAutoresizingMaskIntoConstraints = false
+        nl.backgroundColor = .clear
+        nl.text = "Select Service"
+        nl.font = UIFont(name: dsHeaderFont, size: 24)
+        nl.textColor = coreBlackColor
+        nl.textAlignment = .left
+        nl.adjustsFontSizeToFitWidth = true
+        
+       return nl
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -138,6 +161,8 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.view.addSubview(self.headerContainer)
         self.view.addSubview(self.cancelButton)
         self.view.addSubview(self.basicDetailsLabel)
+        self.view.addSubview(self.selectServicesLabel)
+        self.view.addSubview(self.selectServicesCollection)
 
         self.view.addSubview(timeCover)
         
@@ -180,6 +205,16 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.petAppointmentCollection.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         self.petAppointmentCollection.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.petAppointmentCollection.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        
+        self.selectServicesLabel.topAnchor.constraint(equalTo: self.petAppointmentCollection.bottomAnchor, constant: 30).isActive = true
+        self.selectServicesLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.selectServicesLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.selectServicesLabel.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        
+        self.selectServicesCollection.topAnchor.constraint(equalTo: self.selectServicesLabel.bottomAnchor, constant: 25).isActive = true
+        self.selectServicesCollection.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.selectServicesCollection.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.selectServicesCollection.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         
     }
     

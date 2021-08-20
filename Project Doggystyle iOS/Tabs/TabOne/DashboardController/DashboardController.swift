@@ -62,7 +62,7 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         dcl.clipsToBounds = false
         dcl.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
         dcl.setTitle(String.fontAwesomeIcon(name: .bell), for: .normal)
-        dcl.tintColor = dividerGrey
+        dcl.tintColor = dsGreyMedium.withAlphaComponent(0.5)
         dcl.addTarget(self, action: #selector(self.handleNotificationsController), for: .touchUpInside)
         
         return dcl
