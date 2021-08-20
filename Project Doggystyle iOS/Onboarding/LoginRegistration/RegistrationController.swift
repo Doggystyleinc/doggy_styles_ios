@@ -9,9 +9,15 @@ import UIKit
 import PhoneNumberKit
 
 extension UIScrollView {
+    
     func scrollToTop() {
         let desiredOffset = CGPoint(x: 0, y: -contentInset.top)
         setContentOffset(desiredOffset, animated: true)
+    }
+    
+    func scrollToBottom() {
+        let bottomOffset = CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height)
+        self.setContentOffset(bottomOffset, animated: true)
     }
 }
 

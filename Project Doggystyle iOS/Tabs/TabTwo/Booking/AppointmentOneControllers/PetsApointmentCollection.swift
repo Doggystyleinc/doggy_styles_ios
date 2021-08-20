@@ -91,7 +91,6 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
             }
         }
         
-        
         if !self.selectionIndexArray.contains(indexPath) {
             cell.addDogImage.layer.borderColor = coreWhiteColor.cgColor
         } else {

@@ -102,8 +102,10 @@ class SelectServicesCollection : UICollectionView, UICollectionViewDelegateFlowL
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
         
         let feeder = Packageable.allCases[indexPath.item].description
-        
         print("\(feeder.0) : \(feeder.1) : \(feeder.2)")
+        
+        let packageSelection = feeder.1
+        self.appointmentOne?.handlePackageSelection(packageSelection : packageSelection)
 
     }
     

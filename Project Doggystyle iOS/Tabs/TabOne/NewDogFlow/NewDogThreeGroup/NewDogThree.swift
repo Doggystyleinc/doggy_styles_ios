@@ -36,7 +36,6 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         
     }()
     
-    
     lazy var scrollView : UIScrollView = {
         
         let sv = UIScrollView()
