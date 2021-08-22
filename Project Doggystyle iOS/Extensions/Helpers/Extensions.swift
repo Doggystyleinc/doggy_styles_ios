@@ -51,7 +51,7 @@ var friends_array_phone_number = [String](),
     dsTransparentOrange = UIColor(hex: 0xF7EAE3),
     dsGreyMedium = UIColor(hex: 0x7D7D7D),
     circleGrey = UIColor(hex: 0xE2E1E1),
-
+    dsRedColor = UIColor(hex: 0x90241E),
     
     globalStatusBarHeight : CGFloat = 0.0,
     globalFooterHeight : CGFloat = 0.0,

@@ -1,54 +1,51 @@
 //
-//  ServicesCollectionSubview.swift
+//  SelectCustomServices.swift
 //  Project Doggystyle iOS
 //
-//  Created by Charlie Arcodia on 8/16/21.
+//  Created by Charlie Arcodia on 8/22/21.
 //
-
 
 import Foundation
 import UIKit
 
-public enum Servicable : String, CaseIterable {
+
+public enum CustomPackageable : String, CaseIterable {
     
-    case washAndGroom
+    case bath
     case dematting
     case deshedding
-    case bath
     case hairCut
     case teethCleaning
     case nailTrimming
     case earCleaning
     
-    var description: (String, String, String) {
+    var description: (String, String) {
         
             switch self {
             
-            case .washAndGroom: return ("Wash & Groom", "$149", "Our Groomz packages include everything your pup needs to feel oh so clean clean and refreshed. Our goal is to give your doggy the ultimate pampered experience the Doggystyle way. Custom packages also available. Includes: Bath with premium shampoo and conditioner, cut, teeth cleaning, nail trimming, and ear cleaning.")
-                
-            case .dematting: return ("Dematting", "$30", "Standing by for descriptions.")
-                
-            case .deshedding: return ("Deshedding", "$20", "Standing by for descriptions.")
-                
-            case .bath: return ("Bath", "$40", "Standing by for descriptions.")
-                
-            case .hairCut: return ("Haircut", "$50", "Standing by for descriptions.")
-                
-            case .teethCleaning: return ("Teeth Cleaning", "$20", "Standing by for descriptions.")
-                
-            case .nailTrimming: return ("Nail Trimming", "$20", "Standing by for descriptions.")
-                
-            case .earCleaning: return ("Ear Cleaning", "$20", "Standing by for descriptions.")
+            case .bath: return ("Bath*", "$149")
+
+            case .dematting: return ("Dematting", "$30")
+
+            case .deshedding: return ("Deshedding", "$20")
+
+            case .hairCut: return ("Haircut", "$50")
+
+            case .teethCleaning: return ("Teeth Cleaning", "$20")
+
+            case .nailTrimming: return ("Nail Trimming", "$20")
+
+            case .earCleaning: return ("Ear Cleaning", "$20")
 
             }
         }
     }
 
-class ServicesCollectionview : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
+class CustomServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
-    private let servicesID = "servicesID"
+    private let dropCustomServices = "dropCustomServices"
     
-    var servicesController : ServicesController?
+    var appointmentOne : AppointmentOne?
     
     var arrayOfIndexPaths = [IndexPath]()
     
@@ -59,9 +56,10 @@ class ServicesCollectionview : UICollectionView, UICollectionViewDelegateFlowLay
         self.translatesAutoresizingMaskIntoConstraints = false
         self.dataSource = self
         self.delegate = self
+        
         self.isPrefetchingEnabled = false
         self.keyboardDismissMode = UIScrollView.KeyboardDismissMode.interactive
-        self.alwaysBounceVertical = true
+        self.alwaysBounceVertical = false
         self.alwaysBounceHorizontal = false
         self.showsVerticalScrollIndicator = false
         self.showsHorizontalScrollIndicator = false
@@ -69,112 +67,87 @@ class ServicesCollectionview : UICollectionView, UICollectionViewDelegateFlowLay
         self.canCancelContentTouches = false
         self.contentInsetAdjustmentBehavior = .never
         self.delaysContentTouches = true
-        self.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 110, right: 0)
+        self.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
         
-        self.register(ServicesFeeder.self, forCellWithReuseIdentifier: self.servicesID)
+        self.register(CustomServicesDropDownFeeder.self, forCellWithReuseIdentifier: self.dropCustomServices)
 
         
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return Servicable.allCases.count
+        return CustomPackageable.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let currentIndex = indexPath
-        
-        if self.arrayOfIndexPaths.contains(currentIndex) {
-            
-        let feeder = Servicable.allCases[indexPath.item]
-    
-        let serviceDescription = feeder.description.2
-        
-        let textToSize = serviceDescription,
-        size = CGSize(width: UIScreen.main.bounds.width - 110, height: 2000),
-        options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        return CGSize(width: UIScreen.main.bounds.width, height: 90.0)
 
-        let estimatedFrame = NSString(string: textToSize).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font : UIFont(name: rubikItalic, size: 14)!], context: nil)
-        
-            var estimatedHeight = estimatedFrame.height
-            
-            if estimatedHeight < 35 {
-                estimatedHeight = 90 + 70 + 25
-            } else {
-                estimatedHeight += 140 + 25
-            }
-            
-            return CGSize(width: UIScreen.main.bounds.width, height: estimatedHeight)
-        
-        } else {
-            
-            return CGSize(width: UIScreen.main.bounds.width, height: 90.0)
-            
-        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        let cell = self.dequeueReusableCell(withReuseIdentifier: self.servicesID, for: indexPath) as! ServicesFeeder
+        let cell = self.dequeueReusableCell(withReuseIdentifier: self.dropCustomServices, for: indexPath) as! CustomServicesDropDownFeeder
 
-            cell.servicesCollectionview = self
-        
-            let feeder = Servicable.allCases[indexPath.item]
-        
-            let serviceName = feeder.description.0
-            let serviceCost = feeder.description.1
-            let serviceDescription = feeder.description.2
+        cell.customServicesDropDownCollection = self
+    
+        let feeder = CustomPackageable.allCases[indexPath.item]
+    
+        let serviceName = feeder.description.0
+        let serviceCost = feeder.description.1
 
-            cell.headerLabel.text = "\(serviceName)"
-            cell.costLabel.text = "\(serviceCost)"
-            cell.descriptionLabel.text = "\(serviceDescription)"
+        cell.headerLabel.text = "\(serviceName)"
+        cell.costLabel.text = "\(serviceCost)"
         
         if self.arrayOfIndexPaths.contains(indexPath) {
             
-            cell.descriptionLabel.isHidden = false
-            cell.bottomArrow.isHidden = false
             cell.engageShadow(shouldEngage: true)
             
         } else {
             
-            cell.descriptionLabel.isHidden = true
-            cell.bottomArrow.isHidden = true
+            if serviceName != "Bath*" {
             cell.engageShadow(shouldEngage: false)
+            }
         }
-        
+    
         switch serviceName {
         
-        case "Wash & Groom" :
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .shower), for: .normal)
+        case "Bath*" :
+            cell.iconImageView.isHidden = true
             cell.engageShadow(shouldEngage: true)
             cell.costLabel.text = "-"
         case "Dematting" :
+            cell.iconImageView.isHidden = false
             cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .rulerCombined), for: .normal)
         case "Deshedding" :
+            cell.iconImageView.isHidden = false
             cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .chair), for: .normal)
         case "Bath" :
+            cell.iconImageView.isHidden = false
             cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .bath), for: .normal)
         case "Haircut" :
+            cell.iconImageView.isHidden = false
             cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .handScissors), for: .normal)
         case "Teeth Cleaning" :
+            cell.iconImageView.isHidden = false
             cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .tooth), for: .normal)
         case "Nail Trimming" :
+            cell.iconImageView.isHidden = false
             cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .journalWhills), for: .normal)
         case "Ear Cleaning" :
+            cell.iconImageView.isHidden = false
             cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .ambulance), for: .normal)
         default: print("default")
         
         }
-        
+
             return cell
     }
     
@@ -211,7 +184,7 @@ class ServicesCollectionview : UICollectionView, UICollectionViewDelegateFlowLay
             UIView.animate(withDuration: 0.25) {
                 
                 self.reloadItems(at: [indexPath])
-                self.servicesController?.view.layoutIfNeeded()
+                self.appointmentOne?.view.layoutIfNeeded()
                 
             }
         }
@@ -222,9 +195,9 @@ class ServicesCollectionview : UICollectionView, UICollectionViewDelegateFlowLay
     }
 }
 
-class ServicesFeeder : UICollectionViewCell {
+class CustomServicesDropDownFeeder : UICollectionViewCell {
     
-    var servicesCollectionview : ServicesCollectionview?
+    var customServicesDropDownCollection : CustomServicesDropDownCollection?
     
     lazy var mainContainer : UIView = {
         
@@ -254,7 +227,7 @@ class ServicesFeeder : UICollectionViewCell {
   
     let iconImageView : UIButton = {
         
-        let iv = UIButton(type : .system)
+        let iv = UIButton(type: .system)
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.backgroundColor = dividerGrey
         iv.contentMode = .scaleAspectFill
@@ -271,7 +244,7 @@ class ServicesFeeder : UICollectionViewCell {
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
-        hl.text = "Wash & groom"
+        hl.text = ""
         hl.font = UIFont(name: rubikMedium, size: 18)
         hl.numberOfLines = 1
         hl.adjustsFontSizeToFitWidth = true
@@ -286,7 +259,7 @@ class ServicesFeeder : UICollectionViewCell {
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
-        hl.text = "$149"
+        hl.text = ""
         hl.font = UIFont(name: rubikRegular, size: 16)
         hl.numberOfLines = 1
         hl.adjustsFontSizeToFitWidth = true
@@ -294,33 +267,6 @@ class ServicesFeeder : UICollectionViewCell {
         hl.isUserInteractionEnabled = false
 
         return hl
-    }()
-    
-    let descriptionLabel : UILabel = {
-        
-        let hl = UILabel()
-        hl.translatesAutoresizingMaskIntoConstraints = false
-        hl.backgroundColor = coreWhiteColor
-        hl.text = "this is the description here"
-        hl.font = UIFont(name: rubikItalic, size: 14)
-        hl.numberOfLines = -1
-        hl.textAlignment = .left
-
-        return hl
-    }()
-    
-    let bottomArrow : UIButton = {
-        
-        let ba = UIButton(type: .system)
-        ba.translatesAutoresizingMaskIntoConstraints = false
-        ba.contentMode = .scaleAspectFill
-        ba.backgroundColor = .clear
-        ba.isUserInteractionEnabled = false
-        ba.titleLabel?.font = UIFont.fontAwesome(ofSize: 21, style: .solid)
-        ba.setTitle(String.fontAwesomeIcon(name: .chevronUp), for: .normal)
-        ba.tintColor = coreOrangeColor
-        
-       return ba
     }()
     
     override init(frame: CGRect) {
@@ -348,9 +294,7 @@ class ServicesFeeder : UICollectionViewCell {
         self.addSubview(self.iconImageView)
         self.addSubview(self.headerLabel)
         self.addSubview(self.costLabel)
-        self.mainContainer.addSubview(self.descriptionLabel)
-        self.mainContainer.addSubview(self.bottomArrow)
-
+        
         self.mainContainer.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive = true
         self.mainContainer.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.mainContainer.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
@@ -370,23 +314,13 @@ class ServicesFeeder : UICollectionViewCell {
         self.headerLabel.rightAnchor.constraint(equalTo: self.costLabel.leftAnchor, constant: -10).isActive = true
         self.headerLabel.centerYAnchor.constraint(equalTo: self.iconImageView.centerYAnchor).isActive = true
         self.headerLabel.bottomAnchor.constraint(equalTo: self.mainContainer.bottomAnchor).isActive = true
-        
-        self.descriptionLabel.topAnchor.constraint(equalTo: self.mainContainer.topAnchor, constant: 80).isActive = true
-        self.descriptionLabel.leftAnchor.constraint(equalTo: self.mainContainer.leftAnchor, constant: 25).isActive = true
-        self.descriptionLabel.rightAnchor.constraint(equalTo: self.mainContainer.rightAnchor, constant: -25).isActive = true
-        self.descriptionLabel.bottomAnchor.constraint(equalTo: self.mainContainer.bottomAnchor, constant: -55).isActive = true
-        
-        self.bottomArrow.centerXAnchor.constraint(equalTo: self.mainContainer.centerXAnchor, constant: 0).isActive = true
-        self.bottomArrow.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        self.bottomArrow.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        self.bottomArrow.bottomAnchor.constraint(equalTo: self.mainContainer.bottomAnchor, constant: -10).isActive = true
 
     }
     
     @objc func handleMainContainerTaps(sender : UITapGestureRecognizer) {
         
         if let tappableArea = sender.view {
-            self.servicesCollectionview?.handleSelection(sender:tappableArea)
+            self.customServicesDropDownCollection?.handleSelection(sender: tappableArea)
         }
     }
     

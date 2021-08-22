@@ -66,14 +66,32 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
         
         case firstIndex:
             
+            if self.isAllSelected == true {
+                
             cell.addDogImage.setImage(UIImage(), for: .normal)
             cell.addDogImage.titleLabel?.font = UIFont.fontAwesome(ofSize: 30, style: .solid)
             cell.addDogImage.setTitle(String.fontAwesomeIcon(name: .dog), for: .normal)
             cell.addDogImage.layer.borderColor = coreWhiteColor.cgColor
+            cell.addDogImage.backgroundColor = coreOrangeColor
+            cell.addDogImage.tintColor = coreOrangeColor
+            cell.addDogImage.setTitleColor(coreWhiteColor, for: .normal)
+
+            } else {
+                
+            cell.addDogImage.setImage(UIImage(), for: .normal)
+            cell.addDogImage.titleLabel?.font = UIFont.fontAwesome(ofSize: 30, style: .solid)
+            cell.addDogImage.setTitle(String.fontAwesomeIcon(name: .dog), for: .normal)
+            cell.addDogImage.setTitleColor(coreOrangeColor, for: .normal)
+            cell.addDogImage.layer.borderColor = coreWhiteColor.cgColor
+            cell.addDogImage.backgroundColor = coreOrangeColor.withAlphaComponent(0.1)
+            cell.addDogImage.tintColor = coreOrangeColor
+               
+            }
             
             cell.nameLabel.text = "All"
             cell.nameLabel.font = UIFont(name: dsHeaderFont, size: 16)
             cell.nameLabel.textColor = coreOrangeColor
+            
             
         default:
             

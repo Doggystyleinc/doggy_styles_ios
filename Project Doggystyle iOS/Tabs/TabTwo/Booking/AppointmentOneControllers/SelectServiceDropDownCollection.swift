@@ -10,6 +10,24 @@ import Foundation
 import UIKit
 
 
+public enum FullPackageable : String, CaseIterable {
+    
+    case dematting
+    case deshedding
+ 
+    var description: (String, String) {
+        
+            switch self {
+           
+            case .dematting: return ("Dematting", "$30")
+                
+            case .deshedding: return ("Deshedding", "$20")
+
+            }
+        }
+    }
+
+
 class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
     private let dropServices = "dropServices"
@@ -45,7 +63,7 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return Servicable.allCases.count
+        return FullPackageable.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -60,7 +78,7 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
 
         cell.servicesDropDownCollection = self
     
-        let feeder = Servicable.allCases[indexPath.item]
+        let feeder = FullPackageable.allCases[indexPath.item]
     
         let serviceName = feeder.description.0
         let serviceCost = feeder.description.1
@@ -74,43 +92,22 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
             
         } else {
             
-            if serviceName != "Wash & Groom" {
+//            if serviceName != "Wash & Groom" {
             cell.engageShadow(shouldEngage: false)
-            }
+//            }
         }
     
         switch serviceName {
         
-        case "Wash & Groom" :
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .shower), for: .normal)
-            cell.engageShadow(shouldEngage: true)
-            cell.costLabel.text = "-"
         case "Dematting" :
             cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .rulerCombined), for: .normal)
         case "Deshedding" :
             cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .chair), for: .normal)
-        case "Bath" :
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .bath), for: .normal)
-        case "Haircut" :
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .handScissors), for: .normal)
-        case "Teeth Cleaning" :
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .tooth), for: .normal)
-        case "Nail Trimming" :
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .journalWhills), for: .normal)
-        case "Ear Cleaning" :
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .ambulance), for: .normal)
         default: print("default")
         
         }
-      
 
             return cell
     }

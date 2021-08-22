@@ -185,6 +185,8 @@
 		E38B7FEB26C5A4590013D72D /* NewDogTreatCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FEA26C5A4590013D72D /* NewDogTreatCollection.swift */; };
 		E38B7FED26C5AF4E0013D72D /* NewDogFoodSearchSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FEC26C5AF4E0013D72D /* NewDogFoodSearchSubview.swift */; };
 		E38B7FEF26C5AF5E0013D72D /* NewDogFoodCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FEE26C5AF5E0013D72D /* NewDogFoodCollection.swift */; };
+		E397405826D2DCE50084742F /* SelectCustomServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E397405726D2DCE50084742F /* SelectCustomServices.swift */; };
+		E397405B26D2E27F0084742F /* AppointmentTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E397405A26D2E27F0084742F /* AppointmentTwo.swift */; };
 		E39C664F26A899F0004A0E93 /* Rubik-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E39C664826A89942004A0E93 /* Rubik-Black.ttf */; };
 		E39C665026A899F0004A0E93 /* Rubik-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E39C664126A89940004A0E93 /* Rubik-BlackItalic.ttf */; };
 		E39C665126A899F0004A0E93 /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E39C664726A89941004A0E93 /* Rubik-Bold.ttf */; };
@@ -387,6 +389,8 @@
 		E38B7FEA26C5A4590013D72D /* NewDogTreatCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogTreatCollection.swift; sourceTree = "<group>"; };
 		E38B7FEC26C5AF4E0013D72D /* NewDogFoodSearchSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogFoodSearchSubview.swift; sourceTree = "<group>"; };
 		E38B7FEE26C5AF5E0013D72D /* NewDogFoodCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogFoodCollection.swift; sourceTree = "<group>"; };
+		E397405726D2DCE50084742F /* SelectCustomServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCustomServices.swift; sourceTree = "<group>"; };
+		E397405A26D2E27F0084742F /* AppointmentTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentTwo.swift; sourceTree = "<group>"; };
 		E39C664126A89940004A0E93 /* Rubik-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-BlackItalic.ttf"; sourceTree = "<group>"; };
 		E39C664226A89940004A0E93 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Regular.ttf"; sourceTree = "<group>"; };
 		E39C664326A89940004A0E93 /* Rubik-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
@@ -838,6 +842,7 @@
 			isa = PBXGroup;
 			children = (
 				E361FBFD26D0180500026DE3 /* AppointmentOneControllers */,
+				E397405926D2E26D0084742F /* AppointmentTwoControllers */,
 			);
 			path = Booking;
 			sourceTree = "<group>";
@@ -849,6 +854,7 @@
 				E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */,
 				E361FBFE26D0182B00026DE3 /* SelectServicesCollection.swift */,
 				E361FC0026D04CB700026DE3 /* SelectServiceDropDownCollection.swift */,
+				E397405726D2DCE50084742F /* SelectCustomServices.swift */,
 			);
 			path = AppointmentOneControllers;
 			sourceTree = "<group>";
@@ -940,6 +946,14 @@
 				E38B7FEE26C5AF5E0013D72D /* NewDogFoodCollection.swift */,
 			);
 			path = NewDogThreeGroup;
+			sourceTree = "<group>";
+		};
+		E397405926D2E26D0084742F /* AppointmentTwoControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E397405A26D2E27F0084742F /* AppointmentTwo.swift */,
+			);
+			path = AppointmentTwoControllers;
 			sourceTree = "<group>";
 		};
 		E39C662F26A88C37004A0E93 /* AppIcon */ = {
@@ -1390,6 +1404,7 @@
 				E36EE55626B77F8F0009A0EF /* DashMainView.swift in Sources */,
 				CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */,
 				CDE8711F2652E3030082551B /* Firebase+Ext.swift in Sources */,
+				E397405B26D2E27F0084742F /* AppointmentTwo.swift in Sources */,
 				E39FDE2126C1F7CF004C089D /* DashboardDatasource.swift in Sources */,
 				CD203BF72667D3B900335D93 /* PDFViewController.swift in Sources */,
 				CDCCD0B8265EB884007ABECF /* User.swift in Sources */,
@@ -1437,6 +1452,7 @@
 				CD6868842654373A0064ADFE /* UIButton+Ext.swift in Sources */,
 				CD6DD024268636DA00BC376B /* PinNumberEntryController.swift in Sources */,
 				CD6DD02226839ED600BC376B /* DSTextField.swift in Sources */,
+				E397405826D2DCE50084742F /* SelectCustomServices.swift in Sources */,
 				CD6DCFF6267A820700BC376B /* Pet.swift in Sources */,
 				CDE8711C2652E3030082551B /* TextField+Ext.swift in Sources */,
 				E36EE55B26B781050009A0EF /* RegisteredPetCollection.swift in Sources */,
@@ -1636,7 +1652,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.7;
+				CURRENT_PROJECT_VERSION = 1.0.8;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1657,7 +1673,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.7;
+				CURRENT_PROJECT_VERSION = 1.0.8;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

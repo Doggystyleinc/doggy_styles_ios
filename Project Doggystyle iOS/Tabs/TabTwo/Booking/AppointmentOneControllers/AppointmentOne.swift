@@ -121,6 +121,20 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         
     }()
     
+    lazy var xButton : UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.backgroundColor = .clear
+        cbf.contentMode = .scaleAspectFill
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
+        cbf.setTitle(String.fontAwesomeIcon(name: .times), for: .normal)
+        cbf.setTitleColor(dsRedColor, for: .normal)
+        cbf.addTarget(self, action: #selector(self.handleBackButton), for: UIControl.Event.touchUpInside)
+        return cbf
+        
+    }()
+    
     var headerContainer : UIView = {
         
         let hc = UIView()
@@ -156,6 +170,17 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let rpc = ServicesDropDownCollection(frame: .zero, collectionViewLayout: layout)
+        rpc.appointmentOne = self
+        rpc.isHidden = true
+        
+       return rpc
+    }()
+    
+    lazy var customServicesDropDownCollection : CustomServicesDropDownCollection = {
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        let rpc = CustomServicesDropDownCollection(frame: .zero, collectionViewLayout: layout)
         rpc.appointmentOne = self
         rpc.isHidden = true
         
@@ -362,6 +387,11 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.scrollView.keyboardDismissMode = .interactive
 
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.navigationController?.navigationBar.isHidden = true
+    }
 
     func addViews() {
         
@@ -376,6 +406,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         
         self.scrollView.addSubview(self.headerContainer)
         self.scrollView.addSubview(self.cancelButton)
+        self.scrollView.addSubview(self.xButton)
         self.scrollView.addSubview(self.basicDetailsLabel)
         self.scrollView.addSubview(self.selectServicesLabel)
         self.scrollView.addSubview(self.selectServicesCollection)
@@ -396,7 +427,8 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         
         self.scrollView.addSubview(addOnsLabel)
         self.scrollView.addSubview(servicesDropDownCollection)
-        
+        self.scrollView.addSubview(customServicesDropDownCollection)
+
         self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         self.scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
@@ -438,7 +470,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.headerBarFour.heightAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarFour.layer.cornerRadius = 4.5
         
-        self.headerContainer.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 0).isActive = true
+        self.headerContainer.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 25).isActive = true
         self.headerContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.headerContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.headerContainer.heightAnchor.constraint(equalToConstant: 100).isActive = true
@@ -447,6 +479,11 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.cancelButton.leftAnchor.constraint(equalTo: self.headerContainer.leftAnchor, constant: 11).isActive = true
         self.cancelButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
         self.cancelButton.widthAnchor.constraint(equalToConstant: 54).isActive = true
+        
+        self.xButton.centerYAnchor.constraint(equalTo: self.headerContainer.centerYAnchor, constant: -20).isActive = true
+        self.xButton.rightAnchor.constraint(equalTo: self.headerContainer.rightAnchor, constant: -11).isActive = true
+        self.xButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
+        self.xButton.widthAnchor.constraint(equalToConstant: 54).isActive = true
         
         self.basicDetailsLabel.topAnchor.constraint(equalTo: self.cancelButton.bottomAnchor, constant: 25).isActive = true
         self.basicDetailsLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
@@ -524,6 +561,11 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.servicesDropDownCollection.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.servicesDropDownCollection.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         
+        self.customServicesDropDownCollection.topAnchor.constraint(equalTo: self.addOnsLabel.bottomAnchor, constant: 20).isActive = true
+        self.customServicesDropDownCollection.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.customServicesDropDownCollection.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.customServicesDropDownCollection.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        
         self.nextButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -39).isActive = true
         self.nextButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.nextButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
@@ -557,6 +599,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.addOnsLabel.isHidden = false
         self.addOnsLabel.text = "Add Ons"
         self.servicesDropDownCollection.isHidden = false
+        self.customServicesDropDownCollection.isHidden = true
         self.nextButton.isHidden = false
         self.scrollView.scrollToBottom()
     }
@@ -570,6 +613,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.addOnsLabel.isHidden = false
         self.addOnsLabel.text = "Build Custom Service"
         self.servicesDropDownCollection.isHidden = true
+        self.customServicesDropDownCollection.isHidden = false
         self.nextButton.isHidden = false
         self.scrollView.scrollToBottom()
 
@@ -582,6 +626,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.selectServicesCollection.isHidden = false
         self.addOnsLabel.isHidden = true
         self.servicesDropDownCollection.isHidden = true
+        self.customServicesDropDownCollection.isHidden = true
         self.scrollView.isScrollEnabled = false
         self.scrollView.scrollToTop()
         self.nextButton.isHidden = true
@@ -602,7 +647,13 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         }
     
     @objc func handleNextButton() {
-        print("next")
+        
+        UIDevice.vibrateLight()
+
+        let appointmentTwo = AppointmentTwo()
+        appointmentTwo.modalPresentationStyle = .fullScreen
+        self.navigationController?.pushViewController(appointmentTwo, animated: true)
+        
     }
     
     @objc func handleBackButton() {
