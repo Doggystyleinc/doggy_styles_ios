@@ -263,17 +263,19 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
        return nl
     }()
     
-    let selectionContainerOne : UIView = {
+    lazy var selectionContainerOne : UIView = {
         
         let co = UIView()
         co.translatesAutoresizingMaskIntoConstraints = false
         co.backgroundColor = coreWhiteColor
         co.layer.masksToBounds = true
         co.layer.cornerRadius = 15
+        co.tag = 1
+        co.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleSelection(sender:))))
         
        return co
     }()
-    
+
     let selectionContainerTwo : UIView = {
         
         let co = UIView()
@@ -281,6 +283,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         co.backgroundColor = coreWhiteColor
         co.layer.masksToBounds = true
         co.layer.cornerRadius = 15
+        co.tag = 2
         
        return co
     }()
@@ -373,6 +376,16 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
        return nl
     }()
     
+    lazy var appointmentTwoContainer : AppointmentTwoContainer = {
+        
+        let atc = AppointmentTwoContainer()
+        atc.appointmentTwo = self
+        atc.isHidden = true
+       return atc
+        
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -420,6 +433,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         
         self.scrollView.addSubview(self.twoDateLabel)
         self.scrollView.addSubview(self.bottomDescriptionLevel)
+        self.scrollView.addSubview(self.appointmentTwoContainer)
 
         self.view.addSubview(timeCover)
 
@@ -556,6 +570,11 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         self.bottomDescriptionLevel.rightAnchor.constraint(equalTo: self.eightWeeksButton.rightAnchor, constant: 0).isActive = true
         self.bottomDescriptionLevel.sizeToFit()
         
+        self.appointmentTwoContainer.topAnchor.constraint(equalTo: self.basicDetailsLabel.bottomAnchor, constant: 30).isActive = true
+        self.appointmentTwoContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.appointmentTwoContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.appointmentTwoContainer.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        
     }
     
     @objc func handleGroomingFrequency(sender : UIButton) {
@@ -596,6 +615,13 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         }
     }
     
+    
+    @objc func handleSelection(sender : UITapGestureRecognizer) {
+        
+      self.appointmentTwoContainer.isHidden = false
+
+    }
+    
     @objc func handleCancelButton() {
         self.navigationController?.popViewController(animated: true)
     }
@@ -604,4 +630,15 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
+    @objc func handleNextButton() {
+        
+        UIDevice.vibrateLight()
+
+        let appointmentThree = AppointmentThree()
+        appointmentThree.modalPresentationStyle = .fullScreen
+        self.navigationController?.pushViewController(appointmentThree, animated: true)
+        
+    }
+    
+   
 }

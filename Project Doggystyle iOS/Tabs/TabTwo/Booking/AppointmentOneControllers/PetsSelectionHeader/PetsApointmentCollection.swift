@@ -14,11 +14,14 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
     
     private let petAptID = "petAptID"
     
-    var appointmentOne : AppointmentOne?
+     var appointmentOne : AppointmentOne?,
+         
+     doggyProfileDataSource = [DoggyProfileDataSource](),
+     
+     selectedProfileDataSource = [DoggyProfileDataSource](),
 
-    var doggyProfileDataSource = [DoggyProfileDataSource]()
-    
-    var selectionIndexArray : [IndexPath] = [IndexPath]()
+     selectionIndexArray : [IndexPath] = [IndexPath](),
+     isAllSelected : Bool = false
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -119,7 +122,6 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
         return cell
     }
     
-    var isAllSelected : Bool = false
     
     @objc func handleAddDog(sender : UIButton) {
         
@@ -133,6 +135,8 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
         case 0 :
             
             self.selectionIndexArray.removeAll()
+            self.selectedProfileDataSource.removeAll()
+            self.appointmentOne?.selectedProfileDataSource.removeAll()
             
             if self.isAllSelected == false {
                 self.isAllSelected = true
@@ -142,15 +146,24 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
                     
                     let indexed = IndexPath(item: i, section: s)
                     self.selectionIndexArray.append(indexed)
+                    
+                    let feeder = self.doggyProfileDataSource[indexPath.item]
+                    self.selectedProfileDataSource.append(feeder)
+                    
+                    self.appointmentOne?.selectedProfileDataSource.append(feeder)
+                    
                 }
             }
                 DispatchQueue.main.async {
                     self.reloadItems(at: self.selectionIndexArray)
+                    self.appointmentOne?.servicesDropDownCollection.reloadData()
+
                 }
             } else {
                 self.isAllSelected = false
                 DispatchQueue.main.async {
                     self.reloadData()
+                    self.appointmentOne?.servicesDropDownCollection.reloadData()
                 }
             }
 
@@ -159,16 +172,24 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
             if !self.selectionIndexArray.contains(indexPath) {
                 self.selectionIndexArray.append(indexPath)
                 
+                let feeder = self.doggyProfileDataSource[indexPath.item]
+                self.selectedProfileDataSource.append(feeder)
+                self.appointmentOne?.selectedProfileDataSource.append(feeder)
+
+                
             } else if self.selectionIndexArray.contains(indexPath) {
                 
                 if let index = self.selectionIndexArray.firstIndex(of: indexPath) {
                 self.selectionIndexArray.remove(at: index)
-                    
+                self.selectedProfileDataSource.remove(at: index)
+                    self.appointmentOne?.selectedProfileDataSource.remove(at: index)
+
                 }
             }
             
             DispatchQueue.main.async {
                 self.reloadData()
+                self.appointmentOne?.servicesDropDownCollection.reloadData()
             }
         }
     }

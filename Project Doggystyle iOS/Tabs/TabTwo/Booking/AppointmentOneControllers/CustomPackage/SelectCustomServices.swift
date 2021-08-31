@@ -23,7 +23,7 @@ public enum CustomPackageable : String, CaseIterable {
         
             switch self {
             
-            case .bath: return ("Bath*", "$149")
+            case .bath: return ("Bath*", "$119+")
 
             case .dematting: return ("Dematting", "$30")
 

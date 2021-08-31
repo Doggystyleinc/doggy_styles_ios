@@ -19,28 +19,27 @@ public enum Packageable : String, CaseIterable {
         
         switch self {
         
-        case .FullPackage : return ("shower","Full Package","$149")
+        case .FullPackage : return ("shower","Full Package","$119+")
         case .CustomPackage : return ("bath","Custom Package","-")
         
         }
     }
 }
 
-class SelectServicesCollection : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
-    
+class SelectServicesCollection : UITableView, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
+   
     private let selectServicesID = "selectServicesID"
     
     var appointmentOne : AppointmentOne?
     
-    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
-        super.init(frame: frame, collectionViewLayout: layout)
+    override init(frame: CGRect, style: UITableView.Style) {
+        super.init(frame: frame, style: style)
         
         self.backgroundColor = coreBackgroundWhite
         self.translatesAutoresizingMaskIntoConstraints = false
         self.dataSource = self
         self.delegate = self
         
-        self.isPrefetchingEnabled = false
         self.keyboardDismissMode = UIScrollView.KeyboardDismissMode.interactive
         self.alwaysBounceVertical = true
         self.alwaysBounceHorizontal = false
@@ -50,55 +49,58 @@ class SelectServicesCollection : UICollectionView, UICollectionViewDelegateFlowL
         self.canCancelContentTouches = false
         self.contentInsetAdjustmentBehavior = .never
         self.delaysContentTouches = true
-        self.contentInset = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30)
+        self.separatorStyle = .none
         
-        self.register(SelectServicesFeeder.self, forCellWithReuseIdentifier: self.selectServicesID)
+        self.register(SelectServicesFeeder.self, forCellReuseIdentifier: self.selectServicesID)
         
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-      
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Packageable.allCases.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 90)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = self.dequeueReusableCell(withReuseIdentifier: self.selectServicesID, for: indexPath) as! SelectServicesFeeder
-        
-        cell.selectServicesCollection = self
-        
-        let feeder = Packageable.allCases[indexPath.item].description
-        
-        let icon = feeder.0
-        let label = feeder.1
-        let cost = feeder.2
-        
-        switch icon {
-        
-        case "shower" :
-            print("Setting shower")
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .shower), for: .normal)
-        case "bath" :
-            print("Setting bath")
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .bath), for: .normal)
-        default: print("")
-        }
-        
-        cell.headerLabel.text = label
-        cell.costLabel.text = cost
 
-        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 90
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = self.dequeueReusableCell(withIdentifier: self.selectServicesID, for: indexPath) as! SelectServicesFeeder
+      
+              cell.selectServicesCollection = self
+        
+              cell.contentView.isUserInteractionEnabled = false
+              cell.selectionStyle = .none
+      
+              let feeder = Packageable.allCases[indexPath.item].description
+      
+              let icon = feeder.0
+              let label = feeder.1
+              let cost = feeder.2
+      
+              switch icon {
+      
+              case "shower" :
+                  print("Setting shower")
+                  cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
+                  cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .shower), for: .normal)
+              case "bath" :
+                  print("Setting bath")
+                  cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
+                  cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .bath), for: .normal)
+              default: print("")
+              }
+      
+              cell.headerLabel.text = label
+              cell.costLabel.text = cost
+      
+              return cell
     }
     
     @objc func handleServicesSelection(sender : UIButton) {
         
-        let selectedButtonCell = sender.superview as! UICollectionViewCell
+        let selectedButtonCell = sender.superview as! UITableViewCell
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
         
         let feeder = Packageable.allCases[indexPath.item].description
@@ -114,7 +116,7 @@ class SelectServicesCollection : UICollectionView, UICollectionViewDelegateFlowL
     }
 }
 
-class SelectServicesFeeder : UICollectionViewCell {
+class SelectServicesFeeder : UITableViewCell {
     
     var selectServicesCollection : SelectServicesCollection?
     
@@ -179,13 +181,12 @@ class SelectServicesFeeder : UICollectionViewCell {
 
         return hl
     }()
-   
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.backgroundColor = .clear
-        self.addViews()
-        
+              self.addViews()
     }
     
     func addViews() {

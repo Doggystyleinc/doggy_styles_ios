@@ -20,7 +20,6 @@ public enum FullPackageable : String, CaseIterable {
             switch self {
            
             case .dematting: return ("Dematting", "$30")
-                
             case .deshedding: return ("Deshedding", "$20")
 
             }
@@ -31,8 +30,10 @@ public enum FullPackageable : String, CaseIterable {
 class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
     private let dropServices = "dropServices"
+    private let footerOneID = "footerOneID"
     
     var appointmentOne : AppointmentOne?
+    var currentDifference : CGFloat = 0.0
     
     var arrayOfIndexPaths = [IndexPath]()
     
@@ -57,9 +58,67 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
         self.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
         
         self.register(ServicesDropDownFeeder.self, forCellWithReuseIdentifier: self.dropServices)
+        self.register(ServicesDropDownFooterFeeder.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: self.footerOneID)
 
+    }
+    
+    var counterForSupplementaryView : Int = 0
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        
+        if let preferredDatasource = self.appointmentOne?.petAppointmentCollection.selectedProfileDataSource {
+            
+            if preferredDatasource.count > 0 {
+                
+                self.counterForSupplementaryView += 1
+                
+                switch self.counterForSupplementaryView {
+                
+                case 1:
+                    print("One is called")
+                    currentDifference = 100.0
+                    return CGSize(width: UIScreen.main.bounds.width, height: currentDifference)
+
+                default:
+                    
+                    let height = preferredDatasource.count
+                    currentDifference += CGFloat(height) * CGFloat(110)
+                    print("two is called")
+                    return CGSize(width: UIScreen.main.bounds.width, height: currentDifference)
+                    
+                }
+                
+            } else {
+                return CGSize.zero
+            }
+            
+        } else {
+            return CGSize.zero
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+      
+        let cell = self.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: self.footerOneID, for: indexPath) as! ServicesDropDownFooterFeeder
+        
+        if let preferredDatasource = self.appointmentOne?.selectedProfileDataSource {
+            
+            cell.servicesDropDownCollection = self
+            
+            if preferredDatasource.count > 0 {
+                cell.isHidden = false
+                DispatchQueue.main.async {
+                    cell.pricingCollectionOne.reloadData()
+                }
+            } else {
+                cell.isHidden = true
+            }
+        }
+        
+        return cell
         
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -92,9 +151,8 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
             
         } else {
             
-//            if serviceName != "Wash & Groom" {
             cell.engageShadow(shouldEngage: false)
-//            }
+            
         }
     
         switch serviceName {
@@ -108,8 +166,8 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
         default: print("default")
         
         }
-
-            return cell
+        
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -154,6 +212,49 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+class ServicesDropDownFooterFeeder : UICollectionViewCell {
+    
+    var servicesDropDownCollection : ServicesDropDownCollection?
+
+    lazy var pricingCollectionOne : PricingCollectionOne = {
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        let fcv = PricingCollectionOne(frame: .zero, collectionViewLayout: layout)
+        fcv.servicesDropDownFooterFeeder = self
+        
+        return fcv
+    }()
+    
+   
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        self.backgroundColor = .green
+        self.addViews()
+        print("Called here")
+
+    }
+    
+    func addViews() {
+        
+        self.addSubview(self.pricingCollectionOne)
+        
+        self.pricingCollectionOne.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        self.pricingCollectionOne.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        self.pricingCollectionOne.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        self.pricingCollectionOne.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        
+        print("Addinf price collectoinone")
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 }
 
 class ServicesDropDownFeeder : UICollectionViewCell {

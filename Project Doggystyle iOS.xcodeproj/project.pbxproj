@@ -187,6 +187,11 @@
 		E38B7FEF26C5AF5E0013D72D /* NewDogFoodCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FEE26C5AF5E0013D72D /* NewDogFoodCollection.swift */; };
 		E397405826D2DCE50084742F /* SelectCustomServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E397405726D2DCE50084742F /* SelectCustomServices.swift */; };
 		E397405B26D2E27F0084742F /* AppointmentTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E397405A26D2E27F0084742F /* AppointmentTwo.swift */; };
+		E397405D26D40B6F0084742F /* AppointmentTwoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E397405C26D40B6F0084742F /* AppointmentTwoContainer.swift */; };
+		E397405F26D40F000084742F /* AppointmentTwoCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E397405E26D40F000084742F /* AppointmentTwoCollection.swift */; };
+		E397406226D423A30084742F /* AppointmentThree.swift in Sources */ = {isa = PBXBuildFile; fileRef = E397406126D423A30084742F /* AppointmentThree.swift */; };
+		E397406426D426040084742F /* AppointmentThreeCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E397406326D426040084742F /* AppointmentThreeCollection.swift */; };
+		E397406626D43F380084742F /* AppointmentThreeContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E397406526D43F380084742F /* AppointmentThreeContainer.swift */; };
 		E39C664F26A899F0004A0E93 /* Rubik-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E39C664826A89942004A0E93 /* Rubik-Black.ttf */; };
 		E39C665026A899F0004A0E93 /* Rubik-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E39C664126A89940004A0E93 /* Rubik-BlackItalic.ttf */; };
 		E39C665126A899F0004A0E93 /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E39C664726A89941004A0E93 /* Rubik-Bold.ttf */; };
@@ -219,6 +224,7 @@
 		E3E9F7E426BC62CE00C3A57A /* Doggy_filler_photo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3E9F7E126BC62CD00C3A57A /* Doggy_filler_photo@2x.png */; };
 		E3E9F7E526BC62CE00C3A57A /* Doggy_filler_photo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3E9F7E226BC62CD00C3A57A /* Doggy_filler_photo@3x.png */; };
 		E3E9F7E626BC62CE00C3A57A /* Doggy_filler_photo.png in Resources */ = {isa = PBXBuildFile; fileRef = E3E9F7E326BC62CE00C3A57A /* Doggy_filler_photo.png */; };
+		E3FEDDAF26DD97F5002BB51C /* PricingCollectionOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FEDDAE26DD97F5002BB51C /* PricingCollectionOne.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -391,6 +397,11 @@
 		E38B7FEE26C5AF5E0013D72D /* NewDogFoodCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogFoodCollection.swift; sourceTree = "<group>"; };
 		E397405726D2DCE50084742F /* SelectCustomServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCustomServices.swift; sourceTree = "<group>"; };
 		E397405A26D2E27F0084742F /* AppointmentTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentTwo.swift; sourceTree = "<group>"; };
+		E397405C26D40B6F0084742F /* AppointmentTwoContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentTwoContainer.swift; sourceTree = "<group>"; };
+		E397405E26D40F000084742F /* AppointmentTwoCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentTwoCollection.swift; sourceTree = "<group>"; };
+		E397406126D423A30084742F /* AppointmentThree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentThree.swift; sourceTree = "<group>"; };
+		E397406326D426040084742F /* AppointmentThreeCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentThreeCollection.swift; sourceTree = "<group>"; };
+		E397406526D43F380084742F /* AppointmentThreeContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentThreeContainer.swift; sourceTree = "<group>"; };
 		E39C664126A89940004A0E93 /* Rubik-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-BlackItalic.ttf"; sourceTree = "<group>"; };
 		E39C664226A89940004A0E93 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Regular.ttf"; sourceTree = "<group>"; };
 		E39C664326A89940004A0E93 /* Rubik-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
@@ -425,6 +436,8 @@
 		E3E9F7E126BC62CD00C3A57A /* Doggy_filler_photo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Doggy_filler_photo@2x.png"; sourceTree = "<group>"; };
 		E3E9F7E226BC62CD00C3A57A /* Doggy_filler_photo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Doggy_filler_photo@3x.png"; sourceTree = "<group>"; };
 		E3E9F7E326BC62CE00C3A57A /* Doggy_filler_photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Doggy_filler_photo.png; sourceTree = "<group>"; };
+		E3FEDDA826DD69F9002BB51C /* Project Doggystyle iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Project Doggystyle iOS.entitlements"; sourceTree = "<group>"; };
+		E3FEDDAE26DD97F5002BB51C /* PricingCollectionOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricingCollectionOne.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -619,6 +632,7 @@
 		CDE870DC2652E1610082551B /* Project Doggystyle iOS */ = {
 			isa = PBXGroup;
 			children = (
+				E3FEDDA826DD69F9002BB51C /* Project Doggystyle iOS.entitlements */,
 				CDE871662652EA100082551B /* Git */,
 				CDE871692652ED930082551B /* Firebase */,
 				CDE870F22652E1E30082551B /* Admin */,
@@ -843,6 +857,7 @@
 			children = (
 				E361FBFD26D0180500026DE3 /* AppointmentOneControllers */,
 				E397405926D2E26D0084742F /* AppointmentTwoControllers */,
+				E397406026D423770084742F /* AppointmentThreeControllers */,
 			);
 			path = Booking;
 			sourceTree = "<group>";
@@ -850,11 +865,10 @@
 		E361FBFD26D0180500026DE3 /* AppointmentOneControllers */ = {
 			isa = PBXGroup;
 			children = (
-				E361FBF926CEF51800026DE3 /* AppointmentOne.swift */,
-				E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */,
-				E361FBFE26D0182B00026DE3 /* SelectServicesCollection.swift */,
-				E361FC0026D04CB700026DE3 /* SelectServiceDropDownCollection.swift */,
-				E397405726D2DCE50084742F /* SelectCustomServices.swift */,
+				E3FEDDA926DD96D1002BB51C /* MainContainer */,
+				E3FEDDAA26DD96E1002BB51C /* PetsSelectionHeader */,
+				E3FEDDAB26DD972F002BB51C /* FullPackage */,
+				E3FEDDAC26DD974F002BB51C /* CustomPackage */,
 			);
 			path = AppointmentOneControllers;
 			sourceTree = "<group>";
@@ -952,8 +966,20 @@
 			isa = PBXGroup;
 			children = (
 				E397405A26D2E27F0084742F /* AppointmentTwo.swift */,
+				E397405C26D40B6F0084742F /* AppointmentTwoContainer.swift */,
+				E397405E26D40F000084742F /* AppointmentTwoCollection.swift */,
 			);
 			path = AppointmentTwoControllers;
+			sourceTree = "<group>";
+		};
+		E397406026D423770084742F /* AppointmentThreeControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E397406126D423A30084742F /* AppointmentThree.swift */,
+				E397406326D426040084742F /* AppointmentThreeCollection.swift */,
+				E397406526D43F380084742F /* AppointmentThreeContainer.swift */,
+			);
+			path = AppointmentThreeControllers;
 			sourceTree = "<group>";
 		};
 		E39C662F26A88C37004A0E93 /* AppIcon */ = {
@@ -1117,6 +1143,40 @@
 				E326571C26B1B7FD004A15F6 /* MapViewSubclass.swift */,
 			);
 			path = Location;
+			sourceTree = "<group>";
+		};
+		E3FEDDA926DD96D1002BB51C /* MainContainer */ = {
+			isa = PBXGroup;
+			children = (
+				E361FBF926CEF51800026DE3 /* AppointmentOne.swift */,
+				E361FBFE26D0182B00026DE3 /* SelectServicesCollection.swift */,
+			);
+			path = MainContainer;
+			sourceTree = "<group>";
+		};
+		E3FEDDAA26DD96E1002BB51C /* PetsSelectionHeader */ = {
+			isa = PBXGroup;
+			children = (
+				E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */,
+			);
+			path = PetsSelectionHeader;
+			sourceTree = "<group>";
+		};
+		E3FEDDAB26DD972F002BB51C /* FullPackage */ = {
+			isa = PBXGroup;
+			children = (
+				E361FC0026D04CB700026DE3 /* SelectServiceDropDownCollection.swift */,
+				E3FEDDAE26DD97F5002BB51C /* PricingCollectionOne.swift */,
+			);
+			path = FullPackage;
+			sourceTree = "<group>";
+		};
+		E3FEDDAC26DD974F002BB51C /* CustomPackage */ = {
+			isa = PBXGroup;
+			children = (
+				E397405726D2DCE50084742F /* SelectCustomServices.swift */,
+			);
+			path = CustomPackage;
 			sourceTree = "<group>";
 		};
 		EECADAD9F04ADDAD68B817E2 /* Frameworks */ = {
@@ -1413,11 +1473,13 @@
 				E326571D26B1B7FD004A15F6 /* MapViewSubclass.swift in Sources */,
 				E36EE57B26B87B2E0009A0EF /* YourNotificationsCollectionView.swift in Sources */,
 				CD6DD00E267FC86000BC376B /* RefurAFriendController.swift in Sources */,
+				E397405D26D40B6F0084742F /* AppointmentTwoContainer.swift in Sources */,
 				CD6DCFFC267A8DD200BC376B /* DSRegularLabel.swift in Sources */,
 				E36EE56626B793FB0009A0EF /* MainDashboardCollectionView.swift in Sources */,
 				CD6DD01A2680FC4100BC376B /* GrabDeviceID.swift in Sources */,
 				E3D53F3F26AA2200003B4317 /* SearchLocationFeeder.swift in Sources */,
 				CDE871622652E69B0082551B /* ResetPasswordViewController.swift in Sources */,
+				E397406626D43F380084742F /* AppointmentThreeContainer.swift in Sources */,
 				E3B11ABE268FCBE300B5B6F8 /* ProfileCollectionFeeder.swift in Sources */,
 				E36EE56826B7A75F0009A0EF /* NotificationsController.swift in Sources */,
 				CDE871652652E6E60082551B /* DSButton.swift in Sources */,
@@ -1427,6 +1489,7 @@
 				CD6DD01D26827E6A00BC376B /* LoginController.swift in Sources */,
 				CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */,
 				E3107F8626961A6B00CDBB37 /* MainLoadingScreen.swift in Sources */,
+				E397406426D426040084742F /* AppointmentThreeCollection.swift in Sources */,
 				E38B7FD526C453130013D72D /* BorderSingleton.swift in Sources */,
 				E361FBFF26D0182B00026DE3 /* SelectServicesCollection.swift in Sources */,
 				E38B7FE226C5A1F80013D72D /* DogTreatHelper.swift in Sources */,
@@ -1454,6 +1517,8 @@
 				CD6DD02226839ED600BC376B /* DSTextField.swift in Sources */,
 				E397405826D2DCE50084742F /* SelectCustomServices.swift in Sources */,
 				CD6DCFF6267A820700BC376B /* Pet.swift in Sources */,
+				E397406226D423A30084742F /* AppointmentThree.swift in Sources */,
+				E3FEDDAF26DD97F5002BB51C /* PricingCollectionOne.swift in Sources */,
 				CDE8711C2652E3030082551B /* TextField+Ext.swift in Sources */,
 				E36EE55B26B781050009A0EF /* RegisteredPetCollection.swift in Sources */,
 				CD6DD001267AD81100BC376B /* AppointmentsViewController.swift in Sources */,
@@ -1461,6 +1526,7 @@
 				E3B11ABC268FCBC900B5B6F8 /* ProfileCollectionView.swift in Sources */,
 				CD6868902656EF920064ADFE /* LocationNotServicedViewController.swift in Sources */,
 				CD6DD00C267FC7DF00BC376B /* ContactUsController.swift in Sources */,
+				E397405F26D40F000084742F /* AppointmentTwoCollection.swift in Sources */,
 				E361FBFA26CEF51800026DE3 /* AppointmentOne.swift in Sources */,
 				E38B7FE926C5A3DD0013D72D /* NewDogTreatSearchSubview.swift in Sources */,
 				CDE871632652E69B0082551B /* PasswordResetController.swift in Sources */,
@@ -1651,6 +1717,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Project Doggystyle iOS/Project Doggystyle iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.0.8;
 				DEVELOPMENT_TEAM = STQP84FTBY;
@@ -1672,6 +1739,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Project Doggystyle iOS/Project Doggystyle iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.0.8;
 				DEVELOPMENT_TEAM = STQP84FTBY;

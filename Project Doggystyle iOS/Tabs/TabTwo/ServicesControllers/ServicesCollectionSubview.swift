@@ -148,8 +148,6 @@ class ServicesCollectionview : UICollectionView, UICollectionViewDelegateFlowLay
         case "Wash & Groom" :
             cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .shower), for: .normal)
-            cell.engageShadow(shouldEngage: true)
-            cell.costLabel.text = "-"
         case "Dematting" :
             cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .rulerCombined), for: .normal)

@@ -20,7 +20,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
         
         let decisionController = DecisionController()
-        
         let navigationController = UINavigationController(rootViewController: decisionController)
         
         navigationController.navigationBar.isHidden = true

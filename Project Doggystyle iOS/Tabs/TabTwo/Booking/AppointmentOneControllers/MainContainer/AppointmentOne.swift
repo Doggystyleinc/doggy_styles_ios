@@ -16,8 +16,9 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         case CustomPackage
     }
     
-    var currentState = StateSelection.FullPackage
-    var doggyProfileDataSource = [DoggyProfileDataSource]()
+    var currentState = StateSelection.FullPackage,
+        doggyProfileDataSource = [DoggyProfileDataSource](),
+        selectedProfileDataSource = [DoggyProfileDataSource]()
     
     lazy var scrollView : UIScrollView = {
         
@@ -157,9 +158,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
     
     lazy var selectServicesCollection : SelectServicesCollection = {
         
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        let rpc = SelectServicesCollection(frame: .zero, collectionViewLayout: layout)
+        let rpc = SelectServicesCollection(frame: .zero, style: .plain)
         rpc.appointmentOne = self
         
        return rpc
@@ -278,7 +277,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
-        hl.text = "$149"
+        hl.text = "$119+"
         hl.font = UIFont(name: rubikRegular, size: 16)
         hl.numberOfLines = 1
         hl.adjustsFontSizeToFitWidth = true
@@ -385,6 +384,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.addViews()
         self.callPetsCollection()
         self.scrollView.keyboardDismissMode = .interactive
+        print("I am gere")
 
     }
     
