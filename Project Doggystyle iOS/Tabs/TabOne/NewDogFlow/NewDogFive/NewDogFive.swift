@@ -15,7 +15,7 @@ class NewDogFive : UIViewController {
     let mainLoadingScreen = MainLoadingScreen(),
         storageRef = Storage.storage().reference(),
         databaseRef = Database.database().reference()
-    
+
     var headerContainer : UIView = {
         
         let hc = UIView()

@@ -9,41 +9,6 @@
 import Foundation
 import UIKit
 
-public enum Servicable : String, CaseIterable {
-    
-    case washAndGroom
-    case dematting
-    case deshedding
-    case bath
-    case hairCut
-    case teethCleaning
-    case nailTrimming
-    case earCleaning
-    
-    var description: (String, String, String) {
-        
-            switch self {
-            
-            case .washAndGroom: return ("Wash & Groom", "$149", "Our Groomz packages include everything your pup needs to feel oh so clean clean and refreshed. Our goal is to give your doggy the ultimate pampered experience the Doggystyle way. Custom packages also available. Includes: Bath with premium shampoo and conditioner, cut, teeth cleaning, nail trimming, and ear cleaning.")
-                
-            case .dematting: return ("Dematting", "$30", "Standing by for descriptions.")
-                
-            case .deshedding: return ("Deshedding", "$20", "Standing by for descriptions.")
-                
-            case .bath: return ("Bath", "$40", "Standing by for descriptions.")
-                
-            case .hairCut: return ("Haircut", "$50", "Standing by for descriptions.")
-                
-            case .teethCleaning: return ("Teeth Cleaning", "$20", "Standing by for descriptions.")
-                
-            case .nailTrimming: return ("Nail Trimming", "$20", "Standing by for descriptions.")
-                
-            case .earCleaning: return ("Ear Cleaning", "$20", "Standing by for descriptions.")
-
-            }
-        }
-    }
-
 class ServicesCollectionview : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
     private let servicesID = "servicesID"

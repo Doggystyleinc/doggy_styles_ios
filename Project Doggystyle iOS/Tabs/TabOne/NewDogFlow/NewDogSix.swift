@@ -116,7 +116,7 @@ class NewDogSix : UIViewController {
         cbf.layer.cornerRadius = 15
         cbf.layer.masksToBounds = true
         cbf.tintColor = coreWhiteColor
-        cbf.addTarget(self, action: #selector(self.handleReturnToDashboard), for: .touchUpInside)
+        cbf.addTarget(self, action: #selector(self.handleAddNewPup), for: .touchUpInside)
 
         return cbf
         
@@ -212,5 +212,12 @@ class NewDogSix : UIViewController {
         UIDevice.vibrateLight()
 
         self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func handleAddNewPup() {
+        
+        self.navigationController?.dismiss(animated: true, completion: {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CALL_ADD_NEW_PUP"), object: self)
+        })
     }
 }

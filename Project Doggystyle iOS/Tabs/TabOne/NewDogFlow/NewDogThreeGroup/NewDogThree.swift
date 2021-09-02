@@ -17,6 +17,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         dogFoodJsonGrabber = DogFoodHelper(),
         dogFoodJson : [String] = [],
         predictionStringFood : String = ""
+
     
     lazy var newDogTreatSubview : NewDogTreatSubview = {
         

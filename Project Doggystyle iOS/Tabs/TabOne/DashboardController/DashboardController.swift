@@ -164,6 +164,8 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         
         self.callDataEngine()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleNewDogFlow), name: NSNotification.Name("CALL_ADD_NEW_PUP"), object: nil)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -355,6 +357,8 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
     }
     
     @objc func handleNewDogFlow() {
+        
+        print("Called again")
         
         //HAS ALREADY SEEN THE ENTRY PAGE
         if let _ = UserDefaults.standard.object(forKey: "entry_path_one") as? Bool {

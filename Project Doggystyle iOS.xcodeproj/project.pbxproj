@@ -132,10 +132,13 @@
 		E352FF6B26A63373003BD59F /* group18323@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6826A63372003BD59F /* group18323@3x.png */; };
 		E352FF6C26A63373003BD59F /* group18323@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6926A63373003BD59F /* group18323@2x.png */; };
 		E352FF6D26A63373003BD59F /* group18323.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6A26A63373003BD59F /* group18323.png */; };
+		E357D2E926E020D500CDF90E /* PublicEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = E357D2E826E020D500CDF90E /* PublicEnums.swift */; };
+		E357D2EB26E027F100CDF90E /* FullPackageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E357D2EA26E027F100CDF90E /* FullPackageContainer.swift */; };
+		E357D2ED26E05AE900CDF90E /* SelectPackageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E357D2EC26E05AE900CDF90E /* SelectPackageContainer.swift */; };
 		E361FBF726CEEEBE00026DE3 /* BreedHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBF626CEEEBE00026DE3 /* BreedHelper.swift */; };
 		E361FBFA26CEF51800026DE3 /* AppointmentOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBF926CEF51800026DE3 /* AppointmentOne.swift */; };
 		E361FBFC26CF078100026DE3 /* PetsApointmentCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */; };
-		E361FBFF26D0182B00026DE3 /* SelectServicesCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBFE26D0182B00026DE3 /* SelectServicesCollection.swift */; };
+		E361FBFF26D0182B00026DE3 /* SelectPackageCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBFE26D0182B00026DE3 /* SelectPackageCollection.swift */; };
 		E361FC0126D04CB700026DE3 /* SelectServiceDropDownCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FC0026D04CB700026DE3 /* SelectServiceDropDownCollection.swift */; };
 		E369559C26CAEC1500806D73 /* ServicesCollectionSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E369559B26CAEC1500806D73 /* ServicesCollectionSubview.swift */; };
 		E36EE54626B7036B0009A0EF /* NewDogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE54526B7036B0009A0EF /* NewDogEntry.swift */; };
@@ -224,7 +227,6 @@
 		E3E9F7E426BC62CE00C3A57A /* Doggy_filler_photo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3E9F7E126BC62CD00C3A57A /* Doggy_filler_photo@2x.png */; };
 		E3E9F7E526BC62CE00C3A57A /* Doggy_filler_photo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3E9F7E226BC62CD00C3A57A /* Doggy_filler_photo@3x.png */; };
 		E3E9F7E626BC62CE00C3A57A /* Doggy_filler_photo.png in Resources */ = {isa = PBXBuildFile; fileRef = E3E9F7E326BC62CE00C3A57A /* Doggy_filler_photo.png */; };
-		E3FEDDAF26DD97F5002BB51C /* PricingCollectionOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FEDDAE26DD97F5002BB51C /* PricingCollectionOne.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -342,10 +344,13 @@
 		E352FF6826A63372003BD59F /* group18323@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group18323@3x.png"; sourceTree = "<group>"; };
 		E352FF6926A63373003BD59F /* group18323@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group18323@2x.png"; sourceTree = "<group>"; };
 		E352FF6A26A63373003BD59F /* group18323.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group18323.png; sourceTree = "<group>"; };
+		E357D2E826E020D500CDF90E /* PublicEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicEnums.swift; sourceTree = "<group>"; };
+		E357D2EA26E027F100CDF90E /* FullPackageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullPackageContainer.swift; sourceTree = "<group>"; };
+		E357D2EC26E05AE900CDF90E /* SelectPackageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPackageContainer.swift; sourceTree = "<group>"; };
 		E361FBF626CEEEBE00026DE3 /* BreedHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedHelper.swift; sourceTree = "<group>"; };
 		E361FBF926CEF51800026DE3 /* AppointmentOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentOne.swift; sourceTree = "<group>"; };
 		E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetsApointmentCollection.swift; sourceTree = "<group>"; };
-		E361FBFE26D0182B00026DE3 /* SelectServicesCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectServicesCollection.swift; sourceTree = "<group>"; };
+		E361FBFE26D0182B00026DE3 /* SelectPackageCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPackageCollection.swift; sourceTree = "<group>"; };
 		E361FC0026D04CB700026DE3 /* SelectServiceDropDownCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectServiceDropDownCollection.swift; sourceTree = "<group>"; };
 		E369559B26CAEC1500806D73 /* ServicesCollectionSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesCollectionSubview.swift; sourceTree = "<group>"; };
 		E36EE54526B7036B0009A0EF /* NewDogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogEntry.swift; sourceTree = "<group>"; };
@@ -437,7 +442,6 @@
 		E3E9F7E226BC62CD00C3A57A /* Doggy_filler_photo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Doggy_filler_photo@3x.png"; sourceTree = "<group>"; };
 		E3E9F7E326BC62CE00C3A57A /* Doggy_filler_photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Doggy_filler_photo.png; sourceTree = "<group>"; };
 		E3FEDDA826DD69F9002BB51C /* Project Doggystyle iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Project Doggystyle iOS.entitlements"; sourceTree = "<group>"; };
-		E3FEDDAE26DD97F5002BB51C /* PricingCollectionOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricingCollectionOne.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -639,6 +643,8 @@
 				CD6DD01B26827E4800BC376B /* Onboarding */,
 				E3B11AB5268FAE0C00B5B6F8 /* HomeController */,
 				E3B11AB6268FB88100B5B6F8 /* Tabs */,
+				E361FBF826CEF4FE00026DE3 /* Booking */,
+				E357D2E726E020C000CDF90E /* Enums */,
 				CDE8714D2652E65A0082551B /* View Controllers */,
 				E3B11AB3268FA8B500B5B6F8 /* Extensions */,
 				CDE8710D2652E2B20082551B /* Views */,
@@ -852,6 +858,14 @@
 			path = TutorialFlow;
 			sourceTree = "<group>";
 		};
+		E357D2E726E020C000CDF90E /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				E357D2E826E020D500CDF90E /* PublicEnums.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
 		E361FBF826CEF4FE00026DE3 /* Booking */ = {
 			isa = PBXGroup;
 			children = (
@@ -877,7 +891,6 @@
 			isa = PBXGroup;
 			children = (
 				E369559A26CAEB8F00806D73 /* ServicesControllers */,
-				E361FBF826CEF4FE00026DE3 /* Booking */,
 			);
 			path = TabTwo;
 			sourceTree = "<group>";
@@ -1105,8 +1118,8 @@
 			isa = PBXGroup;
 			children = (
 				E36EE55926B780640009A0EF /* DashboardController */,
-				E326573426B21859004A15F6 /* NewDogFlow */,
 				E326573126B215CE004A15F6 /* DashboardStates */,
+				E326573426B21859004A15F6 /* NewDogFlow */,
 			);
 			path = TabOne;
 			sourceTree = "<group>";
@@ -1149,7 +1162,8 @@
 			isa = PBXGroup;
 			children = (
 				E361FBF926CEF51800026DE3 /* AppointmentOne.swift */,
-				E361FBFE26D0182B00026DE3 /* SelectServicesCollection.swift */,
+				E361FBFE26D0182B00026DE3 /* SelectPackageCollection.swift */,
+				E357D2EA26E027F100CDF90E /* FullPackageContainer.swift */,
 			);
 			path = MainContainer;
 			sourceTree = "<group>";
@@ -1166,7 +1180,7 @@
 			isa = PBXGroup;
 			children = (
 				E361FC0026D04CB700026DE3 /* SelectServiceDropDownCollection.swift */,
-				E3FEDDAE26DD97F5002BB51C /* PricingCollectionOne.swift */,
+				E357D2EC26E05AE900CDF90E /* SelectPackageContainer.swift */,
 			);
 			path = FullPackage;
 			sourceTree = "<group>";
@@ -1491,7 +1505,7 @@
 				E3107F8626961A6B00CDBB37 /* MainLoadingScreen.swift in Sources */,
 				E397406426D426040084742F /* AppointmentThreeCollection.swift in Sources */,
 				E38B7FD526C453130013D72D /* BorderSingleton.swift in Sources */,
-				E361FBFF26D0182B00026DE3 /* SelectServicesCollection.swift in Sources */,
+				E361FBFF26D0182B00026DE3 /* SelectPackageCollection.swift in Sources */,
 				E38B7FE226C5A1F80013D72D /* DogTreatHelper.swift in Sources */,
 				E36EE56A26B872790009A0EF /* YourNotificationsController.swift in Sources */,
 				CD319F782679435900F48E3C /* DSNavButton.swift in Sources */,
@@ -1510,6 +1524,7 @@
 				CD6DD005267B9DAF00BC376B /* DSContainerView.swift in Sources */,
 				E36EE57826B877770009A0EF /* NotificationsSelector.swift in Sources */,
 				E326573A26B218B0004A15F6 /* NewDogThree.swift in Sources */,
+				E357D2ED26E05AE900CDF90E /* SelectPackageContainer.swift in Sources */,
 				CDE870DE2652E1610082551B /* AppDelegate.swift in Sources */,
 				E38B7FDE26C45C6D0013D72D /* NewDogOnceCollection.swift in Sources */,
 				CD6868842654373A0064ADFE /* UIButton+Ext.swift in Sources */,
@@ -1518,12 +1533,12 @@
 				E397405826D2DCE50084742F /* SelectCustomServices.swift in Sources */,
 				CD6DCFF6267A820700BC376B /* Pet.swift in Sources */,
 				E397406226D423A30084742F /* AppointmentThree.swift in Sources */,
-				E3FEDDAF26DD97F5002BB51C /* PricingCollectionOne.swift in Sources */,
 				CDE8711C2652E3030082551B /* TextField+Ext.swift in Sources */,
 				E36EE55B26B781050009A0EF /* RegisteredPetCollection.swift in Sources */,
 				CD6DD001267AD81100BC376B /* AppointmentsViewController.swift in Sources */,
 				E3A0AD5B26C0446500E813D5 /* DogBreedHelper.swift in Sources */,
 				E3B11ABC268FCBC900B5B6F8 /* ProfileCollectionView.swift in Sources */,
+				E357D2EB26E027F100CDF90E /* FullPackageContainer.swift in Sources */,
 				CD6868902656EF920064ADFE /* LocationNotServicedViewController.swift in Sources */,
 				CD6DD00C267FC7DF00BC376B /* ContactUsController.swift in Sources */,
 				E397405F26D40F000084742F /* AppointmentTwoCollection.swift in Sources */,
@@ -1531,6 +1546,7 @@
 				E38B7FE926C5A3DD0013D72D /* NewDogTreatSearchSubview.swift in Sources */,
 				CDE871632652E69B0082551B /* PasswordResetController.swift in Sources */,
 				E326573C26B218CA004A15F6 /* NewDogSix.swift in Sources */,
+				E357D2E926E020D500CDF90E /* PublicEnums.swift in Sources */,
 				CD6868922656EFB20064ADFE /* RequestUserLocationViewController.swift in Sources */,
 				E3B11ABA268FCBB200B5B6F8 /* ProfileController.swift in Sources */,
 				E3B11AC0268FCC0400B5B6F8 /* ProfilePhotoUploadExt.swift in Sources */,

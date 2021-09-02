@@ -10,24 +10,8 @@ import Foundation
 import UIKit
 import Firebase
 
-public enum Packageable : String, CaseIterable {
-    
-    case FullPackage
-    case CustomPackage
-    
-    var description: (String, String, String) {
-        
-        switch self {
-        
-        case .FullPackage : return ("shower","Full Package","$119+")
-        case .CustomPackage : return ("bath","Custom Package","-")
-        
-        }
-    }
-}
-
 class SelectServicesCollection : UITableView, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
-   
+    
     private let selectServicesID = "selectServicesID"
     
     var appointmentOne : AppointmentOne?
@@ -57,7 +41,7 @@ class SelectServicesCollection : UITableView, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Packageable.allCases.count
-
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -67,54 +51,111 @@ class SelectServicesCollection : UITableView, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = self.dequeueReusableCell(withIdentifier: self.selectServicesID, for: indexPath) as! SelectServicesFeeder
-      
-              cell.selectServicesCollection = self
         
-              cell.contentView.isUserInteractionEnabled = false
-              cell.selectionStyle = .none
-      
-              let feeder = Packageable.allCases[indexPath.item].description
-      
-              let icon = feeder.0
-              let label = feeder.1
-              let cost = feeder.2
-      
-              switch icon {
-      
-              case "shower" :
-                  print("Setting shower")
-                  cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-                  cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .shower), for: .normal)
-              case "bath" :
-                  print("Setting bath")
-                  cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-                  cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .bath), for: .normal)
-              default: print("")
-              }
-      
-              cell.headerLabel.text = label
-              cell.costLabel.text = cost
-      
-              return cell
+        cell.selectServicesCollection = self
+        
+        cell.contentView.isUserInteractionEnabled = false
+        cell.selectionStyle = .none
+        
+        let feeder = Packageable.allCases[indexPath.item].description
+        
+        let icon = feeder.0
+        let label = feeder.1
+        let cost = feeder.2
+        
+        switch icon {
+        
+        case "shower" :
+            
+            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
+            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .shower), for: .normal)
+            
+            let sizeOfArray = self.appointmentOne?.selectedProfileDataSource.count ?? 0
+            
+            if self.appointmentOne?.isAllDogsTheSameSize == true && sizeOfArray > 0 {
+                
+                if self.appointmentOne?.sameDogWeightSelectSize == nil || sizeOfArray <= 0 {
+                    cell.costLabel.text = "\(DogGroomingCostable.Default.description)"
+                    self.appointmentOne?.mainContainerFP.costForFullPackage = "\(DogGroomingCostable.Default.description)"
+
+                } else {
+                    
+                    switch self.appointmentOne?.sameDogWeightSelectSize {
+                    
+                    case "Small":
+                        cell.costLabel.text = "\(DogGroomingCostable.Small.description)"
+                        self.appointmentOne?.mainContainerFP.costForFullPackage = "\(DogGroomingCostable.Small.description)"
+                        
+                    case "Medium":
+                        cell.costLabel.text = "\(DogGroomingCostable.Medium.description)"
+                        self.appointmentOne?.mainContainerFP.costForFullPackage = "\(DogGroomingCostable.Medium.description)"
+
+                    case "Large":
+                        cell.costLabel.text = "\(DogGroomingCostable.Large.description)"
+                        self.appointmentOne?.mainContainerFP.costForFullPackage = "\(DogGroomingCostable.Large.description)"
+
+                    case "X-Large":
+                        cell.costLabel.text = "\(DogGroomingCostable.XLarge.description)"
+                        self.appointmentOne?.mainContainerFP.costForFullPackage = "\(DogGroomingCostable.XLarge.description)"
+
+                    default: cell.costLabel.text = "\(DogGroomingCostable.Default.description)"
+                        self.appointmentOne?.mainContainerFP.costForFullPackage = "\(DogGroomingCostable.Default.description)"
+
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.appointmentOne?.mainContainerFP.reloadData()
+                    }
+                }
+                
+            } else {
+                cell.costLabel.text = "\(DogGroomingCostable.Default.description)"
+                self.appointmentOne?.mainContainerFP.costForFullPackage = "\(DogGroomingCostable.Default.description)"
+                
+                DispatchQueue.main.async {
+                    self.appointmentOne?.mainContainerFP.reloadData()
+                }
+            }
+            
+        case "bath" :
+            
+            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
+            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .bath), for: .normal)
+            cell.costLabel.text = cost
+            
+        default: print("")
+            
+        }
+        
+        cell.headerLabel.text = label
+        
+        return cell
     }
     
     @objc func handleServicesSelection(sender : UIButton) {
         
-        let selectedButtonCell = sender.superview as! UITableViewCell
-        guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
-        
-        let feeder = Packageable.allCases[indexPath.item].description
-        print("\(feeder.0) : \(feeder.1) : \(feeder.2)")
-        
-        let packageSelection = feeder.1
-        self.appointmentOne?.handlePackageSelection(packageSelection : packageSelection)
-
+        if self.appointmentOne?.canSelectMainPackage == true {
+            
+            let selectedButtonCell = sender.superview as! UITableViewCell
+            guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
+            
+            let feeder = Packageable.allCases[indexPath.item].description
+            print("\(feeder.0) : \(feeder.1) : \(feeder.2)")
+            
+            let packageSelection = feeder.1
+            self.appointmentOne?.handlePackageSelection(packageSelection : packageSelection)
+            
+        } else {
+            self.appointmentOne?.handleMainContainerTaps()
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+
 
 class SelectServicesFeeder : UITableViewCell {
     
@@ -135,7 +176,7 @@ class SelectServicesFeeder : UITableViewCell {
         cv.layer.cornerRadius = 15
         cv.addTarget(self, action: #selector(self.handlePackageSelection(sender:)), for: .touchUpInside)
         
-       return cv
+        return cv
     }()
     
     let iconImageView : UIButton = {
@@ -148,8 +189,8 @@ class SelectServicesFeeder : UITableViewCell {
         iv.layer.cornerRadius = 20
         iv.isUserInteractionEnabled = false
         iv.tintColor = coreBlackColor
-
-       return iv
+        
+        return iv
     }()
     
     let headerLabel : UILabel = {
@@ -163,7 +204,7 @@ class SelectServicesFeeder : UITableViewCell {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.isUserInteractionEnabled = false
-
+        
         return hl
     }()
     
@@ -178,7 +219,7 @@ class SelectServicesFeeder : UITableViewCell {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.isUserInteractionEnabled = false
-
+        
         return hl
     }()
     
@@ -186,7 +227,7 @@ class SelectServicesFeeder : UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.backgroundColor = .clear
-              self.addViews()
+        self.addViews()
     }
     
     func addViews() {
@@ -195,7 +236,7 @@ class SelectServicesFeeder : UITableViewCell {
         self.addSubview(self.iconImageView)
         self.addSubview(self.costLabel)
         self.addSubview(self.headerLabel)
-
+        
         self.mainContainer.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive = true
         self.mainContainer.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.mainContainer.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true

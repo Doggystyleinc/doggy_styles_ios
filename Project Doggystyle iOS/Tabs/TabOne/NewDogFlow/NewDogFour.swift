@@ -18,6 +18,7 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
         containerThreeTopConstraint : NSLayoutConstraint?,
         adjustmentDifference : CGFloat = 25.0,
         offSetDifference : CGFloat = 70.0
+
     
     lazy var scrollView : UIScrollView = {
         

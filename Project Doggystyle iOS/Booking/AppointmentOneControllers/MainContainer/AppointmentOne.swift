@@ -5,8 +5,12 @@
 //  Created by Charlie Arcodia on 8/19/21.
 //
 
+
+
 import Foundation
 import UIKit
+
+
 
 
 class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDelegate {
@@ -18,7 +22,11 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
     
     var currentState = StateSelection.FullPackage,
         doggyProfileDataSource = [DoggyProfileDataSource](),
-        selectedProfileDataSource = [DoggyProfileDataSource]()
+        selectedProfileDataSource = [DoggyProfileDataSource](),
+        canSelectMainPackage : Bool = false,
+        isAllDogsTheSameSize : Bool = true,
+        sameDogWeightSelectSize : String?,
+        mainContainerConstraint : NSLayoutConstraint?
     
     lazy var scrollView : UIScrollView = {
         
@@ -216,77 +224,16 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
 
         return hl
     }()
-    
-    //FULL PACKAGE
-    lazy var mainContainerFP : UIButton = {
+  
+    lazy var mainContainerFP : FullPackageContainer = {
         
-        let cv = UIButton(type : .system)
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.backgroundColor = coreWhiteColor
-        cv.clipsToBounds = false
-        cv.layer.masksToBounds = false
-        cv.layer.shadowColor = coreOrangeColor.cgColor
-        cv.layer.shadowOpacity = 0.4
-        cv.layer.shadowOffset = CGSize(width: 0, height: 0)
-        cv.layer.shadowRadius = 4
-        cv.layer.shouldRasterize = false
-        cv.layer.cornerRadius = 15
-        cv.layer.borderColor = coreOrangeColor.cgColor
-        cv.layer.borderWidth = 0.5
-        cv.isHidden = true
-        cv.addTarget(self, action: #selector(self.handleMainContainerTaps), for: .touchUpInside)
-
-       return cv
+        let layout = UICollectionViewFlowLayout()
+        let mcfp = FullPackageContainer(frame: .zero, collectionViewLayout: layout)
+        mcfp.appointmentOne = self
+        mcfp.isHidden = true
         
+       return mcfp
     }()
-    
-    let iconImageViewFP : UIButton = {
-        
-        let iv = UIButton(type: .system)
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.backgroundColor = dividerGrey
-        iv.contentMode = .scaleAspectFill
-        iv.layer.masksToBounds = true
-        iv.layer.cornerRadius = 20
-        iv.isUserInteractionEnabled = false
-        iv.tintColor = coreWhiteColor
-        iv.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-        iv.setTitle(String.fontAwesomeIcon(name: .shower), for: .normal)
-        iv.backgroundColor = coreOrangeColor
-
-       return iv
-    }()
-    
-    let headerLabelFP : UILabel = {
-        
-        let hl = UILabel()
-        hl.translatesAutoresizingMaskIntoConstraints = false
-        hl.backgroundColor = .clear
-        hl.text = "Full Package"
-        hl.font = UIFont(name: rubikMedium, size: 18)
-        hl.numberOfLines = 1
-        hl.adjustsFontSizeToFitWidth = true
-        hl.textAlignment = .left
-        hl.isUserInteractionEnabled = false
-
-        return hl
-    }()
-    
-    let costLabelFP : UILabel = {
-        
-        let hl = UILabel()
-        hl.translatesAutoresizingMaskIntoConstraints = false
-        hl.backgroundColor = .clear
-        hl.text = "$119+"
-        hl.font = UIFont(name: rubikRegular, size: 16)
-        hl.numberOfLines = 1
-        hl.adjustsFontSizeToFitWidth = true
-        hl.textAlignment = .left
-        hl.isUserInteractionEnabled = false
-
-        return hl
-    }()
-   
     
     //CUSTOM PACKAGE
     lazy var mainContainerCP : UIButton = {
@@ -392,7 +339,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         super.viewWillAppear(true)
         self.navigationController?.navigationBar.isHidden = true
     }
-
+    
     func addViews() {
         
         self.view.addSubview(self.scrollView)
@@ -415,9 +362,6 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         
         //FULL PACKAGE
         self.scrollView.addSubview(self.mainContainerFP)
-        self.mainContainerFP.addSubview(self.iconImageViewFP)
-        self.mainContainerFP.addSubview(self.costLabelFP)
-        self.mainContainerFP.addSubview(self.headerLabelFP)
         
         //CUSTOM PACKAGE
         self.scrollView.addSubview(self.mainContainerCP)
@@ -510,25 +454,11 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.selectServicesCollection.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         
         //FULL PACKAGE
-        self.mainContainerFP.topAnchor.constraint(equalTo: self.selectServicesLabel.bottomAnchor, constant: 30).isActive = true
+        self.mainContainerFP.topAnchor.constraint(equalTo: self.selectServicesLabel.bottomAnchor, constant: 16).isActive = true
         self.mainContainerFP.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.mainContainerFP.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-        self.mainContainerFP.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        
-        self.iconImageViewFP.leftAnchor.constraint(equalTo: self.mainContainerFP.leftAnchor, constant: 25).isActive = true
-        self.iconImageViewFP.topAnchor.constraint(equalTo: self.mainContainerFP.topAnchor, constant: 20).isActive = true
-        self.iconImageViewFP.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        self.iconImageViewFP.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        self.costLabelFP.rightAnchor.constraint(equalTo: self.mainContainerFP.rightAnchor, constant: -25).isActive = true
-        self.costLabelFP.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        self.costLabelFP.centerYAnchor.constraint(equalTo: self.iconImageViewFP.centerYAnchor).isActive = true
-        self.costLabelFP.bottomAnchor.constraint(equalTo: self.mainContainerFP.bottomAnchor, constant: 0).isActive = true
-        
-        self.headerLabelFP.leftAnchor.constraint(equalTo: self.iconImageViewFP.rightAnchor, constant: 10).isActive = true
-        self.headerLabelFP.rightAnchor.constraint(equalTo: self.costLabelFP.leftAnchor, constant: -10).isActive = true
-        self.headerLabelFP.centerYAnchor.constraint(equalTo: self.iconImageViewFP.centerYAnchor).isActive = true
-        self.headerLabelFP.bottomAnchor.constraint(equalTo: self.mainContainerFP.bottomAnchor).isActive = true
+        self.mainContainerConstraint = self.mainContainerFP.heightAnchor.constraint(equalToConstant: 80)
+        self.mainContainerConstraint?.isActive = true
         
         //FULL PACKAGE
         self.mainContainerCP.topAnchor.constraint(equalTo: self.selectServicesLabel.bottomAnchor, constant: 30).isActive = true
@@ -551,7 +481,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.headerLabelCP.centerYAnchor.constraint(equalTo: self.iconImageViewCP.centerYAnchor).isActive = true
         self.headerLabelCP.bottomAnchor.constraint(equalTo: self.mainContainerCP.bottomAnchor).isActive = true
         
-        self.addOnsLabel.topAnchor.constraint(equalTo: self.mainContainerCP.bottomAnchor, constant: 30).isActive = true
+        self.addOnsLabel.topAnchor.constraint(equalTo: self.mainContainerFP.bottomAnchor, constant: 30).isActive = true
         self.addOnsLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.addOnsLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.addOnsLabel.heightAnchor.constraint(equalToConstant: 28).isActive = true
@@ -571,6 +501,45 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.nextButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
+    }
+    
+    func shouldExpandMainContainerFP(shouldExpand : Bool) {
+        
+        if self.isAllDogsTheSameSize == true {
+            
+            UIView.animate(withDuration: 0.25) {
+                
+                self.mainContainerConstraint?.constant = 80
+                self.view.layoutIfNeeded()
+                self.view.superview?.layoutIfNeeded()
+            }
+            
+            return
+            
+        }
+        
+        if shouldExpand {
+            
+            UIView.animate(withDuration: 0.25) {
+                
+                let currentCount = self.selectedProfileDataSource.count
+                let height = currentCount * 40
+                self.mainContainerConstraint?.constant = CGFloat(height) + 90
+                self.view.layoutIfNeeded()
+                self.view.superview?.layoutIfNeeded()
+                
+            }
+            
+        } else {
+            
+            UIView.animate(withDuration: 0.25) {
+                
+                self.mainContainerConstraint?.constant = 80
+                self.view.layoutIfNeeded()
+                self.view.superview?.layoutIfNeeded()
+
+            }
+        }
     }
     
     @objc func handlePackageSelection(packageSelection : String) {
@@ -602,6 +571,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.customServicesDropDownCollection.isHidden = true
         self.nextButton.isHidden = false
         self.scrollView.scrollToBottom()
+        self.shouldExpandMainContainerFP(shouldExpand: true)
     }
     
     func handleCustomPackage() {
@@ -630,6 +600,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.scrollView.isScrollEnabled = false
         self.scrollView.scrollToTop()
         self.nextButton.isHidden = true
+        print("Called here now!")
 
     }
    

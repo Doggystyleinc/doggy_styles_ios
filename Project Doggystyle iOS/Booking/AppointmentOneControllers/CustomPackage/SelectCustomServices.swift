@@ -8,39 +8,6 @@
 import Foundation
 import UIKit
 
-
-public enum CustomPackageable : String, CaseIterable {
-    
-    case bath
-    case dematting
-    case deshedding
-    case hairCut
-    case teethCleaning
-    case nailTrimming
-    case earCleaning
-    
-    var description: (String, String) {
-        
-            switch self {
-            
-            case .bath: return ("Bath*", "$119+")
-
-            case .dematting: return ("Dematting", "$30")
-
-            case .deshedding: return ("Deshedding", "$20")
-
-            case .hairCut: return ("Haircut", "$50")
-
-            case .teethCleaning: return ("Teeth Cleaning", "$20")
-
-            case .nailTrimming: return ("Nail Trimming", "$20")
-
-            case .earCleaning: return ("Ear Cleaning", "$20")
-
-            }
-        }
-    }
-
 class CustomServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
     private let dropCustomServices = "dropCustomServices"
