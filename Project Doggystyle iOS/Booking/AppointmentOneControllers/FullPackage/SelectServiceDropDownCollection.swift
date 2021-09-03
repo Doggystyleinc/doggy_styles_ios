@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+var globalArrayOfDicts = [[String:String]]()
 
 class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
@@ -15,8 +16,8 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
     
     var appointmentOne : AppointmentOne?
     var currentDifference : CGFloat = 0.0
-
     var arrayOfIndexPaths = [IndexPath]()
+    var shouldCellsExpand : Bool = false
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -48,18 +49,25 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if let datasourceCount = self.appointmentOne?.selectedProfileDataSource.count {
+        if self.shouldCellsExpand == true && self.arrayOfIndexPaths.contains(indexPath) {
             
-            let height = CGFloat(datasourceCount) * CGFloat(40.0)
-            return CGSize(width: UIScreen.main.bounds.width - 60, height: height + CGFloat(90.0))
-
+            if let datasource = self.appointmentOne?.selectedProfileDataSource.count {
+            
+            let height = (CGFloat(datasource) * 40) + 90
+            
+            return CGSize(width: UIScreen.main.bounds.width - 60, height: height)
+            
         } else {
-            return CGSize(width: UIScreen.main.bounds.width - 60, height: 90.0)
+            return CGSize(width: UIScreen.main.bounds.width - 60, height: 40)
+        }
+            
+        } else {
+            return CGSize(width: UIScreen.main.bounds.width - 60, height: 90)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
+        
         let cell = self.dequeueReusableCell(withReuseIdentifier: self.dropServices, for: indexPath) as! ServicesDropDownFeeder
 
         cell.servicesDropDownCollection = self
@@ -84,15 +92,29 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
             cell.iconImageViewFP.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageViewFP.setTitle(String.fontAwesomeIcon(name: .rulerCombined), for: .normal)
             cell.mainCollectionContainer.typeOfServiceSelection = "dematting"
+            self.decide(typeOfService: "dematting") { complete in
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.25) {
+                        cell.mainCollectionContainer.reloadData()
+                    }
+                }
+            }
 
         case "Deshedding" :
             cell.iconImageViewFP.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageViewFP.setTitle(String.fontAwesomeIcon(name: .chair), for: .normal)
             cell.mainCollectionContainer.typeOfServiceSelection = "deshedding"
-        
+            self.decide(typeOfService: "deshedding") { complete in
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.25) {
+                        cell.mainCollectionContainer.reloadData()
+                    }
+                }
+            }
         default: print("default")
 
         }
+        
         
         DispatchQueue.main.async {
             cell.mainCollectionContainer.reloadData()
@@ -101,6 +123,32 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
         print("Hit the top level cell for item collection")
 
         return cell
+    }
+    
+    
+    func decide(typeOfService: String, completion: @escaping(_ isComplete : Bool)->()) {
+        
+    globalArrayOfDicts.removeAll()
+    
+    if let dataSource = self.appointmentOne?.selectedProfileDataSource {
+        
+        for i in 0..<dataSource.count {
+        
+        let feeder = dataSource[i],
+            dogsFirstName = feeder.dog_builder_name ?? "Pup",
+            dogSize = feeder.dog_builder_size ?? "Medium"
+            
+            let dogCost = dogServicePriceConfiguration(dogSize: dogSize, service: typeOfService)
+            
+            let dic = [dogsFirstName : dogCost]
+            globalArrayOfDicts.append(dic)
+        }
+        
+        completion(true)
+    } else {
+        completion(true)
+    }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -131,13 +179,22 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
             }
         }
         
+        
+        let isAllDogsTheSameSize = self.appointmentOne?.isAllDogsTheSameSize ?? false
+        let count = self.appointmentOne?.selectedProfileDataSource.count ?? 0
+        
+        if count > 1 && isAllDogsTheSameSize == false {
+            self.shouldCellsExpand = true
+        } else {
+            self.shouldCellsExpand = false
+        }
+
         UIDevice.vibrateLight()
         
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.25) {
                 
                 self.reloadItems(at: [indexPath])
-                self.appointmentOne?.view.layoutIfNeeded()
                 self.appointmentOne?.view.layoutIfNeeded()
             }
         }
@@ -225,8 +282,6 @@ class ServicesDropDownFeeder : UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        print("Hit the cell collection")
-        
         self.backgroundColor = coreWhiteColor
         self.clipsToBounds = false
         self.layer.masksToBounds = false
@@ -296,9 +351,11 @@ class ServicesDropDownFeeder : UICollectionViewCell {
         if shouldEngage {
             self.layer.shadowColor = coreOrangeColor.cgColor
             self.layer.borderColor = coreOrangeColor.cgColor
+         
         } else {
             self.layer.shadowColor = UIColor .clear.cgColor
             self.layer.borderColor = dividerGrey.withAlphaComponent(0.2).cgColor
+         
         }
     }
     

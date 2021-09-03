@@ -16,12 +16,12 @@ public func dogServicePriceConfiguration(dogSize : String, service : String) -> 
         
         switch service {
         
-        case "dematting" : return "$119"
-        case "deshedding" : return "$119"
-        case "bath" : return "$119"
-        case "hairCut" : return "$119"
-        case "teethCleaning" : return "$119"
-        case "nailTrimming" : return "$119"
+        case "dematting" : return "$16519"
+        case "deshedding" : return "$145619"
+        case "bath" : return "$1179"
+        case "hairCut" : return "$44119"
+        case "teethCleaning" : return "$33119"
+        case "nailTrimming" : return "$6119"
         case "earCleaning" : return "$119"
         default: return "$119"
         
@@ -31,9 +31,9 @@ public func dogServicePriceConfiguration(dogSize : String, service : String) -> 
         
         switch service {
         
-        case "dematting" : return "$119"
-        case "deshedding" : return "$119"
-        case "bath" : return "$119"
+        case "dematting" : return "$tt1rg19"
+        case "deshedding" : return "$1fdgr19"
+        case "bath" : return "$1greg19"
         case "hairCut" : return "$119"
         case "teethCleaning" : return "$119"
         case "nailTrimming" : return "$119"
@@ -46,8 +46,8 @@ public func dogServicePriceConfiguration(dogSize : String, service : String) -> 
         
         switch service {
         
-        case "dematting" : return "$119"
-        case "deshedding" : return "$119"
+        case "dematting" : return "$1fgrt45319"
+        case "deshedding" : return "$11wert9"
         case "bath" : return "$119"
         case "hairCut" : return "$119"
         case "teethCleaning" : return "$119"
@@ -61,8 +61,8 @@ public func dogServicePriceConfiguration(dogSize : String, service : String) -> 
         
         switch service {
         
-        case "dematting" : return "$119"
-        case "deshedding" : return "$119"
+        case "dematting" : return "$1werwe19"
+        case "deshedding" : return "$11t9"
         case "bath" : return "$119"
         case "hairCut" : return "$119"
         case "teethCleaning" : return "$119"

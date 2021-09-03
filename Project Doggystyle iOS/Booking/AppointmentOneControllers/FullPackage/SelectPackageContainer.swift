@@ -21,7 +21,6 @@ class SelectFullPackageContainer : UICollectionView, UICollectionViewDelegateFlo
     
     var gloablCounter : Int = 0
     var typeOfServiceSelection : String = ""
-
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -47,15 +46,14 @@ class SelectFullPackageContainer : UICollectionView, UICollectionViewDelegateFlo
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        if let datasource = self.servicesDropDownFeeder?.servicesDropDownCollection?.appointmentOne?.selectedProfileDataSource.count {
-            return datasource
-        } else {
-            return 1
-        }
+        return globalArrayOfDicts.count
+     
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width - 60, height: 40)
+            
+            return CGSize(width: UIScreen.main.bounds.width - 60, height: 40)
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -64,22 +62,20 @@ class SelectFullPackageContainer : UICollectionView, UICollectionViewDelegateFlo
         
         cell.selectFullPackageContainer = self
       
-        if let datasource = self.servicesDropDownFeeder?.servicesDropDownCollection?.appointmentOne?.selectedProfileDataSource {
+        if let _ = self.servicesDropDownFeeder?.servicesDropDownCollection?.appointmentOne?.selectedProfileDataSource {
             
-            let feeder = datasource[gloablCounter],
-                dogsFirstName = feeder.dog_builder_name ?? "Error",
-                dogSize = feeder.dog_builder_size ?? "-"
-            
-            cell.nameLabel.text = dogsFirstName
-            
-            switch dogSize {
-            case "Small": cell.costLabel.text = DogGroomingCostable.Small.description
-            case "Medium": cell.costLabel.text = DogGroomingCostable.Medium.description
-            case "Large": cell.costLabel.text = DogGroomingCostable.Large.description
-            case "X-Large": cell.costLabel.text = DogGroomingCostable.XLarge.description
-            default: print("Should not hit")
+            let feeder = globalArrayOfDicts[indexPath.item]
+             
+            for (key ,value) in feeder {
+                
+                let name = key
+                let cost = value
+                
+                cell.nameLabel.text = name
+                cell.costLabel.text = cost
+
             }
-            
+
             switch typeOfServiceSelection {
             
             case "dematting": print("We are filling the dematting cell")
