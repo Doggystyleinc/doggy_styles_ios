@@ -123,7 +123,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         cbf.backgroundColor = .clear
         cbf.tintColor = UIColor.dsOrange
         cbf.contentMode = .scaleAspectFill
-        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 24, style: .solid)
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
         cbf.setTitle(String.fontAwesomeIcon(name: .chevronLeft), for: .normal)
         cbf.addTarget(self, action: #selector(self.handleBackButton), for: UIControl.Event.touchUpInside)
         return cbf

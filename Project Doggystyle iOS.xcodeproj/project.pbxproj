@@ -140,6 +140,8 @@
 		E357D2F626E2B93400CDF90E /* Apple Pay Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E357D2F326E2B93400CDF90E /* Apple Pay Icon.png */; };
 		E357D2F726E2B93400CDF90E /* Apple Pay Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E357D2F426E2B93400CDF90E /* Apple Pay Icon@2x.png */; };
 		E357D2F826E2B93400CDF90E /* Apple Pay Icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E357D2F526E2B93400CDF90E /* Apple Pay Icon@3x.png */; };
+		E357D2FA26E2BDBB00CDF90E /* CreditCardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E357D2F926E2BDBB00CDF90E /* CreditCardController.swift */; };
+		E357D2FC26E2D11B00CDF90E /* ConfirmBookingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E357D2FB26E2D11B00CDF90E /* ConfirmBookingController.swift */; };
 		E361FBF726CEEEBE00026DE3 /* BreedHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBF626CEEEBE00026DE3 /* BreedHelper.swift */; };
 		E361FBFA26CEF51800026DE3 /* AppointmentOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBF926CEF51800026DE3 /* AppointmentOne.swift */; };
 		E361FBFC26CF078100026DE3 /* PetsApointmentCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */; };
@@ -357,6 +359,8 @@
 		E357D2F326E2B93400CDF90E /* Apple Pay Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Apple Pay Icon.png"; sourceTree = "<group>"; };
 		E357D2F426E2B93400CDF90E /* Apple Pay Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Apple Pay Icon@2x.png"; sourceTree = "<group>"; };
 		E357D2F526E2B93400CDF90E /* Apple Pay Icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Apple Pay Icon@3x.png"; sourceTree = "<group>"; };
+		E357D2F926E2BDBB00CDF90E /* CreditCardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardController.swift; sourceTree = "<group>"; };
+		E357D2FB26E2D11B00CDF90E /* ConfirmBookingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBookingController.swift; sourceTree = "<group>"; };
 		E361FBF626CEEEBE00026DE3 /* BreedHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedHelper.swift; sourceTree = "<group>"; };
 		E361FBF926CEF51800026DE3 /* AppointmentOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentOne.swift; sourceTree = "<group>"; };
 		E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetsApointmentCollection.swift; sourceTree = "<group>"; };
@@ -884,6 +888,8 @@
 			isa = PBXGroup;
 			children = (
 				E357D2F126E2AB0200CDF90E /* PaymentMethod.swift */,
+				E357D2F926E2BDBB00CDF90E /* CreditCardController.swift */,
+				E357D2FB26E2D11B00CDF90E /* ConfirmBookingController.swift */,
 			);
 			path = PaymentControllers;
 			sourceTree = "<group>";
@@ -1516,6 +1522,7 @@
 				CD6DD00E267FC86000BC376B /* RefurAFriendController.swift in Sources */,
 				E397405D26D40B6F0084742F /* AppointmentTwoContainer.swift in Sources */,
 				CD6DCFFC267A8DD200BC376B /* DSRegularLabel.swift in Sources */,
+				E357D2FA26E2BDBB00CDF90E /* CreditCardController.swift in Sources */,
 				E36EE56626B793FB0009A0EF /* MainDashboardCollectionView.swift in Sources */,
 				CD6DD01A2680FC4100BC376B /* GrabDeviceID.swift in Sources */,
 				E3D53F3F26AA2200003B4317 /* SearchLocationFeeder.swift in Sources */,
@@ -1525,6 +1532,7 @@
 				E36EE56826B7A75F0009A0EF /* NotificationsController.swift in Sources */,
 				CDE871652652E6E60082551B /* DSButton.swift in Sources */,
 				CDE871232652E3030082551B /* String + Ext.swift in Sources */,
+				E357D2FC26E2D11B00CDF90E /* ConfirmBookingController.swift in Sources */,
 				E3A0AD5426BDAA2000E813D5 /* NewDogFour.swift in Sources */,
 				CD6DCFFA267A8D7400BC376B /* DSSemiBoldLabel.swift in Sources */,
 				CD6DD01D26827E6A00BC376B /* LoginController.swift in Sources */,

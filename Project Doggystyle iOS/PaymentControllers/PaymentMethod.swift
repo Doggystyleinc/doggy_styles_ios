@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import PassKit
 
 class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
   
@@ -86,7 +87,7 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         cbf.backgroundColor = .clear
         cbf.tintColor = UIColor.dsOrange
         cbf.contentMode = .scaleAspectFill
-        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 24, style: .solid)
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
         cbf.setTitle(String.fontAwesomeIcon(name: .chevronLeft), for: .normal)
         cbf.addTarget(self, action: #selector(self.handleCancelButton), for: UIControl.Event.touchUpInside)
         return cbf
@@ -132,7 +133,7 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         return nl
     }()
   
-    let creditCardButton : UIButton = {
+    lazy var creditCardButton : UIButton = {
         
         let ccb = UIButton(type: .system)
         ccb.translatesAutoresizingMaskIntoConstraints = false
@@ -143,11 +144,12 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         ccb.layer.shadowRadius = 4
         ccb.layer.shouldRasterize = false
         ccb.layer.cornerRadius = 15
+        ccb.addTarget(self, action: #selector(self.handleCreditCardTap), for: .touchUpInside)
         
        return ccb
     }()
     
-    let applePayButton : UIButton = {
+    lazy var  applePayButton : UIButton = {
         
         let ccb = UIButton(type: .system)
         ccb.translatesAutoresizingMaskIntoConstraints = false
@@ -158,7 +160,8 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         ccb.layer.shadowRadius = 4
         ccb.layer.shouldRasterize = false
         ccb.layer.cornerRadius = 15
-        
+        ccb.addTarget(self, action: #selector(self.handleApplePayTap), for: .touchUpInside)
+
         return ccb
     }()
     
@@ -171,6 +174,7 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         cci.titleLabel?.font = UIFont.fontAwesome(ofSize: 24, style: .regular)
         cci.setTitle(String.fontAwesomeIcon(name: .creditCard), for: .normal)
         cci.tintColor = coreBlackColor
+        cci.isUserInteractionEnabled = false
 
        return cci
     }()
@@ -186,7 +190,8 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         cci.setBackgroundImage(image, for: .normal)
         cci.contentMode = .scaleAspectFit
         cci.imageView?.contentMode = .scaleAspectFit
-        
+        cci.isUserInteractionEnabled = false
+
        return cci
     }()
     
@@ -199,7 +204,8 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         cci.titleLabel?.font = UIFont.fontAwesome(ofSize: 15, style: .solid)
         cci.setTitle(String.fontAwesomeIcon(name: .chevronRight), for: .normal)
         cci.tintColor = coreOrangeColor
-        
+        cci.isUserInteractionEnabled = false
+
        return cci
     }()
     
@@ -212,7 +218,8 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         cci.titleLabel?.font = UIFont.fontAwesome(ofSize: 15, style: .solid)
         cci.setTitle(String.fontAwesomeIcon(name: .chevronRight), for: .normal)
         cci.tintColor = coreOrangeColor
-        
+        cci.isUserInteractionEnabled = false
+
        return cci
     }()
     
@@ -226,7 +233,8 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         nl.textColor = coreBlackColor
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
-        
+        nl.isUserInteractionEnabled = false
+
         return nl
     }()
     
@@ -240,7 +248,8 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         nl.textColor = coreBlackColor
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
-        
+        nl.isUserInteractionEnabled = false
+
         return nl
     }()
     
@@ -374,6 +383,67 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
     
     @objc func handleBackButton() {
         self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func handleCreditCardTap() {
+        
+        UIDevice.vibrateLight()
+        let creditCardController = CreditCardController()
+        creditCardController.modalPresentationStyle = .fullScreen
+        self.navigationController?.pushViewController(creditCardController, animated: true)
+        
+    }
+    
+    @objc func handleApplePayTap() {
+        self.handleApplePayment()
+    }
+    
+    private var applePayRequest : PKPaymentRequest = {
+        
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "merchant.com.doggystyle.Project-Doggystyle-iOS"
+        request.supportedNetworks = [.quicPay, .masterCard, .visa, .amex]
+        request.supportedCountries = ["US", "CA"]
+        request.merchantCapabilities = .capability3DS
+        request.countryCode = "US"
+        request.currencyCode = "USD"
+        request.paymentSummaryItems = [PKPaymentSummaryItem(label: "Mobile Grooming Package", amount: 119)]
+       return request
+    }()
+    
+    func handleApplePayment() {
+        
+        let controller = PKPaymentAuthorizationViewController(paymentRequest: self.applePayRequest)
+        
+        if controller != nil {
+        controller!.delegate = self
+        self.navigationController?.present(controller!, animated: true, completion: {
+            print("Apple pay controller has been presented")
+        })
+        }
+    }
+    
+    func moveToBookingConfirmation() {
+        
+        UIDevice.vibrateLight()
+        let confirmBookingController = ConfirmBookingController()
+        confirmBookingController.modalPresentationStyle = .fullScreen
+        self.navigationController?.pushViewController(confirmBookingController, animated: true)
+        
+    }
+}
+
+extension PaymentMethodSelection : PKPaymentAuthorizationViewControllerDelegate {
+    
+    func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+   
+    
+    func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+        self.moveToBookingConfirmation()
+        completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
     }
     
 }
