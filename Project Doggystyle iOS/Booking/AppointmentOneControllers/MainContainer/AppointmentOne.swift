@@ -554,6 +554,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         case "Custom Package" :
             self.currentState = .CustomPackage
             self.handleCustomPackage()
+
         default: print("default for package selection")
         
         }

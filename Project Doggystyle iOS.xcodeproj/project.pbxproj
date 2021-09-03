@@ -136,6 +136,10 @@
 		E357D2EB26E027F100CDF90E /* FullPackageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E357D2EA26E027F100CDF90E /* FullPackageContainer.swift */; };
 		E357D2ED26E05AE900CDF90E /* SelectPackageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E357D2EC26E05AE900CDF90E /* SelectPackageContainer.swift */; };
 		E357D2EF26E296C300CDF90E /* CustomPackageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E357D2EE26E296C300CDF90E /* CustomPackageContainer.swift */; };
+		E357D2F226E2AB0200CDF90E /* PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E357D2F126E2AB0200CDF90E /* PaymentMethod.swift */; };
+		E357D2F626E2B93400CDF90E /* Apple Pay Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E357D2F326E2B93400CDF90E /* Apple Pay Icon.png */; };
+		E357D2F726E2B93400CDF90E /* Apple Pay Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E357D2F426E2B93400CDF90E /* Apple Pay Icon@2x.png */; };
+		E357D2F826E2B93400CDF90E /* Apple Pay Icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E357D2F526E2B93400CDF90E /* Apple Pay Icon@3x.png */; };
 		E361FBF726CEEEBE00026DE3 /* BreedHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBF626CEEEBE00026DE3 /* BreedHelper.swift */; };
 		E361FBFA26CEF51800026DE3 /* AppointmentOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBF926CEF51800026DE3 /* AppointmentOne.swift */; };
 		E361FBFC26CF078100026DE3 /* PetsApointmentCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */; };
@@ -349,6 +353,10 @@
 		E357D2EA26E027F100CDF90E /* FullPackageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullPackageContainer.swift; sourceTree = "<group>"; };
 		E357D2EC26E05AE900CDF90E /* SelectPackageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPackageContainer.swift; sourceTree = "<group>"; };
 		E357D2EE26E296C300CDF90E /* CustomPackageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPackageContainer.swift; sourceTree = "<group>"; };
+		E357D2F126E2AB0200CDF90E /* PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethod.swift; sourceTree = "<group>"; };
+		E357D2F326E2B93400CDF90E /* Apple Pay Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Apple Pay Icon.png"; sourceTree = "<group>"; };
+		E357D2F426E2B93400CDF90E /* Apple Pay Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Apple Pay Icon@2x.png"; sourceTree = "<group>"; };
+		E357D2F526E2B93400CDF90E /* Apple Pay Icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Apple Pay Icon@3x.png"; sourceTree = "<group>"; };
 		E361FBF626CEEEBE00026DE3 /* BreedHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedHelper.swift; sourceTree = "<group>"; };
 		E361FBF926CEF51800026DE3 /* AppointmentOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentOne.swift; sourceTree = "<group>"; };
 		E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetsApointmentCollection.swift; sourceTree = "<group>"; };
@@ -646,6 +654,7 @@
 				E3B11AB5268FAE0C00B5B6F8 /* HomeController */,
 				E3B11AB6268FB88100B5B6F8 /* Tabs */,
 				E361FBF826CEF4FE00026DE3 /* Booking */,
+				E357D2F026E2AAE500CDF90E /* PaymentControllers */,
 				E357D2E726E020C000CDF90E /* Enums */,
 				CDE8714D2652E65A0082551B /* View Controllers */,
 				E3B11AB3268FA8B500B5B6F8 /* Extensions */,
@@ -795,6 +804,9 @@
 		E326572426B20866004A15F6 /* DashboardIcons */ = {
 			isa = PBXGroup;
 			children = (
+				E357D2F326E2B93400CDF90E /* Apple Pay Icon.png */,
+				E357D2F426E2B93400CDF90E /* Apple Pay Icon@2x.png */,
+				E357D2F526E2B93400CDF90E /* Apple Pay Icon@3x.png */,
 				E38B7FD626C457640013D72D /* invalidName.png */,
 				E38B7FD826C457640013D72D /* invalidName@2x.png */,
 				E38B7FD726C457640013D72D /* invalidName@3x.png */,
@@ -866,6 +878,14 @@
 				E357D2E826E020D500CDF90E /* PublicEnums.swift */,
 			);
 			path = Enums;
+			sourceTree = "<group>";
+		};
+		E357D2F026E2AAE500CDF90E /* PaymentControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E357D2F126E2AB0200CDF90E /* PaymentMethod.swift */,
+			);
+			path = PaymentControllers;
 			sourceTree = "<group>";
 		};
 		E361FBF826CEF4FE00026DE3 /* Booking */ = {
@@ -1321,6 +1341,7 @@
 				E3E9F7E426BC62CE00C3A57A /* Doggy_filler_photo@2x.png in Resources */,
 				E36EE57526B876500009A0EF /* profile_doggy@3x.png in Resources */,
 				E39C665C26A899F0004A0E93 /* Rubik-SemiBoldItalic.ttf in Resources */,
+				E357D2F626E2B93400CDF90E /* Apple Pay Icon.png in Resources */,
 				CDE870EA2652E1640082551B /* LaunchScreen.storyboard in Resources */,
 				E36EE55F26B789A60009A0EF /* group18328.png in Resources */,
 				E38B7FDB26C457640013D72D /* invalidName@2x.png in Resources */,
@@ -1350,6 +1371,7 @@
 				E36EE54E26B77CBC0009A0EF /* dsComboShutterstock530718881.png in Resources */,
 				CDE871042652E2080082551B /* Roboto-MediumItalic.ttf in Resources */,
 				E36EE54D26B77CBC0009A0EF /* dsComboShutterstock530718881@3x.png in Resources */,
+				E357D2F726E2B93400CDF90E /* Apple Pay Icon@2x.png in Resources */,
 				E376FDF026AB4E4300902C36 /* ios_doggystyle_icon87.jpg in Resources */,
 				CDE871072652E2080082551B /* Roboto-Black.ttf in Resources */,
 				CDE871082652E2080082551B /* Roboto-BoldItalic.ttf in Resources */,
@@ -1372,6 +1394,7 @@
 				E326573026B2149D004A15F6 /* 65430TifDsVan1@3x.png in Resources */,
 				E376FDEA26AB4E4300902C36 /* ios_doggystyle_icon120.jpg in Resources */,
 				E36EE57026B875180009A0EF /* notifications_doggy.png in Resources */,
+				E357D2F826E2B93400CDF90E /* Apple Pay Icon@3x.png in Resources */,
 				E326572A26B20884004A15F6 /* emptydoggyprofile@3x.png in Resources */,
 				E352FF6726A63369003BD59F /* group18322@3x.png in Resources */,
 				E36EE56E26B875180009A0EF /* notifications_doggy@2x.png in Resources */,
@@ -1566,6 +1589,7 @@
 				CD319F7D26794D5E00F48E3C /* DSBoldLabel.swift in Sources */,
 				CD6DD026268643F500BC376B /* DSSMSTextField.swift in Sources */,
 				CD6DD008267FC0F500BC376B /* MyPetsController.swift in Sources */,
+				E357D2F226E2AB0200CDF90E /* PaymentMethod.swift in Sources */,
 				CDE871512652E66A0082551B /* HomeController.swift in Sources */,
 				CD203BFC2667FAB300335D93 /* ServicesController.swift in Sources */,
 				E3A0AD5926BDD29400E813D5 /* NewDogFiveCollectionview.swift in Sources */,

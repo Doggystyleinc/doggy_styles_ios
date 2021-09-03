@@ -118,7 +118,8 @@ class AppointmentThreeCollectionview : UICollectionView, UICollectionViewDelegat
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
         
         let feeder = AppointmentThreeable.allCases[indexPath.item].value
-        
+        self.appointmentThree?.appointmentThreeContainer.resignation()
+
         UIDevice.vibrateLight()
         
         switch feeder {

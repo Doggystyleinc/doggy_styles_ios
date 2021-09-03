@@ -314,7 +314,16 @@ class AppointmentThree : UIViewController, UIScrollViewDelegate {
         } else {
             self.nextButton.isHidden = true
         }
-        
+    }
+    
+    @objc func handleNextButton() {
+
+        UIDevice.vibrateLight()
+
+        let paymentMethodSelection = PaymentMethodSelection()
+        paymentMethodSelection.modalPresentationStyle = .fullScreen
+        self.navigationController?.pushViewController(paymentMethodSelection, animated: true)
+
     }
     
     @objc func handleCancelButton() {

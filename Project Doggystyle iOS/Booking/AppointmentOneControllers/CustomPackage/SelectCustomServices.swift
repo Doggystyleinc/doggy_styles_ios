@@ -88,8 +88,10 @@ class CustomServicesDropDownCollection : UICollectionView, UICollectionViewDeleg
 
         cell.headerLabelFP.text = "\(serviceName)"
         cell.costLabelFP.text = "\(serviceCost)"
+        
+        print(serviceName, " name find me")
 
-        if self.arrayOfIndexPaths.contains(indexPath) {
+        if self.arrayOfIndexPaths.contains(indexPath) || serviceName == "Bath*" {
             cell.engageShadow(shouldEngage: true)
         } else {
             cell.engageShadow(shouldEngage: false)

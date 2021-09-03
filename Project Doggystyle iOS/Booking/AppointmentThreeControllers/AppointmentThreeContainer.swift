@@ -118,7 +118,7 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         etfc.backgroundColor = coreWhiteColor
         etfc.keyboardAppearance = UIKeyboardAppearance.light
         etfc.returnKeyType = UIReturnKeyType.done
-        etfc.keyboardType = .default
+        etfc.keyboardType = .decimalPad
         etfc.layer.masksToBounds = true
         etfc.layer.cornerRadius = 10
         etfc.leftViewMode = .always
@@ -186,8 +186,7 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         etfc.delegate = self
         etfc.backgroundColor = coreWhiteColor
         etfc.keyboardAppearance = UIKeyboardAppearance.light
-        etfc.returnKeyType = UIReturnKeyType.done
-        etfc.keyboardType = .default
+        etfc.returnKeyType = .default
         etfc.layer.masksToBounds = true
         etfc.layer.cornerRadius = 10
         etfc.layer.borderColor = UIColor.clear.cgColor
@@ -304,6 +303,13 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         self.selectionDescription.text = passedText
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        self.resignation()
+        
+        return false
+    }
+    
     func addViews() {
         
         self.addSubview(self.scrollView)
@@ -331,7 +337,7 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         //MANUAL CONFIGURATION - REFACTOR FOR UNNIVERSAL FITMENT
         case 926 : scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 175)
         case 896 : scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 175)
-        case 844 : scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 175)
+        case 844 : scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 50)
         case 812 : scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         case 736 : scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 140)
         case 667 : scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 140)
@@ -426,11 +432,13 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         }
         self.appointmentThree?.appointmentThreeContainer.isHidden = true
         self.appointmentThree?.appointmentThreeCollectionview.isHidden = false
+        self.resignation()
         
     }
     
     @objc func handleNextButton() {
         print("handle next button")
+        self.appointmentThree?.handleNextButton()
     }
     
     required init?(coder: NSCoder) {
