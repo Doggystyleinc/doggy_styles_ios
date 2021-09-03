@@ -135,6 +135,7 @@
 		E357D2E926E020D500CDF90E /* PublicEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = E357D2E826E020D500CDF90E /* PublicEnums.swift */; };
 		E357D2EB26E027F100CDF90E /* FullPackageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E357D2EA26E027F100CDF90E /* FullPackageContainer.swift */; };
 		E357D2ED26E05AE900CDF90E /* SelectPackageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E357D2EC26E05AE900CDF90E /* SelectPackageContainer.swift */; };
+		E357D2EF26E296C300CDF90E /* CustomPackageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E357D2EE26E296C300CDF90E /* CustomPackageContainer.swift */; };
 		E361FBF726CEEEBE00026DE3 /* BreedHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBF626CEEEBE00026DE3 /* BreedHelper.swift */; };
 		E361FBFA26CEF51800026DE3 /* AppointmentOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBF926CEF51800026DE3 /* AppointmentOne.swift */; };
 		E361FBFC26CF078100026DE3 /* PetsApointmentCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */; };
@@ -347,6 +348,7 @@
 		E357D2E826E020D500CDF90E /* PublicEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicEnums.swift; sourceTree = "<group>"; };
 		E357D2EA26E027F100CDF90E /* FullPackageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullPackageContainer.swift; sourceTree = "<group>"; };
 		E357D2EC26E05AE900CDF90E /* SelectPackageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPackageContainer.swift; sourceTree = "<group>"; };
+		E357D2EE26E296C300CDF90E /* CustomPackageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPackageContainer.swift; sourceTree = "<group>"; };
 		E361FBF626CEEEBE00026DE3 /* BreedHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreedHelper.swift; sourceTree = "<group>"; };
 		E361FBF926CEF51800026DE3 /* AppointmentOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentOne.swift; sourceTree = "<group>"; };
 		E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetsApointmentCollection.swift; sourceTree = "<group>"; };
@@ -1189,6 +1191,7 @@
 			isa = PBXGroup;
 			children = (
 				E397405726D2DCE50084742F /* SelectCustomServices.swift */,
+				E357D2EE26E296C300CDF90E /* CustomPackageContainer.swift */,
 			);
 			path = CustomPackage;
 			sourceTree = "<group>";
@@ -1472,6 +1475,7 @@
 				CD6DD01F26827EA500BC376B /* RegistrationController.swift in Sources */,
 				CDE8711E2652E3030082551B /* UIColor+Ext.swift in Sources */,
 				CDE871222652E3030082551B /* UIViewController+Ext.swift in Sources */,
+				E357D2EF26E296C300CDF90E /* CustomPackageContainer.swift in Sources */,
 				E38B7FEB26C5A4590013D72D /* NewDogTreatCollection.swift in Sources */,
 				E38B7FE426C5A24A0013D72D /* DogFoodHelper.swift in Sources */,
 				E361FBFC26CF078100026DE3 /* PetsApointmentCollection.swift in Sources */,

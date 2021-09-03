@@ -13,8 +13,9 @@ class CustomServicesDropDownCollection : UICollectionView, UICollectionViewDeleg
     private let dropCustomServices = "dropCustomServices"
     
     var appointmentOne : AppointmentOne?
-    
     var arrayOfIndexPaths = [IndexPath]()
+    var shouldCellsExpand : Bool = false
+
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -35,10 +36,19 @@ class CustomServicesDropDownCollection : UICollectionView, UICollectionViewDeleg
         self.contentInsetAdjustmentBehavior = .never
         self.delaysContentTouches = true
         self.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleDataReset), name: NSNotification.Name("HANDLE_CLEAR_OTHER_COLLECTIONS_CUSTOM"), object: nil)
+
         self.register(CustomServicesDropDownFeeder.self, forCellWithReuseIdentifier: self.dropCustomServices)
 
         
+    }
+    
+    @objc func handleDataReset() {
+        
+        self.arrayOfIndexPaths.removeAll()
+        DispatchQueue.main.async {
+            self.reloadData()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -47,9 +57,22 @@ class CustomServicesDropDownCollection : UICollectionView, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        return CGSize(width: UIScreen.main.bounds.width, height: 90.0)
-
+      
+        if self.shouldCellsExpand == true && self.arrayOfIndexPaths.contains(indexPath) {
+            
+            if let datasource = self.appointmentOne?.selectedProfileDataSource.count {
+            
+            let height = (CGFloat(datasource) * 40) + 90
+            
+            return CGSize(width: UIScreen.main.bounds.width - 60, height: height)
+            
+        } else {
+            return CGSize(width: UIScreen.main.bounds.width - 60, height: 40)
+        }
+            
+        } else {
+            return CGSize(width: UIScreen.main.bounds.width - 60, height: 90)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -63,59 +86,138 @@ class CustomServicesDropDownCollection : UICollectionView, UICollectionViewDeleg
         let serviceName = feeder.description.0
         let serviceCost = feeder.description.1
 
-        cell.headerLabel.text = "\(serviceName)"
-        cell.costLabel.text = "\(serviceCost)"
-        
-        if self.arrayOfIndexPaths.contains(indexPath) {
-            
-            cell.engageShadow(shouldEngage: true)
-            
-        } else {
-            
-            if serviceName != "Bath*" {
-            cell.engageShadow(shouldEngage: false)
-            }
-        }
-    
-        switch serviceName {
-        
-        case "Bath*" :
-            cell.iconImageView.isHidden = true
-            cell.engageShadow(shouldEngage: true)
-            cell.costLabel.text = "-"
-        case "Dematting" :
-            cell.iconImageView.isHidden = false
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .rulerCombined), for: .normal)
-        case "Deshedding" :
-            cell.iconImageView.isHidden = false
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .chair), for: .normal)
-        case "Bath" :
-            cell.iconImageView.isHidden = false
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .bath), for: .normal)
-        case "Haircut" :
-            cell.iconImageView.isHidden = false
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .handScissors), for: .normal)
-        case "Teeth Cleaning" :
-            cell.iconImageView.isHidden = false
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .tooth), for: .normal)
-        case "Nail Trimming" :
-            cell.iconImageView.isHidden = false
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .journalWhills), for: .normal)
-        case "Ear Cleaning" :
-            cell.iconImageView.isHidden = false
-            cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
-            cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .ambulance), for: .normal)
-        default: print("default")
-        
-        }
+        cell.headerLabelFP.text = "\(serviceName)"
+        cell.costLabelFP.text = "\(serviceCost)"
 
-            return cell
+        if self.arrayOfIndexPaths.contains(indexPath) {
+            cell.engageShadow(shouldEngage: true)
+        } else {
+            cell.engageShadow(shouldEngage: false)
+        }
+        
+        switch serviceName {
+
+        case "Dematting" :
+
+            cell.iconImageViewFP.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
+            cell.iconImageViewFP.setTitle(String.fontAwesomeIcon(name: .rulerCombined), for: .normal)
+            cell.mainCollectionContainer.typeOfServiceSelection = "dematting"
+            
+            self.decide(typeOfService: "dematting") { complete in
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.25) {
+                        cell.mainCollectionContainer.reloadData()
+                    }
+                }
+            }
+
+        case "Deshedding" :
+
+            cell.iconImageViewFP.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
+            cell.iconImageViewFP.setTitle(String.fontAwesomeIcon(name: .chair), for: .normal)
+            cell.mainCollectionContainer.typeOfServiceSelection = "deshedding"
+    
+            self.decide(typeOfService: "deshedding") { complete in
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.25) {
+                        cell.mainCollectionContainer.reloadData()
+                    }
+                }
+            }
+            
+            
+        case "Haircut" :
+
+            cell.iconImageViewFP.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
+            cell.iconImageViewFP.setTitle(String.fontAwesomeIcon(name: .chair), for: .normal)
+            cell.mainCollectionContainer.typeOfServiceSelection = "hairCut"
+    
+            self.decide(typeOfService: "hairCut") { complete in
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.25) {
+                        cell.mainCollectionContainer.reloadData()
+                    }
+                }
+            }
+            
+        case "Teeth Cleaning" :
+
+            cell.iconImageViewFP.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
+            cell.iconImageViewFP.setTitle(String.fontAwesomeIcon(name: .chair), for: .normal)
+            cell.mainCollectionContainer.typeOfServiceSelection = "teethCleaning"
+    
+            self.decide(typeOfService: "teethCleaning") { complete in
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.25) {
+                        cell.mainCollectionContainer.reloadData()
+                    }
+                }
+            }
+            
+        case "Nail Trimming" :
+
+            cell.iconImageViewFP.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
+            cell.iconImageViewFP.setTitle(String.fontAwesomeIcon(name: .chair), for: .normal)
+            cell.mainCollectionContainer.typeOfServiceSelection = "nailTrimming"
+    
+            self.decide(typeOfService: "nailTrimming") { complete in
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.25) {
+                        cell.mainCollectionContainer.reloadData()
+                    }
+                }
+            }
+            
+        case "Ear Cleaning" :
+
+            cell.iconImageViewFP.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
+            cell.iconImageViewFP.setTitle(String.fontAwesomeIcon(name: .chair), for: .normal)
+            cell.mainCollectionContainer.typeOfServiceSelection = "earCleaning"
+    
+            self.decide(typeOfService: "earCleaning") { complete in
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.25) {
+                        cell.mainCollectionContainer.reloadData()
+                    }
+                }
+            }
+           
+        default: print("default")
+
+        }
+        
+        DispatchQueue.main.async {
+            cell.mainCollectionContainer.reloadData()
+        }
+        
+        return cell
+    
+    }
+    
+    func decide(typeOfService: String, completion: @escaping(_ isComplete : Bool)->()) {
+        
+    globalArrayOfDicts.removeAll()
+
+    if let dataSource = self.appointmentOne?.selectedProfileDataSource {
+        
+        for i in 0..<dataSource.count {
+        
+        let feeder = dataSource[i],
+            dogsFirstName = feeder.dog_builder_name ?? "Pup",
+            dogSize = feeder.dog_builder_size ?? "Medium"
+            
+            let dogCost = dogServicePriceConfiguration(dogSize: dogSize, service: typeOfService)
+            let dic = [dogsFirstName : dogCost]
+            
+            globalArrayOfDicts.append(dic)
+            
+        }
+        
+        completion(true)
+    } else {
+        completion(true)
+    }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -126,33 +228,44 @@ class CustomServicesDropDownCollection : UICollectionView, UICollectionViewDeleg
         return 10
     }
     
-    @objc func handleSelection(sender : UIView) {
-
+    @objc func handleSelection(sender : UIView, mainCollection : SelectCustomPackageContainer) {
+    
         let selectedButtonCell = sender.superview as! UICollectionViewCell
         
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
-        
+       
         if !self.arrayOfIndexPaths.contains(indexPath) {
             
+            self.arrayOfIndexPaths.removeAll()
+          
             self.arrayOfIndexPaths.append(indexPath)
             
-        } else if self.arrayOfIndexPaths.contains(indexPath) {
+            self.appointmentOne?.shouldExpandMainContainerFP(shouldExpand: false)
             
-            if let index = self.arrayOfIndexPaths.firstIndex(of: indexPath) {
-                
-                self.arrayOfIndexPaths.remove(at: index)
-                
-            }
+        } else {
+            
+            self.arrayOfIndexPaths.removeAll()
+
         }
         
+        let isAllDogsTheSameSize = self.appointmentOne?.isAllDogsTheSameSize ?? false,
+             dataSourceCount = self.appointmentOne?.selectedProfileDataSource.count ?? 0
+        
+        if dataSourceCount > 1 && isAllDogsTheSameSize == false {
+            self.shouldCellsExpand = true
+        } else {
+            self.shouldCellsExpand = false
+        }
+
         UIDevice.vibrateLight()
         
         DispatchQueue.main.async {
+            
             UIView.animate(withDuration: 0.25) {
-                
+                self.reloadData()
                 self.reloadItems(at: [indexPath])
                 self.appointmentOne?.view.layoutIfNeeded()
-                
+                self.layoutIfNeeded()
             }
         }
     }
@@ -162,38 +275,36 @@ class CustomServicesDropDownCollection : UICollectionView, UICollectionViewDeleg
     }
 }
 
+
+
+
 class CustomServicesDropDownFeeder : UICollectionViewCell {
     
     var customServicesDropDownCollection : CustomServicesDropDownCollection?
-    
-    lazy var mainContainer : UIView = {
+
+    lazy var mainCollectionContainer : SelectCustomPackageContainer = {
         
-        let mc = UIView()
-        mc.translatesAutoresizingMaskIntoConstraints = false
-        mc.backgroundColor = coreWhiteColor
-        mc.clipsToBounds = false
-        mc.layer.masksToBounds = false
-        mc.layer.shadowColor = coreOrangeColor.cgColor
-        mc.layer.shadowOpacity = 0.05
-        mc.layer.shadowOffset = CGSize(width: 2, height: 3)
-        mc.layer.shadowRadius = 9
-        mc.layer.shouldRasterize = false
-        mc.layer.borderColor = dividerGrey.withAlphaComponent(0.2).cgColor
-        mc.layer.borderWidth = 1.0
-        mc.layer.cornerRadius = 15
-        mc.isUserInteractionEnabled = true
-        mc.layer.masksToBounds = false
-        mc.layer.shadowOpacity = 0.35
-        mc.layer.shadowOffset = CGSize(width: 0, height: 0)
-        mc.layer.shadowRadius = 4
-        mc.layer.shouldRasterize = false
-        mc.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleMainContainerTaps(sender:))))
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        let sfp = SelectCustomPackageContainer(frame: .zero, collectionViewLayout: layout)
+        sfp.customServicesDropDownFeeder = self
         
-       return mc
+       return sfp
     }()
-  
-    let iconImageView : UIButton = {
-        
+    
+    lazy var mainContainerFP : UIButton = {
+
+        let cv = UIButton(type : .system)
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.backgroundColor = UIColor .clear
+        cv.addTarget(self, action: #selector(self.handleContainerTap(sender:)), for: .touchUpInside)
+
+       return cv
+
+    }()
+
+    let iconImageViewFP : UIButton = {
+
         let iv = UIButton(type: .system)
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.backgroundColor = dividerGrey
@@ -201,13 +312,16 @@ class CustomServicesDropDownFeeder : UICollectionViewCell {
         iv.layer.masksToBounds = true
         iv.layer.cornerRadius = 20
         iv.isUserInteractionEnabled = false
-        iv.tintColor = coreBlackColor
+        iv.tintColor = coreWhiteColor
+        iv.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
+        iv.setTitle(String.fontAwesomeIcon(name: .shower), for: .normal)
+        iv.backgroundColor = coreOrangeColor
 
        return iv
     }()
-    
-    let headerLabel : UILabel = {
-        
+
+    let headerLabelFP : UILabel = {
+
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
@@ -220,9 +334,9 @@ class CustomServicesDropDownFeeder : UICollectionViewCell {
 
         return hl
     }()
-    
-    let costLabel : UILabel = {
-        
+
+    let costLabelFP : UILabel = {
+
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
@@ -239,55 +353,87 @@ class CustomServicesDropDownFeeder : UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = .clear
-        self.addViews()
+        self.backgroundColor = coreWhiteColor
+        self.clipsToBounds = false
+        self.layer.masksToBounds = false
+        self.clipsToBounds = false
+        self.layer.masksToBounds = false
+        self.layer.shadowColor = UIColor .clear.cgColor
+        self.layer.shadowOffset = CGSize(width: 2, height: 3)
+        self.layer.shadowRadius = 9
+        self.layer.shouldRasterize = false
+        self.layer.borderColor = dividerGrey.withAlphaComponent(0.2).cgColor
+        self.layer.borderWidth = 1.0
+        self.layer.cornerRadius = 15
+        self.isUserInteractionEnabled = true
+        self.layer.masksToBounds = false
+        self.layer.shadowOpacity = 0.35
+        self.layer.shadowOffset = CGSize(width: 0, height: 0)
+        self.layer.shadowRadius = 4
+        self.layer.shouldRasterize = false
         
+        
+        self.layer.shadowColor = coreOrangeColor.cgColor
+        self.layer.shadowOpacity = 0.4
+        self.layer.shadowOffset = CGSize(width: 0, height: 0)
+        self.layer.shadowRadius = 4
+        self.layer.shouldRasterize = false
+        self.layer.cornerRadius = 15
+        self.layer.borderColor = coreOrangeColor.cgColor
+        self.layer.borderWidth = 0.5
+        
+        self.addViews()
+
+    }
+    
+    func addViews() {
+        
+        self.addSubview(self.mainContainerFP)
+
+        self.mainContainerFP.addSubview(self.iconImageViewFP)
+        self.mainContainerFP.addSubview(self.costLabelFP)
+        self.mainContainerFP.addSubview(self.headerLabelFP)
+        self.addSubview(self.mainCollectionContainer)
+
+        self.mainContainerFP.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive = true
+        self.mainContainerFP.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
+        self.mainContainerFP.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
+        self.mainContainerFP.heightAnchor.constraint(equalToConstant: 80).isActive = true
+
+        self.iconImageViewFP.leftAnchor.constraint(equalTo: self.mainContainerFP.leftAnchor, constant: 25).isActive = true
+        self.iconImageViewFP.topAnchor.constraint(equalTo: self.mainContainerFP.topAnchor, constant: 20).isActive = true
+        self.iconImageViewFP.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.iconImageViewFP.widthAnchor.constraint(equalToConstant: 40).isActive = true
+
+        self.costLabelFP.rightAnchor.constraint(equalTo: self.mainContainerFP.rightAnchor, constant: -25).isActive = true
+        self.costLabelFP.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        self.costLabelFP.centerYAnchor.constraint(equalTo: self.iconImageViewFP.centerYAnchor).isActive = true
+        self.costLabelFP.bottomAnchor.constraint(equalTo: self.mainContainerFP.bottomAnchor, constant: 0).isActive = true
+
+        self.headerLabelFP.leftAnchor.constraint(equalTo: self.iconImageViewFP.rightAnchor, constant: 10).isActive = true
+        self.headerLabelFP.rightAnchor.constraint(equalTo: self.costLabelFP.leftAnchor, constant: -10).isActive = true
+        self.headerLabelFP.centerYAnchor.constraint(equalTo: self.iconImageViewFP.centerYAnchor).isActive = true
+        self.headerLabelFP.bottomAnchor.constraint(equalTo: self.mainContainerFP.bottomAnchor).isActive = true
+
+        self.mainCollectionContainer.topAnchor.constraint(equalTo: self.headerLabelFP.bottomAnchor, constant: 0).isActive = true
+        self.mainCollectionContainer.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
+        self.mainCollectionContainer.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
+        self.mainCollectionContainer.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
+
+    }
+    
+    @objc func handleContainerTap(sender : UIButton) {
+        self.customServicesDropDownCollection?.handleSelection(sender : sender, mainCollection: self.mainCollectionContainer)
     }
     
     func engageShadow(shouldEngage : Bool) {
         
         if shouldEngage {
-            self.mainContainer.layer.shadowColor = coreOrangeColor.cgColor
-            self.mainContainer.layer.borderColor = coreOrangeColor.cgColor
+            self.layer.shadowColor = coreOrangeColor.cgColor
+            self.layer.borderColor = coreOrangeColor.cgColor
         } else {
-            self.mainContainer.layer.shadowColor = UIColor .clear.cgColor
-            self.mainContainer.layer.borderColor = dividerGrey.withAlphaComponent(0.2).cgColor
-        }
-    }
-    
-    func addViews() {
-        
-        self.addSubview(self.mainContainer)
-        self.addSubview(self.iconImageView)
-        self.addSubview(self.headerLabel)
-        self.addSubview(self.costLabel)
-        
-        self.mainContainer.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive = true
-        self.mainContainer.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
-        self.mainContainer.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
-        self.mainContainer.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5).isActive = true
-        
-        self.iconImageView.leftAnchor.constraint(equalTo: self.mainContainer.leftAnchor, constant: 25).isActive = true
-        self.iconImageView.topAnchor.constraint(equalTo: self.mainContainer.topAnchor, constant: 20).isActive = true
-        self.iconImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        self.iconImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        self.costLabel.rightAnchor.constraint(equalTo: self.mainContainer.rightAnchor, constant: -25).isActive = true
-        self.costLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        self.costLabel.centerYAnchor.constraint(equalTo: self.iconImageView.centerYAnchor).isActive = true
-        self.costLabel.bottomAnchor.constraint(equalTo: self.mainContainer.bottomAnchor, constant: 0).isActive = true
-        
-        self.headerLabel.leftAnchor.constraint(equalTo: self.iconImageView.rightAnchor, constant: 10).isActive = true
-        self.headerLabel.rightAnchor.constraint(equalTo: self.costLabel.leftAnchor, constant: -10).isActive = true
-        self.headerLabel.centerYAnchor.constraint(equalTo: self.iconImageView.centerYAnchor).isActive = true
-        self.headerLabel.bottomAnchor.constraint(equalTo: self.mainContainer.bottomAnchor).isActive = true
-
-    }
-    
-    @objc func handleMainContainerTaps(sender : UITapGestureRecognizer) {
-        
-        if let tappableArea = sender.view {
-            self.customServicesDropDownCollection?.handleSelection(sender: tappableArea)
+            self.layer.shadowColor = UIColor .clear.cgColor
+            self.layer.borderColor = dividerGrey.withAlphaComponent(0.2).cgColor
         }
     }
     
@@ -295,3 +441,150 @@ class CustomServicesDropDownFeeder : UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//class CustomServicesDropDownFeeder : UICollectionViewCell {
+//
+//    var customServicesDropDownCollection : CustomServicesDropDownCollection?
+//
+//    lazy var mainContainer : UIView = {
+//
+//        let mc = UIView()
+//        mc.translatesAutoresizingMaskIntoConstraints = false
+//        mc.backgroundColor = coreWhiteColor
+//        mc.clipsToBounds = false
+//        mc.layer.masksToBounds = false
+//        mc.layer.shadowColor = coreOrangeColor.cgColor
+//        mc.layer.shadowOpacity = 0.05
+//        mc.layer.shadowOffset = CGSize(width: 2, height: 3)
+//        mc.layer.shadowRadius = 9
+//        mc.layer.shouldRasterize = false
+//        mc.layer.borderColor = dividerGrey.withAlphaComponent(0.2).cgColor
+//        mc.layer.borderWidth = 1.0
+//        mc.layer.cornerRadius = 15
+//        mc.isUserInteractionEnabled = true
+//        mc.layer.masksToBounds = false
+//        mc.layer.shadowOpacity = 0.35
+//        mc.layer.shadowOffset = CGSize(width: 0, height: 0)
+//        mc.layer.shadowRadius = 4
+//        mc.layer.shouldRasterize = false
+//        mc.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleMainContainerTaps(sender:))))
+//
+//       return mc
+//    }()
+//
+//    let iconImageView : UIButton = {
+//
+//        let iv = UIButton(type: .system)
+//        iv.translatesAutoresizingMaskIntoConstraints = false
+//        iv.backgroundColor = dividerGrey
+//        iv.contentMode = .scaleAspectFill
+//        iv.layer.masksToBounds = true
+//        iv.layer.cornerRadius = 20
+//        iv.isUserInteractionEnabled = false
+//        iv.tintColor = coreBlackColor
+//
+//       return iv
+//    }()
+//
+//    let headerLabel : UILabel = {
+//
+//        let hl = UILabel()
+//        hl.translatesAutoresizingMaskIntoConstraints = false
+//        hl.backgroundColor = .clear
+//        hl.text = ""
+//        hl.font = UIFont(name: rubikMedium, size: 18)
+//        hl.numberOfLines = 1
+//        hl.adjustsFontSizeToFitWidth = true
+//        hl.textAlignment = .left
+//        hl.isUserInteractionEnabled = false
+//
+//        return hl
+//    }()
+//
+//    let costLabel : UILabel = {
+//
+//        let hl = UILabel()
+//        hl.translatesAutoresizingMaskIntoConstraints = false
+//        hl.backgroundColor = .clear
+//        hl.text = ""
+//        hl.font = UIFont(name: rubikRegular, size: 16)
+//        hl.numberOfLines = 1
+//        hl.adjustsFontSizeToFitWidth = true
+//        hl.textAlignment = .left
+//        hl.isUserInteractionEnabled = false
+//
+//        return hl
+//    }()
+//
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//
+//        self.backgroundColor = .clear
+//        self.addViews()
+//
+//    }
+//
+//    func engageShadow(shouldEngage : Bool) {
+//
+//        if shouldEngage {
+//            self.mainContainer.layer.shadowColor = coreOrangeColor.cgColor
+//            self.mainContainer.layer.borderColor = coreOrangeColor.cgColor
+//        } else {
+//            self.mainContainer.layer.shadowColor = UIColor .clear.cgColor
+//            self.mainContainer.layer.borderColor = dividerGrey.withAlphaComponent(0.2).cgColor
+//        }
+//    }
+//
+//    func addViews() {
+//
+//        self.addSubview(self.mainContainer)
+//        self.addSubview(self.iconImageView)
+//        self.addSubview(self.headerLabel)
+//        self.addSubview(self.costLabel)
+//
+//        self.mainContainer.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive = true
+//        self.mainContainer.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
+//        self.mainContainer.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
+//        self.mainContainer.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5).isActive = true
+//
+//        self.iconImageView.leftAnchor.constraint(equalTo: self.mainContainer.leftAnchor, constant: 25).isActive = true
+//        self.iconImageView.topAnchor.constraint(equalTo: self.mainContainer.topAnchor, constant: 20).isActive = true
+//        self.iconImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//        self.iconImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+//
+//        self.costLabel.rightAnchor.constraint(equalTo: self.mainContainer.rightAnchor, constant: -25).isActive = true
+//        self.costLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
+//        self.costLabel.centerYAnchor.constraint(equalTo: self.iconImageView.centerYAnchor).isActive = true
+//        self.costLabel.bottomAnchor.constraint(equalTo: self.mainContainer.bottomAnchor, constant: 0).isActive = true
+//
+//        self.headerLabel.leftAnchor.constraint(equalTo: self.iconImageView.rightAnchor, constant: 10).isActive = true
+//        self.headerLabel.rightAnchor.constraint(equalTo: self.costLabel.leftAnchor, constant: -10).isActive = true
+//        self.headerLabel.centerYAnchor.constraint(equalTo: self.iconImageView.centerYAnchor).isActive = true
+//        self.headerLabel.bottomAnchor.constraint(equalTo: self.mainContainer.bottomAnchor).isActive = true
+//
+//    }
+//
+//    @objc func handleMainContainerTaps(sender : UITapGestureRecognizer) {
+//
+//        if let tappableArea = sender.view {
+//            self.customServicesDropDownCollection?.handleSelection(sender: tappableArea)
+//        }
+//    }
+//
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+//}

@@ -572,6 +572,11 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.nextButton.isHidden = false
         self.scrollView.scrollToBottom()
         self.shouldExpandMainContainerFP(shouldExpand: true)
+        
+        
+//        self.servicesDropDownCollection.
+        
+        
     }
     
     func handleCustomPackage() {

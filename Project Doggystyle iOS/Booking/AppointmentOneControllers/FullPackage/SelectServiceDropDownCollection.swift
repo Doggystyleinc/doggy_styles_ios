@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+
 var globalArrayOfDicts = [[String:String]]()
 
 class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
@@ -15,7 +16,6 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
     private let dropServices = "dropServices"
     
     var appointmentOne : AppointmentOne?
-    var currentDifference : CGFloat = 0.0
     var arrayOfIndexPaths = [IndexPath]()
     var shouldCellsExpand : Bool = false
     
@@ -39,7 +39,16 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
         self.delaysContentTouches = true
         self.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
         self.register(ServicesDropDownFeeder.self, forCellWithReuseIdentifier: self.dropServices)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleDataReset), name: NSNotification.Name("HANDLE_CLEAR_OTHER_COLLECTIONS"), object: nil)
 
+    }
+    
+    @objc func handleDataReset() {
+        
+        self.arrayOfIndexPaths.removeAll()
+        DispatchQueue.main.async {
+            self.reloadData()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -85,13 +94,15 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
         } else {
             cell.engageShadow(shouldEngage: false)
         }
-
+        
         switch serviceName {
 
         case "Dematting" :
+
             cell.iconImageViewFP.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageViewFP.setTitle(String.fontAwesomeIcon(name: .rulerCombined), for: .normal)
             cell.mainCollectionContainer.typeOfServiceSelection = "dematting"
+            
             self.decide(typeOfService: "dematting") { complete in
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.25) {
@@ -101,9 +112,11 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
             }
 
         case "Deshedding" :
+
             cell.iconImageViewFP.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageViewFP.setTitle(String.fontAwesomeIcon(name: .chair), for: .normal)
             cell.mainCollectionContainer.typeOfServiceSelection = "deshedding"
+    
             self.decide(typeOfService: "deshedding") { complete in
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.25) {
@@ -111,25 +124,23 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
                     }
                 }
             }
+            
         default: print("default")
 
         }
-        
         
         DispatchQueue.main.async {
             cell.mainCollectionContainer.reloadData()
         }
         
-        print("Hit the top level cell for item collection")
-
         return cell
-    }
     
+    }
     
     func decide(typeOfService: String, completion: @escaping(_ isComplete : Bool)->()) {
         
     globalArrayOfDicts.removeAll()
-    
+
     if let dataSource = self.appointmentOne?.selectedProfileDataSource {
         
         for i in 0..<dataSource.count {
@@ -139,9 +150,10 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
             dogSize = feeder.dog_builder_size ?? "Medium"
             
             let dogCost = dogServicePriceConfiguration(dogSize: dogSize, service: typeOfService)
-            
             let dic = [dogsFirstName : dogCost]
+            
             globalArrayOfDicts.append(dic)
+            
         }
         
         completion(true)
@@ -160,30 +172,30 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
     }
     
     
-    @objc func handleSelection(sender : UIView) {
+    @objc func handleSelection(sender : UIView, mainCollection : SelectFullPackageContainer) {
     
         let selectedButtonCell = sender.superview as! UICollectionViewCell
         
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
        
         if !self.arrayOfIndexPaths.contains(indexPath) {
+            
+            self.arrayOfIndexPaths.removeAll()
           
             self.arrayOfIndexPaths.append(indexPath)
             
-        } else if self.arrayOfIndexPaths.contains(indexPath) {
-       
-            if let index = self.arrayOfIndexPaths.firstIndex(of: indexPath) {
-                
-                self.arrayOfIndexPaths.remove(at: index)
-                
-            }
+            self.appointmentOne?.shouldExpandMainContainerFP(shouldExpand: false)
+            
+        } else {
+            
+            self.arrayOfIndexPaths.removeAll()
+
         }
         
+        let isAllDogsTheSameSize = self.appointmentOne?.isAllDogsTheSameSize ?? false,
+             dataSourceCount = self.appointmentOne?.selectedProfileDataSource.count ?? 0
         
-        let isAllDogsTheSameSize = self.appointmentOne?.isAllDogsTheSameSize ?? false
-        let count = self.appointmentOne?.selectedProfileDataSource.count ?? 0
-        
-        if count > 1 && isAllDogsTheSameSize == false {
+        if dataSourceCount > 1 && isAllDogsTheSameSize == false {
             self.shouldCellsExpand = true
         } else {
             self.shouldCellsExpand = false
@@ -192,15 +204,15 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
         UIDevice.vibrateLight()
         
         DispatchQueue.main.async {
+            
             UIView.animate(withDuration: 0.25) {
-                
+                self.reloadData()
                 self.reloadItems(at: [indexPath])
                 self.appointmentOne?.view.layoutIfNeeded()
+                self.layoutIfNeeded()
             }
         }
     }
-    
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -288,7 +300,6 @@ class ServicesDropDownFeeder : UICollectionViewCell {
         self.clipsToBounds = false
         self.layer.masksToBounds = false
         self.layer.shadowColor = UIColor .clear.cgColor
-        self.layer.shadowOpacity = 0.05
         self.layer.shadowOffset = CGSize(width: 2, height: 3)
         self.layer.shadowRadius = 9
         self.layer.shouldRasterize = false
@@ -301,6 +312,16 @@ class ServicesDropDownFeeder : UICollectionViewCell {
         self.layer.shadowOffset = CGSize(width: 0, height: 0)
         self.layer.shadowRadius = 4
         self.layer.shouldRasterize = false
+        
+        
+        self.layer.shadowColor = coreOrangeColor.cgColor
+        self.layer.shadowOpacity = 0.4
+        self.layer.shadowOffset = CGSize(width: 0, height: 0)
+        self.layer.shadowRadius = 4
+        self.layer.shouldRasterize = false
+        self.layer.cornerRadius = 15
+        self.layer.borderColor = coreOrangeColor.cgColor
+        self.layer.borderWidth = 0.5
         
         self.addViews()
 
@@ -343,7 +364,7 @@ class ServicesDropDownFeeder : UICollectionViewCell {
     }
     
     @objc func handleContainerTap(sender : UIButton) {
-        self.servicesDropDownCollection?.handleSelection(sender : sender)
+        self.servicesDropDownCollection?.handleSelection(sender : sender, mainCollection: self.mainCollectionContainer)
     }
     
     func engageShadow(shouldEngage : Bool) {
@@ -351,11 +372,9 @@ class ServicesDropDownFeeder : UICollectionViewCell {
         if shouldEngage {
             self.layer.shadowColor = coreOrangeColor.cgColor
             self.layer.borderColor = coreOrangeColor.cgColor
-         
         } else {
             self.layer.shadowColor = UIColor .clear.cgColor
             self.layer.borderColor = dividerGrey.withAlphaComponent(0.2).cgColor
-         
         }
     }
     

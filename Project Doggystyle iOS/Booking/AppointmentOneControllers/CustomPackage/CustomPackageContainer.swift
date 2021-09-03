@@ -1,22 +1,20 @@
 //
-//  SelectPackageContainer.swift
+//  CustomPackageContainer.swift
 //  Project Doggystyle iOS
 //
-//  Created by Charlie Arcodia on 9/1/21.
+//  Created by Charlie Arcodia on 9/3/21.
 //
-
 
 import Foundation
 import UIKit
 
-class SelectFullPackageContainer : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
+class SelectCustomPackageContainer : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
-    private let selectPackageInteriorID = "selectPackageInteriorID"
-    private let selectHeaderID = "selectHeaderID"
+    private let customPackageID = "customPackageID"
   
     var costForFullPackage : String = "-"
 
-    var servicesDropDownFeeder : ServicesDropDownFeeder?
+    var customServicesDropDownFeeder : CustomServicesDropDownFeeder?
     
     var typeOfServiceSelection : String = ""
     
@@ -38,7 +36,7 @@ class SelectFullPackageContainer : UICollectionView, UICollectionViewDelegateFlo
         self.delaysContentTouches = true
         self.isScrollEnabled = false
         self.contentInsetAdjustmentBehavior = .never
-        self.register(PackageInteriorSelectorFeeder.self, forCellWithReuseIdentifier: self.selectPackageInteriorID)
+        self.register(CustomPackageFeeder.self, forCellWithReuseIdentifier: self.customPackageID)
         
     }
     
@@ -56,11 +54,11 @@ class SelectFullPackageContainer : UICollectionView, UICollectionViewDelegateFlo
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = self.dequeueReusableCell(withReuseIdentifier: self.selectPackageInteriorID, for: indexPath) as! PackageInteriorSelectorFeeder
+        let cell = self.dequeueReusableCell(withReuseIdentifier: self.customPackageID, for: indexPath) as! CustomPackageFeeder
         
         cell.selectFullPackageContainer = self
       
-        if let _ = self.servicesDropDownFeeder?.servicesDropDownCollection?.appointmentOne?.selectedProfileDataSource {
+        if let _ = self.customServicesDropDownFeeder?.customServicesDropDownCollection?.appointmentOne?.selectedProfileDataSource {
             
             let feeder = globalArrayOfDicts[indexPath.item]
              
@@ -72,14 +70,6 @@ class SelectFullPackageContainer : UICollectionView, UICollectionViewDelegateFlo
                 cell.nameLabel.text = name
                 cell.costLabel.text = cost
 
-            }
-
-            switch typeOfServiceSelection {
-            
-            case "dematting": print("Calling dematting")
-            case "deshedding": print("Calling deshsedding")
-            default: print("here now")
-            
             }
         }
         
@@ -100,9 +90,9 @@ class SelectFullPackageContainer : UICollectionView, UICollectionViewDelegateFlo
 }
 
 
-class PackageInteriorSelectorFeeder : UICollectionViewCell {
+class CustomPackageFeeder: UICollectionViewCell {
     
-    var selectFullPackageContainer : SelectFullPackageContainer?
+    var selectFullPackageContainer : SelectCustomPackageContainer?
    
     let nameLabel : UILabel = {
         

@@ -136,6 +136,9 @@ class SelectServicesCollection : UITableView, UITableViewDelegate, UITableViewDa
         
         if self.appointmentOne?.canSelectMainPackage == true {
             
+            NotificationCenter.default.post(name: NSNotification.Name("HANDLE_CLEAR_OTHER_COLLECTIONS"), object: nil)
+            NotificationCenter.default.post(name: NSNotification.Name("HANDLE_CLEAR_OTHER_COLLECTIONS_CUSTOM"), object: nil)
+
             let selectedButtonCell = sender.superview as! UITableViewCell
             guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
             
