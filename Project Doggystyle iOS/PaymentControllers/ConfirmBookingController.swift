@@ -87,7 +87,7 @@ lazy var cancelButton : UIButton = {
     cbf.contentMode = .scaleAspectFill
     cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
     cbf.setTitle(String.fontAwesomeIcon(name: .chevronLeft), for: .normal)
-    cbf.isHidden = true
+    cbf.isHidden = false
     cbf.addTarget(self, action: #selector(self.handleCancelButton), for: UIControl.Event.touchUpInside)
     return cbf
     
@@ -117,6 +117,109 @@ var headerContainer : UIView = {
     return hc
 }()
     
+    var appointmentDetailsContainer : UIView = {
+        
+        let adc = UIView()
+        adc.translatesAutoresizingMaskIntoConstraints = false
+        adc.backgroundColor = coreWhiteColor
+        adc.clipsToBounds = false
+        adc.layer.masksToBounds = false
+        adc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
+        adc.layer.shadowOpacity = 0.05
+        adc.layer.shadowOffset = CGSize(width: 2, height: 3)
+        adc.layer.shadowRadius = 9
+        adc.layer.shouldRasterize = false
+        adc.layer.cornerRadius = 15
+        
+       return adc
+    }()
+    
+    
+    let appointmentDetailsLabel : UILabel = {
+        
+        let nl = UILabel()
+        nl.translatesAutoresizingMaskIntoConstraints = false
+        nl.backgroundColor = .clear
+        nl.text = "Appointment Details"
+        nl.font = UIFont(name: rubikBold, size: 18)
+        nl.textColor = coreBlackColor
+        nl.textAlignment = .left
+        nl.adjustsFontSizeToFitWidth = true
+        
+        return nl
+    }()
+    
+    lazy var pencilIcon : UIButton = {
+        
+        let cbf = UIButton()
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.backgroundColor = .clear
+        cbf.contentMode = .scaleAspectFill
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 16, style: .solid)
+        cbf.setTitle(String.fontAwesomeIcon(name: .pencilAlt), for: .normal)
+        cbf.setTitleColor(coreOrangeColor, for: .normal)
+//        cbf.addTarget(self, action: #selector(self.handleBackButton), for: UIControl.Event.touchUpInside)
+        return cbf
+        
+    }()
+    
+    let dateLabel : UILabel = {
+        
+        let nl = UILabel()
+        nl.translatesAutoresizingMaskIntoConstraints = false
+        nl.backgroundColor = .clear
+        nl.text = "Date:"
+        nl.font = UIFont(name: rubikRegular, size: 18)
+        nl.textColor = dsGreyMedium
+        nl.textAlignment = .left
+        nl.adjustsFontSizeToFitWidth = true
+        
+        return nl
+    }()
+    
+    let pickupLabel : UILabel = {
+        
+        let nl = UILabel()
+        nl.translatesAutoresizingMaskIntoConstraints = false
+        nl.backgroundColor = .clear
+        nl.text = "Pickup:"
+        nl.font = UIFont(name: rubikRegular, size: 18)
+        nl.textColor = dsGreyMedium
+        nl.textAlignment = .left
+        nl.adjustsFontSizeToFitWidth = true
+        
+        return nl
+    }()
+    
+    let finalDateLabel : UILabel = {
+        
+        let nl = UILabel()
+        nl.translatesAutoresizingMaskIntoConstraints = false
+        nl.backgroundColor = .clear
+        nl.text = "Tuesday Dec 1, 2021"
+        nl.font = UIFont(name: rubikRegular, size: 18)
+        nl.textColor = coreBlackColor
+        nl.textAlignment = .right
+        nl.adjustsFontSizeToFitWidth = true
+        
+        return nl
+    }()
+    
+    let finalPickupLabel : UILabel = {
+        
+        let nl = UILabel()
+        nl.translatesAutoresizingMaskIntoConstraints = false
+        nl.backgroundColor = .clear
+        nl.text = "Valet Pickup"
+        nl.font = UIFont(name: rubikRegular, size: 18)
+        nl.textColor = coreBlackColor
+        nl.textAlignment = .right
+        nl.adjustsFontSizeToFitWidth = true
+        
+        return nl
+    }()
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,6 +243,18 @@ var headerContainer : UIView = {
         self.view.addSubview(self.xButton)
         self.view.addSubview(self.basicDetailsLabel)
         self.view.addSubview(timeCover)
+        
+        self.view.addSubview(appointmentDetailsContainer)
+        
+        self.appointmentDetailsContainer.addSubview(self.appointmentDetailsLabel)
+        self.appointmentDetailsContainer.addSubview(self.pencilIcon)
+        
+        self.appointmentDetailsContainer.addSubview(self.dateLabel)
+        self.appointmentDetailsContainer.addSubview(self.pickupLabel)
+        
+        self.appointmentDetailsContainer.addSubview(self.finalDateLabel)
+        self.appointmentDetailsContainer.addSubview(self.finalPickupLabel)
+
        
         self.headerBarOne.widthAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.heightAnchor.constraint(equalToConstant: 9).isActive = true
@@ -181,6 +296,41 @@ var headerContainer : UIView = {
         self.stackView.heightAnchor.constraint(equalToConstant: 14).isActive = true
         self.stackView.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
+        self.appointmentDetailsContainer.topAnchor.constraint(equalTo: self.headerContainer.bottomAnchor, constant: 50).isActive = true
+        self.appointmentDetailsContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.appointmentDetailsContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.appointmentDetailsContainer.heightAnchor.constraint(equalToConstant: 158).isActive = true
+        
+        self.pencilIcon.topAnchor.constraint(equalTo: self.appointmentDetailsContainer.topAnchor, constant: 25).isActive = true
+        self.pencilIcon.rightAnchor.constraint(equalTo: self.appointmentDetailsContainer.rightAnchor, constant: -20).isActive = true
+        self.pencilIcon.heightAnchor.constraint(equalToConstant: 18).isActive = true
+        self.pencilIcon.widthAnchor.constraint(equalToConstant: 18).isActive = true
+        
+        self.appointmentDetailsLabel.leftAnchor.constraint(equalTo: self.appointmentDetailsContainer.leftAnchor, constant: 27).isActive = true
+        self.appointmentDetailsLabel.rightAnchor.constraint(equalTo: self.pencilIcon.leftAnchor, constant: -20).isActive = true
+        self.appointmentDetailsLabel.centerYAnchor.constraint(equalTo: self.pencilIcon.centerYAnchor, constant: 0).isActive = true
+        self.appointmentDetailsLabel.sizeToFit()
+        
+        self.dateLabel.leftAnchor.constraint(equalTo: self.appointmentDetailsContainer.leftAnchor, constant: 27).isActive = true
+        self.dateLabel.topAnchor.constraint(equalTo: self.appointmentDetailsLabel.bottomAnchor, constant: 26).isActive = true
+        self.dateLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        self.dateLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        self.pickupLabel.leftAnchor.constraint(equalTo: self.appointmentDetailsContainer.leftAnchor, constant: 27).isActive = true
+        self.pickupLabel.topAnchor.constraint(equalTo: self.dateLabel.bottomAnchor, constant: 21).isActive = true
+        self.pickupLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        self.pickupLabel.widthAnchor.constraint(equalToConstant: 65).isActive = true
+        
+        self.finalDateLabel.rightAnchor.constraint(equalTo: self.appointmentDetailsContainer.rightAnchor, constant: -30).isActive = true
+        self.finalDateLabel.leftAnchor.constraint(equalTo: self.dateLabel.rightAnchor, constant: 20).isActive = true
+        self.finalDateLabel.centerYAnchor.constraint(equalTo: self.dateLabel.centerYAnchor, constant: 0).isActive = true
+        self.finalDateLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        
+        self.finalPickupLabel.rightAnchor.constraint(equalTo: self.appointmentDetailsContainer.rightAnchor, constant: -30).isActive = true
+        self.finalPickupLabel.leftAnchor.constraint(equalTo: self.pickupLabel.rightAnchor, constant: 20).isActive = true
+        self.finalPickupLabel.centerYAnchor.constraint(equalTo: self.pickupLabel.centerYAnchor, constant: 0).isActive = true
+        self.finalPickupLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+       
     }
     
     @objc func handleCancelButton() {

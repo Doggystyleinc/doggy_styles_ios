@@ -103,12 +103,8 @@ class RegisteredPetCollection : UICollectionView, UICollectionViewDelegateFlowLa
         default:
             
             let _ = self.doggyProfileDataSource[indexPath.item + 1]
-//            guard let user_uid = Auth.auth().currentUser?.uid else {return}
-//            let refKey = feeder.ref_key ?? "nil"
-//            let parentKey = feeder.parent_key ?? "nil"
-//            let dogName = feeder.dog_builder_name ?? "nil"
             
-//            self.removeDoggyProfileAlert(passedDogName: dogName, refKey: refKey, parentKey: parentKey, userUID: user_uid)
+           //self.removeDoggyProfileAlert(passedDogName: dogName, refKey: refKey, parentKey: parentKey, userUID: user_uid)
         }
     }
     
