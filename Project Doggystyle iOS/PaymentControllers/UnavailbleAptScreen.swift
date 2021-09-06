@@ -249,7 +249,7 @@ class UnavailableAptController : UIViewController {
     }
     
     @objc func handleCancelButton() {
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     @objc func handleBackButton() {
