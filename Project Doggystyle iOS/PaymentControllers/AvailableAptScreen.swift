@@ -1,14 +1,15 @@
 //
-//  ConfirmBookingController.swift
+//  AvailableAptScreen.swift
 //  Project Doggystyle iOS
 //
-//  Created by Charlie Arcodia on 9/3/21.
+//  Created by Charlie Arcodia on 9/6/21.
 //
 
-import UIKit
 import Foundation
+import UIKit
 
-class ConfirmBookingController : UIViewController {
+
+class AvailableAptScreen : UIViewController {
     
     lazy var stackView : UIStackView = {
         
@@ -21,7 +22,7 @@ class ConfirmBookingController : UIViewController {
         
         return sv
     }()
-    
+
     let headerBarOne : UIView = {
         
         let hbo = UIView()
@@ -31,7 +32,7 @@ class ConfirmBookingController : UIViewController {
         
         return hbo
     }()
-    
+
     let headerBarTwo : UIView = {
         
         let hbo = UIView()
@@ -39,7 +40,7 @@ class ConfirmBookingController : UIViewController {
         hbo.backgroundColor = coreOrangeColor
         return hbo
     }()
-    
+
     let headerBarThree : UIView = {
         
         let hbo = UIView()
@@ -47,7 +48,7 @@ class ConfirmBookingController : UIViewController {
         hbo.backgroundColor = coreOrangeColor
         return hbo
     }()
-    
+
     let headerBarFour : UIView = {
         
         let hbo = UIView()
@@ -55,7 +56,7 @@ class ConfirmBookingController : UIViewController {
         hbo.backgroundColor = coreOrangeColor
         return hbo
     }()
-    
+
     let timeCover : UIView = {
         
         let tc = UIView()
@@ -64,13 +65,13 @@ class ConfirmBookingController : UIViewController {
         
         return tc
     }()
-    
-    let basicDetailsLabel : UILabel = {
+
+    let luckyDayLabel : UILabel = {
         
         let nl = UILabel()
         nl.translatesAutoresizingMaskIntoConstraints = false
         nl.backgroundColor = .clear
-        nl.text = "Confirm Booking"
+        nl.text = "Today is your lucky day"
         nl.font = UIFont(name: dsHeaderFont, size: 24)
         nl.textColor = coreBlackColor
         nl.textAlignment = .left
@@ -79,6 +80,34 @@ class ConfirmBookingController : UIViewController {
         return nl
     }()
     
+    let luckyDaySubHeaderLabel : UILabel = {
+        
+        let nl = UILabel()
+        nl.translatesAutoresizingMaskIntoConstraints = false
+        nl.backgroundColor = .clear
+        nl.text = "An appointment has become available in your area. Your doggy will receive the services you selected when booking your appointments. Click below to book."
+        nl.font = UIFont(name: rubikRegular, size: 16)
+        nl.textColor = coreBlackColor
+        nl.textAlignment = .left
+        nl.numberOfLines = -1
+        
+        return nl
+    }()
+    
+    let aptDetailsLabel : UILabel = {
+        
+        let nl = UILabel()
+        nl.translatesAutoresizingMaskIntoConstraints = false
+        nl.backgroundColor = .clear
+        nl.text = "Appointment Details"
+        nl.font = UIFont(name: rubikMedium, size: 21)
+        nl.textColor = coreBlackColor
+        nl.textAlignment = .left
+        nl.numberOfLines = -1
+        
+        return nl
+    }()
+
     lazy var cancelButton : UIButton = {
         
         let cbf = UIButton(type: .system)
@@ -88,12 +117,12 @@ class ConfirmBookingController : UIViewController {
         cbf.contentMode = .scaleAspectFill
         cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
         cbf.setTitle(String.fontAwesomeIcon(name: .chevronLeft), for: .normal)
-        cbf.isHidden = false
+        cbf.isHidden = true
         cbf.addTarget(self, action: #selector(self.handleCancelButton), for: UIControl.Event.touchUpInside)
         return cbf
         
     }()
-    
+
     lazy var xButton : UIButton = {
         
         let cbf = UIButton(type: .system)
@@ -107,7 +136,7 @@ class ConfirmBookingController : UIViewController {
         return cbf
         
     }()
-    
+
     var headerContainer : UIView = {
         
         let hc = UIView()
@@ -132,36 +161,48 @@ class ConfirmBookingController : UIViewController {
         adc.layer.shouldRasterize = false
         adc.layer.cornerRadius = 15
         
-        return adc
+       return adc
     }()
     
-    
-    let appointmentDetailsLabel : UILabel = {
+    let selectDogForAptLabel : UILabel = {
         
         let nl = UILabel()
         nl.translatesAutoresizingMaskIntoConstraints = false
         nl.backgroundColor = .clear
-        nl.text = "Appointment Details"
-        nl.font = UIFont(name: rubikBold, size: 18)
+        nl.text = "Select dog for appointment"
+        nl.font = UIFont(name: rubikMedium, size: 21)
         nl.textColor = coreBlackColor
         nl.textAlignment = .left
-        nl.adjustsFontSizeToFitWidth = true
+        nl.numberOfLines = -1
         
         return nl
     }()
     
-    lazy var pencilIcon : UIButton = {
+    let stylistLabel : UILabel = {
         
-        let cbf = UIButton()
-        cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.backgroundColor = .clear
-        cbf.contentMode = .scaleAspectFill
-        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 16, style: .solid)
-        cbf.setTitle(String.fontAwesomeIcon(name: .pencilAlt), for: .normal)
-        cbf.setTitleColor(coreOrangeColor, for: .normal)
-        //        cbf.addTarget(self, action: #selector(self.handleBackButton), for: UIControl.Event.touchUpInside)
-        return cbf
+        let nl = UILabel()
+        nl.translatesAutoresizingMaskIntoConstraints = false
+        nl.backgroundColor = .clear
+        nl.text = "Doggystylist:"
+        nl.font = UIFont(name: rubikRegular, size: 18)
+        nl.textColor = dsGreyMedium
+        nl.textAlignment = .left
         
+        return nl
+    }()
+    
+    let finalStylistLabel : UILabel = {
+        
+        let nl = UILabel()
+        nl.translatesAutoresizingMaskIntoConstraints = false
+        nl.backgroundColor = .clear
+        nl.text = "Jessica M"
+        nl.font = UIFont(name: rubikRegular, size: 18)
+        nl.textColor = coreBlackColor
+        nl.textAlignment = .right
+        nl.adjustsFontSizeToFitWidth = true
+
+        return nl
     }()
     
     let dateLabel : UILabel = {
@@ -173,21 +214,6 @@ class ConfirmBookingController : UIViewController {
         nl.font = UIFont(name: rubikRegular, size: 18)
         nl.textColor = dsGreyMedium
         nl.textAlignment = .left
-        nl.adjustsFontSizeToFitWidth = true
-        
-        return nl
-    }()
-    
-    let pickupLabel : UILabel = {
-        
-        let nl = UILabel()
-        nl.translatesAutoresizingMaskIntoConstraints = false
-        nl.backgroundColor = .clear
-        nl.text = "Pickup:"
-        nl.font = UIFont(name: rubikRegular, size: 18)
-        nl.textColor = dsGreyMedium
-        nl.textAlignment = .left
-        nl.adjustsFontSizeToFitWidth = true
         
         return nl
     }()
@@ -206,12 +232,25 @@ class ConfirmBookingController : UIViewController {
         return nl
     }()
     
-    let finalPickupLabel : UILabel = {
+    let timeLabel : UILabel = {
         
         let nl = UILabel()
         nl.translatesAutoresizingMaskIntoConstraints = false
         nl.backgroundColor = .clear
-        nl.text = "Valet Pickup"
+        nl.text = "Time:"
+        nl.font = UIFont(name: rubikRegular, size: 18)
+        nl.textColor = dsGreyMedium
+        nl.textAlignment = .left
+        
+        return nl
+    }()
+    
+    let finalTimeLabel : UILabel = {
+        
+        let nl = UILabel()
+        nl.translatesAutoresizingMaskIntoConstraints = false
+        nl.backgroundColor = .clear
+        nl.text = "Approx 12:30 PM"
         nl.font = UIFont(name: rubikRegular, size: 18)
         nl.textColor = coreBlackColor
         nl.textAlignment = .right
@@ -220,15 +259,34 @@ class ConfirmBookingController : UIViewController {
         return nl
     }()
     
-    lazy var confirmBookingCollection : ConfirmBookingCollection = {
+    lazy var bookAptButton: UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.setTitle("Book Appointment", for: UIControl.State.normal)
+        cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
+        cbf.titleLabel?.adjustsFontSizeToFitWidth = true
+        cbf.titleLabel?.numberOfLines = 1
+        cbf.titleLabel?.adjustsFontForContentSizeCategory = true
+        cbf.layer.cornerRadius = 12
+        cbf.layer.masksToBounds = true
+        cbf.tintColor = coreWhiteColor
+        cbf.backgroundColor = coreOrangeColor
+        cbf.isHidden = false
+        cbf.addTarget(self, action: #selector(self.handleCancelButton), for: .touchUpInside)
+        
+        return cbf
+        
+    }()
+    
+    lazy var availableAptCollection : AvailableAptCollection = {
         
         let layout = UICollectionViewFlowLayout()
-        let cbc = ConfirmBookingCollection(frame: .zero, collectionViewLayout: layout)
-        cbc.confirmBookingController = self
+        let cbc = AvailableAptCollection(frame: .zero, collectionViewLayout: layout)
+        cbc.availableAptScreen = self
         
         return cbc
     }()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -250,24 +308,27 @@ class ConfirmBookingController : UIViewController {
         self.view.addSubview(self.headerContainer)
         self.view.addSubview(self.cancelButton)
         self.view.addSubview(self.xButton)
-        self.view.addSubview(self.basicDetailsLabel)
+        self.view.addSubview(self.luckyDayLabel)
         self.view.addSubview(self.timeCover)
+        self.view.addSubview(self.luckyDaySubHeaderLabel)
+        self.view.addSubview(self.aptDetailsLabel)
         
-        self.view.addSubview(self.confirmBookingCollection)
+        self.view.addSubview(self.appointmentDetailsContainer)
+        self.view.addSubview(self.selectDogForAptLabel)
         
-        self.confirmBookingCollection.addSubview(self.appointmentDetailsContainer)
-        
-        self.appointmentDetailsContainer.addSubview(self.appointmentDetailsLabel)
-        self.appointmentDetailsContainer.addSubview(self.pencilIcon)
-        
+        self.appointmentDetailsContainer.addSubview(self.stylistLabel)
+        self.appointmentDetailsContainer.addSubview(self.finalStylistLabel)
+
         self.appointmentDetailsContainer.addSubview(self.dateLabel)
-        self.appointmentDetailsContainer.addSubview(self.pickupLabel)
-        
         self.appointmentDetailsContainer.addSubview(self.finalDateLabel)
-        self.appointmentDetailsContainer.addSubview(self.finalPickupLabel)
         
-        self.view.addSubview(confirmBookingCollection)
+        self.appointmentDetailsContainer.addSubview(self.timeLabel)
+        self.appointmentDetailsContainer.addSubview(self.finalTimeLabel)
         
+        self.view.addSubview(self.bookAptButton)
+        
+        self.view.addSubview(self.availableAptCollection)
+
         self.headerBarOne.widthAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.heightAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.layer.cornerRadius = 4.5
@@ -294,75 +355,85 @@ class ConfirmBookingController : UIViewController {
         self.cancelButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
         self.cancelButton.widthAnchor.constraint(equalToConstant: 54).isActive = true
         
-        self.basicDetailsLabel.topAnchor.constraint(equalTo: self.cancelButton.bottomAnchor, constant: 25).isActive = true
-        self.basicDetailsLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.basicDetailsLabel.sizeToFit()
+        self.luckyDayLabel.topAnchor.constraint(equalTo: self.cancelButton.bottomAnchor, constant: 25).isActive = true
+        self.luckyDayLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.luckyDayLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.luckyDayLabel.sizeToFit()
         
         self.xButton.centerYAnchor.constraint(equalTo: self.headerContainer.centerYAnchor, constant: -20).isActive = true
         self.xButton.rightAnchor.constraint(equalTo: self.headerContainer.rightAnchor, constant: -11).isActive = true
         self.xButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
         self.xButton.widthAnchor.constraint(equalToConstant: 54).isActive = true
         
-        self.stackView.centerYAnchor.constraint(equalTo: self.basicDetailsLabel.centerYAnchor, constant: 0).isActive = true
+        self.stackView.centerYAnchor.constraint(equalTo: self.luckyDayLabel.centerYAnchor, constant: 0).isActive = true
         self.stackView.rightAnchor.constraint(equalTo: self.headerContainer.rightAnchor, constant: -30).isActive = true
         self.stackView.heightAnchor.constraint(equalToConstant: 14).isActive = true
         self.stackView.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
-        self.confirmBookingCollection.topAnchor.constraint(equalTo: self.headerContainer.bottomAnchor, constant: 50).isActive = true
-        self.confirmBookingCollection.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
-        self.confirmBookingCollection.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.confirmBookingCollection.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        self.luckyDaySubHeaderLabel.topAnchor.constraint(equalTo: self.luckyDayLabel.bottomAnchor, constant: 15).isActive = true
+        self.luckyDaySubHeaderLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.luckyDaySubHeaderLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.luckyDaySubHeaderLabel.sizeToFit()
         
-        self.appointmentDetailsContainer.bottomAnchor.constraint(equalTo: self.confirmBookingCollection.topAnchor, constant: -20).isActive = true
+        self.aptDetailsLabel.topAnchor.constraint(equalTo: self.luckyDaySubHeaderLabel.bottomAnchor, constant: 15).isActive = true
+        self.aptDetailsLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.aptDetailsLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.aptDetailsLabel.sizeToFit()
+        
+        self.appointmentDetailsContainer.topAnchor.constraint(equalTo: self.aptDetailsLabel.bottomAnchor, constant: 15).isActive = true
         self.appointmentDetailsContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.appointmentDetailsContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.appointmentDetailsContainer.heightAnchor.constraint(equalToConstant: 158).isActive = true
         
-        self.pencilIcon.topAnchor.constraint(equalTo: self.appointmentDetailsContainer.topAnchor, constant: 25).isActive = true
-        self.pencilIcon.rightAnchor.constraint(equalTo: self.appointmentDetailsContainer.rightAnchor, constant: -20).isActive = true
-        self.pencilIcon.heightAnchor.constraint(equalToConstant: 18).isActive = true
-        self.pencilIcon.widthAnchor.constraint(equalToConstant: 18).isActive = true
+        self.selectDogForAptLabel.topAnchor.constraint(equalTo: self.appointmentDetailsContainer.bottomAnchor, constant: 20).isActive = true
+        self.selectDogForAptLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.selectDogForAptLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.selectDogForAptLabel.sizeToFit()
         
-        self.appointmentDetailsLabel.leftAnchor.constraint(equalTo: self.appointmentDetailsContainer.leftAnchor, constant: 27).isActive = true
-        self.appointmentDetailsLabel.rightAnchor.constraint(equalTo: self.pencilIcon.leftAnchor, constant: -20).isActive = true
-        self.appointmentDetailsLabel.centerYAnchor.constraint(equalTo: self.pencilIcon.centerYAnchor, constant: 0).isActive = true
-        self.appointmentDetailsLabel.sizeToFit()
+        self.stylistLabel.leftAnchor.constraint(equalTo: self.appointmentDetailsContainer.leftAnchor, constant: 27).isActive = true
+        self.stylistLabel.topAnchor.constraint(equalTo: self.appointmentDetailsContainer.topAnchor, constant: 21).isActive = true
+        self.stylistLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        self.stylistLabel.widthAnchor.constraint(equalToConstant: 115).isActive = true
+        
+        self.finalStylistLabel.rightAnchor.constraint(equalTo: self.appointmentDetailsContainer.rightAnchor, constant: -30).isActive = true
+        self.finalStylistLabel.leftAnchor.constraint(equalTo: self.stylistLabel.rightAnchor, constant: 20).isActive = true
+        self.finalStylistLabel.centerYAnchor.constraint(equalTo: self.stylistLabel.centerYAnchor, constant: 0).isActive = true
+        self.finalStylistLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
         self.dateLabel.leftAnchor.constraint(equalTo: self.appointmentDetailsContainer.leftAnchor, constant: 27).isActive = true
-        self.dateLabel.topAnchor.constraint(equalTo: self.appointmentDetailsLabel.bottomAnchor, constant: 26).isActive = true
+        self.dateLabel.topAnchor.constraint(equalTo: self.finalStylistLabel.bottomAnchor, constant: 26).isActive = true
         self.dateLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        self.dateLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        self.pickupLabel.leftAnchor.constraint(equalTo: self.appointmentDetailsContainer.leftAnchor, constant: 27).isActive = true
-        self.pickupLabel.topAnchor.constraint(equalTo: self.dateLabel.bottomAnchor, constant: 21).isActive = true
-        self.pickupLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        self.pickupLabel.widthAnchor.constraint(equalToConstant: 65).isActive = true
+        self.dateLabel.widthAnchor.constraint(equalToConstant: 55).isActive = true
         
         self.finalDateLabel.rightAnchor.constraint(equalTo: self.appointmentDetailsContainer.rightAnchor, constant: -30).isActive = true
         self.finalDateLabel.leftAnchor.constraint(equalTo: self.dateLabel.rightAnchor, constant: 20).isActive = true
         self.finalDateLabel.centerYAnchor.constraint(equalTo: self.dateLabel.centerYAnchor, constant: 0).isActive = true
         self.finalDateLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
-        self.finalPickupLabel.rightAnchor.constraint(equalTo: self.appointmentDetailsContainer.rightAnchor, constant: -30).isActive = true
-        self.finalPickupLabel.leftAnchor.constraint(equalTo: self.pickupLabel.rightAnchor, constant: 20).isActive = true
-        self.finalPickupLabel.centerYAnchor.constraint(equalTo: self.pickupLabel.centerYAnchor, constant: 0).isActive = true
-        self.finalPickupLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        self.timeLabel.leftAnchor.constraint(equalTo: self.appointmentDetailsContainer.leftAnchor, constant: 27).isActive = true
+        self.timeLabel.topAnchor.constraint(equalTo: self.finalDateLabel.bottomAnchor, constant: 26).isActive = true
+        self.timeLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        self.timeLabel.widthAnchor.constraint(equalToConstant: 55).isActive = true
+
+        self.finalTimeLabel.rightAnchor.constraint(equalTo: self.appointmentDetailsContainer.rightAnchor, constant: -30).isActive = true
+        self.finalTimeLabel.leftAnchor.constraint(equalTo: self.timeLabel.rightAnchor, constant: 20).isActive = true
+        self.finalTimeLabel.centerYAnchor.constraint(equalTo: self.timeLabel.centerYAnchor, constant: 0).isActive = true
+        self.finalTimeLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
+        self.bookAptButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -27).isActive = true
+        self.bookAptButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.bookAptButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.bookAptButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-    }
-    
-    @objc func handleEndAptDecisionController() {
-        
-        UIDevice.vibrateLight()
-        
-        let unavailableAptController = UnavailableAptController()
-        unavailableAptController.modalPresentationStyle = .fullScreen
-        self.navigationController?.pushViewController(unavailableAptController, animated: true)
-        
+        self.availableAptCollection.topAnchor.constraint(equalTo: self.selectDogForAptLabel.bottomAnchor, constant: 15).isActive = true
+        self.availableAptCollection.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.availableAptCollection.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.availableAptCollection.bottomAnchor.constraint(equalTo: self.bookAptButton.topAnchor, constant: -15).isActive = true
+
     }
     
     @objc func handleCancelButton() {
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     @objc func handleBackButton() {

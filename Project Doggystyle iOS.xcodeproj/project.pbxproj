@@ -148,6 +148,11 @@
 		E361FBFF26D0182B00026DE3 /* SelectPackageCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBFE26D0182B00026DE3 /* SelectPackageCollection.swift */; };
 		E361FC0126D04CB700026DE3 /* SelectServiceDropDownCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FC0026D04CB700026DE3 /* SelectServiceDropDownCollection.swift */; };
 		E3636FDD26E692B500E5B76E /* UnavailbleAptScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3636FDC26E692B500E5B76E /* UnavailbleAptScreen.swift */; };
+		E3636FE726E6A51200E5B76E /* SorryDog.png in Resources */ = {isa = PBXBuildFile; fileRef = E3636FE426E6A51100E5B76E /* SorryDog.png */; };
+		E3636FE826E6A51200E5B76E /* SorryDog@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3636FE526E6A51100E5B76E /* SorryDog@2x.png */; };
+		E3636FE926E6A51200E5B76E /* SorryDog@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3636FE626E6A51200E5B76E /* SorryDog@3x.png */; };
+		E3636FEB26E6A9F200E5B76E /* AvailableAptScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3636FEA26E6A9F200E5B76E /* AvailableAptScreen.swift */; };
+		E3636FED26E6C1A600E5B76E /* AvailableAptCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3636FEC26E6C1A600E5B76E /* AvailableAptCollection.swift */; };
 		E369559C26CAEC1500806D73 /* ServicesCollectionSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E369559B26CAEC1500806D73 /* ServicesCollectionSubview.swift */; };
 		E36EE54626B7036B0009A0EF /* NewDogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE54526B7036B0009A0EF /* NewDogEntry.swift */; };
 		E36EE54826B778CE0009A0EF /* EmptyStateTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE54726B778CE0009A0EF /* EmptyStateTwo.swift */; };
@@ -369,6 +374,11 @@
 		E361FBFE26D0182B00026DE3 /* SelectPackageCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPackageCollection.swift; sourceTree = "<group>"; };
 		E361FC0026D04CB700026DE3 /* SelectServiceDropDownCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectServiceDropDownCollection.swift; sourceTree = "<group>"; };
 		E3636FDC26E692B500E5B76E /* UnavailbleAptScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnavailbleAptScreen.swift; sourceTree = "<group>"; };
+		E3636FE426E6A51100E5B76E /* SorryDog.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SorryDog.png; sourceTree = "<group>"; };
+		E3636FE526E6A51100E5B76E /* SorryDog@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SorryDog@2x.png"; sourceTree = "<group>"; };
+		E3636FE626E6A51200E5B76E /* SorryDog@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SorryDog@3x.png"; sourceTree = "<group>"; };
+		E3636FEA26E6A9F200E5B76E /* AvailableAptScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableAptScreen.swift; sourceTree = "<group>"; };
+		E3636FEC26E6C1A600E5B76E /* AvailableAptCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailableAptCollection.swift; sourceTree = "<group>"; };
 		E369559B26CAEC1500806D73 /* ServicesCollectionSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesCollectionSubview.swift; sourceTree = "<group>"; };
 		E36EE54526B7036B0009A0EF /* NewDogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogEntry.swift; sourceTree = "<group>"; };
 		E36EE54726B778CE0009A0EF /* EmptyStateTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateTwo.swift; sourceTree = "<group>"; };
@@ -812,6 +822,9 @@
 		E326572426B20866004A15F6 /* DashboardIcons */ = {
 			isa = PBXGroup;
 			children = (
+				E3636FE426E6A51100E5B76E /* SorryDog.png */,
+				E3636FE526E6A51100E5B76E /* SorryDog@2x.png */,
+				E3636FE626E6A51200E5B76E /* SorryDog@3x.png */,
 				E357D2F326E2B93400CDF90E /* Apple Pay Icon.png */,
 				E357D2F426E2B93400CDF90E /* Apple Pay Icon@2x.png */,
 				E357D2F526E2B93400CDF90E /* Apple Pay Icon@3x.png */,
@@ -896,6 +909,8 @@
 				E357D2FB26E2D11B00CDF90E /* ConfirmBookingController.swift */,
 				E3C5DC6426E6705B007C4A55 /* ConfirmBookingCollection.swift */,
 				E3636FDC26E692B500E5B76E /* UnavailbleAptScreen.swift */,
+				E3636FEA26E6A9F200E5B76E /* AvailableAptScreen.swift */,
+				E3636FEC26E6C1A600E5B76E /* AvailableAptCollection.swift */,
 			);
 			path = PaymentControllers;
 			sourceTree = "<group>";
@@ -1350,6 +1365,7 @@
 				E39C665926A899F0004A0E93 /* Rubik-MediumItalic.ttf in Resources */,
 				E39C665A26A899F0004A0E93 /* Rubik-Regular.ttf in Resources */,
 				E39C665B26A899F0004A0E93 /* Rubik-SemiBold.ttf in Resources */,
+				E3636FE726E6A51200E5B76E /* SorryDog.png in Resources */,
 				E3E9F7E426BC62CE00C3A57A /* Doggy_filler_photo@2x.png in Resources */,
 				E36EE57526B876500009A0EF /* profile_doggy@3x.png in Resources */,
 				E39C665C26A899F0004A0E93 /* Rubik-SemiBoldItalic.ttf in Resources */,
@@ -1357,6 +1373,7 @@
 				CDE870EA2652E1640082551B /* LaunchScreen.storyboard in Resources */,
 				E36EE55F26B789A60009A0EF /* group18328.png in Resources */,
 				E38B7FDB26C457640013D72D /* invalidName@2x.png in Resources */,
+				E3636FE926E6A51200E5B76E /* SorryDog@3x.png in Resources */,
 				CD319F71267936AD00F48E3C /* Poppins-Bold.ttf in Resources */,
 				CDE870F42652E1FB0082551B /* ConcertOne-Regular.ttf in Resources */,
 				E326572826B20884004A15F6 /* emptydoggyprofile.png in Resources */,
@@ -1375,6 +1392,7 @@
 				E376FDED26AB4E4300902C36 /* ios_doggystyle_icon80.jpg in Resources */,
 				E326572926B20884004A15F6 /* emptydoggyprofile@2x.png in Resources */,
 				E376FDEE26AB4E4300902C36 /* ios_doggystyle_icon180.jpg in Resources */,
+				E3636FE826E6A51200E5B76E /* SorryDog@2x.png in Resources */,
 				E376FDF326AB4F5800902C36 /* art_icon.jpg in Resources */,
 				E326572F26B2149D004A15F6 /* 65430TifDsVan1@2x.png in Resources */,
 				E36EE55226B77D9B0009A0EF /* hoverLight1@2x.png in Resources */,
@@ -1511,6 +1529,7 @@
 				CDE8711E2652E3030082551B /* UIColor+Ext.swift in Sources */,
 				CDE871222652E3030082551B /* UIViewController+Ext.swift in Sources */,
 				E357D2EF26E296C300CDF90E /* CustomPackageContainer.swift in Sources */,
+				E3636FED26E6C1A600E5B76E /* AvailableAptCollection.swift in Sources */,
 				E38B7FEB26C5A4590013D72D /* NewDogTreatCollection.swift in Sources */,
 				E38B7FE426C5A24A0013D72D /* DogFoodHelper.swift in Sources */,
 				E361FBFC26CF078100026DE3 /* PetsApointmentCollection.swift in Sources */,
@@ -1607,6 +1626,7 @@
 				CD6DD008267FC0F500BC376B /* MyPetsController.swift in Sources */,
 				E357D2F226E2AB0200CDF90E /* PaymentMethod.swift in Sources */,
 				CDE871512652E66A0082551B /* HomeController.swift in Sources */,
+				E3636FEB26E6A9F200E5B76E /* AvailableAptScreen.swift in Sources */,
 				CD203BFC2667FAB300335D93 /* ServicesController.swift in Sources */,
 				E3A0AD5926BDD29400E813D5 /* NewDogFiveCollectionview.swift in Sources */,
 				E3B11AC2268FCC4600B5B6F8 /* Extensions.swift in Sources */,

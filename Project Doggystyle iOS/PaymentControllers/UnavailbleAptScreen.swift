@@ -159,8 +159,9 @@ class UnavailableAptController : UIViewController {
         pii.isUserInteractionEnabled = false
         pii.contentMode = .scaleAspectFill
         pii.layer.masksToBounds = true
-        pii.backgroundColor = dividerGrey
-        pii.backgroundColor = coreRedColor
+        pii.backgroundColor = coreBackgroundWhite
+        let image = UIImage(named: "sorry_dog_image")?.withRenderingMode(.alwaysOriginal)
+        pii.image = image
         
        return pii
     }()

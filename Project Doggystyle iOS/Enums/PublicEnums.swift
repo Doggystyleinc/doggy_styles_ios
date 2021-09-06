@@ -16,13 +16,13 @@ public func dogServicePriceConfiguration(dogSize : String, service : String) -> 
         
         switch service {
         
-        case "dematting" : return "$16519"
-        case "deshedding" : return "$145619"
-        case "bath" : return "$1179"
-        case "hairCut" : return "$44119"
-        case "teethCleaning" : return "$33119"
-        case "nailTrimming" : return "$6119"
-        case "earCleaning" : return "$119"
+        case "dematting" : return "$108"
+        case "deshedding" : return "$256"
+        case "bath" : return "$546"
+        case "hairCut" : return "$486"
+        case "teethCleaning" : return "$214"
+        case "nailTrimming" : return "$864"
+        case "earCleaning" : return "$987"
         default: return "$119"
         
         }
@@ -31,13 +31,13 @@ public func dogServicePriceConfiguration(dogSize : String, service : String) -> 
         
         switch service {
         
-        case "dematting" : return "$tt1rg19"
-        case "deshedding" : return "$1fdgr19"
-        case "bath" : return "$1greg19"
-        case "hairCut" : return "$119"
-        case "teethCleaning" : return "$119"
-        case "nailTrimming" : return "$119"
-        case "earCleaning" : return "$119"
+        case "dematting" : return "$548"
+        case "deshedding" : return "$435"
+        case "bath" : return "$654"
+        case "hairCut" : return "$778"
+        case "teethCleaning" : return "$989"
+        case "nailTrimming" : return "$687"
+        case "earCleaning" : return "$465"
         default: return "$119"
         
         }
@@ -46,13 +46,13 @@ public func dogServicePriceConfiguration(dogSize : String, service : String) -> 
         
         switch service {
         
-        case "dematting" : return "$1fgrt45319"
-        case "deshedding" : return "$11wert9"
-        case "bath" : return "$119"
-        case "hairCut" : return "$119"
-        case "teethCleaning" : return "$119"
-        case "nailTrimming" : return "$119"
-        case "earCleaning" : return "$119"
+        case "dematting" : return "$756"
+        case "deshedding" : return "$869"
+        case "bath" : return "$078"
+        case "hairCut" : return "$986"
+        case "teethCleaning" : return "$576"
+        case "nailTrimming" : return "$123"
+        case "earCleaning" : return "$143"
         default: return "$119"
         
         }
@@ -61,13 +61,13 @@ public func dogServicePriceConfiguration(dogSize : String, service : String) -> 
         
         switch service {
         
-        case "dematting" : return "$1werwe19"
-        case "deshedding" : return "$11t9"
-        case "bath" : return "$119"
-        case "hairCut" : return "$119"
-        case "teethCleaning" : return "$119"
-        case "nailTrimming" : return "$119"
-        case "earCleaning" : return "$119"
+        case "dematting" : return "$567"
+        case "deshedding" : return "$678"
+        case "bath" : return "$789"
+        case "hairCut" : return "$678"
+        case "teethCleaning" : return "$567"
+        case "nailTrimming" : return "$456"
+        case "earCleaning" : return "$345"
         default: return "$119"
         
         }

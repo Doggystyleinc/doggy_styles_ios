@@ -73,7 +73,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = false
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()
@@ -88,7 +88,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = false
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()
@@ -104,7 +104,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = true
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()
@@ -119,7 +119,7 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = true
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()

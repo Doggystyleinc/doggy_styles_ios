@@ -104,7 +104,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = true
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()
@@ -119,7 +119,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = false
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()
@@ -168,7 +168,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = true
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()
@@ -183,7 +183,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = false
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()
@@ -237,7 +237,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = true
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()
@@ -252,7 +252,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = false
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()
@@ -302,7 +302,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = true
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()
@@ -317,7 +317,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = false
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()
@@ -369,7 +369,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = true
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()
@@ -384,7 +384,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = false
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()
@@ -487,21 +487,21 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         
         myMutableString = NSMutableAttributedString(string: partOne + partTwo + partThree + partFour as String, attributes: [NSAttributedString.Key.font:UIFont(name: rubikRegular, size: 14)!])
         
-        myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: dividerGrey, range: NSRange(location:0,length:partOne.count))
+        myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: dsFlatBlack.withAlphaComponent(0.4), range: NSRange(location:0,length:partOne.count))
         
         myMutableString.addAttribute(NSAttributedString.Key.font, value: UIFont(name: rubikRegular, size: fontSize)!, range: NSRange(location: 0,length:partOne.count))
         
-        myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: dividerGrey, range: NSRange(location:partOne.count,length:partTwo.count))
+        myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: dsFlatBlack.withAlphaComponent(0.4), range: NSRange(location:partOne.count,length:partTwo.count))
         
         myMutableString.addAttribute(NSAttributedString.Key.font, value: UIFont(name: rubikRegular, size: fontSize)!, range: NSRange(location: partOne.count,length:partTwo.count))
         
         myMutableString.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: partOne.count,length:partTwo.count))
         
-        myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: dividerGrey, range: NSRange(location:partOne.count + partTwo.count,length:partThree.count))
+        myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: dsFlatBlack.withAlphaComponent(0.4), range: NSRange(location:partOne.count + partTwo.count,length:partThree.count))
         
         myMutableString.addAttribute(NSAttributedString.Key.font, value: UIFont(name: rubikRegular, size: fontSize)!, range: NSRange(location: partOne.count + partTwo.count,length:partThree.count))
         
-        myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: dividerGrey, range: NSRange(location:partOne.count + partTwo.count + partThree.count,length:partFour.count))
+        myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: dsFlatBlack.withAlphaComponent(0.4), range: NSRange(location:partOne.count + partTwo.count + partThree.count,length:partFour.count))
         
         myMutableString.addAttribute(NSAttributedString.Key.font, value: UIFont(name: rubikRegular, size: fontSize)!, range: NSRange(location: partOne.count + partTwo.count + partThree.count,length:partFour.count))
         
