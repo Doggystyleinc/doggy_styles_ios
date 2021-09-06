@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: sceneWindow)
         window.makeKeyAndVisible()
         
-        let decisionController = CreditCardController()
+        let decisionController = ConfirmBookingController()
         let navigationController = UINavigationController(rootViewController: decisionController)
         
         navigationController.navigationBar.isHidden = true

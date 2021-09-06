@@ -9,7 +9,7 @@ import UIKit
 import Foundation
 
 class ConfirmBookingController : UIViewController {
-
+  
 lazy var stackView : UIStackView = {
     
     let sv = UIStackView()
@@ -219,6 +219,14 @@ var headerContainer : UIView = {
         return nl
     }()
     
+    lazy var confirmBookingCollection : ConfirmBookingCollection = {
+        
+        let layout = UICollectionViewFlowLayout()
+        let cbc = ConfirmBookingCollection(frame: .zero, collectionViewLayout: layout)
+        cbc.confirmBookingController = self
+        
+        return cbc
+    }()
     
     
     override func viewDidLoad() {
@@ -242,9 +250,11 @@ var headerContainer : UIView = {
         self.view.addSubview(self.cancelButton)
         self.view.addSubview(self.xButton)
         self.view.addSubview(self.basicDetailsLabel)
-        self.view.addSubview(timeCover)
+        self.view.addSubview(self.timeCover)
         
-        self.view.addSubview(appointmentDetailsContainer)
+        self.view.addSubview(self.confirmBookingCollection)
+
+        self.confirmBookingCollection.addSubview(self.appointmentDetailsContainer)
         
         self.appointmentDetailsContainer.addSubview(self.appointmentDetailsLabel)
         self.appointmentDetailsContainer.addSubview(self.pencilIcon)
@@ -254,7 +264,8 @@ var headerContainer : UIView = {
         
         self.appointmentDetailsContainer.addSubview(self.finalDateLabel)
         self.appointmentDetailsContainer.addSubview(self.finalPickupLabel)
-
+        
+        self.view.addSubview(confirmBookingCollection)
        
         self.headerBarOne.widthAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.heightAnchor.constraint(equalToConstant: 9).isActive = true
@@ -296,41 +307,47 @@ var headerContainer : UIView = {
         self.stackView.heightAnchor.constraint(equalToConstant: 14).isActive = true
         self.stackView.widthAnchor.constraint(equalToConstant: 60).isActive = true
         
-        self.appointmentDetailsContainer.topAnchor.constraint(equalTo: self.headerContainer.bottomAnchor, constant: 50).isActive = true
+        self.confirmBookingCollection.topAnchor.constraint(equalTo: self.headerContainer.bottomAnchor, constant: 50).isActive = true
+        self.confirmBookingCollection.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.confirmBookingCollection.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.confirmBookingCollection.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        
+        self.appointmentDetailsContainer.bottomAnchor.constraint(equalTo: self.confirmBookingCollection.topAnchor, constant: -20).isActive = true
         self.appointmentDetailsContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.appointmentDetailsContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.appointmentDetailsContainer.heightAnchor.constraint(equalToConstant: 158).isActive = true
-        
+
         self.pencilIcon.topAnchor.constraint(equalTo: self.appointmentDetailsContainer.topAnchor, constant: 25).isActive = true
         self.pencilIcon.rightAnchor.constraint(equalTo: self.appointmentDetailsContainer.rightAnchor, constant: -20).isActive = true
         self.pencilIcon.heightAnchor.constraint(equalToConstant: 18).isActive = true
         self.pencilIcon.widthAnchor.constraint(equalToConstant: 18).isActive = true
-        
+
         self.appointmentDetailsLabel.leftAnchor.constraint(equalTo: self.appointmentDetailsContainer.leftAnchor, constant: 27).isActive = true
         self.appointmentDetailsLabel.rightAnchor.constraint(equalTo: self.pencilIcon.leftAnchor, constant: -20).isActive = true
         self.appointmentDetailsLabel.centerYAnchor.constraint(equalTo: self.pencilIcon.centerYAnchor, constant: 0).isActive = true
         self.appointmentDetailsLabel.sizeToFit()
-        
+
         self.dateLabel.leftAnchor.constraint(equalTo: self.appointmentDetailsContainer.leftAnchor, constant: 27).isActive = true
         self.dateLabel.topAnchor.constraint(equalTo: self.appointmentDetailsLabel.bottomAnchor, constant: 26).isActive = true
         self.dateLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         self.dateLabel.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        
+
         self.pickupLabel.leftAnchor.constraint(equalTo: self.appointmentDetailsContainer.leftAnchor, constant: 27).isActive = true
         self.pickupLabel.topAnchor.constraint(equalTo: self.dateLabel.bottomAnchor, constant: 21).isActive = true
         self.pickupLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         self.pickupLabel.widthAnchor.constraint(equalToConstant: 65).isActive = true
-        
+
         self.finalDateLabel.rightAnchor.constraint(equalTo: self.appointmentDetailsContainer.rightAnchor, constant: -30).isActive = true
         self.finalDateLabel.leftAnchor.constraint(equalTo: self.dateLabel.rightAnchor, constant: 20).isActive = true
         self.finalDateLabel.centerYAnchor.constraint(equalTo: self.dateLabel.centerYAnchor, constant: 0).isActive = true
         self.finalDateLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        
+
         self.finalPickupLabel.rightAnchor.constraint(equalTo: self.appointmentDetailsContainer.rightAnchor, constant: -30).isActive = true
         self.finalPickupLabel.leftAnchor.constraint(equalTo: self.pickupLabel.rightAnchor, constant: 20).isActive = true
         self.finalPickupLabel.centerYAnchor.constraint(equalTo: self.pickupLabel.centerYAnchor, constant: 0).isActive = true
         self.finalPickupLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
-       
+        
+      
     }
     
     @objc func handleCancelButton() {

@@ -345,7 +345,6 @@ class CreditCardController : UIViewController, UIScrollViewDelegate, UITextField
         
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         

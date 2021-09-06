@@ -228,6 +228,7 @@
 		E3B11AC0268FCC0400B5B6F8 /* ProfilePhotoUploadExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B11ABF268FCC0400B5B6F8 /* ProfilePhotoUploadExt.swift */; };
 		E3B11AC2268FCC4600B5B6F8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B11AC1268FCC4600B5B6F8 /* Extensions.swift */; };
 		E3B582122698ACE900EC469B /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B582112698ACE900EC469B /* Notes.swift */; };
+		E3C5DC6526E6705B007C4A55 /* ConfirmBookingCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C5DC6426E6705B007C4A55 /* ConfirmBookingCollection.swift */; };
 		E3D53F3B26AA21D0003B4317 /* LocationFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D53F3A26AA21D0003B4317 /* LocationFinder.swift */; };
 		E3D53F3D26AA21EC003B4317 /* SearchLocationTableview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D53F3C26AA21EC003B4317 /* SearchLocationTableview.swift */; };
 		E3D53F3F26AA2200003B4317 /* SearchLocationFeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D53F3E26AA2200003B4317 /* SearchLocationFeeder.swift */; };
@@ -447,6 +448,7 @@
 		E3B11ABF268FCC0400B5B6F8 /* ProfilePhotoUploadExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePhotoUploadExt.swift; sourceTree = "<group>"; };
 		E3B11AC1268FCC4600B5B6F8 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		E3B582112698ACE900EC469B /* Notes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
+		E3C5DC6426E6705B007C4A55 /* ConfirmBookingCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBookingCollection.swift; sourceTree = "<group>"; };
 		E3C8DE4D2694F21800CFEC29 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E3C8DE4F2694F2D100CFEC29 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E3D53F3A26AA21D0003B4317 /* LocationFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationFinder.swift; sourceTree = "<group>"; };
@@ -890,6 +892,7 @@
 				E357D2F126E2AB0200CDF90E /* PaymentMethod.swift */,
 				E357D2F926E2BDBB00CDF90E /* CreditCardController.swift */,
 				E357D2FB26E2D11B00CDF90E /* ConfirmBookingController.swift */,
+				E3C5DC6426E6705B007C4A55 /* ConfirmBookingCollection.swift */,
 			);
 			path = PaymentControllers;
 			sourceTree = "<group>";
@@ -1589,6 +1592,7 @@
 				E36EE54626B7036B0009A0EF /* NewDogEntry.swift in Sources */,
 				CDE871502652E66A0082551B /* DecisionController.swift in Sources */,
 				CD203C002667FACC00335D93 /* ProfileViewController.swift in Sources */,
+				E3C5DC6526E6705B007C4A55 /* ConfirmBookingCollection.swift in Sources */,
 				CD686882265412BB0064ADFE /* DSAlertViewController.swift in Sources */,
 				CDE871202652E3030082551B /* NetworkMonitor.swift in Sources */,
 				CD6DCFF8267A824A00BC376B /* Appointment.swift in Sources */,
