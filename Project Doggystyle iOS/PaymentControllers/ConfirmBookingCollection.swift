@@ -87,6 +87,11 @@ class ConfirmBookingCollection : UICollectionView, UICollectionViewDelegateFlowL
         return 10
     }
     
+    @objc func handleNextButton(sender: UIButton) {
+        print("handle nect button")
+        self.confirmBookingController?.handleEndAptDecisionController()
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -461,6 +466,21 @@ class ConfirmBookingFooterFeeder : UICollectionViewCell, UITextFieldDelegate {
        return adc
     }()
     
+    let creditCardLabel : UILabel = {
+        
+        let nl = UILabel()
+        nl.translatesAutoresizingMaskIntoConstraints = false
+        nl.backgroundColor = .clear
+        nl.text = "Credit Card ending in 5342"
+        nl.font = UIFont(name: rubikMedium, size: 16)
+        nl.textColor = coreBlackColor
+        nl.textAlignment = .left
+        nl.numberOfLines = 1
+        nl.adjustsFontSizeToFitWidth = true
+
+        return nl
+    }()
+    
     let importantInfoLabel : UILabel = {
         
         let nl = UILabel()
@@ -567,7 +587,21 @@ class ConfirmBookingFooterFeeder : UICollectionViewCell, UITextFieldDelegate {
         cbf.tintColor = coreWhiteColor
         cbf.backgroundColor = coreOrangeColor
         cbf.isHidden = false
-        cbf.addTarget(self, action: #selector(self.handleNextButton), for: .touchUpInside)
+        cbf.addTarget(self, action: #selector(self.handleNextButton(sender:)), for: .touchUpInside)
+        
+        return cbf
+        
+    }()
+    
+    lazy var downArrowButton : UIButton = {
+        
+        let cbf = UIButton()
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.backgroundColor = .clear
+        cbf.contentMode = .scaleAspectFill
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
+        cbf.setTitle(String.fontAwesomeIcon(name: .chevronDown), for: .normal)
+        cbf.setTitleColor(coreBlackColor, for: .normal)
         
         return cbf
         
@@ -588,6 +622,10 @@ class ConfirmBookingFooterFeeder : UICollectionViewCell, UITextFieldDelegate {
         self.addSubview(self.appointmentsSwitch)
         self.addSubview(self.paymentMethod)
         self.addSubview(self.creditCardContainer)
+        
+        self.creditCardContainer.addSubview(self.downArrowButton)
+        self.creditCardContainer.addSubview(self.creditCardLabel)
+        
         self.addSubview(self.importantInfoLabel)
         self.addSubview(self.importantInfoSubheader)
         self.addSubview(self.referralCodeLabel)
@@ -613,6 +651,16 @@ class ConfirmBookingFooterFeeder : UICollectionViewCell, UITextFieldDelegate {
         self.creditCardContainer.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.creditCardContainer.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
         self.creditCardContainer.heightAnchor.constraint(equalToConstant: 63).isActive = true
+        
+        self.downArrowButton.rightAnchor.constraint(equalTo: self.creditCardContainer.rightAnchor, constant: -27).isActive = true
+        self.downArrowButton.centerYAnchor.constraint(equalTo: self.creditCardContainer.centerYAnchor, constant: 0).isActive = true
+        self.downArrowButton.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        self.downArrowButton.widthAnchor.constraint(equalToConstant: 16).isActive = true
+
+        self.creditCardLabel.leftAnchor.constraint(equalTo: self.creditCardContainer.leftAnchor, constant: 27).isActive = true
+        self.creditCardLabel.centerYAnchor.constraint(equalTo: self.creditCardContainer.centerYAnchor).isActive = true
+        self.creditCardLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        self.creditCardLabel.rightAnchor.constraint(equalTo: self.downArrowButton.leftAnchor, constant: -20).isActive = true
         
         self.importantInfoLabel.topAnchor.constraint(equalTo: self.creditCardContainer.bottomAnchor, constant: 30).isActive = true
         self.importantInfoLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
@@ -646,15 +694,14 @@ class ConfirmBookingFooterFeeder : UICollectionViewCell, UITextFieldDelegate {
 
     }
     
-    @objc func handleNextButton() {
+    @objc func handleNextButton(sender: UIButton) {
         
-        
+        self.confirmBookingCollection?.handleNextButton(sender: sender)
         
     }
     
     @objc func handleToggle(sender : UISwitch) {
 
-        
         
     }
     

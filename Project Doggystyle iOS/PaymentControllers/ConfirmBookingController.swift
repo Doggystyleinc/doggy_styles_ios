@@ -17,6 +17,7 @@ lazy var stackView : UIStackView = {
     sv.axis = .horizontal
     sv.distribution = .equalSpacing
     sv.alignment = .center
+    sv.isHidden = true
     
     return sv
 }()
@@ -348,6 +349,16 @@ var headerContainer : UIView = {
         self.finalPickupLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
       
+    }
+    
+    @objc func handleEndAptDecisionController() {
+        
+        UIDevice.vibrateLight()
+
+        let unavailableAptController = UnavailableAptController()
+        unavailableAptController.modalPresentationStyle = .fullScreen
+        self.navigationController?.pushViewController(unavailableAptController, animated: true)
+        
     }
     
     @objc func handleCancelButton() {

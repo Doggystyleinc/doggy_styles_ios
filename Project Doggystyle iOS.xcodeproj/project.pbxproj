@@ -147,6 +147,7 @@
 		E361FBFC26CF078100026DE3 /* PetsApointmentCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */; };
 		E361FBFF26D0182B00026DE3 /* SelectPackageCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBFE26D0182B00026DE3 /* SelectPackageCollection.swift */; };
 		E361FC0126D04CB700026DE3 /* SelectServiceDropDownCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FC0026D04CB700026DE3 /* SelectServiceDropDownCollection.swift */; };
+		E3636FDD26E692B500E5B76E /* UnavailbleAptScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3636FDC26E692B500E5B76E /* UnavailbleAptScreen.swift */; };
 		E369559C26CAEC1500806D73 /* ServicesCollectionSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E369559B26CAEC1500806D73 /* ServicesCollectionSubview.swift */; };
 		E36EE54626B7036B0009A0EF /* NewDogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE54526B7036B0009A0EF /* NewDogEntry.swift */; };
 		E36EE54826B778CE0009A0EF /* EmptyStateTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36EE54726B778CE0009A0EF /* EmptyStateTwo.swift */; };
@@ -367,6 +368,7 @@
 		E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetsApointmentCollection.swift; sourceTree = "<group>"; };
 		E361FBFE26D0182B00026DE3 /* SelectPackageCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPackageCollection.swift; sourceTree = "<group>"; };
 		E361FC0026D04CB700026DE3 /* SelectServiceDropDownCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectServiceDropDownCollection.swift; sourceTree = "<group>"; };
+		E3636FDC26E692B500E5B76E /* UnavailbleAptScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnavailbleAptScreen.swift; sourceTree = "<group>"; };
 		E369559B26CAEC1500806D73 /* ServicesCollectionSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesCollectionSubview.swift; sourceTree = "<group>"; };
 		E36EE54526B7036B0009A0EF /* NewDogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogEntry.swift; sourceTree = "<group>"; };
 		E36EE54726B778CE0009A0EF /* EmptyStateTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateTwo.swift; sourceTree = "<group>"; };
@@ -893,6 +895,7 @@
 				E357D2F926E2BDBB00CDF90E /* CreditCardController.swift */,
 				E357D2FB26E2D11B00CDF90E /* ConfirmBookingController.swift */,
 				E3C5DC6426E6705B007C4A55 /* ConfirmBookingCollection.swift */,
+				E3636FDC26E692B500E5B76E /* UnavailbleAptScreen.swift */,
 			);
 			path = PaymentControllers;
 			sourceTree = "<group>";
@@ -1561,6 +1564,7 @@
 				E361FC0126D04CB700026DE3 /* SelectServiceDropDownCollection.swift in Sources */,
 				CD6DD005267B9DAF00BC376B /* DSContainerView.swift in Sources */,
 				E36EE57826B877770009A0EF /* NotificationsSelector.swift in Sources */,
+				E3636FDD26E692B500E5B76E /* UnavailbleAptScreen.swift in Sources */,
 				E326573A26B218B0004A15F6 /* NewDogThree.swift in Sources */,
 				E357D2ED26E05AE900CDF90E /* SelectPackageContainer.swift in Sources */,
 				CDE870DE2652E1610082551B /* AppDelegate.swift in Sources */,
