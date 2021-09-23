@@ -420,7 +420,7 @@ class AvailableAptScreen : UIViewController {
         self.finalTimeLabel.centerYAnchor.constraint(equalTo: self.timeLabel.centerYAnchor, constant: 0).isActive = true
         self.finalTimeLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
-        self.bookAptButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -27).isActive = true
+        self.bookAptButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -17).isActive = true
         self.bookAptButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.bookAptButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.bookAptButton.heightAnchor.constraint(equalToConstant: 60).isActive = true

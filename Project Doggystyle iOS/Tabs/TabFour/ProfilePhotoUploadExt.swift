@@ -23,6 +23,7 @@ extension ProfileController : UIImagePickerControllerDelegate, UINavigationContr
         
         case .authorized:
             self.openGallery()
+            
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization({
                 (newStatus) in

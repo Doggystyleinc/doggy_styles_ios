@@ -47,7 +47,6 @@ class MainLoadingScreen : NSObject {
         self.loadingAnimation.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 1.2).isActive = true
         self.loadingAnimation.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 1.2).isActive = true
         
-        
         self.loadingAnimation.play()
         
     }

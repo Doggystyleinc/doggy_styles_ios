@@ -104,6 +104,15 @@
 		CDE8717A2653118B0082551B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = CDE871792653118B0082551B /* Alamofire */; };
 		CDE8717D26531B040082551B /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = CDE8717C26531B040082551B /* SDWebImage */; };
 		CDE8717F26531B040082551B /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CDE8717E26531B040082551B /* SDWebImageMapKit */; };
+		E304ED7526EBEF95002D625A /* tab_home_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E304ED6C26EBEF92002D625A /* tab_home_icon@3x.png */; };
+		E304ED7626EBEF95002D625A /* tab_person_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E304ED6D26EBEF93002D625A /* tab_person_icon@2x.png */; };
+		E304ED7726EBEF95002D625A /* tab_calendar_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E304ED6E26EBEF93002D625A /* tab_calendar_icon@2x.png */; };
+		E304ED7826EBEF95002D625A /* tab_calendar_icon@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = E304ED6F26EBEF93002D625A /* tab_calendar_icon@1x.png */; };
+		E304ED7926EBEF95002D625A /* tab_person_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E304ED7026EBEF93002D625A /* tab_person_icon@3x.png */; };
+		E304ED7A26EBEF95002D625A /* tab_calendar_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E304ED7126EBEF94002D625A /* tab_calendar_icon@3x.png */; };
+		E304ED7B26EBEF95002D625A /* tab_person_icon@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = E304ED7226EBEF94002D625A /* tab_person_icon@1x.png */; };
+		E304ED7C26EBEF95002D625A /* tab_home_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E304ED7326EBEF94002D625A /* tab_home_icon@2x.png */; };
+		E304ED7D26EBEF95002D625A /* tab_home_icon@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = E304ED7426EBEF95002D625A /* tab_home_icon@1x.png */; };
 		E3107F8626961A6B00CDBB37 /* MainLoadingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3107F8526961A6B00CDBB37 /* MainLoadingScreen.swift */; };
 		E326571326AF24EF004A15F6 /* cpmbo1 shutterstock_355672793 1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E326571026AF24EF004A15F6 /* cpmbo1 shutterstock_355672793 1@3x.png */; };
 		E326571426AF24EF004A15F6 /* cpmbo1 shutterstock_355672793 1.png in Resources */ = {isa = PBXBuildFile; fileRef = E326571126AF24EF004A15F6 /* cpmbo1 shutterstock_355672793 1.png */; };
@@ -201,6 +210,12 @@
 		E38B7FEB26C5A4590013D72D /* NewDogTreatCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FEA26C5A4590013D72D /* NewDogTreatCollection.swift */; };
 		E38B7FED26C5AF4E0013D72D /* NewDogFoodSearchSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FEC26C5AF4E0013D72D /* NewDogFoodSearchSubview.swift */; };
 		E38B7FEF26C5AF5E0013D72D /* NewDogFoodCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FEE26C5AF5E0013D72D /* NewDogFoodCollection.swift */; };
+		E396B91F26FD33B90087F106 /* house_nav_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E396B91C26FD33B80087F106 /* house_nav_icon@2x.png */; };
+		E396B92026FD33B90087F106 /* house_nav_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E396B91D26FD33B90087F106 /* house_nav_icon@3x.png */; };
+		E396B92126FD33B90087F106 /* house_nav_icon@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = E396B91E26FD33B90087F106 /* house_nav_icon@1x.png */; };
+		E396B92526FD33C50087F106 /* bone_nav_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E396B92226FD33C40087F106 /* bone_nav_icon@3x.png */; };
+		E396B92626FD33C50087F106 /* bone_nav_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E396B92326FD33C40087F106 /* bone_nav_icon@2x.png */; };
+		E396B92726FD33C50087F106 /* bone_nav_icon@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = E396B92426FD33C50087F106 /* bone_nav_icon@1x.png */; };
 		E397405826D2DCE50084742F /* SelectCustomServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E397405726D2DCE50084742F /* SelectCustomServices.swift */; };
 		E397405B26D2E27F0084742F /* AppointmentTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E397405A26D2E27F0084742F /* AppointmentTwo.swift */; };
 		E397405D26D40B6F0084742F /* AppointmentTwoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E397405C26D40B6F0084742F /* AppointmentTwoContainer.swift */; };
@@ -330,6 +345,15 @@
 		CDE871602652E69B0082551B /* PasswordResetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetController.swift; sourceTree = "<group>"; };
 		CDE871642652E6E60082551B /* DSButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DSButton.swift; sourceTree = "<group>"; };
 		CDE871672652EA3B0082551B /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		E304ED6C26EBEF92002D625A /* tab_home_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_home_icon@3x.png"; sourceTree = "<group>"; };
+		E304ED6D26EBEF93002D625A /* tab_person_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_person_icon@2x.png"; sourceTree = "<group>"; };
+		E304ED6E26EBEF93002D625A /* tab_calendar_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_calendar_icon@2x.png"; sourceTree = "<group>"; };
+		E304ED6F26EBEF93002D625A /* tab_calendar_icon@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_calendar_icon@1x.png"; sourceTree = "<group>"; };
+		E304ED7026EBEF93002D625A /* tab_person_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_person_icon@3x.png"; sourceTree = "<group>"; };
+		E304ED7126EBEF94002D625A /* tab_calendar_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_calendar_icon@3x.png"; sourceTree = "<group>"; };
+		E304ED7226EBEF94002D625A /* tab_person_icon@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_person_icon@1x.png"; sourceTree = "<group>"; };
+		E304ED7326EBEF94002D625A /* tab_home_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_home_icon@2x.png"; sourceTree = "<group>"; };
+		E304ED7426EBEF95002D625A /* tab_home_icon@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_home_icon@1x.png"; sourceTree = "<group>"; };
 		E3107F8526961A6B00CDBB37 /* MainLoadingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainLoadingScreen.swift; sourceTree = "<group>"; };
 		E326571026AF24EF004A15F6 /* cpmbo1 shutterstock_355672793 1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cpmbo1 shutterstock_355672793 1@3x.png"; sourceTree = "<group>"; };
 		E326571126AF24EF004A15F6 /* cpmbo1 shutterstock_355672793 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cpmbo1 shutterstock_355672793 1.png"; sourceTree = "<group>"; };
@@ -427,6 +451,12 @@
 		E38B7FEA26C5A4590013D72D /* NewDogTreatCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogTreatCollection.swift; sourceTree = "<group>"; };
 		E38B7FEC26C5AF4E0013D72D /* NewDogFoodSearchSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogFoodSearchSubview.swift; sourceTree = "<group>"; };
 		E38B7FEE26C5AF5E0013D72D /* NewDogFoodCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogFoodCollection.swift; sourceTree = "<group>"; };
+		E396B91C26FD33B80087F106 /* house_nav_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "house_nav_icon@2x.png"; sourceTree = "<group>"; };
+		E396B91D26FD33B90087F106 /* house_nav_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "house_nav_icon@3x.png"; sourceTree = "<group>"; };
+		E396B91E26FD33B90087F106 /* house_nav_icon@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "house_nav_icon@1x.png"; sourceTree = "<group>"; };
+		E396B92226FD33C40087F106 /* bone_nav_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bone_nav_icon@3x.png"; sourceTree = "<group>"; };
+		E396B92326FD33C40087F106 /* bone_nav_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bone_nav_icon@2x.png"; sourceTree = "<group>"; };
+		E396B92426FD33C50087F106 /* bone_nav_icon@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bone_nav_icon@1x.png"; sourceTree = "<group>"; };
 		E397405726D2DCE50084742F /* SelectCustomServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectCustomServices.swift; sourceTree = "<group>"; };
 		E397405A26D2E27F0084742F /* AppointmentTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentTwo.swift; sourceTree = "<group>"; };
 		E397405C26D40B6F0084742F /* AppointmentTwoContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentTwoContainer.swift; sourceTree = "<group>"; };
@@ -822,6 +852,15 @@
 		E326572426B20866004A15F6 /* DashboardIcons */ = {
 			isa = PBXGroup;
 			children = (
+				E304ED6F26EBEF93002D625A /* tab_calendar_icon@1x.png */,
+				E304ED6E26EBEF93002D625A /* tab_calendar_icon@2x.png */,
+				E304ED7126EBEF94002D625A /* tab_calendar_icon@3x.png */,
+				E304ED7426EBEF95002D625A /* tab_home_icon@1x.png */,
+				E304ED7326EBEF94002D625A /* tab_home_icon@2x.png */,
+				E304ED6C26EBEF92002D625A /* tab_home_icon@3x.png */,
+				E304ED7226EBEF94002D625A /* tab_person_icon@1x.png */,
+				E304ED6D26EBEF93002D625A /* tab_person_icon@2x.png */,
+				E304ED7026EBEF93002D625A /* tab_person_icon@3x.png */,
 				E3636FE426E6A51100E5B76E /* SorryDog.png */,
 				E3636FE526E6A51100E5B76E /* SorryDog@2x.png */,
 				E3636FE626E6A51200E5B76E /* SorryDog@3x.png */,
@@ -1101,6 +1140,12 @@
 		E3AAE77326A6111B00D89064 /* OnboardingAssets */ = {
 			isa = PBXGroup;
 			children = (
+				E396B92426FD33C50087F106 /* bone_nav_icon@1x.png */,
+				E396B92326FD33C40087F106 /* bone_nav_icon@2x.png */,
+				E396B92226FD33C40087F106 /* bone_nav_icon@3x.png */,
+				E396B91E26FD33B90087F106 /* house_nav_icon@1x.png */,
+				E396B91C26FD33B80087F106 /* house_nav_icon@2x.png */,
+				E396B91D26FD33B90087F106 /* house_nav_icon@3x.png */,
 				E326571E26B1BEF8004A15F6 /* frame.png */,
 				E326572026B1BEF9004A15F6 /* frame@2x.png */,
 				E326571F26B1BEF9004A15F6 /* frame@3x.png */,
@@ -1344,6 +1389,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E39C664F26A899F0004A0E93 /* Rubik-Black.ttf in Resources */,
+				E396B92626FD33C50087F106 /* bone_nav_icon@2x.png in Resources */,
 				E39C665026A899F0004A0E93 /* Rubik-BlackItalic.ttf in Resources */,
 				E376FDEB26AB4E4300902C36 /* ios_doggystyle_icon58.jpg in Resources */,
 				E39C665126A899F0004A0E93 /* Rubik-Bold.ttf in Resources */,
@@ -1355,6 +1401,7 @@
 				E36EE57426B876500009A0EF /* profile_doggy@2x.png in Resources */,
 				E39C665626A899F0004A0E93 /* Rubik-Light.ttf in Resources */,
 				E3E9F7E526BC62CE00C3A57A /* Doggy_filler_photo@3x.png in Resources */,
+				E304ED7626EBEF95002D625A /* tab_person_icon@2x.png in Resources */,
 				E376FDF126AB4E4300902C36 /* ios_doggystyle_icon40.jpg in Resources */,
 				E376FDEC26AB4E4300902C36 /* ios_doggystyle_icon.jpg in Resources */,
 				E326571426AF24EF004A15F6 /* cpmbo1 shutterstock_355672793 1.png in Resources */,
@@ -1375,6 +1422,7 @@
 				E38B7FDB26C457640013D72D /* invalidName@2x.png in Resources */,
 				E3636FE926E6A51200E5B76E /* SorryDog@3x.png in Resources */,
 				CD319F71267936AD00F48E3C /* Poppins-Bold.ttf in Resources */,
+				E396B92126FD33B90087F106 /* house_nav_icon@1x.png in Resources */,
 				CDE870F42652E1FB0082551B /* ConcertOne-Regular.ttf in Resources */,
 				E326572826B20884004A15F6 /* emptydoggyprofile.png in Resources */,
 				E36EE54C26B77CBC0009A0EF /* dsComboShutterstock530718881@2x.png in Resources */,
@@ -1384,10 +1432,12 @@
 				CDE871022652E2080082551B /* Roboto-Light.ttf in Resources */,
 				E36EE55326B77D9B0009A0EF /* hoverLight1@3x.png in Resources */,
 				E352FF6B26A63373003BD59F /* group18323@3x.png in Resources */,
+				E396B92526FD33C50087F106 /* bone_nav_icon@3x.png in Resources */,
 				CD319F73267936AD00F48E3C /* Poppins-SemiBold.ttf in Resources */,
 				E376FDEF26AB4E4300902C36 /* ios_doggystyle_icon60.jpg in Resources */,
 				CDE871682652EA3B0082551B /* .gitignore in Resources */,
 				E326572E26B2149D004A15F6 /* 65430TifDsVan1.png in Resources */,
+				E304ED7D26EBEF95002D625A /* tab_home_icon@1x.png in Resources */,
 				CDE871032652E2080082551B /* Roboto-Medium.ttf in Resources */,
 				E376FDED26AB4E4300902C36 /* ios_doggystyle_icon80.jpg in Resources */,
 				E326572926B20884004A15F6 /* emptydoggyprofile@2x.png in Resources */,
@@ -1395,10 +1445,12 @@
 				E3636FE826E6A51200E5B76E /* SorryDog@2x.png in Resources */,
 				E376FDF326AB4F5800902C36 /* art_icon.jpg in Resources */,
 				E326572F26B2149D004A15F6 /* 65430TifDsVan1@2x.png in Resources */,
+				E304ED7726EBEF95002D625A /* tab_calendar_icon@2x.png in Resources */,
 				E36EE55226B77D9B0009A0EF /* hoverLight1@2x.png in Resources */,
 				CDE8710C2652E2080082551B /* Roboto-Italic.ttf in Resources */,
 				E326571326AF24EF004A15F6 /* cpmbo1 shutterstock_355672793 1@3x.png in Resources */,
 				E36EE54E26B77CBC0009A0EF /* dsComboShutterstock530718881.png in Resources */,
+				E396B92726FD33C50087F106 /* bone_nav_icon@1x.png in Resources */,
 				CDE871042652E2080082551B /* Roboto-MediumItalic.ttf in Resources */,
 				E36EE54D26B77CBC0009A0EF /* dsComboShutterstock530718881@3x.png in Resources */,
 				E357D2F726E2B93400CDF90E /* Apple Pay Icon@2x.png in Resources */,
@@ -1408,14 +1460,21 @@
 				E36EE56F26B875180009A0EF /* notifications_doggy@3x.png in Resources */,
 				E326571B26AF2636004A15F6 /* Splash@3x.png in Resources */,
 				E326572326B1BEF9004A15F6 /* frame@2x.png in Resources */,
+				E304ED7926EBEF95002D625A /* tab_person_icon@3x.png in Resources */,
 				E352FF6526A63369003BD59F /* group18322.png in Resources */,
 				E352FF6C26A63373003BD59F /* group18323@2x.png in Resources */,
+				E304ED7A26EBEF95002D625A /* tab_calendar_icon@3x.png in Resources */,
 				E326572126B1BEF9004A15F6 /* frame.png in Resources */,
 				CDE871012652E2080082551B /* Roboto-LightItalic.ttf in Resources */,
+				E304ED7526EBEF95002D625A /* tab_home_icon@3x.png in Resources */,
 				CDE870E72652E1640082551B /* Assets.xcassets in Resources */,
+				E396B92026FD33B90087F106 /* house_nav_icon@3x.png in Resources */,
+				E396B91F26FD33B90087F106 /* house_nav_icon@2x.png in Resources */,
 				E352FF6D26A63373003BD59F /* group18323.png in Resources */,
 				E3E9F7E626BC62CE00C3A57A /* Doggy_filler_photo.png in Resources */,
+				E304ED7B26EBEF95002D625A /* tab_person_icon@1x.png in Resources */,
 				E38B7FDA26C457640013D72D /* invalidName@3x.png in Resources */,
+				E304ED7826EBEF95002D625A /* tab_calendar_icon@1x.png in Resources */,
 				E36EE56126B789A60009A0EF /* group18328@2x.png in Resources */,
 				CDE871062652E2080082551B /* Roboto-BlackItalic.ttf in Resources */,
 				E326571A26AF2636004A15F6 /* Splash@2x.png in Resources */,
@@ -1432,6 +1491,7 @@
 				E38B7FD926C457640013D72D /* invalidName.png in Resources */,
 				CDE871272652E3310082551B /* Localizable.strings in Resources */,
 				CDE871092652E2080082551B /* Roboto-Regular.ttf in Resources */,
+				E304ED7C26EBEF95002D625A /* tab_home_icon@2x.png in Resources */,
 				CD319F72267936AD00F48E3C /* Poppins-Regular.ttf in Resources */,
 				E326571926AF2636004A15F6 /* Splash.png in Resources */,
 				CDE871052652E2080082551B /* Roboto-Thin.ttf in Resources */,
@@ -1799,7 +1859,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Project Doggystyle iOS/Project Doggystyle iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.8;
+				CURRENT_PROJECT_VERSION = 1.0.9;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1821,7 +1881,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Project Doggystyle iOS/Project Doggystyle iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.0.8;
+				CURRENT_PROJECT_VERSION = 1.0.9;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "DSServicesIcon Copy.png",
+      "filename" : "house_nav_icon@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "DSServicesIcon Copy@2x.png",
+      "filename" : "house_nav_icon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "DSServicesIcon Copy@3x.png",
+      "filename" : "house_nav_icon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
