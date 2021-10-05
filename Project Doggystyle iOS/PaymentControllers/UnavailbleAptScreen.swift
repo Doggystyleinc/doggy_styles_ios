@@ -21,7 +21,7 @@ class UnavailableAptController : UIViewController {
         
         return sv
     }()
-
+    
     let headerBarOne : UIView = {
         
         let hbo = UIView()
@@ -31,7 +31,7 @@ class UnavailableAptController : UIViewController {
         
         return hbo
     }()
-
+    
     let headerBarTwo : UIView = {
         
         let hbo = UIView()
@@ -39,7 +39,7 @@ class UnavailableAptController : UIViewController {
         hbo.backgroundColor = coreOrangeColor
         return hbo
     }()
-
+    
     let headerBarThree : UIView = {
         
         let hbo = UIView()
@@ -47,7 +47,7 @@ class UnavailableAptController : UIViewController {
         hbo.backgroundColor = coreOrangeColor
         return hbo
     }()
-
+    
     let headerBarFour : UIView = {
         
         let hbo = UIView()
@@ -55,7 +55,7 @@ class UnavailableAptController : UIViewController {
         hbo.backgroundColor = coreOrangeColor
         return hbo
     }()
-
+    
     let timeCover : UIView = {
         
         let tc = UIView()
@@ -64,7 +64,7 @@ class UnavailableAptController : UIViewController {
         
         return tc
     }()
-
+    
     let wereSorrylabel : UILabel = {
         
         let nl = UILabel()
@@ -78,7 +78,7 @@ class UnavailableAptController : UIViewController {
         
         return nl
     }()
-
+    
     lazy var cancelButton : UIButton = {
         
         let cbf = UIButton(type: .system)
@@ -93,7 +93,7 @@ class UnavailableAptController : UIViewController {
         return cbf
         
     }()
-
+    
     lazy var xButton : UIButton = {
         
         let cbf = UIButton(type: .system)
@@ -107,7 +107,7 @@ class UnavailableAptController : UIViewController {
         return cbf
         
     }()
-
+    
     var headerContainer : UIView = {
         
         let hc = UIView()
@@ -163,7 +163,7 @@ class UnavailableAptController : UIViewController {
         let image = UIImage(named: "sorry_dog_image")?.withRenderingMode(.alwaysOriginal)
         pii.image = image
         
-       return pii
+        return pii
     }()
     
     override func viewDidLoad() {
@@ -173,7 +173,7 @@ class UnavailableAptController : UIViewController {
         self.addViews()
         
     }
-
+    
     func addViews() {
         
         self.view.addSubview(self.stackView)
@@ -191,7 +191,7 @@ class UnavailableAptController : UIViewController {
         self.view.addSubview(self.sorrySubHeaderLabel)
         self.view.addSubview(self.returnToDashboardButton)
         self.view.addSubview(self.puppyImage)
-
+        
         self.headerBarOne.widthAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.heightAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.layer.cornerRadius = 4.5

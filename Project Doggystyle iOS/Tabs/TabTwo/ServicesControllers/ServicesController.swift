@@ -45,7 +45,7 @@ final class ServicesController: UIViewController {
         let sc = ServicesCollectionview(frame: .zero, collectionViewLayout: layout)
         sc.servicesController = self
         
-       return sc
+        return sc
     }()
     
     lazy var bookNowButton: UIButton = {
@@ -66,31 +66,27 @@ final class ServicesController: UIViewController {
         cbf.layer.shadowOffset = CGSize(width: 2, height: 3)
         cbf.layer.shadowRadius = 4
         cbf.layer.shouldRasterize = false
-       
+        
         
         let str = String.fontAwesomeIcon(name: .calendar) + "   Book service"
         let attributedStr = NSMutableAttributedString(string: str)
-
-        //Apply FontAwesome to the first character
+        
         let range1 = NSRange(location: 0, length: 1)
         attributedStr.addAttribute(.font,
                                    value: UIFont.fontAwesome(ofSize: 18, style: .solid),
                                    range: range1)
-
-        //Apply the system font to the rest of the string
+        
         let range2 = NSRange(location: 1, length: (str as NSString).length - 1)
         attributedStr.addAttribute(.font,
                                    value: UIFont(name: dsHeaderFont, size: 18)!,
                                    range: range2)
-
-        //Set the attributed text for the button
+        
         cbf.setAttributedTitle(attributedStr, for: .normal)
         cbf.addTarget(self, action: #selector(self.handleBookingController), for: .touchUpInside)
         
         return cbf
         
     }()
-   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,7 +102,7 @@ final class ServicesController: UIViewController {
         self.view.addSubview(self.headerLabel)
         self.view.addSubview(self.servicesCollection)
         self.view.addSubview(self.bookNowButton)
-
+        
         self.dsCompanyLogoImage.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         self.dsCompanyLogoImage.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
         self.dsCompanyLogoImage.heightAnchor.constraint(equalToConstant: 26).isActive = true
@@ -130,8 +126,6 @@ final class ServicesController: UIViewController {
     }
     
     @objc func handleBookingController() {
-        print("ONE")
-
         self.homeController?.presentBookingController()
     }
 }

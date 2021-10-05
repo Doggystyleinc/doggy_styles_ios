@@ -44,7 +44,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
     
     
     lazy var stackView : UIStackView = {
-              
+        
         let sv = UIStackView()
         sv.translatesAutoresizingMaskIntoConstraints = false
         sv.axis = .horizontal
@@ -61,7 +61,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         hbo.backgroundColor = coreOrangeColor
         hbo.layer.masksToBounds = true
         
-       return hbo
+        return hbo
     }()
     
     let headerBarTwo : UIView = {
@@ -69,7 +69,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
         hbo.backgroundColor = circleGrey
-       return hbo
+        return hbo
     }()
     
     let headerBarThree : UIView = {
@@ -77,7 +77,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
         hbo.backgroundColor = circleGrey
-       return hbo
+        return hbo
     }()
     
     let headerBarFour : UIView = {
@@ -85,7 +85,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
         hbo.backgroundColor = circleGrey
-       return hbo
+        return hbo
     }()
     
     let timeCover : UIView = {
@@ -94,7 +94,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         tc.translatesAutoresizingMaskIntoConstraints = false
         tc.backgroundColor = coreBackgroundWhite
         
-       return tc
+        return tc
     }()
     
     let basicDetailsLabel : UILabel = {
@@ -108,7 +108,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
         
-       return nl
+        return nl
     }()
     
     lazy var cancelButton : UIButton = {
@@ -146,7 +146,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         hc.backgroundColor = .clear
         hc.isUserInteractionEnabled = false
         
-       return hc
+        return hc
     }()
     
     lazy var petAppointmentCollection : PetAppointmentsCollection = {
@@ -156,7 +156,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         let rpc = PetAppointmentsCollection(frame: .zero, collectionViewLayout: layout)
         rpc.appointmentOne = self
         
-       return rpc
+        return rpc
     }()
     
     lazy var selectServicesCollection : SelectServicesCollection = {
@@ -164,7 +164,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         let rpc = SelectServicesCollection(frame: .zero, style: .plain)
         rpc.appointmentOne = self
         
-       return rpc
+        return rpc
     }()
     
     lazy var servicesDropDownCollection : ServicesDropDownCollection = {
@@ -175,7 +175,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         rpc.appointmentOne = self
         rpc.isHidden = true
         
-       return rpc
+        return rpc
     }()
     
     lazy var customServicesDropDownCollection : CustomServicesDropDownCollection = {
@@ -186,7 +186,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         rpc.appointmentOne = self
         rpc.isHidden = true
         
-       return rpc
+        return rpc
     }()
     
     let selectServicesLabel : UILabel = {
@@ -200,7 +200,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
         
-       return nl
+        return nl
     }()
     
     let addOnsLabel : UILabel = {
@@ -216,10 +216,10 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         hl.textAlignment = .left
         hl.isUserInteractionEnabled = false
         hl.isHidden = true
-
+        
         return hl
     }()
-  
+    
     lazy var mainContainerFP : FullPackageContainer = {
         
         let layout = UICollectionViewFlowLayout()
@@ -227,10 +227,9 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         mcfp.appointmentOne = self
         mcfp.isHidden = true
         
-       return mcfp
+        return mcfp
     }()
     
-    //CUSTOM PACKAGE
     lazy var mainContainerCP : UIButton = {
         
         let cv = UIButton(type : .system)
@@ -249,7 +248,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         cv.isHidden = true
         cv.addTarget(self, action: #selector(self.handleMainContainerTaps), for: .touchUpInside)
         
-       return cv
+        return cv
         
     }()
     
@@ -265,8 +264,8 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         iv.tintColor = coreWhiteColor
         iv.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
         iv.setTitle(String.fontAwesomeIcon(name: .bath), for: .normal)
-
-       return iv
+        
+        return iv
     }()
     
     let headerLabelCP : UILabel = {
@@ -280,7 +279,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.isUserInteractionEnabled = false
-
+        
         return hl
     }()
     
@@ -295,7 +294,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.isUserInteractionEnabled = false
-
+        
         return hl
     }()
     
@@ -323,11 +322,11 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         super.viewDidLoad()
         
         self.view.backgroundColor = coreBackgroundWhite
+        
         self.addViews()
         self.callPetsCollection()
         self.scrollView.keyboardDismissMode = .interactive
-        print("I am gere")
-
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -352,13 +351,13 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.scrollView.addSubview(self.basicDetailsLabel)
         self.scrollView.addSubview(self.selectServicesLabel)
         self.scrollView.addSubview(self.selectServicesCollection)
-
+        
         self.view.addSubview(timeCover)
         
-        //FULL PACKAGE
+        //MARK: - FULL PACKAGE
         self.scrollView.addSubview(self.mainContainerFP)
         
-        //CUSTOM PACKAGE
+        //MARK: - CUSTOM PACKAGE
         self.scrollView.addSubview(self.mainContainerCP)
         self.mainContainerCP.addSubview(self.iconImageViewCP)
         self.mainContainerCP.addSubview(self.costLabelCP)
@@ -367,7 +366,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.scrollView.addSubview(addOnsLabel)
         self.scrollView.addSubview(servicesDropDownCollection)
         self.scrollView.addSubview(customServicesDropDownCollection)
-
+        
         self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         self.scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
@@ -379,7 +378,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         
         switch screenHeight {
         
-        //MANUAL CONFIGURATION - REFACTOR FOR UNNIVERSAL FITMENT
+        //MARK: - MANUAL CONFIGURATION - REFACTOR FOR UNNIVERSAL FITMENT
         case 926 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.13)
         case 896 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.14)
         case 844 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.27)
@@ -392,7 +391,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         default : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.5)
             
         }
-
+        
         self.headerBarOne.widthAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.heightAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.layer.cornerRadius = 4.5
@@ -448,14 +447,12 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.selectServicesCollection.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.selectServicesCollection.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         
-        //FULL PACKAGE
         self.mainContainerFP.topAnchor.constraint(equalTo: self.selectServicesLabel.bottomAnchor, constant: 16).isActive = true
         self.mainContainerFP.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.mainContainerFP.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.mainContainerConstraint = self.mainContainerFP.heightAnchor.constraint(equalToConstant: 80)
         self.mainContainerConstraint?.isActive = true
         
-        //FULL PACKAGE
         self.mainContainerCP.topAnchor.constraint(equalTo: self.selectServicesLabel.bottomAnchor, constant: 30).isActive = true
         self.mainContainerCP.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.mainContainerCP.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
@@ -508,9 +505,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
                 self.view.layoutIfNeeded()
                 self.view.superview?.layoutIfNeeded()
             }
-            
             return
-            
         }
         
         if shouldExpand {
@@ -532,7 +527,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
                 self.mainContainerConstraint?.constant = 80
                 self.view.layoutIfNeeded()
                 self.view.superview?.layoutIfNeeded()
-
+                
             }
         }
     }
@@ -549,9 +544,9 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         case "Custom Package" :
             self.currentState = .CustomPackage
             self.handleCustomPackage()
-
+            
         default: print("default for package selection")
-        
+            
         }
     }
     
@@ -569,10 +564,6 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.scrollView.scrollToBottom()
         self.shouldExpandMainContainerFP(shouldExpand: true)
         
-        
-//        self.servicesDropDownCollection.
-        
-        
     }
     
     func handleCustomPackage() {
@@ -587,7 +578,7 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.customServicesDropDownCollection.isHidden = false
         self.nextButton.isHidden = false
         self.scrollView.scrollToBottom()
-
+        
     }
     
     @objc func handleMainContainerTaps() {
@@ -601,10 +592,9 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         self.scrollView.isScrollEnabled = false
         self.scrollView.scrollToTop()
         self.nextButton.isHidden = true
-        print("Called here now!")
-
+        
     }
-   
+    
     @objc func callPetsCollection() {
         
         var datasourceReplica = self.doggyProfileDataSource
@@ -612,16 +602,16 @@ class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDeleg
         datasourceReplica.insert(post, at: 0)
         
         self.petAppointmentCollection.doggyProfileDataSource = datasourceReplica
-            
-            DispatchQueue.main.async {
-                self.petAppointmentCollection.reloadData()
-            }
+        
+        DispatchQueue.main.async {
+            self.petAppointmentCollection.reloadData()
         }
+    }
     
     @objc func handleNextButton() {
         
         UIDevice.vibrateLight()
-
+        
         let appointmentTwo = AppointmentTwo()
         appointmentTwo.modalPresentationStyle = .fullScreen
         self.navigationController?.pushViewController(appointmentTwo, animated: true)

@@ -6,13 +6,13 @@
 //
 
 /*
-926: iPhone 12 Pro Max
-896: iPhone 11 : iPhone 11 Pro Max
-844: iPhone 12 : iPhone 12 Pro
-812: 12 mini : iPhone 11 Pro : iPhone 12 Mini
-736: iPhone 8 Plus
-667: iPhone 8
-*/
+ 926: iPhone 12 Pro Max
+ 896: iPhone 11 : iPhone 11 Pro Max
+ 844: iPhone 12 : iPhone 12 Pro
+ 812: 12 mini : iPhone 11 Pro : iPhone 12 Mini
+ 736: iPhone 8 Plus
+ 667: iPhone 8
+ */
 
 import Foundation
 import UIKit
@@ -91,7 +91,7 @@ var friends_array_phone_number = [String](),
     onboardingPath = OnboardingPath.fromLogin,
     chatEntryPath = ChatEntryPath.fromMessagesController
 
- 
+
 var globalPetDataSource = [DoggyProfileDataSource]()
 
 extension UIScrollView {
@@ -110,49 +110,49 @@ extension UIScrollView {
 
 class fileUPloader : NSObject {
     
-   static func upload(localFilePath : URL, completion : @escaping (_ isComplete : Bool, _ urlToStoreInDatabase : String)->()) {
+    static func upload(localFilePath : URL, completion : @escaping (_ isComplete : Bool, _ urlToStoreInDatabase : String)->()) {
         
-            let storageRef = Storage.storage().reference()
+        let storageRef = Storage.storage().reference()
+        
+        guard let user_uid = Auth.auth().currentUser?.uid else {return}
+        
+        let randomUUID = NSUUID().uuidString
+        
+        let storageReference = storageRef.child("vaccine_files").child(user_uid).child(randomUUID)
+        
+        let uploadTask = storageReference.putFile(from: localFilePath, metadata: nil)
+        
+        uploadTask.observe(.failure) { snapshot in
+            print("FAILED HERE ONE")
+            completion(false, "nil")
+            return
+        }
+        
+        uploadTask.observe(.progress) { snapshot in
+            let percentComplete = Double(snapshot.progress!.completedUnitCount)
+                / Double(snapshot.progress!.totalUnitCount)
+            print("PROGRESS: ", CGFloat(percentComplete))
+        }
+        
+        uploadTask.observe(.success) { snapshot in
             
-            guard let user_uid = Auth.auth().currentUser?.uid else {return}
-            
-            let randomUUID = NSUUID().uuidString
-            
-            let storageReference = storageRef.child("vaccine_files").child(user_uid).child(randomUUID)
-            
-            let uploadTask = storageReference.putFile(from: localFilePath, metadata: nil)
-
-            uploadTask.observe(.failure) { snapshot in
-                print("FAILED HERE ONE")
-                completion(false, "nil")
-                return
-            }
+            storageReference.downloadURL { (url, error) in
                 
-            uploadTask.observe(.progress) { snapshot in
-                let percentComplete = Double(snapshot.progress!.completedUnitCount)
-                    / Double(snapshot.progress!.totalUnitCount)
-                print("PROGRESS: ", CGFloat(percentComplete))
-            }
-            
-            uploadTask.observe(.success) { snapshot in
-
-                storageReference.downloadURL { (url, error) in
-                    
-                    if error != nil {
-                        print(error?.localizedDescription as Any, "Error 1")
-                        print("ERROR RAN")
-                        completion(false, "nil")
-                        return
-                    }
-                    
-                    guard let safeUrl = url else {return}
-                    print("Uploaded audio clip successfully to Firebase Storage")
-                    completion(true, "\(safeUrl)")
-                    
+                if error != nil {
+                    print(error?.localizedDescription as Any, "Error 1")
+                    print("ERROR RAN")
+                    completion(false, "nil")
+                    return
                 }
+                
+                guard let safeUrl = url else {return}
+                print("Uploaded audio clip successfully to Firebase Storage")
+                completion(true, "\(safeUrl)")
+                
             }
         }
     }
+}
 
 
 enum TextFieldImageSide {
@@ -184,17 +184,17 @@ extension UITextField {
 }
 
 class CustomTextField: UITextField {
-
+    
     let padding = UIEdgeInsets(top: 15, left: 25, bottom: 0, right: 0);
-
+    
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
-
+    
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
-
+    
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
@@ -203,34 +203,34 @@ class CustomTextField: UITextField {
 
 
 class CustomPasswordTextField: UITextField {
-
+    
     let padding = UIEdgeInsets(top: 15, left: 25, bottom: 0, right: 70);
-
+    
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
-
+    
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
-
+    
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
 }
 
 class CustomCardNumberTextField: UITextField {
-
+    
     let padding = UIEdgeInsets(top: 5, left: 25, bottom: 0, right: 70);
-
+    
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
-
+    
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
-
+    
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
@@ -238,34 +238,34 @@ class CustomCardNumberTextField: UITextField {
 
 
 class PhoneTextFieldWithPadding: PhoneNumberTextField {
-
+    
     let padding = UIEdgeInsets(top: 15, left: 25, bottom: 0, right: 0);
-
+    
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
-
+    
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
-
+    
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
 }
 
 class CustomTextFieldMaps: TextFieldWithImage {
-
+    
     let padding = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 50);
-
+    
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
-
+    
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
-
+    
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
     }
@@ -279,7 +279,7 @@ public enum CurrentDevice {
     case iPhone11
     case iPhone11Pro
     case iPhone11Promax
-
+    
     case iPhone12Mini
     case iPhone12
     case iPhone12Pro
@@ -287,20 +287,19 @@ public enum CurrentDevice {
     
 }
 
-//MARK: - URLS/KEYS/TONES
+//MARK: - STATICS
 struct Statics {
     
     //MARK: - URLS AND LINKS FOR DUV MESSENGER
     static let  TERMS_OF_SERVICE : String = "https://doggystyle.ca"
     static let  PRIVACY_POLICY : String = "https://doggystyle.ca"
-    
     static let  SUPPORT_EMAIL_ADDRESS : String = "support@.com"
     static let  FAQS : String = "https://www..com"
     static let  APP_STORE_URL : String = "https://"
-    
     static let GOOGLE_SIGN_IN : String = "google"
     static let EMAIL_SIGN_IN : String = "email"
     
+    //MARK: - ANIMATIONS FROM LOTTI JSON
     static let PAW_ANIMATION : String = "paw_animation"
     
     //MARK: - ERROR/ALERT CODES
@@ -312,9 +311,9 @@ struct Statics {
     
     //MARK: - LISTENERS AND OBSERVERS
     static let CALL_ADD_NEW_PUP : String = "CALL_ADD_NEW_PUP"
-
+    static let HANDLE_CLEAR_OTHER_COLLECTIONS : String = "HANDLE_CLEAR_OTHER_COLLECTIONS"
+    static let HANDLE_CLEAR_OTHER_COLLECTIONS_CUSTOM : String = "HANDLE_CLEAR_OTHER_COLLECTIONS_CUSTOM"
     
-
 }
 
 extension UICollectionView {
@@ -920,9 +919,9 @@ extension NSMutableAttributedString {
         let foundRange = self.mutableString.range(of: textToFind)
         
         if foundRange.location != NSNotFound {
-          
+            
             self.addAttribute(NSAttributedString.Key.link, value: linkURL, range: foundRange)
-
+            
             print("found the link NSMutableAttributedString helper")
             return true
         }
@@ -1399,7 +1398,6 @@ class PhoneNumberFormatter : NSObject {
         
         return result
     }
-    
 }
 
 

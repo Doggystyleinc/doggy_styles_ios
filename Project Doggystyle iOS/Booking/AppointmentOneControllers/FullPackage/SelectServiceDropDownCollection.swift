@@ -39,8 +39,9 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
         self.delaysContentTouches = true
         self.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 70, right: 0)
         self.register(ServicesDropDownFeeder.self, forCellWithReuseIdentifier: self.dropServices)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handleDataReset), name: NSNotification.Name("HANDLE_CLEAR_OTHER_COLLECTIONS"), object: nil)
-
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleDataReset), name: NSNotification.Name(Statics.HANDLE_CLEAR_OTHER_COLLECTIONS), object: nil)
+        
     }
     
     @objc func handleDataReset() {
@@ -61,14 +62,14 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
         if self.shouldCellsExpand == true && self.arrayOfIndexPaths.contains(indexPath) {
             
             if let datasource = self.appointmentOne?.selectedProfileDataSource.count {
-            
-            let height = (CGFloat(datasource) * 40) + 90
-            
-            return CGSize(width: UIScreen.main.bounds.width - 60, height: height)
-            
-        } else {
-            return CGSize(width: UIScreen.main.bounds.width - 60, height: 40)
-        }
+                
+                let height = (CGFloat(datasource) * 40) + 90
+                
+                return CGSize(width: UIScreen.main.bounds.width - 60, height: height)
+                
+            } else {
+                return CGSize(width: UIScreen.main.bounds.width - 60, height: 40)
+            }
             
         } else {
             return CGSize(width: UIScreen.main.bounds.width - 60, height: 90)
@@ -78,17 +79,17 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = self.dequeueReusableCell(withReuseIdentifier: self.dropServices, for: indexPath) as! ServicesDropDownFeeder
-
+        
         cell.servicesDropDownCollection = self
         
         let feeder = FullPackageable.allCases[indexPath.item]
         
         let serviceName = feeder.description.0
         let serviceCost = feeder.description.1
-
+        
         cell.headerLabelFP.text = "\(serviceName)"
         cell.costLabelFP.text = "\(serviceCost)"
-
+        
         if self.arrayOfIndexPaths.contains(indexPath) {
             cell.engageShadow(shouldEngage: true)
         } else {
@@ -96,9 +97,9 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
         }
         
         switch serviceName {
-
+        
         case "Dematting" :
-
+            
             cell.iconImageViewFP.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageViewFP.setTitle(String.fontAwesomeIcon(name: .rulerCombined), for: .normal)
             cell.mainCollectionContainer.typeOfServiceSelection = "dematting"
@@ -110,13 +111,13 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
                     }
                 }
             }
-
+            
         case "Deshedding" :
-
+            
             cell.iconImageViewFP.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageViewFP.setTitle(String.fontAwesomeIcon(name: .chair), for: .normal)
             cell.mainCollectionContainer.typeOfServiceSelection = "deshedding"
-    
+            
             self.decide(typeOfService: "deshedding") { complete in
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.25) {
@@ -126,7 +127,7 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
             }
             
         default: print("default")
-
+            
         }
         
         DispatchQueue.main.async {
@@ -134,32 +135,32 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
         }
         
         return cell
-    
+        
     }
     
     func decide(typeOfService: String, completion: @escaping(_ isComplete : Bool)->()) {
         
-    globalArrayOfDicts.removeAll()
-
-    if let dataSource = self.appointmentOne?.selectedProfileDataSource {
+        globalArrayOfDicts.removeAll()
         
-        for i in 0..<dataSource.count {
-        
-        let feeder = dataSource[i],
-            dogsFirstName = feeder.dog_builder_name ?? "Pup",
-            dogSize = feeder.dog_builder_size ?? "Medium"
+        if let dataSource = self.appointmentOne?.selectedProfileDataSource {
             
-            let dogCost = dogServicePriceConfiguration(dogSize: dogSize, service: typeOfService)
-            let dic = [dogsFirstName : dogCost]
+            for i in 0..<dataSource.count {
+                
+                let feeder = dataSource[i],
+                    dogsFirstName = feeder.dog_builder_name ?? "Pup",
+                    dogSize = feeder.dog_builder_size ?? "Medium"
+                
+                let dogCost = dogServicePriceConfiguration(dogSize: dogSize, service: typeOfService)
+                let dic = [dogsFirstName : dogCost]
+                
+                globalArrayOfDicts.append(dic)
+                
+            }
             
-            globalArrayOfDicts.append(dic)
-            
+            completion(true)
+        } else {
+            completion(true)
         }
-        
-        completion(true)
-    } else {
-        completion(true)
-    }
         
     }
     
@@ -173,15 +174,15 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
     
     
     @objc func handleSelection(sender : UIView, mainCollection : SelectFullPackageContainer) {
-    
+        
         let selectedButtonCell = sender.superview as! UICollectionViewCell
         
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
-       
+        
         if !self.arrayOfIndexPaths.contains(indexPath) {
             
             self.arrayOfIndexPaths.removeAll()
-          
+            
             self.arrayOfIndexPaths.append(indexPath)
             
             self.appointmentOne?.shouldExpandMainContainerFP(shouldExpand: false)
@@ -189,18 +190,18 @@ class ServicesDropDownCollection : UICollectionView, UICollectionViewDelegateFlo
         } else {
             
             self.arrayOfIndexPaths.removeAll()
-
+            
         }
         
         let isAllDogsTheSameSize = self.appointmentOne?.isAllDogsTheSameSize ?? false,
-             dataSourceCount = self.appointmentOne?.selectedProfileDataSource.count ?? 0
+            dataSourceCount = self.appointmentOne?.selectedProfileDataSource.count ?? 0
         
         if dataSourceCount > 1 && isAllDogsTheSameSize == false {
             self.shouldCellsExpand = true
         } else {
             self.shouldCellsExpand = false
         }
-
+        
         UIDevice.vibrateLight()
         
         DispatchQueue.main.async {
@@ -230,22 +231,22 @@ class ServicesDropDownFeeder : UICollectionViewCell {
         let sfp = SelectFullPackageContainer(frame: .zero, collectionViewLayout: layout)
         sfp.servicesDropDownFeeder = self
         
-       return sfp
+        return sfp
     }()
     
     lazy var mainContainerFP : UIButton = {
-
+        
         let cv = UIButton(type : .system)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.backgroundColor = UIColor .clear
         cv.addTarget(self, action: #selector(self.handleContainerTap(sender:)), for: .touchUpInside)
-
-       return cv
-
+        
+        return cv
+        
     }()
-
+    
     let iconImageViewFP : UIButton = {
-
+        
         let iv = UIButton(type: .system)
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.backgroundColor = dividerGrey
@@ -257,12 +258,12 @@ class ServicesDropDownFeeder : UICollectionViewCell {
         iv.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
         iv.setTitle(String.fontAwesomeIcon(name: .shower), for: .normal)
         iv.backgroundColor = coreOrangeColor
-
-       return iv
+        
+        return iv
     }()
-
+    
     let headerLabelFP : UILabel = {
-
+        
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
@@ -272,12 +273,12 @@ class ServicesDropDownFeeder : UICollectionViewCell {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.isUserInteractionEnabled = false
-
+        
         return hl
     }()
-
+    
     let costLabelFP : UILabel = {
-
+        
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
@@ -287,7 +288,7 @@ class ServicesDropDownFeeder : UICollectionViewCell {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.isUserInteractionEnabled = false
-
+        
         return hl
     }()
     
@@ -324,43 +325,43 @@ class ServicesDropDownFeeder : UICollectionViewCell {
         self.layer.borderWidth = 0.5
         
         self.addViews()
-
+        
     }
     
     func addViews() {
         
         self.addSubview(self.mainContainerFP)
-
+        
         self.mainContainerFP.addSubview(self.iconImageViewFP)
         self.mainContainerFP.addSubview(self.costLabelFP)
         self.mainContainerFP.addSubview(self.headerLabelFP)
         self.addSubview(self.mainCollectionContainer)
-
+        
         self.mainContainerFP.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive = true
         self.mainContainerFP.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
         self.mainContainerFP.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
         self.mainContainerFP.heightAnchor.constraint(equalToConstant: 80).isActive = true
-
+        
         self.iconImageViewFP.leftAnchor.constraint(equalTo: self.mainContainerFP.leftAnchor, constant: 25).isActive = true
         self.iconImageViewFP.topAnchor.constraint(equalTo: self.mainContainerFP.topAnchor, constant: 20).isActive = true
         self.iconImageViewFP.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.iconImageViewFP.widthAnchor.constraint(equalToConstant: 40).isActive = true
-
+        
         self.costLabelFP.rightAnchor.constraint(equalTo: self.mainContainerFP.rightAnchor, constant: -25).isActive = true
         self.costLabelFP.widthAnchor.constraint(equalToConstant: 40).isActive = true
         self.costLabelFP.centerYAnchor.constraint(equalTo: self.iconImageViewFP.centerYAnchor).isActive = true
         self.costLabelFP.bottomAnchor.constraint(equalTo: self.mainContainerFP.bottomAnchor, constant: 0).isActive = true
-
+        
         self.headerLabelFP.leftAnchor.constraint(equalTo: self.iconImageViewFP.rightAnchor, constant: 10).isActive = true
         self.headerLabelFP.rightAnchor.constraint(equalTo: self.costLabelFP.leftAnchor, constant: -10).isActive = true
         self.headerLabelFP.centerYAnchor.constraint(equalTo: self.iconImageViewFP.centerYAnchor).isActive = true
         self.headerLabelFP.bottomAnchor.constraint(equalTo: self.mainContainerFP.bottomAnchor).isActive = true
-
+        
         self.mainCollectionContainer.topAnchor.constraint(equalTo: self.headerLabelFP.bottomAnchor, constant: 0).isActive = true
         self.mainCollectionContainer.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.mainCollectionContainer.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
         self.mainCollectionContainer.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
-
+        
     }
     
     @objc func handleContainerTap(sender : UIButton) {

@@ -11,14 +11,12 @@ import UIKit
 
 class SelectFullPackageContainer : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
-    private let selectPackageInteriorID = "selectPackageInteriorID"
-    private let selectHeaderID = "selectHeaderID"
-  
-    var costForFullPackage : String = "-"
-
-    var servicesDropDownFeeder : ServicesDropDownFeeder?
+    private let selectPackageInteriorID = "selectPackageInteriorID",
+                selectHeaderID = "selectHeaderID"
     
-    var typeOfServiceSelection : String = ""
+    var costForFullPackage : String = "-",
+        servicesDropDownFeeder : ServicesDropDownFeeder?,
+        typeOfServiceSelection : String = ""
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -45,11 +43,11 @@ class SelectFullPackageContainer : UICollectionView, UICollectionViewDelegateFlo
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return globalArrayOfDicts.count
-     
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            
+        
         return CGSize(width: UIScreen.main.bounds.width - 60, height: 40)
         
     }
@@ -59,11 +57,11 @@ class SelectFullPackageContainer : UICollectionView, UICollectionViewDelegateFlo
         let cell = self.dequeueReusableCell(withReuseIdentifier: self.selectPackageInteriorID, for: indexPath) as! PackageInteriorSelectorFeeder
         
         cell.selectFullPackageContainer = self
-      
+        
         if let _ = self.servicesDropDownFeeder?.servicesDropDownCollection?.appointmentOne?.selectedProfileDataSource {
             
             let feeder = globalArrayOfDicts[indexPath.item]
-             
+            
             for (key ,value) in feeder {
                 
                 let name = key
@@ -71,15 +69,15 @@ class SelectFullPackageContainer : UICollectionView, UICollectionViewDelegateFlo
                 
                 cell.nameLabel.text = name
                 cell.costLabel.text = cost
-
+                
             }
-
+            
             switch typeOfServiceSelection {
             
             case "dematting": print("Calling dematting")
             case "deshedding": print("Calling deshsedding")
             default: print("here now")
-            
+                
             }
         }
         
@@ -93,7 +91,7 @@ class SelectFullPackageContainer : UICollectionView, UICollectionViewDelegateFlo
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -103,7 +101,7 @@ class SelectFullPackageContainer : UICollectionView, UICollectionViewDelegateFlo
 class PackageInteriorSelectorFeeder : UICollectionViewCell {
     
     var selectFullPackageContainer : SelectFullPackageContainer?
-   
+    
     let nameLabel : UILabel = {
         
         let hl = UILabel()
@@ -115,7 +113,7 @@ class PackageInteriorSelectorFeeder : UICollectionViewCell {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.isUserInteractionEnabled = false
-
+        
         return hl
     }()
     
@@ -130,7 +128,7 @@ class PackageInteriorSelectorFeeder : UICollectionViewCell {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .right
         hl.isUserInteractionEnabled = false
-
+        
         return hl
     }()
     
@@ -145,7 +143,7 @@ class PackageInteriorSelectorFeeder : UICollectionViewCell {
         
         self.addSubview(self.nameLabel)
         self.addSubview(self.costLabel)
-
+        
         self.costLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
         self.costLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
         self.costLabel.sizeToFit()

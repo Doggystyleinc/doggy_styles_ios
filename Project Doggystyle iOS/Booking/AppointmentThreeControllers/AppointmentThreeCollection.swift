@@ -25,7 +25,7 @@ enum AppointmentThreeable : String, CaseIterable {
         case .OwnerDropOffAndPickUp : return "Owner drop off and pick up"
         case .ValetPickupOwnerDropOff : return "Valet pick up, Owner pick up"
         case .OwnerDropOffValetDropOff : return "Owner drop off, Valet drop off"
-        
+            
         }
     }
 }
@@ -96,7 +96,7 @@ class AppointmentThreeCollectionview : UICollectionView, UICollectionViewDelegat
             cell.circleView.backgroundColor = coreWhiteColor
             cell.selectionContainerOne.layer.shadowRadius = 0
             cell.selectionContainerOne.layer.borderColor = UIColor .clear.cgColor
-
+            
         }
         
         return cell
@@ -119,7 +119,7 @@ class AppointmentThreeCollectionview : UICollectionView, UICollectionViewDelegat
         
         let feeder = AppointmentThreeable.allCases[indexPath.item].value
         self.appointmentThree?.appointmentThreeContainer.resignation()
-
+        
         UIDevice.vibrateLight()
         
         switch feeder {
@@ -133,7 +133,7 @@ class AppointmentThreeCollectionview : UICollectionView, UICollectionViewDelegat
         case "Owner drop off, Valet drop off" :
             self.handleOwnerDropOffValetDropOff(indexpath: indexPath, passedString: feeder)
         default: print("hit the default")
-
+            
         }
     }
     
@@ -161,24 +161,25 @@ class AppointmentThreeCollectionview : UICollectionView, UICollectionViewDelegat
             self.appointmentThree?.appointmentThreeContainer.isHidden = true
             self.appointmentThree?.appointmentThreeCollectionview.isHidden = false
             self.appointmentThree?.appointmentThreeContainer.resignation()
+            
             if self.indexpathArray.contains(indexpath) {
                 self.indexpathArray.removeAll()
                 self.appointmentThree?.showNextButton(shouldShow: false)
-
+                
             } else {
                 self.indexpathArray.append(indexpath)
                 self.appointmentThree?.showNextButton(shouldShow: true)
-
+                
             }
         } else {
             
             self.appointmentThree?.appointmentThreeContainer.isHidden = false
             self.appointmentThree?.appointmentThreeCollectionview.isHidden = true
-
+            
             self.indexpathArray.removeAll()
             self.appointmentThree?.showNextButton(shouldShow: false)
             self.appointmentThree?.appointmentThreeContainer.fillText(passedText: passedString)
-
+            
         }
         
         DispatchQueue.main.async {
@@ -209,7 +210,7 @@ class AppointmentThreeFeeder : UICollectionViewCell {
         co.setTitle(String.fontAwesomeIcon(name: .checkCircle), for: .normal)
         co.setTitleColor(coreOrangeColor, for: .normal)
         co.backgroundColor = coreOrangeColor
-
+        
         return co
     }()
     
@@ -226,7 +227,7 @@ class AppointmentThreeFeeder : UICollectionViewCell {
         nl.numberOfLines = -1
         nl.isUserInteractionEnabled = false
         
-       return nl
+        return nl
     }()
     
     lazy var selectionContainerOne : UIView = {
@@ -245,8 +246,8 @@ class AppointmentThreeFeeder : UICollectionViewCell {
         co.layer.shadowOffset = CGSize(width: 0, height: 0)
         co.layer.shadowRadius = 4
         co.layer.shouldRasterize = false
-
-       return co
+        
+        return co
     }()
     
     lazy var selectionCover : UIButton = {
@@ -258,7 +259,7 @@ class AppointmentThreeFeeder : UICollectionViewCell {
         co.layer.cornerRadius = 15
         co.addTarget(self, action: #selector(self.handleSelection(sender:)), for: .touchUpInside)
         
-       return co
+        return co
     }()
     
     override init(frame: CGRect) {
@@ -290,7 +291,7 @@ class AppointmentThreeFeeder : UICollectionViewCell {
         self.circleView.leftAnchor.constraint(equalTo: self.selectionContainerOne.leftAnchor, constant: 17).isActive = true
         self.circleView.heightAnchor.constraint(equalToConstant: 29).isActive = true
         self.circleView.widthAnchor.constraint(equalToConstant: 29).isActive = true
-
+        
         self.selectionDescription.leftAnchor.constraint(equalTo: self.circleView.rightAnchor, constant: 10).isActive = true
         self.selectionDescription.rightAnchor.constraint(equalTo: self.selectionContainerOne.rightAnchor, constant: -30).isActive = true
         self.selectionDescription.topAnchor.constraint(equalTo: self.selectionContainerOne.topAnchor, constant: 0).isActive = true

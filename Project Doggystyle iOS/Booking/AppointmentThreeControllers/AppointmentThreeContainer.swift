@@ -46,7 +46,7 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         co.setTitle(String.fontAwesomeIcon(name: .checkCircle), for: .normal)
         co.setTitleColor(coreOrangeColor, for: .normal)
         co.backgroundColor = .clear
-
+        
         return co
     }()
     
@@ -63,7 +63,7 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         nl.numberOfLines = -1
         nl.isUserInteractionEnabled = false
         
-       return nl
+        return nl
     }()
     
     lazy var selectionContainerOne : UIView = {
@@ -84,8 +84,8 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         co.layer.shouldRasterize = false
         co.isUserInteractionEnabled = true
         co.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleRevert)))
-
-       return co
+        
+        return co
     }()
     
     let pickupLabel : UILabel = {
@@ -100,7 +100,7 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         nl.adjustsFontSizeToFitWidth = true
         nl.numberOfLines = 1
         
-       return nl
+        return nl
     }()
     
     lazy var apartmentTextField: UITextField = {
@@ -168,7 +168,7 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         etfc.layer.shadowRadius = 9
         etfc.layer.shouldRasterize = false
         etfc.addTarget(self, action: #selector(self.handleBuzzerTap), for: .touchDown)
-
+        
         return etfc
         
     }()
@@ -241,7 +241,7 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         nl.numberOfLines = -1
         nl.isUserInteractionEnabled = false
         
-       return nl
+        return nl
     }()
     
     lazy var toolBar : UIToolbar = {
@@ -287,7 +287,7 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         self.scrollView.keyboardDismissMode = .interactive
         self.addViews()
         
-        //SET TEXTFIELD CONTENT TYPES
+        //MARK: - SET TEXTFIELD CONTENT TYPES
         self.apartmentTextField.textContentType = UITextContentType(rawValue: "")
         self.buzzerCodeTextField.textContentType = UITextContentType(rawValue: "")
         
@@ -296,7 +296,7 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         self.notesTextView.inputAccessoryView = toolBar
         
         self.scrollView.keyboardDismissMode = .interactive
-
+        
     }
     
     func fillText(passedText : String) {
@@ -324,7 +324,7 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         self.scrollView.addSubview(self.notesTextView)
         self.notesTextView.addSubview(self.textviewPlaceholder)
         self.scrollView.addSubview(self.nextButton)
-
+        
         self.scrollView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
         self.scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
         self.scrollView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
@@ -347,7 +347,7 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         default : scrollView.contentSize = CGSize(width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.height * 1.5)
             
         }
-
+        
         self.selectionContainerOne.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 25).isActive = true
         self.selectionContainerOne.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.selectionContainerOne.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
@@ -357,7 +357,7 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         self.circleView.leftAnchor.constraint(equalTo: self.selectionContainerOne.leftAnchor, constant: 17).isActive = true
         self.circleView.heightAnchor.constraint(equalToConstant: 29).isActive = true
         self.circleView.widthAnchor.constraint(equalToConstant: 29).isActive = true
-
+        
         self.selectionDescription.leftAnchor.constraint(equalTo: self.circleView.rightAnchor, constant: 10).isActive = true
         self.selectionDescription.rightAnchor.constraint(equalTo: self.selectionContainerOne.rightAnchor, constant: -30).isActive = true
         self.selectionDescription.topAnchor.constraint(equalTo: self.selectionContainerOne.topAnchor, constant: 0).isActive = true
@@ -392,7 +392,7 @@ class AppointmentThreeContainer : UIView, UITextFieldDelegate, UITextViewDelegat
         self.nextButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.nextButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
         self.nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-
+        
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {

@@ -88,7 +88,7 @@ class ProfileCollectionSubview : UICollectionView, UICollectionViewDelegateFlowL
         case "Payment" : print("Payment")
         case "Contact Us" : print("Contact Us")
         case "Re-fur a Friend" : print("Re-fur a Friend")
-
+            
         default : print("Button not found, add it to the array")
             
         }

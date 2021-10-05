@@ -1,16 +1,16 @@
-//
-//  PasswordResetSuccessController.swift
-//  Project Doggystyle
-//
-//  Created by Stanley Miller on 5/13/21.
-//
+////
+////  PasswordResetSuccessController.swift
+////  Project Doggystyle
+////
+////  Created by Stanley Miller on 5/13/21.
+////
 
 import UIKit
 
 final class PasswordResetSuccessController: UIViewController {
-    
+
     private let logo = LogoImageView(frame: .zero)
-    
+
     private let successImageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.image = UIImage(named: Constants.successIcon)?.withRenderingMode(.alwaysOriginal)
@@ -20,9 +20,9 @@ final class PasswordResetSuccessController: UIViewController {
         imageView.width(60)
         return imageView
     }()
-    
+
     let headerLabel : UILabel = {
-        
+
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
@@ -31,14 +31,14 @@ final class PasswordResetSuccessController: UIViewController {
         hl.numberOfLines = 2
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
-        
+
        return hl
     }()
-    
+
     private let successSubText = DSRegularLabel(title: "Tap continue to log in to your Doggystyle account once your password is reset VIA Email", size: 16)
-   
+
     lazy var loginButton: UIButton = {
-        
+
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
         cbf.setTitle("Continue", for: UIControl.State.normal)
@@ -51,25 +51,24 @@ final class PasswordResetSuccessController: UIViewController {
         cbf.tintColor = coreWhiteColor
         cbf.backgroundColor = coreOrangeColor
         cbf.addTarget(self, action: #selector(self.didTapLogin), for: .touchUpInside)
-        
+
         return cbf
-        
+
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .dsViewBackground
         navigationController?.navigationBar.isHidden = true
         navigationItem.titleView = logo
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
         self.addViews()
     }
-}
-
-//MARK: - Configure Views
-extension PasswordResetSuccessController {
+    
     private func addViews() {
-        
+
         self.view.addSubview(successImageView)
         self.view.addSubview(headerLabel)
         self.view.addSubview(successSubText)
@@ -77,22 +76,22 @@ extension PasswordResetSuccessController {
 
         self.successImageView.centerX(to: view)
         self.successImageView.topToSuperview(offset: 150, usingSafeArea: true)
-        
+
         self.headerLabel.textAlignment = .center
         self.headerLabel.topToBottom(of: successImageView, offset: 22)
         self.headerLabel.left(to: view, offset: 66)
         self.headerLabel.right(to: view, offset: -66)
-        
+
         self.successSubText.textAlignment = .center
         self.successSubText.topToBottom(of: headerLabel, offset: 15)
         self.successSubText.left(to: view, offset: 56)
         self.successSubText.right(to: view, offset: -56)
-        
+
         self.loginButton.topAnchor.constraint(equalTo: self.successSubText.bottomAnchor, constant: 50).isActive = true
         self.loginButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.loginButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.loginButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
+
     }
     
     @objc private func didTapLogin() {

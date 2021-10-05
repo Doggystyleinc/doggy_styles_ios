@@ -76,7 +76,6 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
                 cell.addDogImage.backgroundColor = coreOrangeColor
                 cell.addDogImage.tintColor = coreOrangeColor
                 cell.addDogImage.setTitleColor(coreWhiteColor, for: .normal)
-                print("TRUE")
                 
             } else {
                 
@@ -87,8 +86,7 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
                 cell.addDogImage.layer.borderColor = coreWhiteColor.cgColor
                 cell.addDogImage.backgroundColor = coreOrangeColor.withAlphaComponent(0.1)
                 cell.addDogImage.tintColor = coreOrangeColor
-                print("FALSE")
-
+                
             }
             
             cell.nameLabel.text = "All"
@@ -118,11 +116,10 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
             cell.addDogImage.layer.borderColor = coreOrangeColor.cgColor
         }
         
-        
         return cell
     }
     
-    
+    //MARK: - REFACTOR THIS MESS OF A FUNCTION
     @objc func handleAddDog(sender : UIButton) {
         
         self.appointmentOne?.isAllDogsTheSameSize = true
@@ -132,7 +129,7 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
         
         let selectedButtonCell = sender.superview as! UICollectionViewCell
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
-
+        
         switch indexPath.item {
         
         case 0 :
@@ -170,29 +167,28 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
                         self.appointmentOne?.selectServicesCollection.reloadData()
                         self.appointmentOne?.mainContainerFP.reloadData()
                     }
-                   
+                    
                 }
                 
             } else {
                 
                 self.isAllSelected = false
                 self.appointmentOne?.canSelectMainPackage = false
-
+                
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 0.25) {
-
-                    self.reloadData()
-                    self.appointmentOne?.servicesDropDownCollection.reloadData()
-                    self.appointmentOne?.selectServicesCollection.reloadData()
-                    self.appointmentOne?.mainContainerFP.reloadData()
-
+                        
+                        self.reloadData()
+                        self.appointmentOne?.servicesDropDownCollection.reloadData()
+                        self.appointmentOne?.selectServicesCollection.reloadData()
+                        self.appointmentOne?.mainContainerFP.reloadData()
+                        
                     }
                 }
             }
             
         default :
             
-            //BEGIN DEFAULT
             if !self.selectionIndexArray.contains(indexPath) {
                 
                 self.selectionIndexArray.append(indexPath)
@@ -208,58 +204,53 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
                     self.selectionIndexArray.remove(at: index)
                     self.selectedProfileDataSource.remove(at: index)
                     self.appointmentOne?.selectedProfileDataSource.remove(at: index)
-                   
+                    
                 }
             }
             
             DispatchQueue.main.async {
                 
                 UIView.animate(withDuration: 0.25) {
-                self.reloadData()
-                self.appointmentOne?.servicesDropDownCollection.reloadData()
-                self.appointmentOne?.selectServicesCollection.reloadData()
-                self.appointmentOne?.mainContainerFP.reloadData()
+                    self.reloadData()
+                    self.appointmentOne?.servicesDropDownCollection.reloadData()
+                    self.appointmentOne?.selectServicesCollection.reloadData()
+                    self.appointmentOne?.mainContainerFP.reloadData()
                     
                 }
-
             }
-            
-            //END DEFAULT
         }
         
-        
-        //EXTRA LOGIC
         if self.appointmentOne?.selectedProfileDataSource.count != 0 {
             self.appointmentOne?.canSelectMainPackage = true
         } else {
             self.appointmentOne?.canSelectMainPackage = false
             self.appointmentOne?.handleMainContainerTaps()
         }
+        
+        for i in self.selectedProfileDataSource {
             
-            for i in self.selectedProfileDataSource {
+            let dogSize = i.dog_builder_size ?? nil
+            
+            if self.currentDogSize == nil {
                 
-                let dogSize = i.dog_builder_size ?? nil
+                currentDogSize = dogSize
                 
-                if self.currentDogSize == nil {
+            } else {
+                
+                if dogSize != currentDogSize {
                     
-                    currentDogSize = dogSize
+                    self.appointmentOne?.isAllDogsTheSameSize = false
                     
-                } else {
-                    
-                    if dogSize != currentDogSize {
-                        
-                        self.appointmentOne?.isAllDogsTheSameSize = false
-                        
-                    }
                 }
             }
+        }
         
         if self.appointmentOne?.isAllDogsTheSameSize == true {
-
+            
             if let dogSize = self.currentDogSize {
-
-            self.appointmentOne?.sameDogWeightSelectSize = dogSize
-
+                
+                self.appointmentOne?.sameDogWeightSelectSize = dogSize
+                
             }
             
         } else {
@@ -267,7 +258,7 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
             self.appointmentOne?.sameDogWeightSelectSize = nil
             
         }
-      
+        
         if self.selectedProfileDataSource.count == (self.doggyProfileDataSource.count - 1) {
             
             self.isAllSelected = true
@@ -275,17 +266,17 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
         } else {
             
             self.isAllSelected = false
-
+            
         }
         
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.25) {
-
-            self.appointmentOne?.selectServicesCollection.reloadData()
-            self.appointmentOne?.servicesDropDownCollection.reloadData()
-            self.appointmentOne?.mainContainerFP.reloadData()
+                
+                self.appointmentOne?.selectServicesCollection.reloadData()
+                self.appointmentOne?.servicesDropDownCollection.reloadData()
+                self.appointmentOne?.mainContainerFP.reloadData()
             }
-
+            
         }
         
         if self.appointmentOne?.currentState == .FullPackage {
@@ -296,9 +287,7 @@ class PetAppointmentsCollection : UICollectionView, UICollectionViewDelegateFlow
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-   
 }
-
 
 
 class PetAppointmentsFeeder : UICollectionViewCell {

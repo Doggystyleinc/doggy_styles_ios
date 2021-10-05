@@ -9,7 +9,7 @@
 import Foundation
 import Firebase
 
-class ProfileController : UIViewController {
+class ProfileController : UIViewController, CustomAlertCallBackProtocol {
     
     var homeController : HomeViewController?
     let storageRef = Storage.storage().reference(),
@@ -107,7 +107,7 @@ class ProfileController : UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = coreBackgroundWhite
-    
+        
         self.addViews()
         self.fetchJSON()
         
@@ -115,7 +115,7 @@ class ProfileController : UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-
+        
         self.fetchJSON()
     }
     
@@ -129,41 +129,38 @@ class ProfileController : UIViewController {
         self.view.addSubview(self.activityIndicator)
         self.view.addSubview(self.notificationIcon)
         
-        
-//        self.referButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
-
         self.notificationIcon.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         self.notificationIcon.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.notificationIcon.heightAnchor.constraint(equalToConstant: 44).isActive = true
         self.notificationIcon.widthAnchor.constraint(equalToConstant: 44).isActive = true
-
+        
         self.dsCompanyLogoImage.centerYAnchor.constraint(equalTo: self.notificationIcon.centerYAnchor, constant: 0).isActive = true
         self.dsCompanyLogoImage.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
         self.dsCompanyLogoImage.widthAnchor.constraint(equalToConstant: self.view.frame.width / 2.5).isActive = true
         self.dsCompanyLogoImage.heightAnchor.constraint(equalToConstant: 26).isActive = true
-
+        
         self.profileImageView.topAnchor.constraint(equalTo: self.dsCompanyLogoImage.bottomAnchor, constant: 20).isActive = true
         self.profileImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
         self.profileImageView.heightAnchor.constraint(equalToConstant: 130).isActive = true
         self.profileImageView.widthAnchor.constraint(equalToConstant: 130).isActive = true
         self.profileImageView.layer.cornerRadius = 130/2
-
+        
         self.containerView.topAnchor.constraint(equalTo: self.profileImageView.centerYAnchor, constant: 0).isActive = true
         self.containerView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
         self.containerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 1.15).isActive = true
         self.containerView.heightAnchor.constraint(equalToConstant: 120).isActive = true
         self.containerView.layer.cornerRadius = 12
-
+        
         self.nameLabel.topAnchor.constraint(equalTo: self.profileImageView.bottomAnchor, constant: 15).isActive = true
         self.nameLabel.leftAnchor.constraint(equalTo: self.containerView.leftAnchor, constant: 15).isActive = true
         self.nameLabel.rightAnchor.constraint(equalTo: self.containerView.rightAnchor, constant: -15).isActive = true
         self.nameLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
-
+        
         self.profileCollectionSubview.topAnchor.constraint(equalTo: self.containerView.bottomAnchor, constant: 20).isActive = true
         self.profileCollectionSubview.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.profileCollectionSubview.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.profileCollectionSubview.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
-
+        
         self.activityIndicator.topAnchor.constraint(equalTo: self.dsCompanyLogoImage.bottomAnchor, constant: 20).isActive = true
         self.activityIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
         self.activityIndicator.heightAnchor.constraint(equalToConstant: 130).isActive = true
@@ -174,7 +171,6 @@ class ProfileController : UIViewController {
     
     func fetchJSON() {
         
-        //DATA SHOULD BE FILLED ON APPLICATION LOAD AFTER AUTHENTICATION OR SIGN IN
         let is_groomer = userProfileStruct.is_groomer ?? false
         if is_groomer {
             let usersName = userProfileStruct.groomers_full_name ?? "DOG LOVER"
@@ -184,7 +180,6 @@ class ProfileController : UIViewController {
             self.nameLabel.text = usersName
         }
         
-        //THROW A DEFAULT PHOTO IN STORAGE AND GRAB THE URL THEN REPLACE "nil" WITH THE URL
         let userProfilePhoto = userProfileStruct.profile_image_url ?? "nil"
         
         if userProfilePhoto == "nil" {
@@ -200,6 +195,30 @@ class ProfileController : UIViewController {
         print("handle profile selection")
     }
     
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.OK: print(Statics.OK)
+            
+        default: print("Should not hit")
+            
+        }
+    }
+    
     @objc func handleLogout() {
         
         do {
@@ -208,9 +227,9 @@ class ProfileController : UIViewController {
             print(logoutError)
             return
         }
-
+        
         Database.database().reference().removeAllObservers()
-
+        
         let decisionController = DecisionController()
         let nav = UINavigationController(rootViewController: decisionController)
         nav.modalPresentationStyle = .fullScreen

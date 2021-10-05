@@ -13,9 +13,8 @@ class ServicesCollectionview : UICollectionView, UICollectionViewDelegateFlowLay
     
     private let servicesID = "servicesID"
     
-    var servicesController : ServicesController?
-    
-    var arrayOfIndexPaths = [IndexPath]()
+    var servicesController : ServicesController?,
+        arrayOfIndexPaths = [IndexPath]()
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -37,7 +36,6 @@ class ServicesCollectionview : UICollectionView, UICollectionViewDelegateFlowLay
         self.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 110, right: 0)
         
         self.register(ServicesFeeder.self, forCellWithReuseIdentifier: self.servicesID)
-
         
     }
     
@@ -52,16 +50,13 @@ class ServicesCollectionview : UICollectionView, UICollectionViewDelegateFlowLay
         
         if self.arrayOfIndexPaths.contains(currentIndex) {
             
-        let feeder = Servicable.allCases[indexPath.item]
-    
-        let serviceDescription = feeder.description.2
-        
-        let textToSize = serviceDescription,
-        size = CGSize(width: UIScreen.main.bounds.width - 110, height: 2000),
-        options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-
-        let estimatedFrame = NSString(string: textToSize).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font : UIFont(name: rubikItalic, size: 14)!], context: nil)
-        
+            let feeder = Servicable.allCases[indexPath.item],
+                serviceDescription = feeder.description.2,
+                textToSize = serviceDescription,
+                size = CGSize(width: UIScreen.main.bounds.width - 110, height: 2000),
+                options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin),
+                estimatedFrame = NSString(string: textToSize).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font : UIFont(name: rubikItalic, size: 14)!], context: nil)
+            
             var estimatedHeight = estimatedFrame.height
             
             if estimatedHeight < 35 {
@@ -71,7 +66,7 @@ class ServicesCollectionview : UICollectionView, UICollectionViewDelegateFlowLay
             }
             
             return CGSize(width: UIScreen.main.bounds.width, height: estimatedHeight)
-        
+            
         } else {
             
             return CGSize(width: UIScreen.main.bounds.width, height: 90.0)
@@ -80,20 +75,19 @@ class ServicesCollectionview : UICollectionView, UICollectionViewDelegateFlowLay
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
+        
         let cell = self.dequeueReusableCell(withReuseIdentifier: self.servicesID, for: indexPath) as! ServicesFeeder
-
-            cell.servicesCollectionview = self
         
-            let feeder = Servicable.allCases[indexPath.item]
+        cell.servicesCollectionview = self
         
-            let serviceName = feeder.description.0
-            let serviceCost = feeder.description.1
-            let serviceDescription = feeder.description.2
-
-            cell.headerLabel.text = "\(serviceName)"
-            cell.costLabel.text = "\(serviceCost)"
-            cell.descriptionLabel.text = "\(serviceDescription)"
+        let feeder = Servicable.allCases[indexPath.item],
+            serviceName = feeder.description.0,
+            serviceCost = feeder.description.1,
+            serviceDescription = feeder.description.2
+        
+        cell.headerLabel.text = "\(serviceName)"
+        cell.costLabel.text = "\(serviceCost)"
+        cell.descriptionLabel.text = "\(serviceDescription)"
         
         if self.arrayOfIndexPaths.contains(indexPath) {
             
@@ -135,10 +129,10 @@ class ServicesCollectionview : UICollectionView, UICollectionViewDelegateFlowLay
             cell.iconImageView.titleLabel?.font = UIFont.fontAwesome(ofSize: 19, style: .solid)
             cell.iconImageView.setTitle(String.fontAwesomeIcon(name: .ambulance), for: .normal)
         default: print("default")
-        
+            
         }
         
-            return cell
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -150,7 +144,7 @@ class ServicesCollectionview : UICollectionView, UICollectionViewDelegateFlowLay
     }
     
     @objc func handleSelection(sender : UIView) {
-
+        
         let selectedButtonCell = sender.superview as! UICollectionViewCell
         
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
@@ -212,9 +206,9 @@ class ServicesFeeder : UICollectionViewCell {
         mc.layer.shouldRasterize = false
         mc.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleMainContainerTaps(sender:))))
         
-       return mc
+        return mc
     }()
-  
+    
     let iconImageView : UIButton = {
         
         let iv = UIButton(type : .system)
@@ -225,8 +219,8 @@ class ServicesFeeder : UICollectionViewCell {
         iv.layer.cornerRadius = 20
         iv.isUserInteractionEnabled = false
         iv.tintColor = coreBlackColor
-
-       return iv
+        
+        return iv
     }()
     
     let headerLabel : UILabel = {
@@ -240,7 +234,7 @@ class ServicesFeeder : UICollectionViewCell {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.isUserInteractionEnabled = false
-
+        
         return hl
     }()
     
@@ -255,7 +249,7 @@ class ServicesFeeder : UICollectionViewCell {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.isUserInteractionEnabled = false
-
+        
         return hl
     }()
     
@@ -268,7 +262,7 @@ class ServicesFeeder : UICollectionViewCell {
         hl.font = UIFont(name: rubikItalic, size: 14)
         hl.numberOfLines = -1
         hl.textAlignment = .left
-
+        
         return hl
     }()
     
@@ -283,7 +277,7 @@ class ServicesFeeder : UICollectionViewCell {
         ba.setTitle(String.fontAwesomeIcon(name: .chevronUp), for: .normal)
         ba.tintColor = coreOrangeColor
         
-       return ba
+        return ba
     }()
     
     override init(frame: CGRect) {
@@ -313,7 +307,7 @@ class ServicesFeeder : UICollectionViewCell {
         self.addSubview(self.costLabel)
         self.mainContainer.addSubview(self.descriptionLabel)
         self.mainContainer.addSubview(self.bottomArrow)
-
+        
         self.mainContainer.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive = true
         self.mainContainer.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.mainContainer.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
@@ -343,7 +337,7 @@ class ServicesFeeder : UICollectionViewCell {
         self.bottomArrow.heightAnchor.constraint(equalToConstant: 30).isActive = true
         self.bottomArrow.widthAnchor.constraint(equalToConstant: 30).isActive = true
         self.bottomArrow.bottomAnchor.constraint(equalTo: self.mainContainer.bottomAnchor, constant: -10).isActive = true
-
+        
     }
     
     @objc func handleMainContainerTaps(sender : UITapGestureRecognizer) {

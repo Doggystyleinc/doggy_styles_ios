@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 class ProfileFeeder : UICollectionViewCell {
     
     var profileCollectionSubview : ProfileCollectionSubview?
@@ -28,7 +27,7 @@ class ProfileFeeder : UICollectionViewCell {
         dc.layer.shouldRasterize = false
         dc.addTarget(self, action: #selector(self.handleButtonSelection), for: .touchUpInside)
         
-       return dc
+        return dc
     }()
     
     let feederIcon : UILabel = {
@@ -52,11 +51,12 @@ class ProfileFeeder : UICollectionViewCell {
         nl.numberOfLines = 1
         nl.adjustsFontSizeToFitWidth = true
         
-       return nl
+        return nl
     }()
- 
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         self.backgroundColor = coreBackgroundWhite
         self.addViews()
         
@@ -67,7 +67,7 @@ class ProfileFeeder : UICollectionViewCell {
         self.addSubview(self.mainContainer)
         self.addSubview(self.feederIcon)
         self.addSubview(self.feederLabel)
-
+        
         self.mainContainer.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive = true
         self.mainContainer.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5).isActive = true
         self.mainContainer.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5).isActive = true
@@ -82,11 +82,11 @@ class ProfileFeeder : UICollectionViewCell {
         self.feederLabel.leftAnchor.constraint(equalTo: self.feederIcon.rightAnchor, constant: 8).isActive = true
         self.feederLabel.rightAnchor.constraint(equalTo: self.mainContainer.rightAnchor, constant: -12).isActive = true
         self.feederLabel.heightAnchor.constraint(equalToConstant: self.frame.height).isActive = true
-
+        
     }
     
     @objc func handleButtonSelection(sender : UIButton) {
-            self.profileCollectionSubview?.handleSelection(sender : sender)
+        self.profileCollectionSubview?.handleSelection(sender : sender)
     }
     
     required init?(coder: NSCoder) {

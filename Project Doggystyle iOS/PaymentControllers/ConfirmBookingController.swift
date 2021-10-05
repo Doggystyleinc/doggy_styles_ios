@@ -159,7 +159,6 @@ class ConfirmBookingController : UIViewController {
         cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 16, style: .solid)
         cbf.setTitle(String.fontAwesomeIcon(name: .pencilAlt), for: .normal)
         cbf.setTitleColor(coreOrangeColor, for: .normal)
-        //        cbf.addTarget(self, action: #selector(self.handleBackButton), for: UIControl.Event.touchUpInside)
         return cbf
         
     }()
@@ -347,7 +346,6 @@ class ConfirmBookingController : UIViewController {
         self.finalPickupLabel.leftAnchor.constraint(equalTo: self.pickupLabel.rightAnchor, constant: 20).isActive = true
         self.finalPickupLabel.centerYAnchor.constraint(equalTo: self.pickupLabel.centerYAnchor, constant: 0).isActive = true
         self.finalPickupLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        
         
     }
     

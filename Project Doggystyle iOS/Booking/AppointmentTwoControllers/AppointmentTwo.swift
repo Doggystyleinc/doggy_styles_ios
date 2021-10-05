@@ -8,7 +8,7 @@
 import UIKit
 import Foundation
 
-class AppointmentTwo : UIViewController, UIScrollViewDelegate {
+class AppointmentTwo : UIViewController, UIScrollViewDelegate, CustomAlertCallBackProtocol {
     
     lazy var scrollView : UIScrollView = {
         
@@ -153,7 +153,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         cbf.tag = 1
         cbf.layer.borderWidth = 0.5
         cbf.layer.borderColor = coreOrangeColor.cgColor
-
+        
         cbf.layer.shadowColor = coreOrangeColor.cgColor
         cbf.layer.shadowOpacity = 0.35
         cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
@@ -162,12 +162,12 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         
         
         cbf.addTarget(self, action: #selector(self.handleGroomingFrequency), for: .touchUpInside)
-    
+        
         return cbf
     }()
     
     lazy var eightWeeksButton : UIButton = {
-    
+        
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
         cbf.setTitle("8 weeks", for: UIControl.State.normal)
@@ -184,7 +184,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         cbf.layer.borderWidth = 0.5
         cbf.layer.masksToBounds = false
         cbf.layer.borderColor = UIColor .clear.cgColor
-
+        
         cbf.layer.shadowColor = coreOrangeColor.cgColor
         cbf.layer.shadowOpacity = 0.35
         cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
@@ -206,11 +206,11 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
         
-       return nl
+        return nl
     }()
     
     lazy var informationButton : UIButton = {
-    
+        
         let dcl = UIButton(type: .system)
         dcl.translatesAutoresizingMaskIntoConstraints = false
         dcl.backgroundColor = coreWhiteColor
@@ -229,7 +229,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         dcl.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
         dcl.setTitle(String.fontAwesomeIcon(name: .infoCircle), for: .normal)
         dcl.addTarget(self, action: #selector(self.handleInformationButton), for: .touchUpInside)
-    
+        
         return dcl
     }()
     
@@ -245,7 +245,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         nl.adjustsFontSizeToFitWidth = true
         nl.numberOfLines = -1
         
-       return nl
+        return nl
     }()
     
     let dateBeginLabel : UILabel = {
@@ -260,7 +260,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         nl.adjustsFontSizeToFitWidth = true
         nl.numberOfLines = -1
         
-       return nl
+        return nl
     }()
     
     lazy var selectionContainerOne : UIView = {
@@ -273,9 +273,9 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         co.tag = 1
         co.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleSelection(sender:))))
         
-       return co
+        return co
     }()
-
+    
     let selectionContainerTwo : UIView = {
         
         let co = UIView()
@@ -285,7 +285,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         co.layer.cornerRadius = 15
         co.tag = 2
         
-       return co
+        return co
     }()
     
     let containerOneCircleView : UIView = {
@@ -328,7 +328,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         nl.adjustsFontSizeToFitWidth = true
         nl.numberOfLines = -1
         
-       return nl
+        return nl
     }()
     
     let containerTwoLabel : UILabel = {
@@ -343,7 +343,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         nl.adjustsFontSizeToFitWidth = true
         nl.numberOfLines = -1
         
-       return nl
+        return nl
     }()
     
     let twoDateLabel : UILabel = {
@@ -358,7 +358,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         nl.adjustsFontSizeToFitWidth = true
         nl.numberOfLines = -1
         
-       return nl
+        return nl
     }()
     
     let bottomDescriptionLevel : UILabel = {
@@ -373,7 +373,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         nl.adjustsFontSizeToFitWidth = true
         nl.numberOfLines = -1
         
-       return nl
+        return nl
     }()
     
     lazy var appointmentTwoContainer : AppointmentTwoContainer = {
@@ -381,7 +381,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         let atc = AppointmentTwoContainer()
         atc.appointmentTwo = self
         atc.isHidden = true
-       return atc
+        return atc
         
     }()
     
@@ -426,7 +426,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         self.scrollView.addSubview(self.selectionContainerOne)
         self.selectionContainerOne.addSubview(self.containerOneCircleView)
         self.selectionContainerOne.addSubview(self.containerOneLabel)
-
+        
         self.scrollView.addSubview(self.selectionContainerTwo)
         self.selectionContainerTwo.addSubview(self.containerTwoCircleView)
         self.selectionContainerTwo.addSubview(self.containerTwoLabel)
@@ -434,9 +434,9 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         self.scrollView.addSubview(self.twoDateLabel)
         self.scrollView.addSubview(self.bottomDescriptionLevel)
         self.scrollView.addSubview(self.appointmentTwoContainer)
-
+        
         self.view.addSubview(timeCover)
-
+        
         self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         self.scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
@@ -459,7 +459,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         default : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.5)
             
         }
-
+        
         self.headerBarOne.widthAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.heightAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.layer.cornerRadius = 4.5
@@ -514,7 +514,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         self.fourWeeksButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.fourWeeksButton.topAnchor.constraint(equalTo: self.groomingFrequency.bottomAnchor, constant: 20).isActive = true
         self.fourWeeksButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-
+        
         self.eightWeeksButton.leftAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 8).isActive = true
         self.eightWeeksButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.eightWeeksButton.topAnchor.constraint(equalTo: self.groomingFrequency.bottomAnchor, constant: 20).isActive = true
@@ -534,7 +534,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         self.selectionContainerOne.leftAnchor.constraint(equalTo: self.dateBeginLabel.leftAnchor, constant: 0).isActive = true
         self.selectionContainerOne.rightAnchor.constraint(equalTo: self.dateBeginLabel.rightAnchor, constant: 0).isActive = true
         self.selectionContainerOne.heightAnchor.constraint(equalToConstant: 63).isActive = true
-
+        
         self.selectionContainerTwo.topAnchor.constraint(equalTo: self.selectionContainerOne.bottomAnchor, constant: 20).isActive = true
         self.selectionContainerTwo.leftAnchor.constraint(equalTo: self.dateBeginLabel.leftAnchor, constant: 0).isActive = true
         self.selectionContainerTwo.rightAnchor.constraint(equalTo: self.dateBeginLabel.rightAnchor, constant: 0).isActive = true
@@ -544,7 +544,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         self.containerOneCircleView.leftAnchor.constraint(equalTo: self.selectionContainerOne.leftAnchor, constant: 17).isActive = true
         self.containerOneCircleView.heightAnchor.constraint(equalToConstant: 29).isActive = true
         self.containerOneCircleView.widthAnchor.constraint(equalToConstant: 29).isActive = true
-
+        
         self.containerTwoCircleView.centerYAnchor.constraint(equalTo: self.selectionContainerTwo.centerYAnchor, constant: 0).isActive = true
         self.containerTwoCircleView.leftAnchor.constraint(equalTo: self.selectionContainerTwo.leftAnchor, constant: 17).isActive = true
         self.containerTwoCircleView.heightAnchor.constraint(equalToConstant: 29).isActive = true
@@ -554,7 +554,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
         self.containerOneLabel.rightAnchor.constraint(equalTo: self.selectionContainerOne.rightAnchor, constant: -30).isActive = true
         self.containerOneLabel.topAnchor.constraint(equalTo: self.selectionContainerOne.topAnchor, constant: 0).isActive = true
         self.containerOneLabel.bottomAnchor.constraint(equalTo: self.selectionContainerOne.bottomAnchor, constant: 0).isActive = true
-      
+        
         self.containerTwoLabel.leftAnchor.constraint(equalTo: self.containerTwoCircleView.rightAnchor, constant: 10).isActive = true
         self.containerTwoLabel.rightAnchor.constraint(equalTo: self.selectionContainerTwo.rightAnchor, constant: -30).isActive = true
         self.containerTwoLabel.topAnchor.constraint(equalTo: self.selectionContainerTwo.topAnchor, constant: 0).isActive = true
@@ -580,7 +580,7 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
     @objc func handleGroomingFrequency(sender : UIButton) {
         
         UIDevice.vibrateLight()
-
+        
         switch sender.tag {
         
         case 1:
@@ -592,34 +592,56 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
             self.eightWeeksButton.backgroundColor = dividerGrey
             self.eightWeeksButton.layer.borderColor = UIColor .clear.cgColor
             self.eightWeeksButton.layer.shadowRadius = 0
-
+            
         case 2:
             
             self.fourWeeksButton.backgroundColor = dividerGrey
             self.fourWeeksButton.layer.shadowRadius = 0
             self.fourWeeksButton.layer.borderColor = UIColor .clear.cgColor
-
+            
             self.eightWeeksButton.backgroundColor = coreWhiteColor
             self.eightWeeksButton.layer.borderColor = coreOrangeColor.cgColor
             self.eightWeeksButton.layer.shadowRadius = 4
-
+            
         default: print("Only 2 buttons here")
-        
+            
         }
     }
     
     @objc func handleInformationButton() {
         
-        AlertControllerCompletion.handleAlertWithCompletion(title: "Frequency", message: "grooming frequency description") { done in
-            print("done")
-        }
+        self.handleCustomPopUpAlert(title: "FREQUENCY", message: "grooming frequency description goes here", passedButtons: [Statics.OK])
     }
     
     
     @objc func handleSelection(sender : UITapGestureRecognizer) {
         
-      self.appointmentTwoContainer.isHidden = false
-
+        self.appointmentTwoContainer.isHidden = false
+        
+    }
+    
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.OK: print(Statics.OK)
+            
+        default: print("Should not hit")
+            
+        }
     }
     
     @objc func handleCancelButton() {
@@ -633,11 +655,10 @@ class AppointmentTwo : UIViewController, UIScrollViewDelegate {
     @objc func handleNextButton() {
         
         UIDevice.vibrateLight()
-
+        
         let appointmentThree = AppointmentThree()
         appointmentThree.modalPresentationStyle = .fullScreen
         self.navigationController?.pushViewController(appointmentThree, animated: true)
         
     }
-   
 }

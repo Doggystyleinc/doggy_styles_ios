@@ -112,7 +112,6 @@ public func dogServicePriceConfiguration(dogSize : String, service : String) -> 
         }
     }
 
-
     public enum Packageable : String, CaseIterable {
         
         case FullPackage

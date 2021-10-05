@@ -11,7 +11,7 @@ import UIKit
 import PassKit
 
 class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
-  
+    
     lazy var stackView : UIStackView = {
         
         let sv = UIStackView()
@@ -132,7 +132,7 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         
         return nl
     }()
-  
+    
     lazy var creditCardButton : UIButton = {
         
         let ccb = UIButton(type: .system)
@@ -146,7 +146,7 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         ccb.layer.cornerRadius = 15
         ccb.addTarget(self, action: #selector(self.handleCreditCardTap), for: .touchUpInside)
         
-       return ccb
+        return ccb
     }()
     
     lazy var  applePayButton : UIButton = {
@@ -161,7 +161,7 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         ccb.layer.shouldRasterize = false
         ccb.layer.cornerRadius = 15
         ccb.addTarget(self, action: #selector(self.handleApplePayTap), for: .touchUpInside)
-
+        
         return ccb
     }()
     
@@ -175,8 +175,8 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         cci.setTitle(String.fontAwesomeIcon(name: .creditCard), for: .normal)
         cci.tintColor = coreBlackColor
         cci.isUserInteractionEnabled = false
-
-       return cci
+        
+        return cci
     }()
     
     let applePayIcon : UIButton = {
@@ -191,8 +191,8 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         cci.contentMode = .scaleAspectFit
         cci.imageView?.contentMode = .scaleAspectFit
         cci.isUserInteractionEnabled = false
-
-       return cci
+        
+        return cci
     }()
     
     let forwardArrowCreditCard : UIButton = {
@@ -205,8 +205,8 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         cci.setTitle(String.fontAwesomeIcon(name: .chevronRight), for: .normal)
         cci.tintColor = coreOrangeColor
         cci.isUserInteractionEnabled = false
-
-       return cci
+        
+        return cci
     }()
     
     let forwardArrowApplePay : UIButton = {
@@ -219,8 +219,8 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         cci.setTitle(String.fontAwesomeIcon(name: .chevronRight), for: .normal)
         cci.tintColor = coreOrangeColor
         cci.isUserInteractionEnabled = false
-
-       return cci
+        
+        return cci
     }()
     
     let appleLabel : UILabel = {
@@ -234,7 +234,7 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
         nl.isUserInteractionEnabled = false
-
+        
         return nl
     }()
     
@@ -249,7 +249,7 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
         nl.isUserInteractionEnabled = false
-
+        
         return nl
     }()
     
@@ -282,7 +282,7 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         self.applePayButton.addSubview(self.applePayIcon)
         self.applePayButton.addSubview(self.forwardArrowApplePay)
         self.applePayButton.addSubview(self.appleLabel)
-
+        
         self.view.addSubview(self.creditCardButton)
         self.creditCardButton.addSubview(self.creditCardIcon)
         self.creditCardButton.addSubview(self.forwardArrowCreditCard)
@@ -374,7 +374,7 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         self.creditLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         self.creditLabel.centerYAnchor.constraint(equalTo: self.creditCardButton.centerYAnchor, constant: 0).isActive = true
         self.creditLabel.sizeToFit()
-
+        
     }
     
     @objc func handleCancelButton() {
@@ -408,7 +408,7 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         request.countryCode = "US"
         request.currencyCode = "USD"
         request.paymentSummaryItems = [PKPaymentSummaryItem(label: "Mobile Grooming Package", amount: 119)]
-       return request
+        return request
     }()
     
     func handleApplePayment() {
@@ -416,10 +416,10 @@ class PaymentMethodSelection : UIViewController, UIScrollViewDelegate {
         let controller = PKPaymentAuthorizationViewController(paymentRequest: self.applePayRequest)
         
         if controller != nil {
-        controller!.delegate = self
-        self.navigationController?.present(controller!, animated: true, completion: {
-            print("Apple pay controller has been presented")
-        })
+            controller!.delegate = self
+            self.navigationController?.present(controller!, animated: true, completion: {
+                print("Apple pay controller has been presented")
+            })
         }
     }
     
@@ -439,13 +439,10 @@ extension PaymentMethodSelection : PKPaymentAuthorizationViewControllerDelegate 
         controller.dismiss(animated: true, completion: nil)
     }
     
-   
-    
     func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
         self.moveToBookingConfirmation()
         completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
     }
-    
 }
 
 

@@ -9,9 +9,9 @@ import UIKit
 
 class ConfirmBookingCollection : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate {
     
-    private let confirmBookingCollectionID = "confirmBookingCollectionID"
-    private let confirmFooterCollectionID = "confirmFooterCollectionID"
-
+    private let confirmBookingCollectionID = "confirmBookingCollectionID",
+                confirmFooterCollectionID = "confirmFooterCollectionID"
+    
     var confirmBookingController : ConfirmBookingController?
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
@@ -36,7 +36,7 @@ class ConfirmBookingCollection : UICollectionView, UICollectionViewDelegateFlowL
         
         self.register(ConfirmBookingFeeder.self, forCellWithReuseIdentifier: self.confirmBookingCollectionID)
         self.register(ConfirmBookingFooterFeeder.self, forCellWithReuseIdentifier: self.confirmFooterCollectionID)
-
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -52,7 +52,7 @@ class ConfirmBookingCollection : UICollectionView, UICollectionViewDelegateFlowL
             return CGSize(width: UIScreen.main.bounds.width, height: 320)
         default:
             return CGSize(width: UIScreen.main.bounds.width, height: 640)
-
+            
         }
     }
     
@@ -75,7 +75,7 @@ class ConfirmBookingCollection : UICollectionView, UICollectionViewDelegateFlowL
             cell.confirmBookingCollection = self
             
             return cell
-        
+            
         }
     }
     
@@ -88,7 +88,6 @@ class ConfirmBookingCollection : UICollectionView, UICollectionViewDelegateFlowL
     }
     
     @objc func handleNextButton(sender: UIButton) {
-        print("handle nect button")
         self.confirmBookingController?.handleEndAptDecisionController()
     }
     
@@ -115,7 +114,7 @@ class ConfirmBookingFeeder : UICollectionViewCell {
         adc.layer.shouldRasterize = false
         adc.layer.cornerRadius = 15
         
-       return adc
+        return adc
     }()
     
     lazy var pencilIcon : UIButton = {
@@ -127,7 +126,6 @@ class ConfirmBookingFeeder : UICollectionViewCell {
         cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 16, style: .solid)
         cbf.setTitle(String.fontAwesomeIcon(name: .pencilAlt), for: .normal)
         cbf.setTitleColor(coreOrangeColor, for: .normal)
-//        cbf.addTarget(self, action: #selector(self.handleBackButton), for: UIControl.Event.touchUpInside)
         return cbf
         
     }()
@@ -141,7 +139,7 @@ class ConfirmBookingFeeder : UICollectionViewCell {
         pii.layer.masksToBounds = true
         pii.backgroundColor = dividerGrey
         
-       return pii
+        return pii
     }()
     
     let nameLabel : UILabel = {
@@ -257,9 +255,9 @@ class ConfirmBookingFeeder : UICollectionViewCell {
     
     let yourAttributes: [NSAttributedString.Key: Any] = [
         .font: UIFont(name: rubikRegular, size: 18)!,
-         .foregroundColor: coreOrangeColor,
-         .underlineStyle: NSUnderlineStyle.single.rawValue
-     ]
+        .foregroundColor: coreOrangeColor,
+        .underlineStyle: NSUnderlineStyle.single.rawValue
+    ]
     
     let dogTotalLabel : UILabel = {
         
@@ -288,7 +286,7 @@ class ConfirmBookingFeeder : UICollectionViewCell {
         
         return nl
     }()
-            
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -297,8 +295,8 @@ class ConfirmBookingFeeder : UICollectionViewCell {
         self.addViews()
         
         let attributeString = NSMutableAttributedString(
-               string: "Show all",
-               attributes: yourAttributes
+            string: "Show all",
+            attributes: yourAttributes
         )
         
         self.showAllButton.setAttributedTitle(attributeString, for: .normal)
@@ -321,12 +319,12 @@ class ConfirmBookingFeeder : UICollectionViewCell {
         
         self.addSubview(self.servicesLabel)
         self.addSubview(self.servicesTimeLabel)
-
+        
         self.addSubview(self.showAllButton)
         
         self.addSubview(self.dogTotalLabel)
         self.addSubview(self.dogTotalCostLabel)
-
+        
         self.mainContainer.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
         self.mainContainer.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.mainContainer.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
@@ -392,7 +390,6 @@ class ConfirmBookingFeeder : UICollectionViewCell {
         self.dogTotalCostLabel.leftAnchor.constraint(equalTo: self.dogTotalLabel.rightAnchor, constant: 20).isActive = true
         self.dogTotalCostLabel.centerYAnchor.constraint(equalTo: self.dogTotalLabel.centerYAnchor, constant: 0).isActive = true
         self.dogTotalCostLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        
         
     }
     
@@ -463,7 +460,7 @@ class ConfirmBookingFooterFeeder : UICollectionViewCell, UITextFieldDelegate {
         adc.layer.shouldRasterize = false
         adc.layer.cornerRadius = 15
         
-       return adc
+        return adc
     }()
     
     let creditCardLabel : UILabel = {
@@ -477,7 +474,7 @@ class ConfirmBookingFooterFeeder : UICollectionViewCell, UITextFieldDelegate {
         nl.textAlignment = .left
         nl.numberOfLines = 1
         nl.adjustsFontSizeToFitWidth = true
-
+        
         return nl
     }()
     
@@ -533,7 +530,7 @@ class ConfirmBookingFooterFeeder : UICollectionViewCell, UITextFieldDelegate {
         nl.textColor = coreBlackColor
         nl.textAlignment = .left
         nl.numberOfLines = -1
-
+        
         return nl
     }()
     
@@ -568,7 +565,7 @@ class ConfirmBookingFooterFeeder : UICollectionViewCell, UITextFieldDelegate {
         etfc.layer.shouldRasterize = false
         etfc.isSecureTextEntry = false
         etfc.setRightPaddingPoints(50)
-
+        
         return etfc
         
     }()
@@ -607,7 +604,7 @@ class ConfirmBookingFooterFeeder : UICollectionViewCell, UITextFieldDelegate {
         
     }()
     
-   
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -632,7 +629,7 @@ class ConfirmBookingFooterFeeder : UICollectionViewCell, UITextFieldDelegate {
         self.addSubview(self.referralCodeSubheader)
         self.addSubview(self.enterCodeTextField)
         self.addSubview(self.nextButton)
-
+        
         self.appointmentsSwitch.centerYAnchor.constraint(equalTo: self.addAppointmentsLabel.centerYAnchor, constant: 0).isActive = true
         self.appointmentsSwitch.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
         self.appointmentsSwitch.sizeToFit()
@@ -656,7 +653,7 @@ class ConfirmBookingFooterFeeder : UICollectionViewCell, UITextFieldDelegate {
         self.downArrowButton.centerYAnchor.constraint(equalTo: self.creditCardContainer.centerYAnchor, constant: 0).isActive = true
         self.downArrowButton.heightAnchor.constraint(equalToConstant: 16).isActive = true
         self.downArrowButton.widthAnchor.constraint(equalToConstant: 16).isActive = true
-
+        
         self.creditCardLabel.leftAnchor.constraint(equalTo: self.creditCardContainer.leftAnchor, constant: 27).isActive = true
         self.creditCardLabel.centerYAnchor.constraint(equalTo: self.creditCardContainer.centerYAnchor).isActive = true
         self.creditCardLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
@@ -691,7 +688,7 @@ class ConfirmBookingFooterFeeder : UICollectionViewCell, UITextFieldDelegate {
         self.nextButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.nextButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
         self.nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-
+        
     }
     
     @objc func handleNextButton(sender: UIButton) {
@@ -701,7 +698,6 @@ class ConfirmBookingFooterFeeder : UICollectionViewCell, UITextFieldDelegate {
     }
     
     @objc func handleToggle(sender : UISwitch) {
-
         
     }
     

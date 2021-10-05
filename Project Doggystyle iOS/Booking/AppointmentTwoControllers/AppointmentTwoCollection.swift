@@ -15,7 +15,7 @@ class AppointmentTwoCollection : UICollectionView, UICollectionViewDelegateFlowL
     private let appointmentTwoID = "appointmentTwoID"
     
     var appointmentTwoContainer : AppointmentTwoContainer?
-
+    
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         
@@ -72,7 +72,7 @@ class AppointmentTwoCollection : UICollectionView, UICollectionViewDelegateFlowL
         return 0
     }
     
-
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -101,14 +101,13 @@ class AppointmentTwoFeeder : UICollectionViewCell {
         cbf.layer.borderWidth = 1
         cbf.layer.masksToBounds = false
         cbf.layer.borderColor = UIColor .clear.cgColor
-
+        
         cbf.layer.shadowColor = coreOrangeColor.cgColor
         cbf.layer.shadowOpacity = 0.35
         cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
         cbf.layer.shadowRadius = 0
         cbf.layer.shouldRasterize = false
-        //cbf.addTarget(self, action: #selector(self.handleGroomingFrequency), for: .touchUpInside)
-    
+        
         return cbf
     }()
     
@@ -119,7 +118,6 @@ class AppointmentTwoFeeder : UICollectionViewCell {
         self.addViews()
         
     }
-    
     
     func addViews() {
         

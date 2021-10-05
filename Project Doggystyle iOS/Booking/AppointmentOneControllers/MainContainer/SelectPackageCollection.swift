@@ -13,7 +13,6 @@ import Firebase
 class SelectServicesCollection : UITableView, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
     private let selectServicesID = "selectServicesID"
-    
     var appointmentOne : AppointmentOne?
     
     override init(frame: CGRect, style: UITableView.Style) {
@@ -57,11 +56,10 @@ class SelectServicesCollection : UITableView, UITableViewDelegate, UITableViewDa
         cell.contentView.isUserInteractionEnabled = false
         cell.selectionStyle = .none
         
-        let feeder = Packageable.allCases[indexPath.item].description
-        
-        let icon = feeder.0
-        let label = feeder.1
-        let cost = feeder.2
+        let feeder = Packageable.allCases[indexPath.item].description,
+            icon = feeder.0,
+            label = feeder.1,
+            cost = feeder.2
         
         switch icon {
         
@@ -77,7 +75,7 @@ class SelectServicesCollection : UITableView, UITableViewDelegate, UITableViewDa
                 if self.appointmentOne?.sameDogWeightSelectSize == nil || sizeOfArray <= 0 {
                     cell.costLabel.text = "\(DogGroomingCostable.Default.description)"
                     self.appointmentOne?.mainContainerFP.costForFullPackage = "\(DogGroomingCostable.Default.description)"
-
+                    
                 } else {
                     
                     switch self.appointmentOne?.sameDogWeightSelectSize {
@@ -89,18 +87,18 @@ class SelectServicesCollection : UITableView, UITableViewDelegate, UITableViewDa
                     case "Medium":
                         cell.costLabel.text = "\(DogGroomingCostable.Medium.description)"
                         self.appointmentOne?.mainContainerFP.costForFullPackage = "\(DogGroomingCostable.Medium.description)"
-
+                        
                     case "Large":
                         cell.costLabel.text = "\(DogGroomingCostable.Large.description)"
                         self.appointmentOne?.mainContainerFP.costForFullPackage = "\(DogGroomingCostable.Large.description)"
-
+                        
                     case "X-Large":
                         cell.costLabel.text = "\(DogGroomingCostable.XLarge.description)"
                         self.appointmentOne?.mainContainerFP.costForFullPackage = "\(DogGroomingCostable.XLarge.description)"
-
+                        
                     default: cell.costLabel.text = "\(DogGroomingCostable.Default.description)"
                         self.appointmentOne?.mainContainerFP.costForFullPackage = "\(DogGroomingCostable.Default.description)"
-
+                        
                     }
                     
                     DispatchQueue.main.async {
@@ -136,9 +134,9 @@ class SelectServicesCollection : UITableView, UITableViewDelegate, UITableViewDa
         
         if self.appointmentOne?.canSelectMainPackage == true {
             
-            NotificationCenter.default.post(name: NSNotification.Name("HANDLE_CLEAR_OTHER_COLLECTIONS"), object: nil)
-            NotificationCenter.default.post(name: NSNotification.Name("HANDLE_CLEAR_OTHER_COLLECTIONS_CUSTOM"), object: nil)
-
+            NotificationCenter.default.post(name: NSNotification.Name(Statics.HANDLE_CLEAR_OTHER_COLLECTIONS), object: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(Statics.HANDLE_CLEAR_OTHER_COLLECTIONS_CUSTOM), object: nil)
+            
             let selectedButtonCell = sender.superview as! UITableViewCell
             guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
             
@@ -157,8 +155,6 @@ class SelectServicesCollection : UITableView, UITableViewDelegate, UITableViewDa
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-
 
 class SelectServicesFeeder : UITableViewCell {
     
@@ -263,9 +259,7 @@ class SelectServicesFeeder : UITableViewCell {
     }
     
     @objc func handlePackageSelection(sender : UIButton) {
-        
         self.selectServicesCollection?.handleServicesSelection(sender : sender)
-        
     }
     
     required init?(coder: NSCoder) {

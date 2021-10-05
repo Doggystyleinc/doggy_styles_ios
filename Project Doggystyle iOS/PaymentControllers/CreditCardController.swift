@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class CreditCardController : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
-  
+    
     lazy var stackView : UIStackView = {
         
         let sv = UIStackView()
@@ -116,7 +116,7 @@ class CreditCardController : UIViewController, UIScrollViewDelegate, UITextField
         
         return hc
     }()
-   
+    
     lazy var cardNumberTextField: CustomCardNumberTextField = {
         
         let etfc = CustomCardNumberTextField()
@@ -148,7 +148,7 @@ class CreditCardController : UIViewController, UIScrollViewDelegate, UITextField
         etfc.layer.shouldRasterize = false
         etfc.isSecureTextEntry = false
         etfc.setRightPaddingPoints(50)
-
+        
         return etfc
         
     }()
@@ -198,7 +198,7 @@ class CreditCardController : UIViewController, UIScrollViewDelegate, UITextField
         etfc.layer.shouldRasterize = false
         etfc.isSecureTextEntry = false
         etfc.setRightPaddingPoints(50)
-
+        
         return etfc
         
     }()
@@ -234,7 +234,7 @@ class CreditCardController : UIViewController, UIScrollViewDelegate, UITextField
         etfc.layer.shouldRasterize = false
         etfc.isSecureTextEntry = false
         etfc.setRightPaddingPoints(50)
-
+        
         return etfc
         
     }()
@@ -270,7 +270,7 @@ class CreditCardController : UIViewController, UIScrollViewDelegate, UITextField
         etfc.layer.shouldRasterize = false
         etfc.isSecureTextEntry = false
         etfc.setRightPaddingPoints(50)
-
+        
         return etfc
         
     }()
@@ -320,7 +320,7 @@ class CreditCardController : UIViewController, UIScrollViewDelegate, UITextField
         etfc.layer.shouldRasterize = false
         etfc.isSecureTextEntry = false
         etfc.setRightPaddingPoints(50)
-
+        
         return etfc
         
     }()
@@ -365,7 +365,7 @@ class CreditCardController : UIViewController, UIScrollViewDelegate, UITextField
         self.view.addSubview(self.cancelButton)
         self.view.addSubview(self.xButton)
         self.view.addSubview(self.basicDetailsLabel)
-
+        
         self.view.addSubview(timeCover)
         
         self.view.addSubview(self.cardNumberTextField)
@@ -379,7 +379,7 @@ class CreditCardController : UIViewController, UIScrollViewDelegate, UITextField
         
         self.view.addSubview(self.zipCodeTextField)
         self.view.addSubview(self.nextButton)
-
+        
         self.headerBarOne.widthAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.heightAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.layer.cornerRadius = 4.5
@@ -449,7 +449,7 @@ class CreditCardController : UIViewController, UIScrollViewDelegate, UITextField
         self.countryDropDownButton.rightAnchor.constraint(equalTo: self.countryTextField.rightAnchor, constant: -30).isActive = true
         self.countryDropDownButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
         self.countryDropDownButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-
+        
         self.zipCodeTextField.topAnchor.constraint(equalTo: self.countryTextField.bottomAnchor, constant: 20).isActive = true
         self.zipCodeTextField.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.zipCodeTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
@@ -465,7 +465,7 @@ class CreditCardController : UIViewController, UIScrollViewDelegate, UITextField
     @objc func handleNextButton() {
         
         UIDevice.vibrateLight()
-
+        
         let confirmBookingController = ConfirmBookingController()
         confirmBookingController.modalPresentationStyle = .fullScreen
         self.navigationController?.pushViewController(confirmBookingController, animated: true)

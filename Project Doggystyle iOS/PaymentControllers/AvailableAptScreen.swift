@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 class AvailableAptScreen : UIViewController {
     
     lazy var stackView : UIStackView = {
@@ -22,7 +21,7 @@ class AvailableAptScreen : UIViewController {
         
         return sv
     }()
-
+    
     let headerBarOne : UIView = {
         
         let hbo = UIView()
@@ -32,7 +31,7 @@ class AvailableAptScreen : UIViewController {
         
         return hbo
     }()
-
+    
     let headerBarTwo : UIView = {
         
         let hbo = UIView()
@@ -40,7 +39,7 @@ class AvailableAptScreen : UIViewController {
         hbo.backgroundColor = coreOrangeColor
         return hbo
     }()
-
+    
     let headerBarThree : UIView = {
         
         let hbo = UIView()
@@ -48,7 +47,7 @@ class AvailableAptScreen : UIViewController {
         hbo.backgroundColor = coreOrangeColor
         return hbo
     }()
-
+    
     let headerBarFour : UIView = {
         
         let hbo = UIView()
@@ -56,7 +55,7 @@ class AvailableAptScreen : UIViewController {
         hbo.backgroundColor = coreOrangeColor
         return hbo
     }()
-
+    
     let timeCover : UIView = {
         
         let tc = UIView()
@@ -65,7 +64,7 @@ class AvailableAptScreen : UIViewController {
         
         return tc
     }()
-
+    
     let luckyDayLabel : UILabel = {
         
         let nl = UILabel()
@@ -107,7 +106,7 @@ class AvailableAptScreen : UIViewController {
         
         return nl
     }()
-
+    
     lazy var cancelButton : UIButton = {
         
         let cbf = UIButton(type: .system)
@@ -122,7 +121,7 @@ class AvailableAptScreen : UIViewController {
         return cbf
         
     }()
-
+    
     lazy var xButton : UIButton = {
         
         let cbf = UIButton(type: .system)
@@ -136,7 +135,7 @@ class AvailableAptScreen : UIViewController {
         return cbf
         
     }()
-
+    
     var headerContainer : UIView = {
         
         let hc = UIView()
@@ -161,7 +160,7 @@ class AvailableAptScreen : UIViewController {
         adc.layer.shouldRasterize = false
         adc.layer.cornerRadius = 15
         
-       return adc
+        return adc
     }()
     
     let selectDogForAptLabel : UILabel = {
@@ -201,7 +200,7 @@ class AvailableAptScreen : UIViewController {
         nl.textColor = coreBlackColor
         nl.textAlignment = .right
         nl.adjustsFontSizeToFitWidth = true
-
+        
         return nl
     }()
     
@@ -318,7 +317,7 @@ class AvailableAptScreen : UIViewController {
         
         self.appointmentDetailsContainer.addSubview(self.stylistLabel)
         self.appointmentDetailsContainer.addSubview(self.finalStylistLabel)
-
+        
         self.appointmentDetailsContainer.addSubview(self.dateLabel)
         self.appointmentDetailsContainer.addSubview(self.finalDateLabel)
         
@@ -328,7 +327,7 @@ class AvailableAptScreen : UIViewController {
         self.view.addSubview(self.bookAptButton)
         
         self.view.addSubview(self.availableAptCollection)
-
+        
         self.headerBarOne.widthAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.heightAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.layer.cornerRadius = 4.5
@@ -414,7 +413,7 @@ class AvailableAptScreen : UIViewController {
         self.timeLabel.topAnchor.constraint(equalTo: self.finalDateLabel.bottomAnchor, constant: 26).isActive = true
         self.timeLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         self.timeLabel.widthAnchor.constraint(equalToConstant: 55).isActive = true
-
+        
         self.finalTimeLabel.rightAnchor.constraint(equalTo: self.appointmentDetailsContainer.rightAnchor, constant: -30).isActive = true
         self.finalTimeLabel.leftAnchor.constraint(equalTo: self.timeLabel.rightAnchor, constant: 20).isActive = true
         self.finalTimeLabel.centerYAnchor.constraint(equalTo: self.timeLabel.centerYAnchor, constant: 0).isActive = true
@@ -429,7 +428,7 @@ class AvailableAptScreen : UIViewController {
         self.availableAptCollection.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.availableAptCollection.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.availableAptCollection.bottomAnchor.constraint(equalTo: self.bookAptButton.topAnchor, constant: -15).isActive = true
-
+        
     }
     
     @objc func handleCancelButton() {

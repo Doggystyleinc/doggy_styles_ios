@@ -185,7 +185,6 @@ class AppointmentThree : UIViewController, UIScrollViewDelegate {
         cbf.layer.masksToBounds = true
         cbf.tintColor = coreWhiteColor
         cbf.isHidden = true
-//        cbf.addTarget(self, action: #selector(self.handleNextButton), for: .touchUpInside)
         
         return cbf
         

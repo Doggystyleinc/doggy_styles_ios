@@ -11,9 +11,10 @@ import UIKit
 
 class AppointmentTwoContainer : UIView, UIScrollViewDelegate {
     
-    var appointmentTwo : AppointmentTwo?
     private let pageControl = UIPageControl()
-    var initialPage = 0
+
+    var appointmentTwo : AppointmentTwo?,
+        initialPage = 0
     
     lazy var scrollView : UIScrollView = {
         

@@ -11,12 +11,10 @@ import UIKit
 class SelectCustomPackageContainer : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
     private let customPackageID = "customPackageID"
-  
-    var costForFullPackage : String = "-"
-
-    var customServicesDropDownFeeder : CustomServicesDropDownFeeder?
     
-    var typeOfServiceSelection : String = ""
+    var costForFullPackage : String = "-",
+        customServicesDropDownFeeder : CustomServicesDropDownFeeder?,
+        typeOfServiceSelection : String = ""
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -43,11 +41,11 @@ class SelectCustomPackageContainer : UICollectionView, UICollectionViewDelegateF
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return globalArrayOfDicts.count
-     
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-            
+        
         return CGSize(width: UIScreen.main.bounds.width - 60, height: 40)
         
     }
@@ -57,11 +55,11 @@ class SelectCustomPackageContainer : UICollectionView, UICollectionViewDelegateF
         let cell = self.dequeueReusableCell(withReuseIdentifier: self.customPackageID, for: indexPath) as! CustomPackageFeeder
         
         cell.selectFullPackageContainer = self
-      
+        
         if let _ = self.customServicesDropDownFeeder?.customServicesDropDownCollection?.appointmentOne?.selectedProfileDataSource {
             
             let feeder = globalArrayOfDicts[indexPath.item]
-             
+            
             for (key ,value) in feeder {
                 
                 let name = key
@@ -69,7 +67,7 @@ class SelectCustomPackageContainer : UICollectionView, UICollectionViewDelegateF
                 
                 cell.nameLabel.text = name
                 cell.costLabel.text = cost
-
+                
             }
         }
         
@@ -83,7 +81,7 @@ class SelectCustomPackageContainer : UICollectionView, UICollectionViewDelegateF
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -93,7 +91,7 @@ class SelectCustomPackageContainer : UICollectionView, UICollectionViewDelegateF
 class CustomPackageFeeder: UICollectionViewCell {
     
     var selectFullPackageContainer : SelectCustomPackageContainer?
-   
+    
     let nameLabel : UILabel = {
         
         let hl = UILabel()
@@ -105,7 +103,7 @@ class CustomPackageFeeder: UICollectionViewCell {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.isUserInteractionEnabled = false
-
+        
         return hl
     }()
     
@@ -120,7 +118,7 @@ class CustomPackageFeeder: UICollectionViewCell {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .right
         hl.isUserInteractionEnabled = false
-
+        
         return hl
     }()
     
@@ -135,7 +133,7 @@ class CustomPackageFeeder: UICollectionViewCell {
         
         self.addSubview(self.nameLabel)
         self.addSubview(self.costLabel)
-
+        
         self.costLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
         self.costLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
         self.costLabel.sizeToFit()
