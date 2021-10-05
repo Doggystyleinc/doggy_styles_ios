@@ -15,7 +15,10 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
         dogBreedJson : [String] = [],
         predictionString : String = "",
         selectedImage : UIImage?,
-        isSelectedNameChosen : Bool = false
+        isSelectedNameChosen : Bool = false,
+        isKeyboardShowing : Bool = false,
+        lastKeyboardHeight : CGFloat = 0.0,
+        contentHeight : CGFloat = 645.0
     
     lazy var newDogSearchBreedSubview : NewDogSearchBreedSubview = {
         
@@ -31,7 +34,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
         let sv = UIScrollView()
         sv.translatesAutoresizingMaskIntoConstraints = false
         sv.backgroundColor = coreBackgroundWhite
-        sv.isScrollEnabled = false
+        sv.isScrollEnabled = true
         sv.minimumZoomScale = 1.0
         sv.maximumZoomScale = 1.0
         sv.bounces = true
@@ -41,8 +44,17 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
         sv.contentMode = .scaleAspectFit
         sv.isUserInteractionEnabled = true
         sv.delaysContentTouches = false
+        
         return sv
         
+    }()
+    
+    let contentView : UIView = {
+        let cv = UIView()
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.backgroundColor = .clear
+        cv.isUserInteractionEnabled = true
+        return cv
     }()
     
     lazy var stackView : UIStackView = {
@@ -371,12 +383,22 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
         self.ageTextField.inputAccessoryView = self.toolBar
         
         self.scrollView.keyboardDismissMode = .interactive
-        
         self.dogBreedJson = self.dogBreedJsonGrabber.dogBreedJSON
-        
         self.breedTextField.inputView = UIView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardHide), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        NotificationCenter.default.removeObserver(self)
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -398,53 +420,45 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
     func addViews() {
         
         self.view.addSubview(scrollView)
-        self.view.addSubview(self.stackView)
         
+        self.scrollView.addSubview(self.contentView)
+        
+        self.contentView.addSubview(self.stackView)
+
         self.stackView.addArrangedSubview(self.headerBarOne)
         self.stackView.addArrangedSubview(self.headerBarTwo)
         self.stackView.addArrangedSubview(self.headerBarThree)
         self.stackView.addArrangedSubview(self.headerBarFour)
         
-        self.scrollView.addSubview(self.headerContainer)
-        self.scrollView.addSubview(self.cancelButton)
-        self.scrollView.addSubview(self.basicDetailsLabel)
-        self.scrollView.addSubview(self.profileImageViewContainer)
-        self.scrollView.addSubview(self.profileImageView)
-        self.scrollView.addSubview(self.pencilIconButton)
-        self.scrollView.addSubview(self.datePicker)
+        self.contentView.addSubview(self.headerContainer)
+        self.contentView.addSubview(self.cancelButton)
+        self.contentView.addSubview(self.basicDetailsLabel)
+        self.contentView.addSubview(self.profileImageViewContainer)
+        self.contentView.addSubview(self.profileImageView)
+        self.contentView.addSubview(self.pencilIconButton)
+        self.contentView.addSubview(self.datePicker)
         
-        self.scrollView.addSubview(self.nameTextField)
-        self.scrollView.addSubview(self.breedTextField)
-        self.scrollView.addSubview(self.ageTextField)
+        self.contentView.addSubview(self.nameTextField)
+        self.contentView.addSubview(self.breedTextField)
+        self.contentView.addSubview(self.ageTextField)
         
-        self.scrollView.addSubview(self.nextButton)
+        self.contentView.addSubview(self.nextButton)
         
         self.view.addSubview(timeCover)
         self.view.addSubview(self.newDogSearchBreedSubview)
         
         self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
-        self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        self.scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
         self.scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.5)
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.contentHeight + self.lastKeyboardHeight)
         
-        let screenHeight = UIScreen.main.bounds.height
-        
-        switch screenHeight {
-        
-        //MANUAL CONFIGURATION - REFACTOR FOR UNIVERSAL FITMENT
-        case 926 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.0)
-        case 896 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.0)
-        case 844 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.02)
-        case 812 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.03)
-        case 736 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.11)
-        case 667 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.21)
-        case 568 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.21)
-        case 480 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.21)
-            
-        default : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.5)
-            
-        }
+        self.contentView.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 0).isActive = true
+        self.contentView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor, constant: 0).isActive = true
+        self.contentView.leftAnchor.constraint(equalTo: self.scrollView.leftAnchor, constant: 0).isActive = true
+        self.contentView.rightAnchor.constraint(equalTo: self.scrollView.rightAnchor, constant: 0).isActive = true
+        self.contentView.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        self.contentView.heightAnchor.constraint(equalToConstant: 635).isActive = true
         
         self.headerBarOne.widthAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.heightAnchor.constraint(equalToConstant: 9).isActive = true
@@ -514,7 +528,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
         self.ageTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.ageTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
-        self.nextButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
+        self.nextButton.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: 0).isActive = true
         self.nextButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.nextButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -536,6 +550,47 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
         
     }
     
+    @objc func adjustContentSize() {
+        
+        self.scrollView.layoutIfNeeded()
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.contentHeight + self.lastKeyboardHeight)
+        self.scrollView.scrollToBottom()
+        
+    }
+    
+    @objc func handleKeyboardShow(notification : Notification) {
+        
+        let userInfo:NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardFrame:NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardRectangle = keyboardFrame.cgRectValue
+        
+        if keyboardRectangle.height > 200 {
+            
+            if self.isKeyboardShowing == true {return}
+            self.isKeyboardShowing = true
+            
+            self.lastKeyboardHeight = keyboardRectangle.height
+            self.perform(#selector(self.handleKeyboardMove), with: nil, afterDelay: 0.1)
+            
+        }
+    }
+    
+    @objc func handleKeyboardHide(notification : Notification) {
+        
+        self.isKeyboardShowing = false
+        
+        let userInfo:NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardFrame:NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardRectangle = keyboardFrame.cgRectValue
+        
+        self.lastKeyboardHeight = keyboardRectangle.height
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.contentHeight)
+    }
+    
+    @objc func handleKeyboardMove() {
+        self.adjustContentSize()
+    }
+    
     func resignation() {
         
         self.nameTextField.resignFirstResponder()
@@ -551,7 +606,6 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
             self.isSelectedNameChosen = true
         }
     }
-    
     
     @objc func handleDatePicker(sender: UIDatePicker) {
         

@@ -17,7 +17,10 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate, 
         containerTwoTopConstraint : NSLayoutConstraint?,
         containerThreeTopConstraint : NSLayoutConstraint?,
         adjustmentDifference : CGFloat = 25.0,
-        offSetDifference : CGFloat = 70.0
+        offSetDifference : CGFloat = 70.0,
+        nextButtonTopLayoutContraint : NSLayoutConstraint?,
+        nextButtonOffset : CGFloat = 100
+
     
     lazy var scrollView : UIScrollView = {
         
@@ -768,7 +771,8 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate, 
         self.vaccineIconButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
         self.vaccineIconButton.widthAnchor.constraint(equalToConstant: 48).isActive = true
         
-        self.nextButton.topAnchor.constraint(equalTo: self.selectedVaccineButton.bottomAnchor, constant: 20).isActive = true
+        self.nextButtonTopLayoutContraint = self.nextButton.topAnchor.constraint(equalTo: self.vaccineUploadButton.bottomAnchor, constant: 20)
+        self.nextButtonTopLayoutContraint?.isActive = true
         self.nextButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.nextButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -778,6 +782,10 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate, 
     @objc func handleXIcon() {
         
         self.selectedVaccineButton.isHidden = true
+        UIView.animate(withDuration: 0.2) {
+        self.nextButtonTopLayoutContraint?.constant = 20.0
+            self.view.layoutIfNeeded()
+        }
         self.selectedVaccineButton.text = ""
         
         globalNewDogBuilder.dogBuilderHasUploadedVaccineCard = false
@@ -1032,6 +1040,7 @@ import AVFoundation
 import MobileCoreServices
 import Photos
 
+
 extension NewDogFour : UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIDocumentPickerDelegate {
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
@@ -1054,7 +1063,10 @@ extension NewDogFour : UIImagePickerControllerDelegate, UINavigationControllerDe
             self.resetContentView()
             self.selectedVaccineButton.text = "file 📎"
             self.selectedVaccineButton.isHidden = false
-            
+            UIView.animate(withDuration: 0.2) {
+            self.nextButtonTopLayoutContraint?.constant = self.nextButtonOffset
+                self.view.layoutIfNeeded()
+            }
             
         } else {
             do {
@@ -1069,7 +1081,10 @@ extension NewDogFour : UIImagePickerControllerDelegate, UINavigationControllerDe
                 self.resetContentView()
                 self.selectedVaccineButton.text = "file 📎"
                 self.selectedVaccineButton.isHidden = false
-                
+                UIView.animate(withDuration: 0.2) {
+                self.nextButtonTopLayoutContraint?.constant = self.nextButtonOffset
+                    self.view.layoutIfNeeded()
+                }
             } catch  {
                 print("Error:")
             }
@@ -1167,7 +1182,11 @@ extension NewDogFour : UIImagePickerControllerDelegate, UINavigationControllerDe
                     self.resetContentView()
                     self.selectedVaccineButton.text = "image 📎"
                     self.selectedVaccineButton.isHidden = false
-                    
+                    UIView.animate(withDuration: 0.2) {
+                        self.nextButtonTopLayoutContraint?.constant = self.nextButtonOffset
+                        self.view.layoutIfNeeded()
+                    }
+
                     UIDevice.vibrateLight()
                     
                     
@@ -1184,7 +1203,10 @@ extension NewDogFour : UIImagePickerControllerDelegate, UINavigationControllerDe
                     self.resetContentView()
                     self.selectedVaccineButton.text = "image 📎"
                     self.selectedVaccineButton.isHidden = false
-                    
+                    UIView.animate(withDuration: 0.2) {
+                    self.nextButtonTopLayoutContraint?.constant = self.nextButtonOffset
+                        self.view.layoutIfNeeded()
+                    }
                     UIDevice.vibrateLight()
                     
                     

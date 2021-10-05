@@ -16,7 +16,10 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate,
         
         dogFoodJsonGrabber = DogFoodHelper(),
         dogFoodJson : [String] = [],
-        predictionStringFood : String = ""
+        predictionStringFood : String = "",
+        isKeyboardShowing : Bool = false,
+        lastKeyboardHeight : CGFloat = 0.0,
+        contentHeight : CGFloat = 545.0
     
     lazy var newDogTreatSubview : NewDogTreatSubview = {
         
@@ -51,8 +54,17 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate,
         sv.contentMode = .scaleAspectFit
         sv.isUserInteractionEnabled = true
         sv.delaysContentTouches = false
+        
         return sv
         
+    }()
+    
+    let contentView : UIView = {
+        let cv = UIView()
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.backgroundColor = .clear
+        cv.isUserInteractionEnabled = true
+        return cv
     }()
     
     lazy var stackView : UIStackView = {
@@ -340,22 +352,33 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate,
         self.favoriteTreatTextField.inputView = UIView()
         self.dogFoodTextField.inputView = UIView()
         
+        self.scrollView.isScrollEnabled = false
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardHide), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     @objc func keyboardWillShow(_ notification: Notification) {
+        
         self.favoriteTreatTextField.endEditing(true)
         self.dogFoodTextField.endEditing(true)
+        
     }
     
     func fillValues() {
-        
-        
-        //MARK: - SET TEXTFIELD CONTENT TYPES
-        self.favoriteTreatTextField.textContentType = UITextContentType(rawValue: "")
-        self.dogFoodTextField.textContentType = UITextContentType(rawValue: "")
-        
+       
         self.favoriteTreatTextField.inputAccessoryView = self.toolBar
         self.dogFoodTextField.inputAccessoryView = self.toolBar
         
@@ -369,53 +392,42 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate,
     func addViews() {
         
         self.view.addSubview(scrollView)
-        self.view.addSubview(self.stackView)
+        self.scrollView.addSubview(self.contentView)
+        self.contentView.addSubview(self.stackView)
         
         self.stackView.addArrangedSubview(self.headerBarOne)
         self.stackView.addArrangedSubview(self.headerBarTwo)
         self.stackView.addArrangedSubview(self.headerBarThree)
         self.stackView.addArrangedSubview(self.headerBarFour)
         
-        self.scrollView.addSubview(self.headerContainer)
-        self.scrollView.addSubview(self.cancelButton)
-        self.scrollView.addSubview(self.basicDetailsLabel)
+        self.contentView.addSubview(self.headerContainer)
+        self.contentView.addSubview(self.cancelButton)
+        self.contentView.addSubview(self.basicDetailsLabel)
         
-        self.scrollView.addSubview(self.treatLabel)
-        self.scrollView.addSubview(self.foodLabel)
+        self.contentView.addSubview(self.treatLabel)
+        self.contentView.addSubview(self.foodLabel)
         
-        self.scrollView.addSubview(self.favoriteTreatTextField)
-        self.scrollView.addSubview(self.dogFoodTextField)
+        self.contentView.addSubview(self.favoriteTreatTextField)
+        self.contentView.addSubview(self.dogFoodTextField)
         
-        self.scrollView.addSubview(self.nextButton)
+        self.contentView.addSubview(self.nextButton)
         
         self.view.addSubview(timeCover)
         self.view.addSubview(newDogTreatSubview)
         self.view.addSubview(newDogFoodSubview)
         
         self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
-        self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        self.scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
         self.scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.5)
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.contentHeight + self.lastKeyboardHeight)
         
-        let screenHeight = UIScreen.main.bounds.height
-        print("screen height is: \(screenHeight)")
-        
-        switch screenHeight {
-        
-        //MANUAL CONFIGURATION - REFACTOR FOR UNNIVERSAL FITMENT
-        case 926 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.13)
-        case 896 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.14)
-        case 844 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.02)
-        case 812 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.001)
-        case 736 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.34)
-        case 667 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.47)
-        case 568 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.47)
-        case 480 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.47)
-            
-        default : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.5)
-            
-        }
+        self.contentView.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 0).isActive = true
+        self.contentView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor, constant: 0).isActive = true
+        self.contentView.leftAnchor.constraint(equalTo: self.scrollView.leftAnchor, constant: 0).isActive = true
+        self.contentView.rightAnchor.constraint(equalTo: self.scrollView.rightAnchor, constant: 0).isActive = true
+        self.contentView.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        self.contentView.heightAnchor.constraint(equalToConstant: 535).isActive = true
         
         self.headerBarOne.widthAnchor.constraint(equalToConstant: 9).isActive = true
         self.headerBarOne.heightAnchor.constraint(equalToConstant: 9).isActive = true
@@ -451,12 +463,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate,
         self.stackView.rightAnchor.constraint(equalTo: self.headerContainer.rightAnchor, constant: -30).isActive = true
         self.stackView.heightAnchor.constraint(equalToConstant: 14).isActive = true
         self.stackView.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        self.nextButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -30).isActive = true
-        self.nextButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.nextButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-        self.nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
+       
         self.timeCover.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         self.timeCover.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         self.timeCover.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
@@ -492,8 +499,55 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate,
         self.newDogFoodSubview.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.newDogFoodSubview.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
         
+        self.nextButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -60).isActive = true
+        self.nextButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.nextButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.nextButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
     }
     
+    @objc func adjustContentSize() {
+        
+        self.scrollView.layoutIfNeeded()
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.contentHeight + self.lastKeyboardHeight)
+        self.scrollView.scrollToBottom()
+        
+    }
+    
+    @objc func handleKeyboardShow(notification : Notification) {
+        
+        let userInfo:NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardFrame:NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardRectangle = keyboardFrame.cgRectValue
+        
+        if keyboardRectangle.height > 200 {
+            
+            if self.isKeyboardShowing == true {return}
+            self.isKeyboardShowing = true
+            
+            self.lastKeyboardHeight = keyboardRectangle.height
+            self.perform(#selector(self.handleKeyboardMove), with: nil, afterDelay: 0.1)
+            
+        }
+    }
+    
+    @objc func handleKeyboardHide(notification : Notification) {
+        
+        self.isKeyboardShowing = false
+        
+        let userInfo:NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardFrame:NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardRectangle = keyboardFrame.cgRectValue
+        
+        self.lastKeyboardHeight = keyboardRectangle.height
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.contentHeight)
+    }
+    
+    //MARK: - UNCOMMENT adjustContentSize IF SCROLLING IS NECESSARY AND SET self.scrollView.isScrollEnabled = true
+    @objc func handleKeyboardMove() {
+        //self.adjustContentSize()
+    }
+   
     @objc func fillBreed(breedType : String) {
         
         self.favoriteTreatTextField.text = breedType
@@ -540,6 +594,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate,
         
         self.resignation()
         self.scrollView.scrollToTop()
+        
         return false
         
     }
@@ -563,12 +618,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate,
             
         }
     }
-    
-    @objc func handleBackButton() {
-        
-        self.navigationController?.popViewController(animated: true)
-    }
-    
+   
     @objc func handleNextButton() {
         
         guard let favoriteTreat = self.favoriteTreatTextField.text else {return}
@@ -628,5 +678,9 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate,
         newDogTwo.navigationController?.navigationBar.isHidden = true
         self.navigationController?.pushViewController(newDogTwo, animated: true)
         
+    }
+    
+    @objc func handleBackButton() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
