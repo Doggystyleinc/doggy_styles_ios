@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import UserNotifications
 
-
 class NotificationsController : UIViewController, UNUserNotificationCenterDelegate {
     
     lazy var backButton : UIButton = {
@@ -101,7 +100,7 @@ class NotificationsController : UIViewController, UNUserNotificationCenterDelega
         let image = UIImage(named: "notifications_image")?.withRenderingMode(.alwaysOriginal)
         vi.image = image
         
-       return vi
+        return vi
     }()
     
     override func viewDidLoad() {
@@ -122,7 +121,7 @@ class NotificationsController : UIViewController, UNUserNotificationCenterDelega
         self.view.addSubview(self.disableNotificationsButton)
         
         self.view.addSubview(self.dogImage)
-
+        
         self.backButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 57).isActive = true
         self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 11).isActive = true
         self.backButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
@@ -151,26 +150,25 @@ class NotificationsController : UIViewController, UNUserNotificationCenterDelega
         self.dogImage.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 30).isActive = true
         self.dogImage.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true
         self.dogImage.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -10).isActive = true
-
+        
     }
     
     @objc func handleEnableNotifications() {
         
         let center  = UNUserNotificationCenter.current()
-          center.delegate = self
-          center.requestAuthorization(options: [.sound, .alert, .badge]) { (granted, error) in
-                if error == nil{
-                   DispatchQueue.main.async(execute: {
-                      UIApplication.shared.registerForRemoteNotifications()
-                      self.handleConfirmButton()
-                   })
-                }
-             }
-          }
+        center.delegate = self
+        center.requestAuthorization(options: [.sound, .alert, .badge]) { (granted, error) in
+            if error == nil{
+                DispatchQueue.main.async(execute: {
+                    UIApplication.shared.registerForRemoteNotifications()
+                    self.handleConfirmButton()
+                })
+            }
+        }
+    }
     
     @objc func handleConfirmButton() {
         
-        //FROM HERE WE NEED TO GO THROUGH THE LOCATION SCREENS
         let homeVC = HomeViewController()
         let navVC = UINavigationController(rootViewController: homeVC)
         navVC.modalPresentationStyle = .fullScreen

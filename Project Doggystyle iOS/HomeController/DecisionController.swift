@@ -21,11 +21,11 @@ final class DecisionController: UIViewController {
         let image = UIImage(named: "splash_screen")?.withRenderingMode(.alwaysOriginal)
         iv.image = image
         iv.contentMode = .scaleAspectFill
-
+        
         return iv
         
     }()
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -41,13 +41,13 @@ final class DecisionController: UIViewController {
         
         guard let insetsTop = self.view.window?.safeAreaInsets.top else {return}
         guard let insetsBottom = self.view.window?.safeAreaInsets.bottom else {return}
-    
+        
         globalFooterHeight = insetsBottom
         globalStatusBarHeight = insetsTop
         
     }
     
-     func addViews() {
+    func addViews() {
         
         self.view.addSubview(self.backgroundImage)
         
@@ -55,10 +55,10 @@ final class DecisionController: UIViewController {
         self.backgroundImage.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         self.backgroundImage.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         self.backgroundImage.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-    
+        
     }
     
-     func authenticationCheck() {
+    func authenticationCheck() {
         let auth = Auth.auth().currentUser?.uid ?? nil
         
         //USER IS NOT AUTHENTICATED

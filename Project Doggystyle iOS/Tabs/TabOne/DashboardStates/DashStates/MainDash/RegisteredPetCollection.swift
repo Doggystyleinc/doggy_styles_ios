@@ -14,7 +14,7 @@ class RegisteredPetCollection : UICollectionView, UICollectionViewDelegateFlowLa
     private let petID = "petID"
     
     var dashMainView : DashMainView?
-
+    
     var doggyProfileDataSource = [DoggyProfileDataSource]()
     let databaseRef = Database.database().reference()
     
@@ -43,7 +43,7 @@ class RegisteredPetCollection : UICollectionView, UICollectionViewDelegateFlowLa
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-      
+        
         return doggyProfileDataSource.count
         
     }
@@ -78,7 +78,7 @@ class RegisteredPetCollection : UICollectionView, UICollectionViewDelegateFlowLa
             cell.nameLabel.text = dogsName
             cell.nameLabel.font = UIFont(name: dsHeaderFont, size: 16)
             cell.nameLabel.textColor = coreBlackColor
-
+            
             cell.addDogImage.loadImageGeneralUse(profileImage) { isComplete in
                 print("image loaded")
             }
@@ -91,9 +91,9 @@ class RegisteredPetCollection : UICollectionView, UICollectionViewDelegateFlowLa
         
         let selectedButtonCell = sender.superview as! UICollectionViewCell
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
-       
+        
         let lastIndex = self.doggyProfileDataSource.count - 1
-
+        
         switch indexPath.item {
         
         case lastIndex :
@@ -104,7 +104,7 @@ class RegisteredPetCollection : UICollectionView, UICollectionViewDelegateFlowLa
             
             let _ = self.doggyProfileDataSource[indexPath.item + 1]
             
-           //self.removeDoggyProfileAlert(passedDogName: dogName, refKey: refKey, parentKey: parentKey, userUID: user_uid)
+        //self.removeDoggyProfileAlert(passedDogName: dogName, refKey: refKey, parentKey: parentKey, userUID: user_uid)
         }
     }
     
@@ -130,7 +130,7 @@ class RegisteredPetCollection : UICollectionView, UICollectionViewDelegateFlowLa
     func removeDogProfile(passedDogName : String, refKey : String, parentKey : String, userUID : String) {
         
         let path = self.databaseRef.child("doggy_profile_builder").child(userUID).child(refKey)
-
+        
         path.removeValue { error, ref in
             
             if error != nil {
@@ -166,7 +166,7 @@ class PetCollectionFeeder : UICollectionViewCell {
         vi.layer.borderColor = coreWhiteColor.cgColor
         vi.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleAddDog(sender:))))
         
-       return vi
+        return vi
     }()
     
     let nameLabel : UILabel = {
@@ -201,7 +201,7 @@ class PetCollectionFeeder : UICollectionViewCell {
         self.addDogImage.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0).isActive = true
         self.addDogImage.heightAnchor.constraint(equalToConstant: 80).isActive = true
         self.addDogImage.widthAnchor.constraint(equalToConstant: 80).isActive = true
-
+        
         self.nameLabel.topAnchor.constraint(equalTo: self.addDogImage.bottomAnchor, constant: 0).isActive = true
         self.nameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
         self.nameLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true

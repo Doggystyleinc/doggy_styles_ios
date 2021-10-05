@@ -9,9 +9,9 @@ import Foundation
 import UIKit
 
 class CustomSlider: UISlider {
-
-@IBInspectable var sliderTrackHeight : CGFloat = 40
-
+    
+    @IBInspectable var sliderTrackHeight : CGFloat = 40
+    
     override func trackRect(forBounds bounds: CGRect) -> CGRect {
         let originalRect = super.trackRect(forBounds: bounds)
         return CGRect(origin: CGPoint(x: originalRect.origin.x, y: originalRect.origin.y + (sliderTrackHeight / 2)), size: CGSize(width: bounds.width, height: sliderTrackHeight))
@@ -35,7 +35,7 @@ class TodaysDashView : UIView {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         
-       return hl
+        return hl
     }()
     
     let container : UIView = {
@@ -53,17 +53,16 @@ class TodaysDashView : UIView {
         cv.layer.shadowRadius = 9
         cv.layer.shouldRasterize = false
         
-       return cv
+        return cv
     }()
-    
     
     let topSubContainer : UIView = {
         
         let cv = UIView()
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.backgroundColor = .clear
-
-       return cv
+        
+        return cv
         
     }()
     
@@ -72,7 +71,7 @@ class TodaysDashView : UIView {
         let cv = UIView()
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.backgroundColor = .clear
-       return cv
+        return cv
     }()
     
     let bottomSubContainer : UIView = {
@@ -80,7 +79,7 @@ class TodaysDashView : UIView {
         let cv = UIView()
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.backgroundColor = .clear
-       return cv
+        return cv
     }()
     
     
@@ -93,8 +92,8 @@ class TodaysDashView : UIView {
         vi.isUserInteractionEnabled = false
         vi.backgroundColor = coreOrangeColor.withAlphaComponent(0.1)
         vi.layer.masksToBounds = true
-
-       return vi
+        
+        return vi
     }()
     
     let dogTwoImage : UIImageView = {
@@ -107,7 +106,7 @@ class TodaysDashView : UIView {
         vi.backgroundColor = coreOrangeColor.withAlphaComponent(0.1)
         vi.layer.masksToBounds = true
         
-       return vi
+        return vi
     }()
     
     let dateLabel : UILabel = {
@@ -121,7 +120,7 @@ class TodaysDashView : UIView {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.textColor = coreBlackColor
-
+        
         return hl
     }()
     
@@ -151,7 +150,7 @@ class TodaysDashView : UIView {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.textColor = dividerGrey
-
+        
         return hl
     }()
     
@@ -163,7 +162,7 @@ class TodaysDashView : UIView {
         cbf.tintColor = coreOrangeColor
         cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 16, style: .solid)
         cbf.setTitle(String.fontAwesomeIcon(name: .pencilAlt), for: .normal)
-      
+        
         return cbf
         
     }()
@@ -179,7 +178,7 @@ class TodaysDashView : UIView {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .center
         hl.textColor = coreOrangeColor
-
+        
         return hl
     }()
     
@@ -194,7 +193,7 @@ class TodaysDashView : UIView {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .center
         hl.textColor = coreBlackColor
-
+        
         return hl
     }()
     
@@ -209,7 +208,7 @@ class TodaysDashView : UIView {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .center
         hl.textColor = coreBlackColor
-
+        
         return hl
     }()
     
@@ -251,23 +250,20 @@ class TodaysDashView : UIView {
         cbf.layer.shadowRadius = 4
         cbf.layer.shouldRasterize = false
         cbf.addTarget(self, action: #selector(self.handleChatButton), for: .touchUpInside)
-
+        
         let str = String.fontAwesomeIcon(name: .comments) + "   Chat"
         let attributedStr = NSMutableAttributedString(string: str)
-
-        //Apply FontAwesome to the first character
+        
         let range1 = NSRange(location: 0, length: 1)
         attributedStr.addAttribute(.font,
                                    value: UIFont.fontAwesome(ofSize: 18, style: .solid),
                                    range: range1)
-
-        //Apply the system font to the rest of the string
+        
         let range2 = NSRange(location: 1, length: (str as NSString).length - 1)
         attributedStr.addAttribute(.font,
                                    value: UIFont(name: dsHeaderFont, size: 18)!,
                                    range: range2)
-
-        //Set the attributed text for the button
+        
         cbf.setAttributedTitle(attributedStr, for: .normal)
         
         return cbf
@@ -292,7 +288,7 @@ class TodaysDashView : UIView {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .center
         hl.textColor = coreBlackColor
-
+        
         return hl
     }()
     
@@ -307,7 +303,7 @@ class TodaysDashView : UIView {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .center
         hl.textColor = coreBlackColor
-
+        
         return hl
     }()
     
@@ -322,7 +318,7 @@ class TodaysDashView : UIView {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .center
         hl.textColor = coreBlackColor
-
+        
         return hl
     }()
     
@@ -337,12 +333,12 @@ class TodaysDashView : UIView {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .center
         hl.textColor = coreBlackColor
-
+        
         return hl
     }()
     
     lazy var stackView : UIStackView = {
-              
+        
         let sv = UIStackView()
         sv.translatesAutoresizingMaskIntoConstraints = false
         sv.axis = .horizontal
@@ -366,7 +362,7 @@ class TodaysDashView : UIView {
         ps.maximumTrackTintColor = dividerGrey.withAlphaComponent(0.3)
         ps.value = 0.25
         
-       return ps
+        return ps
     }()
     
     let startingTimeLabel : UILabel = {
@@ -380,7 +376,7 @@ class TodaysDashView : UIView {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.textColor = coreBlackColor
-
+        
         return hl
     }()
     
@@ -395,7 +391,7 @@ class TodaysDashView : UIView {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .right
         hl.textColor = coreBlackColor
-
+        
         return hl
     }()
     
@@ -405,7 +401,7 @@ class TodaysDashView : UIView {
         sod.translatesAutoresizingMaskIntoConstraints = false
         sod.backgroundColor = dividerGrey.withAlphaComponent(0.2)
         
-       return sod
+        return sod
     }()
     
     override init(frame: CGRect) {
@@ -417,12 +413,11 @@ class TodaysDashView : UIView {
         
     }
     
-    
     func addViews() {
         
         self.addSubview(self.headerLabel)
         self.addSubview(self.container)
-       
+        
         
         self.headerLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive = true
         self.headerLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
@@ -433,7 +428,7 @@ class TodaysDashView : UIView {
         self.container.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.container.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
         self.container.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -50).isActive = true
-
+        
     }
     
     override func layoutSubviews() {
@@ -458,7 +453,7 @@ class TodaysDashView : UIView {
         self.middleSubContainer.leftAnchor.constraint(equalTo: self.container.leftAnchor, constant: 0).isActive = true
         self.middleSubContainer.rightAnchor.constraint(equalTo: self.container.rightAnchor, constant: 0).isActive = true
         self.middleSubContainer.heightAnchor.constraint(equalToConstant: self.container.frame.size.height / 3).isActive = true
-
+        
         self.bottomSubContainer.topAnchor.constraint(equalTo: self.middleSubContainer.bottomAnchor, constant: 0).isActive = true
         self.bottomSubContainer.leftAnchor.constraint(equalTo: self.container.leftAnchor, constant: 0).isActive = true
         self.bottomSubContainer.rightAnchor.constraint(equalTo: self.container.rightAnchor, constant: 0).isActive = true
@@ -488,7 +483,7 @@ class TodaysDashView : UIView {
         self.editButton.centerYAnchor.constraint(equalTo: self.dogTwoImage.centerYAnchor, constant: 0).isActive = true
         self.editButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         self.editButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
-
+        
         self.dateLabel.topAnchor.constraint(equalTo: self.dogOneImage.bottomAnchor, constant: 16).isActive = true
         self.dateLabel.leftAnchor.constraint(equalTo: self.dogOneImage.leftAnchor, constant: 0).isActive = true
         self.dateLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 2.5).isActive = true
@@ -504,13 +499,13 @@ class TodaysDashView : UIView {
         self.recurringLabel.rightAnchor.constraint(equalTo: self.topSubContainer.rightAnchor, constant: -10).isActive = true
         self.recurringLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         //MARK: - END TOP CONTAINER
-
+        
         
         //MARK: - MIDDLE CONTAINER
         self.middleSubContainer.addSubview(self.statusLabel)
         self.middleSubContainer.addSubview(self.greetingsLabel)
         self.middleSubContainer.addSubview(self.descriptionLabel)
-
+        
         self.statusLabel.topAnchor.constraint(equalTo: self.middleSubContainer.topAnchor, constant: 10).isActive = true
         self.statusLabel.leftAnchor.constraint(equalTo: self.middleSubContainer.leftAnchor, constant: 20).isActive = true
         self.statusLabel.rightAnchor.constraint(equalTo: self.middleSubContainer.rightAnchor, constant: -20).isActive = true
@@ -526,7 +521,7 @@ class TodaysDashView : UIView {
         self.descriptionLabel.rightAnchor.constraint(equalTo: self.middleSubContainer.rightAnchor, constant: -20).isActive = true
         self.descriptionLabel.bottomAnchor.constraint(equalTo: self.middleSubContainer.bottomAnchor, constant: -10).isActive = true
         //MARK: - END MIDDLE CONTAINER
-
+        
         
         //MARK: - BOTTOM CONTAINER
         self.bottomSubContainer.addSubview(self.bottomSpacer)
@@ -536,7 +531,7 @@ class TodaysDashView : UIView {
         self.bottomSubContainer.addSubview(self.progressSlider)
         self.bottomSubContainer.addSubview(self.startingTimeLabel)
         self.bottomSubContainer.addSubview(self.endingTimeLabel)
-
+        
         self.bottomSpacer.centerXAnchor.constraint(equalTo: self.bottomSubContainer.centerXAnchor, constant: 0).isActive = true
         self.bottomSpacer.bottomAnchor.constraint(equalTo: self.bottomSubContainer.bottomAnchor, constant: 0).isActive = true
         self.bottomSpacer.widthAnchor.constraint(equalToConstant: 5).isActive = true
@@ -546,7 +541,7 @@ class TodaysDashView : UIView {
         self.detailsButton.bottomAnchor.constraint(equalTo: self.bottomSubContainer.bottomAnchor, constant: -24).isActive = true
         self.detailsButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         self.detailsButton.rightAnchor.constraint(equalTo: self.bottomSpacer.leftAnchor, constant: -5).isActive = true
-
+        
         self.chatButton.rightAnchor.constraint(equalTo: self.bottomSubContainer.rightAnchor, constant: -23).isActive = true
         self.chatButton.bottomAnchor.constraint(equalTo: self.bottomSubContainer.bottomAnchor, constant: -24).isActive = true
         self.chatButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -569,7 +564,7 @@ class TodaysDashView : UIView {
         self.startingTimeLabel.bottomAnchor.constraint(equalTo: self.progressSlider.topAnchor, constant: -5).isActive = true
         self.startingTimeLabel.leftAnchor.constraint(equalTo: self.progressSlider.leftAnchor, constant: 0).isActive = true
         self.startingTimeLabel.sizeToFit()
-
+        
         self.endingTimeLabel.bottomAnchor.constraint(equalTo: self.progressSlider.topAnchor, constant: -5).isActive = true
         self.endingTimeLabel.rightAnchor.constraint(equalTo: self.progressSlider.rightAnchor, constant: 0).isActive = true
         self.endingTimeLabel.sizeToFit()
@@ -579,23 +574,18 @@ class TodaysDashView : UIView {
         self.stageOneDivider.leftAnchor.constraint(equalTo: self.container.leftAnchor, constant: 0).isActive = true
         self.stageOneDivider.rightAnchor.constraint(equalTo: self.container.rightAnchor, constant: 0).isActive = true
         self.stageOneDivider.heightAnchor.constraint(equalToConstant: 15).isActive = true
-
+        
         
         //MARK: - END BOTTOM CONTAINER
     }
     
     @objc func handleDetailsButton() {
-        
-        
     }
     
     @objc func handleChatButton() {
-        
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }

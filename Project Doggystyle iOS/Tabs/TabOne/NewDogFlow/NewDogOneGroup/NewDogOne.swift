@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
+class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, CustomAlertCallBackProtocol {
     
     var selectedDate : String = "",
         dogBreedJsonGrabber = DogBreed(),
@@ -144,7 +144,6 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         return pv
     }()
-    
     
     lazy var nameTextField : UITextField = {
         
@@ -362,7 +361,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
         
-        //SET TEXTFIELD CONTENT TYPES
+        //MARK: - SET TEXTFIELD CONTENT TYPES
         self.nameTextField.textContentType = UITextContentType(rawValue: "")
         self.breedTextField.textContentType = UITextContentType(rawValue: "")
         self.ageTextField.textContentType = UITextContentType(rawValue: "")
@@ -430,11 +429,10 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.5)
         
         let screenHeight = UIScreen.main.bounds.height
-        print("Screen height: \(screenHeight)")
         
         switch screenHeight {
         
-        //MANUAL CONFIGURATION - REFACTOR FOR UNNIVERSAL FITMENT
+        //MANUAL CONFIGURATION - REFACTOR FOR UNIVERSAL FITMENT
         case 926 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.0)
         case 896 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.0)
         case 844 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.02)
@@ -624,7 +622,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
                     if self.selectedImage != nil {
                         if self.isSelectedNameChosen == true {
                             
-                            //PROFILE BUILDER, NEEDS TO BE CALLED EVERYTIME A USER MOVES FORWARD
+                            //MARK: - PROFILE BUILDER, NEEDS TO BE CALLED EVERYTIME A USER MOVES FORWARD
                             globalNewDogBuilder.dogBuilderName = safeName
                             globalNewDogBuilder.dogBuilderBreed = safeBreed
                             globalNewDogBuilder.dogBuilderBirthday = safeBirthday
@@ -638,21 +636,43 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
                             self.navigationController?.pushViewController(newDogTwo, animated: true)
                             
                         } else {
-                            self.presentAlertOnMainThread(title: "Breed", message: "Please select a pre-populated breed.", buttonTitle: "Ok")
+                            self.handleCustomPopUpAlert(title: "BREED", message: "Please select a pre-populated breed.", passedButtons: [Statics.OK])
                         }
-                        
                     } else {
-                        self.presentAlertOnMainThread(title: "Profile photo", message: "Please add a photo of your pup.", buttonTitle: "Ok")
+                        self.handleCustomPopUpAlert(title: "PROFILE PHOTO", message: "Please add a photo of your pup.", passedButtons: [Statics.OK])
                     }
-                    
                 } else {
-                    self.presentAlertOnMainThread(title: "Birthday", message: "Seems incorrect. Please try again.", buttonTitle: "Ok")
+                    self.handleCustomPopUpAlert(title: "BIRTHDAY", message: "Seems incorrect. Please try again.", passedButtons: [Statics.OK])
                 }
             } else {
-                self.presentAlertOnMainThread(title: "Breed", message: "Seems incorrect. Please try again.", buttonTitle: "Ok")
+                self.handleCustomPopUpAlert(title: "BREED", message: "Seems incorrect. Please try again.", passedButtons: [Statics.OK])
             }
         } else {
-            self.presentAlertOnMainThread(title: "Name", message: "Please make sure your pup's name is at least two characters.", buttonTitle: "Ok")
+            self.handleCustomPopUpAlert(title: "NAME", message: "Please make sure your pup's name is at least two characters.", passedButtons: [Statics.OK])
+        }
+    }
+    
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.OK: print(Statics.OK)
+            
+        default: print("Should not hit")
+            
         }
     }
 }
@@ -681,19 +701,9 @@ extension NewDogOne : UIImagePickerControllerDelegate, UINavigationControllerDel
                     self.openGallery()
                 }
             })
-            
-        case .restricted:
-            AlertControllerCompletion.handleAlertWithCompletion(title: "Permissions", message: "Please allow Photo Library Permissions in the Settings application.") { (complete) in
-                print("Alert presented")
-            }
-        case .denied:
-            AlertControllerCompletion.handleAlertWithCompletion(title: "Permissions", message: "Please allow Photo Library Permissions in the Settings application.") { (complete) in
-                print("Alert presented")
-            }
+        
         default :
-            AlertControllerCompletion.handleAlertWithCompletion(title: "Permissions", message: "Please allow Photo Library Permissions in the Settings application.") { (complete) in
-                print("Alert presented")
-            }
+            self.handleCustomPopUpAlert(title: "PERMISSIONS", message: "Please allow Photo Library Permissions in the Settings application.", passedButtons: [Statics.OK])
         }
     }
     
@@ -733,7 +743,7 @@ extension NewDogOne : UIImagePickerControllerDelegate, UINavigationControllerDel
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         
         picker.dismiss(animated: true) {
-            print("Dismissed the image picker or camera")
+            print("DISMISSED")
         }
     }
     
@@ -764,7 +774,7 @@ extension NewDogOne : UIImagePickerControllerDelegate, UINavigationControllerDel
                     
                     
                 } else {
-                    print("Failed grabbing the photo")
+                    print("PHOTO GRAB FAILURE")
                 }
                 
             default : print("SHOULD NOT HIT FOR THE CAMERA PICKER")

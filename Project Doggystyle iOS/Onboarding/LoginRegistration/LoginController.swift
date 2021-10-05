@@ -12,15 +12,10 @@ import GoogleSignIn
 import Firebase
 import FBSDKLoginKit
 
-final class LoginController: UIViewController, UITextFieldDelegate {
+final class LoginController: UIViewController, UITextFieldDelegate, CustomAlertCallBackProtocol {
     
-    private let logo = LogoImageView(frame: .zero),
-                mainLoadingScreen = MainLoadingScreen()
-    
-    let databaseRef = Database.database().reference()
-    
-    let pets: [Pet] = [Pet.petOne, Pet.petTwo, Pet.petThree]
-    
+    let mainLoadingScreen = MainLoadingScreen(),
+        databaseRef = Database.database().reference()
     
     lazy var backButton : UIButton = {
         
@@ -92,7 +87,6 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         
         return tel
     }()
-    
     
     let typingEmailLabel : UILabel = {
         
@@ -299,7 +293,6 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         self.emailTextField.delegate = self
         self.passwordTextField.delegate = self
         
-        self.dismissKeyboardTapGesture()
         self.addViews()
         
     }
@@ -323,7 +316,6 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         
         self.view.addSubview(self.placeHolderEmailLabel)
         self.view.addSubview(self.placeHolderPasswordLabel)
-        
         
         self.view.addSubview(self.loginButton)
         self.view.addSubview(self.forgortPasswordButton)
@@ -397,10 +389,8 @@ final class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     func resignation() {
-        
         self.emailTextField.resignFirstResponder()
         self.passwordTextField.resignFirstResponder()
-        
     }
     
     @objc func showHidePassWord() {
@@ -417,10 +407,6 @@ final class LoginController: UIViewController, UITextFieldDelegate {
             self.showHideEyeButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 18, style: .solid)
             self.showHideEyeButton.setTitle(String.fontAwesomeIcon(name: .eye), for: .normal)
         }
-    }
-    
-    @objc func handleBackButton() {
-        self.navigationController?.popViewController(animated: true)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -479,12 +465,13 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         }
         
         self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             Service.shared.FirebaseLogin(usersEmailAddress: emailText, usersPassword: passwordText) { loginSuccess, response, responseCode in
                 
                 guard loginSuccess == true else {
                     self.mainLoadingScreen.cancelMainLoadingScreen()
-                    self.presentAlertOnMainThread(title: "Credential Mismatch", message: response, buttonTitle: "Ok")
+                    self.handleCustomPopUpAlert(title: "Credential Mismatch", message: response, passedButtons: [Statics.OK])
                     return
                 }
                 self.mainLoadingScreen.cancelMainLoadingScreen()
@@ -493,6 +480,29 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.OK: print(Statics.OK)
+            
+        default: print("Should not hit")
+            
+        }
+    }
     
     @objc private func didTapForgotPassword() {
         let instructionsVC = PasswordResetController()
@@ -506,9 +516,12 @@ final class LoginController: UIViewController, UITextFieldDelegate {
         navVC.modalPresentationStyle = .fullScreen
         navigationController?.present(navVC, animated: true)
     }
+    
+    @objc func handleBackButton() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
 }
-
-
 
 //GOOGLE SIGN IN AND AUTHENTICATION
 extension LoginController : GIDSignInDelegate {
@@ -590,7 +603,6 @@ extension LoginController {
                 }
                 
             } else {
-                print("No token present for FB auth, check the developers dashboard.")
                 self.mainLoadingScreen.cancelMainLoadingScreen()
             }
         }

@@ -8,28 +8,18 @@
 import UIKit
 import PhoneNumberKit
 
-extension UIScrollView {
+class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate, UITextViewDelegate, CustomAlertCallBackProtocol {
     
-    func scrollToTop() {
-        let desiredOffset = CGPoint(x: 0, y: -contentInset.top)
-        setContentOffset(desiredOffset, animated: true)
-    }
+    let logo = LogoImageView(frame: .zero),
+        containerView = UIView(frame: .zero),
+        phoneNumberKit = PhoneNumberKit(),
+        mainLoadingScreen = MainLoadingScreen()
     
-    func scrollToBottom() {
-        let bottomOffset = CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height)
-        self.setContentOffset(bottomOffset, animated: true)
-    }
-}
-
-final class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate, UITextViewDelegate {
-    
-    private let logo = LogoImageView(frame: .zero),
-                containerView = UIView(frame: .zero),
-                phoneNumberKit = PhoneNumberKit()
-    
-    let mainLoadingScreen = MainLoadingScreen()
-    
-    var screenHeight = UIScreen.main.bounds.height,
+    var lastKeyboardHeight : CGFloat = 0.0,
+        contentOffSet : CGFloat = 0.0,
+        contentHeight : CGFloat = 675.0,
+        isKeyboardShowing : Bool = false,
+        screenHeight = UIScreen.main.bounds.height,
         isKeyboardPresented : Bool = false
     
     lazy var backButton : UIButton = {
@@ -221,7 +211,6 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         etfc.withExamplePlaceholder = false
         etfc.addTarget(self, action: #selector(self.handlePhoneNumberTextFieldChange), for: .editingChanged)
         etfc.addTarget(self, action: #selector(self.handlePhoneNumberTextFieldBegin), for: .touchDown)
-        etfc.addTarget(self, action: #selector(self.handleManualScrolling), for: .touchDown)
         
         return etfc
         
@@ -286,7 +275,6 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         etfc.layer.shouldRasterize = false
         etfc.addTarget(self, action: #selector(self.handleEmailTextFieldChange), for: .editingChanged)
         etfc.addTarget(self, action: #selector(self.handleEmailTextFieldBegin), for: .touchDown)
-        etfc.addTarget(self, action: #selector(self.handleManualScrolling), for: .touchDown)
         
         return etfc
         
@@ -353,7 +341,6 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         etfc.setRightPaddingPoints(50)
         etfc.addTarget(self, action: #selector(self.handlePasswordTextFieldChange), for: .editingChanged)
         etfc.addTarget(self, action: #selector(self.handlePasswordTextFieldBegin), for: .touchDown)
-        etfc.addTarget(self, action: #selector(self.handleManualScrolling), for: .touchDown)
         
         return etfc
         
@@ -426,7 +413,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         let sv = UIScrollView()
         sv.translatesAutoresizingMaskIntoConstraints = false
         sv.backgroundColor = coreBackgroundWhite
-        sv.isScrollEnabled = false
+        sv.isScrollEnabled = true
         sv.minimumZoomScale = 1.0
         sv.maximumZoomScale = 1.0
         sv.bounces = true
@@ -441,20 +428,13 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         
     }()
     
-    lazy var toolBar : UIToolbar = {
+    let contentView : UIView = {
         
-        let bar = UIToolbar()
-        
-        let upImage = UIImage(named : "toolbarUpArrow")?.withRenderingMode(.alwaysOriginal)
-        let downImage = UIImage(named : "toolBarDownArrow")?.withRenderingMode(.alwaysOriginal)
-        let next = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(self.handleNextButton))
-        let flexButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        
-        bar.items = [flexButton,next]
-        bar.backgroundColor = coreWhiteColor
-        bar.sizeToFit()
-        
-        return bar
+        let cv = UIView()
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.backgroundColor = .clear
+        cv.isUserInteractionEnabled = true
+        return cv
         
     }()
     
@@ -552,206 +532,72 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         self.view.backgroundColor = .dsViewBackground
         self.navigationController?.navigationBar.isHidden = true
         
-        self.dismissKeyboardTapGesture()
         self.addViews()
         self.setupObserversAndContentTypes()
         
     }
     
-    func setupObserversAndContentTypes() {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         
-        //SET TEXTFIELD CONTENT TYPES
-        self.firstNameTextField.textContentType = UITextContentType(rawValue: "")
-        self.lastNameTextField.textContentType = UITextContentType(rawValue: "")
-        self.phoneNumberTextField.textContentType = UITextContentType(rawValue: "")
-        self.emailTextField.textContentType = UITextContentType(rawValue: "")
-        self.passwordTextField.textContentType = UITextContentType(rawValue: "")
-        
-        self.firstNameTextField.inputAccessoryView = toolBar
-        self.lastNameTextField.inputAccessoryView = toolBar
-        self.phoneNumberTextField.inputAccessoryView = toolBar
-        self.emailTextField.inputAccessoryView = toolBar
-        self.passwordTextField.inputAccessoryView = toolBar
-        
-        self.scrollView.keyboardDismissMode = .interactive
-        
-        let screenHeight = UIScreen.main.bounds.height
-        
-        switch screenHeight {
-        
-        case 926:
-            self.scrollView.isScrollEnabled = false
-            self.notificationObservers()
-        case 896:
-            self.scrollView.isScrollEnabled = false
-            self.notificationObservers()
-        case 844: //done
-            self.scrollView.isScrollEnabled = false
-            self.notificationObservers()
-        case 812:
-            self.scrollView.isScrollEnabled = false
-            self.notificationObservers()
-        case 736:
-            self.scrollView.isScrollEnabled = false
-            self.notificationObservers()
-        case 667:
-            self.scrollView.isScrollEnabled = false
-            self.notificationObservers()
-        default:
-            self.scrollView.isScrollEnabled = true
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardHide), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
-    @objc func notificationObservers() {
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-    }
-    
-    @objc func keyboardWillShow() {
-        self.scrollView.isScrollEnabled = true
-        self.isKeyboardPresented = true
-    }
-    
-    @objc func keyboardWillHide() {
-        self.scrollView.isScrollEnabled = false
-        self.scrollView.scrollToTop()
-        self.isKeyboardPresented = false
-
-    }
-    
-    @objc func showHidePassWord() {
-        
-        self.passwordTextField.isSecureTextEntry = !self.passwordTextField.isSecureTextEntry
-        
-        if self.passwordTextField.isSecureTextEntry {
-            
-            self.showHideEyeButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 18, style: .light)
-            self.showHideEyeButton.setTitle(String.fontAwesomeIcon(name: .eyeSlash), for: .normal)
-            
-        } else {
-            
-            self.showHideEyeButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 18, style: .solid)
-            self.showHideEyeButton.setTitle(String.fontAwesomeIcon(name: .eye), for: .normal)
-        }
-    }
-    
-    @objc func resignation() {
-        
-        self.firstNameTextField.resignFirstResponder()
-        self.lastNameTextField.resignFirstResponder()
-        self.phoneNumberTextField.resignFirstResponder()
-        self.emailTextField.resignFirstResponder()
-        self.passwordTextField.resignFirstResponder()
-    }
-    
-    @objc func handleNextButton() {
-        
-        //FIRST NAME
-        if self.firstNameTextField.isFirstResponder {
-            self.firstNameTextField.resignFirstResponder()
-            self.lastNameTextField.becomeFirstResponder()
-            
-            //LAST NAME
-        } else if lastNameTextField.isFirstResponder {
-            self.lastNameTextField.resignFirstResponder()
-            self.phoneNumberTextField.becomeFirstResponder()
-            
-            //EMAIL
-        } else if phoneNumberTextField.isFirstResponder {
-            self.phoneNumberTextField.resignFirstResponder()
-            self.emailTextField.becomeFirstResponder()
-            let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
-            //WHEN AT THE TOP PUSH TO THE BOTTOM
-            self.scrollView.setContentOffset(bottomOffset, animated: true)
-            
-            //INITIAL PASSWORD
-        } else if emailTextField.isFirstResponder {
-            self.emailTextField.resignFirstResponder()
-            self.passwordTextField.becomeFirstResponder()
-            let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
-            //WHEN AT THE TOP PUSH TO THE BOTTOM
-            self.scrollView.setContentOffset(bottomOffset, animated: true)
-            
-            //REPEAT PASSWORD
-        } else if passwordTextField.isFirstResponder {
-            self.passwordTextField.resignFirstResponder()
-            self.firstNameTextField.becomeFirstResponder()
-            //WHEN AT THE BOTTOM PUSH TO THE TOP
-            self.scrollView.scrollToTop()
-            
-            
-        }
-        
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func addViews() {
         
-        self.view.addSubview(scrollView)
-        self.view.addSubview(timeCover)
+        self.view.addSubview(self.scrollView)
+        self.view.addSubview(self.timeCover)
         
-        self.scrollView.addSubview(self.backButton)
-        self.scrollView.addSubview(self.dsCompanyLogoImage)
-        self.scrollView.addSubview(self.headerLabel)
+        self.scrollView.addSubview(self.contentView)
         
-        self.scrollView.addSubview(self.firstNameTextField)
-        self.scrollView.addSubview(self.lastNameTextField)
-        self.scrollView.addSubview(self.phoneNumberTextField)
-        self.scrollView.addSubview(self.emailTextField)
-        self.scrollView.addSubview(self.passwordTextField)
-        self.scrollView.addSubview(self.showHideEyeButton)
+        self.contentView.addSubview(self.backButton)
+        self.contentView.addSubview(self.dsCompanyLogoImage)
+        self.contentView.addSubview(self.headerLabel)
         
-        self.scrollView.addSubview(self.placeHolderFirstNameLabel)
-        self.scrollView.addSubview(self.typingFirstNameLabel)
+        self.contentView.addSubview(self.firstNameTextField)
+        self.contentView.addSubview(self.lastNameTextField)
+        self.contentView.addSubview(self.phoneNumberTextField)
+        self.contentView.addSubview(self.emailTextField)
+        self.contentView.addSubview(self.passwordTextField)
+        self.contentView.addSubview(self.showHideEyeButton)
         
-        self.scrollView.addSubview(self.placeHolderLastNameLabel)
-        self.scrollView.addSubview(self.typingLastNameLabel)
+        self.contentView.addSubview(self.placeHolderFirstNameLabel)
+        self.contentView.addSubview(self.typingFirstNameLabel)
         
-        self.scrollView.addSubview(self.placeHolderPhoneNumberLabel)
-        self.scrollView.addSubview(self.typingPhoneNumberLabel)
+        self.contentView.addSubview(self.placeHolderLastNameLabel)
+        self.contentView.addSubview(self.typingLastNameLabel)
         
-        self.scrollView.addSubview(self.placeHolderEmailLabel)
-        self.scrollView.addSubview(self.typingEmailLabel)
+        self.contentView.addSubview(self.placeHolderPhoneNumberLabel)
+        self.contentView.addSubview(self.typingPhoneNumberLabel)
         
-        self.scrollView.addSubview(self.placeHolderPasswordLabel)
-        self.scrollView.addSubview(self.typingPasswordLabel)
+        self.contentView.addSubview(self.placeHolderEmailLabel)
+        self.contentView.addSubview(self.typingEmailLabel)
         
-        self.scrollView.addSubview(self.confirmButton)
+        self.contentView.addSubview(self.placeHolderPasswordLabel)
+        self.contentView.addSubview(self.typingPasswordLabel)
         
-        self.scrollView.addSubview(self.termsTextView)
+        self.contentView.addSubview(self.confirmButton)
+        
+        self.view.addSubview(self.termsTextView)
         
         self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
-        self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        self.scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
         self.scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.contentHeight + self.lastKeyboardHeight)
         
-        print("Screen height is: \(screenHeight)")
-        
-        /*
-         926: iPhone 12 Pro Max
-         896: iPhone 11 : iPhone 11 Pro Max
-         844: iPhone 12 : iPhone 12 Pro
-         812: 12 mini : iPhone 11 Pro : iPhone 12 Mini
-         736: iPhone 8 Plus
-         667: iPhone 8
-         */
-        
-        switch screenHeight {
-        
-        //MANUAL CONFIGURATION - REFACTOR FOR UNNIVERSAL FITMENT
-        case 926 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.13)
-        case 896 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.14)
-        case 844 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.22)
-        case 812 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.27)
-        case 736 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.34)
-        case 667 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.47)
-        case 568 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.47)
-        case 480 : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.47)
-            
-        default : scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height * 1.5)
-            
-        }
+        self.contentView.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 0).isActive = true
+        self.contentView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor, constant: 0).isActive = true
+        self.contentView.leftAnchor.constraint(equalTo: self.scrollView.leftAnchor, constant: 0).isActive = true
+        self.contentView.rightAnchor.constraint(equalTo: self.scrollView.rightAnchor, constant: 0).isActive = true
+        self.contentView.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        self.contentView.heightAnchor.constraint(equalToConstant: 665).isActive = true
         
         self.timeCover.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
         self.timeCover.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
@@ -784,7 +630,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         self.typingFirstNameLabel.topAnchor.constraint(equalTo: self.firstNameTextField.topAnchor, constant: 14).isActive = true
         self.typingFirstNameLabel.sizeToFit()
         
-        self.lastNameTextField.topAnchor.constraint(equalTo: self.firstNameTextField.bottomAnchor, constant: 20).isActive = true
+        self.lastNameTextField.topAnchor.constraint(equalTo: self.firstNameTextField.bottomAnchor, constant: 16).isActive = true
         self.lastNameTextField.leftAnchor.constraint(equalTo: self.firstNameTextField.leftAnchor, constant: 0).isActive = true
         self.lastNameTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.lastNameTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -797,7 +643,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         self.typingLastNameLabel.topAnchor.constraint(equalTo: self.lastNameTextField.topAnchor, constant: 14).isActive = true
         self.typingLastNameLabel.sizeToFit()
         
-        self.phoneNumberTextField.topAnchor.constraint(equalTo: self.lastNameTextField.bottomAnchor, constant: 20).isActive = true
+        self.phoneNumberTextField.topAnchor.constraint(equalTo: self.lastNameTextField.bottomAnchor, constant: 16).isActive = true
         self.phoneNumberTextField.leftAnchor.constraint(equalTo: self.firstNameTextField.leftAnchor, constant: 0).isActive = true
         self.phoneNumberTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.phoneNumberTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -815,7 +661,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         self.typingPhoneNumberLabel.topAnchor.constraint(equalTo: self.phoneNumberTextField.topAnchor, constant: 14).isActive = true
         self.typingPhoneNumberLabel.sizeToFit()
         
-        self.emailTextField.topAnchor.constraint(equalTo: self.phoneNumberTextField.bottomAnchor, constant: 20).isActive = true
+        self.emailTextField.topAnchor.constraint(equalTo: self.phoneNumberTextField.bottomAnchor, constant: 16).isActive = true
         self.emailTextField.leftAnchor.constraint(equalTo: self.firstNameTextField.leftAnchor, constant: 0).isActive = true
         self.emailTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.emailTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -828,7 +674,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         self.typingEmailLabel.topAnchor.constraint(equalTo: self.emailTextField.topAnchor, constant: 14).isActive = true
         self.typingEmailLabel.sizeToFit()
         
-        self.passwordTextField.topAnchor.constraint(equalTo: self.emailTextField.bottomAnchor, constant: 20).isActive = true
+        self.passwordTextField.topAnchor.constraint(equalTo: self.emailTextField.bottomAnchor, constant: 16).isActive = true
         self.passwordTextField.leftAnchor.constraint(equalTo: self.firstNameTextField.leftAnchor, constant: 0).isActive = true
         self.passwordTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.passwordTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -841,36 +687,95 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
         self.typingPasswordLabel.topAnchor.constraint(equalTo: self.passwordTextField.topAnchor, constant: 14).isActive = true
         self.typingPasswordLabel.sizeToFit()
         
-        self.confirmButton.topAnchor.constraint(equalTo: self.passwordTextField.bottomAnchor, constant: 30).isActive = true
+        self.confirmButton.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: 0).isActive = true
         self.confirmButton.leftAnchor.constraint(equalTo: self.passwordTextField.leftAnchor, constant: 0).isActive = true
         self.confirmButton.rightAnchor.constraint(equalTo: self.passwordTextField.rightAnchor, constant: 0).isActive = true
         self.confirmButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        self.termsTextView.topAnchor.constraint(equalTo: self.confirmButton.bottomAnchor, constant: 5).isActive = true
+        self.termsTextView.topAnchor.constraint(equalTo: self.confirmButton.bottomAnchor, constant: 15).isActive = true
         self.termsTextView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 36).isActive = true
         self.termsTextView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -36).isActive = true
         self.termsTextView.heightAnchor.constraint(equalToConstant: 61).isActive = true
     }
     
+    func setupObserversAndContentTypes() {
+        
+        //MARK: - SET TEXTFIELD CONTENT TYPES
+        self.firstNameTextField.textContentType = UITextContentType(rawValue: "")
+        self.lastNameTextField.textContentType = UITextContentType(rawValue: "")
+        self.phoneNumberTextField.textContentType = UITextContentType(rawValue: "")
+        self.emailTextField.textContentType = UITextContentType(rawValue: "")
+        self.passwordTextField.textContentType = UITextContentType(rawValue: "")
+        
+        self.scrollView.keyboardDismissMode = .interactive
+    }
     
-    @objc func handleManualScrolling(sender : UITextField) {
+    @objc func handleKeyboardShow(notification : Notification) {
         
-        if self.isKeyboardPresented == false {return}
+        let userInfo:NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardFrame:NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardRectangle = keyboardFrame.cgRectValue
         
-        if sender == self.phoneNumberTextField {
+        if keyboardRectangle.height > 200 {
             
-            let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
-            self.scrollView.setContentOffset(bottomOffset, animated: true)
+            if self.isKeyboardShowing == true {return}
+            self.isKeyboardShowing = true
             
-        } else if sender == self.emailTextField {
+            self.lastKeyboardHeight = keyboardRectangle.height
+            self.perform(#selector(self.handleKeyboardMove), with: nil, afterDelay: 0.1)
             
-            let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
-            self.scrollView.setContentOffset(bottomOffset, animated: true)
-            
-        } else if sender == self.passwordTextField {
-            let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
-            self.scrollView.setContentOffset(bottomOffset, animated: true)
         }
+    }
+    
+    @objc func handleKeyboardHide(notification : Notification) {
+        
+        self.isKeyboardShowing = false
+        
+        let userInfo:NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardFrame:NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardRectangle = keyboardFrame.cgRectValue
+        
+        self.lastKeyboardHeight = keyboardRectangle.height
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.contentHeight)
+    }
+    
+    @objc func handleKeyboardMove() {
+        self.adjustContentSize()
+    }
+    
+    @objc func adjustContentSize() {
+        
+        if self.firstNameTextField.isFirstResponder {return}
+        
+        self.scrollView.layoutIfNeeded()
+        self.scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.contentHeight + self.lastKeyboardHeight)
+        self.scrollView.scrollToBottom()
+        
+    }
+    
+    @objc func showHidePassWord() {
+        
+        self.passwordTextField.isSecureTextEntry = !self.passwordTextField.isSecureTextEntry
+        
+        if self.passwordTextField.isSecureTextEntry {
+            
+            self.showHideEyeButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 18, style: .light)
+            self.showHideEyeButton.setTitle(String.fontAwesomeIcon(name: .eyeSlash), for: .normal)
+            
+        } else {
+            
+            self.showHideEyeButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 18, style: .solid)
+            self.showHideEyeButton.setTitle(String.fontAwesomeIcon(name: .eye), for: .normal)
+        }
+    }
+    
+    @objc func resignation() {
+        
+        self.firstNameTextField.resignFirstResponder()
+        self.lastNameTextField.resignFirstResponder()
+        self.phoneNumberTextField.resignFirstResponder()
+        self.emailTextField.resignFirstResponder()
+        self.passwordTextField.resignFirstResponder()
     }
     
     //MARK: - FIRST NAME TEXT FIELD
@@ -897,6 +802,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
     @objc func handleLastNameTextFieldBegin() {
         self.typingLastNameLabel.isHidden = false
         self.placeHolderLastNameLabel.isHidden = true
+        self.adjustContentSize()
     }
     
     //MARK: - PHONE NUMBER TEXT FIELD
@@ -910,6 +816,7 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
     @objc func handlePhoneNumberTextFieldBegin() {
         self.typingPhoneNumberLabel.isHidden = false
         self.placeHolderPhoneNumberLabel.isHidden = true
+        self.adjustContentSize()
     }
     
     @objc func handleEmailTextFieldChange() {
@@ -926,6 +833,8 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
     @objc func handleEmailTextFieldBegin() {
         self.typingEmailLabel.isHidden = false
         self.placeHolderEmailLabel.isHidden = true
+        self.adjustContentSize()
+        
     }
     
     @objc func handlePasswordTextFieldChange() {
@@ -939,6 +848,8 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
     @objc func handlePasswordTextFieldBegin() {
         self.typingPasswordLabel.isHidden = false
         self.placeHolderPasswordLabel.isHidden = true
+        self.adjustContentSize()
+        
     }
     
     @objc func handleConfirmButton() {
@@ -989,12 +900,37 @@ final class RegistrationController: UIViewController, UITextFieldDelegate, UIScr
                     }
                 } else {
                     self.mainLoadingScreen.cancelMainLoadingScreen()
-                    self.presentAlertOnMainThread(title: "This is on us, please try again.", message: error!.localizedDescription, buttonTitle: "Ok")
+                    let error = error?.localizedDescription as Any
+                    self.handleCustomPopUpAlert(title: "This is on us, please try again.", message: "\(error)", passedButtons: [Statics.OK])
                 }
             }
             
         } catch {
             print("Error")
+        }
+    }
+    
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.OK: print(Statics.OK)
+            
+        default: print("Should not hit")
+            
         }
     }
     

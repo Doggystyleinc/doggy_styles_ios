@@ -26,10 +26,9 @@ public class DoggyProfileDataSource : NSObject {
     var dog_builder_has_medical_conditions : Bool?
     var dog_builder_has_behavioral_conditions : Bool?
     var dog_builder_has_vaccine_card : Bool?
-
+    
     var time_stamp : Double?
-
-
+    
     init(json : [String : Any]) {
         
         dog_builder_name = json["dog_builder_name"] as? String ?? ""
@@ -48,9 +47,8 @@ public class DoggyProfileDataSource : NSObject {
         dog_builder_has_medical_conditions = json["dog_builder_has_medical_conditions"] as? Bool ?? false
         dog_builder_has_behavioral_conditions = json["dog_builder_has_behavioral_conditions"] as? Bool ?? false
         dog_builder_has_vaccine_card = json["dog_builder_has_vaccine_card"] as? Bool ?? false
-
+        
         time_stamp = json["time_stamp"] as? Double ?? 0.0
-
         
     }
 }

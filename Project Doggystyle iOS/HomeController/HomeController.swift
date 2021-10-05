@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 
-final class HomeViewController: UITabBarController {
+class HomeViewController: UITabBarController {
     
     private let dashboardController = DashboardViewController()
     private let appointmentController = AppointmentsViewController()
@@ -16,34 +16,32 @@ final class HomeViewController: UITabBarController {
     private let servicesController = ServicesController()
     let storageRef = Storage.storage().reference()
     let databaseRef = Database.database().reference()
-
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureTabVC()
-        configureTabIcons()
+        
+        self.view.backgroundColor = .dsViewBackground
+        
+        self.addViews()
+        self.configureTabIcons()
         
     }
-}
-
-//MARK: - Configure Controller
-extension HomeViewController {
-    private func configureTabVC() {
-        self.view.backgroundColor = .dsViewBackground
-        self.tabBar.backgroundColor = .white
+    
+    private func addViews() {
+        
+        self.tabBar.backgroundColor = coreWhiteColor
         self.tabBar.backgroundImage = UIImage()
         self.tabBar.shadowImage = UIImage()
+        
     }
-}
-
-//MARK: - Helpers
-extension HomeViewController {
+    
     func switchTabs(tabIndex : Int) {
         self.selectedIndex = tabIndex
     }
     
     private func configureTabIcons() {
-        //First Tab
+        //MARK: - First Tab
         let tabOneIcon = UIImage(named: "Home Icon")?.withTintColor(.deselectedTab).withRenderingMode(.alwaysOriginal)
         let tabOneFillIcon = UIImage(named: "Home Icon")?.withTintColor(.dsOrange).withRenderingMode(.alwaysOriginal)
         
@@ -52,7 +50,7 @@ extension HomeViewController {
         tabOne.navigationBar.isHidden = true
         tabOne.tabBarItem = UITabBarItem(title: nil, image: tabOneIcon, selectedImage: tabOneFillIcon)
         
-        //Second Tab
+        //MARK: - Second Tab
         let tabTwoIcon = UIImage(named: "Services Icon")?.withTintColor(.deselectedTab).withRenderingMode(.alwaysOriginal)
         let tabTwoFillIcon = UIImage(named: "Services Icon")?.withTintColor(.dsOrange).withRenderingMode(.alwaysOriginal)
         
@@ -61,7 +59,7 @@ extension HomeViewController {
         tabTwo.navigationBar.isHidden = true
         tabTwo.tabBarItem = UITabBarItem(title: nil, image: tabTwoIcon, selectedImage: tabTwoFillIcon)
         
-        //Third Tab
+        //MARK: - Third Tab
         let tabThreeIcon = UIImage(named: "Appointments Icon")?.withTintColor(.deselectedTab).withRenderingMode(.alwaysOriginal)
         let tabThreeFillIcon = UIImage(named: "Appointments Icon")?.withTintColor(.dsOrange).withRenderingMode(.alwaysOriginal)
         
@@ -70,7 +68,7 @@ extension HomeViewController {
         tabThree.navigationBar.isHidden = true
         tabThree.tabBarItem = UITabBarItem(title: nil, image: tabThreeIcon, selectedImage: tabThreeFillIcon)
         
-        //Fourth Tab
+        //MARK: - Fourth Tab
         let tabFourIcon = UIImage(named: "Profile Icon")?.withTintColor(.deselectedTab).withRenderingMode(.alwaysOriginal)
         let tabFourFillIcon = UIImage(named: "Profile Icon")?.withTintColor(.dsOrange).withRenderingMode(.alwaysOriginal)
         
@@ -126,7 +124,7 @@ extension HomeViewController {
     }
     
     func presentBookingController() {
-
+        
         let bookingController = AppointmentOne()
         bookingController.doggyProfileDataSource = globalPetDataSource
         let nav = UINavigationController(rootViewController: bookingController)

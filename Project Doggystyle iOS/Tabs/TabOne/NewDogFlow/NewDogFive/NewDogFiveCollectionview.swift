@@ -12,7 +12,7 @@ class NewDogFiveCollectionview : UICollectionView, UICollectionViewDelegateFlowL
     
     private let newDogID = "newDogID"
     private let newDogExpandedID = "newDogExpandedID"
-
+    
     private let keyArray : [String] = ["Size:",
                                        "Breed:",
                                        "Birthday:",
@@ -23,20 +23,20 @@ class NewDogFiveCollectionview : UICollectionView, UICollectionViewDelegateFlowL
                                        "",
                                        "Behavioural Concerns:",
                                        ""
-                                       ]
+    ]
     
     
     var valueArray : [String] = ["big time here",
-                                   "big time here",
-                                   "big time here",
-                                   "big time here",
-                                   "big time here",
-                                   "big time here",
-                                   "big time here",
-                                   "",
-                                   "big time here",
-                                   ""
-                                   ]
+                                 "big time here",
+                                 "big time here",
+                                 "big time here",
+                                 "big time here",
+                                 "big time here",
+                                 "big time here",
+                                 "",
+                                 "big time here",
+                                 ""
+    ]
     
     var newDogFive : NewDogFive?
     
@@ -61,7 +61,7 @@ class NewDogFiveCollectionview : UICollectionView, UICollectionViewDelegateFlowL
         
         self.register(NewDogFeeder.self, forCellWithReuseIdentifier: self.newDogID)
         self.register(NewDogExpandedFeeder.self, forCellWithReuseIdentifier: self.newDogExpandedID)
-
+        
         
     }
     
@@ -73,14 +73,14 @@ class NewDogFiveCollectionview : UICollectionView, UICollectionViewDelegateFlowL
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         switch indexPath.item {
-       
+        
         case 7,9:
             
             let textFetch = self.newDogFive?.fetchedArray[indexPath.item],
                 textToSize = textFetch ?? "",
                 size = CGSize(width: UIScreen.main.bounds.width - 70, height: 2000),
                 options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-
+            
             let estimatedFrame = NSString(string: textToSize).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font : UIFont(name: dsSubHeaderFont, size: 18)!], context: nil)
             
             let estimatedHeight = estimatedFrame.height
@@ -97,34 +97,34 @@ class NewDogFiveCollectionview : UICollectionView, UICollectionViewDelegateFlowL
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-     
+        
         switch indexPath.item {
-
+        
         case 7,9:
-
+            
             let cell = self.dequeueReusableCell(withReuseIdentifier: self.newDogExpandedID, for: indexPath) as! NewDogExpandedFeeder
-
+            
             cell.newDogFiveExpanded = self
-
+            
             let feederValue = self.valueArray[indexPath.item]
             cell.leftLabel.text = feederValue
-
+            
             return cell
-
+            
         default:
-
+            
             let cell = self.dequeueReusableCell(withReuseIdentifier: self.newDogID, for: indexPath) as! NewDogFeeder
-
+            
             cell.newDogFive = self
-
+            
             let feederKey = self.keyArray[indexPath.item]
             cell.leftLabel.text = feederKey
-
+            
             let feederValue = self.valueArray[indexPath.item]
             cell.rightLabel.text = feederValue
             
             return cell
-
+            
         }
     }
     
@@ -144,7 +144,7 @@ class NewDogFiveCollectionview : UICollectionView, UICollectionViewDelegateFlowL
 class NewDogFeeder : UICollectionViewCell {
     
     var newDogFive : NewDogFiveCollectionview?
-  
+    
     let leftLabel : UILabel = {
         
         let ll = UILabel()
@@ -157,7 +157,7 @@ class NewDogFeeder : UICollectionViewCell {
         ll.adjustsFontSizeToFitWidth = true
         ll.numberOfLines = 1
         
-       return ll
+        return ll
     }()
     
     let rightLabel : UILabel = {
@@ -173,9 +173,9 @@ class NewDogFeeder : UICollectionViewCell {
         ll.clipsToBounds = true
         ll.numberOfLines = 1
         
-       return ll
+        return ll
     }()
- 
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -185,12 +185,11 @@ class NewDogFeeder : UICollectionViewCell {
         
     }
     
-    
     func addViews() {
         
         self.addSubview(self.leftLabel)
         self.addSubview(self.rightLabel)
-
+        
         self.leftLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 27).isActive = true
         self.leftLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
         self.leftLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
@@ -200,7 +199,7 @@ class NewDogFeeder : UICollectionViewCell {
         self.rightLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
         self.rightLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
         self.rightLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -27).isActive = true
-
+        
     }
     
     required init?(coder: NSCoder) {
@@ -224,7 +223,7 @@ class NewDogExpandedFeeder : UICollectionViewCell {
         ll.adjustsFontSizeToFitWidth = false
         ll.numberOfLines = -1
         
-       return ll
+        return ll
     }()
     
     override init(frame: CGRect) {
@@ -238,12 +237,12 @@ class NewDogExpandedFeeder : UICollectionViewCell {
     func addViews() {
         
         self.addSubview(self.leftLabel)
-
+        
         self.leftLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
         self.leftLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 27).isActive = true
         self.leftLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -22).isActive = true
         self.leftLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
-
+        
     }
     
     required init?(coder: NSCoder) {

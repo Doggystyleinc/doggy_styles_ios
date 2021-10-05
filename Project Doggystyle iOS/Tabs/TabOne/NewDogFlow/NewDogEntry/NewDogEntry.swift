@@ -5,48 +5,6 @@
 //  Created by Charlie Arcodia on 8/1/21.
 //
 
-struct NewDogBuilder {
-    
-    //NEWDOGONE
-    var dogBuilderName : String?
-    var dogBuilderBreed : String?
-    var dogBuilderBirthday : String?
-    var dogBuilderProfileImage : UIImage?
-    
-    //NEWDOGTWO
-    enum dogSize : String {
-        case small = "Small"
-        case medium = "Medium"
-        case large = "Large"
-        case xlarge = "X-Large"
-    }
-    
-    var dogBuilderSize = dogSize.small
-    
-    enum groomingFrequency : String {
-        case fourWeeks = "4 weeks"
-        case eightWeeks = "8 weeks"
-    }
-    
-    var dogBuilderGroomingFrequency = groomingFrequency.fourWeeks
-    
-    //NEWDOGTHREE
-    var dogBuilderFavoriteTreat : String?
-    var dogBuilderFavoriteFood : String?
-    
-    //NEWDOGFOUR
-    var dogBuilderHasMedicalConditions : Bool?
-    var dogBuilderHasBehaviouralConditions : Bool?
-    var dogBuilderHasUploadedVaccineCard : Bool? = false
-    var dogBuilderHasUploadedVaccineImage: UIImage?
-    var dogBuilderHasUploadedVaccineFilePath: String?
-    var medicalConditionDescription : String?
-    var behavioralConditionDescription : String?
-
-}
-
-var globalNewDogBuilder = NewDogBuilder()
-
 import Foundation
 import UIKit
 
@@ -95,7 +53,7 @@ class NewDogEntry : UIViewController {
         let image = UIImage(named: "doggy_profile_image")?.withRenderingMode(.alwaysOriginal)
         vi.image = image
         
-       return vi
+        return vi
     }()
     
     let headerLabel : UILabel = {
@@ -124,7 +82,7 @@ class NewDogEntry : UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        //RESET THE DOG BUILDER STRUCT EVERYTIME THEY HIT THE PROFILE BUILDER
+        //MARK: - RESET THE DOG BUILDER STRUCT EVERYTIME THEY HIT THE PROFILE BUILDER
         globalNewDogBuilder = NewDogBuilder()
     }
     
@@ -134,7 +92,7 @@ class NewDogEntry : UIViewController {
         self.view.addSubview(self.headerLabel)
         self.view.addSubview(self.dogImage)
         self.view.addSubview(self.confirmButton)
-
+        
         self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 11).isActive = true
         self.backButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
@@ -164,7 +122,7 @@ class NewDogEntry : UIViewController {
     @objc func handleCreateDoggyProfile() {
         
         UIDevice.vibrateLight()
-
+        
         let newDogOne = NewDogOne()
         newDogOne.modalPresentationStyle = .fullScreen
         newDogOne.navigationController?.navigationBar.isHidden = true

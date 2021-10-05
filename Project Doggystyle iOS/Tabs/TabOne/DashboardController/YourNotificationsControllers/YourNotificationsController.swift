@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 class YourNotificationController : UIViewController {
     
     lazy var backButton : UIButton = {
@@ -56,7 +55,7 @@ class YourNotificationController : UIViewController {
         let rpc = YourNotificationsCollectionView(frame: .zero, collectionViewLayout: layout)
         rpc.yourNotificationsController = self
         
-       return rpc
+        return rpc
     }()
     
     override func viewDidLoad() {
@@ -73,7 +72,7 @@ class YourNotificationController : UIViewController {
         self.view.addSubview(self.headerLabel)
         self.view.addSubview(self.selectorSwitch)
         self.view.addSubview(self.yourNotificationsCollectionView)
-
+        
         self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 11).isActive = true
         self.backButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
@@ -99,6 +98,4 @@ class YourNotificationController : UIViewController {
     @objc func handleBackButton() {
         self.navigationController?.popViewController(animated: true)
     }
-    
-    
 }

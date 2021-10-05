@@ -5,8 +5,6 @@
 //  Created by Charlie Arcodia on 8/12/21.
 //
 
-
-
 import Foundation
 import UIKit
 
@@ -14,9 +12,8 @@ class NewDogTreatTableView : UITableView, UITableViewDelegate, UITableViewDataSo
     
     private let newDogTreatID = "newDogTreatID"
     
-    var newDogTreatSubview : NewDogTreatSubview?
-    
-    var newDogTreatArray : [String] = [String]()
+    var newDogTreatSubview : NewDogTreatSubview?,
+        newDogTreatArray : [String] = [String]()
     
     lazy var footer: UIButton = {
         
@@ -33,19 +30,16 @@ class NewDogTreatTableView : UITableView, UITableViewDelegate, UITableViewDataSo
         let str = String.fontAwesomeIcon(name: .plus) + "   Can't find it? Add it"
         let attributedStr = NSMutableAttributedString(string: str)
         
-        //Apply FontAwesome to the first character
         let range1 = NSRange(location: 0, length: 1)
         attributedStr.addAttribute(.font,
                                    value: UIFont.fontAwesome(ofSize: 18, style: .solid),
                                    range: range1)
         
-        //Apply the system font to the rest of the string
         let range2 = NSRange(location: 1, length: (str as NSString).length - 1)
         attributedStr.addAttribute(.font,
                                    value: UIFont(name: dsHeaderFont, size: 18)!,
                                    range: range2)
         
-        //Set the attributed text for the button
         cbf.setAttributedTitle(attributedStr, for: .normal)
         cbf.addTarget(self, action: #selector(self.handleCantFindIt), for: .touchUpInside)
         

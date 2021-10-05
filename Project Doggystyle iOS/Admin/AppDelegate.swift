@@ -22,13 +22,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Database.database().isPersistenceEnabled = false
         GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
         
-        //GOOGLE PLACES KEY
-        GMSPlacesClient.provideAPIKey("AIzaSyBBe3beW4gVBST98T2oHFdqrNeCJV-GWKM")
+        //MARK: - GOOGLE PLACES KEY
+        GMSPlacesClient.provideAPIKey("AIzaSyCsQHp5h7ReANC8G4hSJ3xFF-unyiSfgBs")
         
-        //GOOGLE MAPS KEY
-        GMSServices.provideAPIKey("AIzaSyD0QooK2JJuDUBU0MSlRBLU0FT3STJoFVw")
+        //MARK: - GOOGLE MAPS KEY
+        GMSServices.provideAPIKey("AIzaSyCsQHp5h7ReANC8G4hSJ3xFF-unyiSfgBs")
         
-        //FACEBOOK CALLBACK
+        //MARK: - FACEBOOK CALLBACK
         ApplicationDelegate.shared.application(
             application,
             didFinishLaunchingWithOptions:

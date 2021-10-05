@@ -42,7 +42,7 @@ class NewDogSix : UIViewController {
         nl.numberOfLines = 1
         nl.adjustsFontSizeToFitWidth = true
         
-       return nl
+        return nl
     }()
     
     let profileSubHeaderLabel : UILabel = {
@@ -56,7 +56,7 @@ class NewDogSix : UIViewController {
         nl.numberOfLines = 3
         nl.adjustsFontSizeToFitWidth = true
         
-       return nl
+        return nl
     }()
     
     lazy var bookNowButton: UIButton = {
@@ -77,27 +77,24 @@ class NewDogSix : UIViewController {
         cbf.layer.shadowOffset = CGSize(width: 2, height: 3)
         cbf.layer.shadowRadius = 4
         cbf.layer.shouldRasterize = false
-       
+        
         
         let str = String.fontAwesomeIcon(name: .calendarPlus) + "   Book now"
         let attributedStr = NSMutableAttributedString(string: str)
-
-        //Apply FontAwesome to the first character
+        
         let range1 = NSRange(location: 0, length: 1)
         attributedStr.addAttribute(.font,
                                    value: UIFont.fontAwesome(ofSize: 18, style: .solid),
                                    range: range1)
-
-        //Apply the system font to the rest of the string
+        
         let range2 = NSRange(location: 1, length: (str as NSString).length - 1)
         attributedStr.addAttribute(.font,
                                    value: UIFont(name: dsHeaderFont, size: 18)!,
                                    range: range2)
-
-        //Set the attributed text for the button
+        
         cbf.setAttributedTitle(attributedStr, for: .normal)
         cbf.addTarget(self, action: #selector(self.handleReturnToDashboard), for: .touchUpInside)
-
+        
         return cbf
         
     }()
@@ -117,7 +114,7 @@ class NewDogSix : UIViewController {
         cbf.layer.masksToBounds = true
         cbf.tintColor = coreWhiteColor
         cbf.addTarget(self, action: #selector(self.handleAddNewPup), for: .touchUpInside)
-
+        
         return cbf
         
     }()
@@ -149,11 +146,10 @@ class NewDogSix : UIViewController {
     
     func fillValues() {
         
-        //HEADER
         let dogsName = globalNewDogBuilder.dogBuilderName ?? "Dog"
         self.profileLabel.text = "\(dogsName)'s Profile Created"
         self.profileSubHeaderLabel.text = "Welcome, \(dogsName)! Get ready to get the Doggystyle treatment!"
-
+        
         let image = globalNewDogBuilder.dogBuilderProfileImage ?? UIImage(named: "doggy_profile_filler")?.withRenderingMode(.alwaysOriginal)
         self.profilePhoto.image = image
         
@@ -168,7 +164,7 @@ class NewDogSix : UIViewController {
         self.view.addSubview(self.bookNowButton)
         self.view.addSubview(self.addAnotherPupButton)
         self.view.addSubview(self.returnToDashboard)
-
+        
         self.profilePhoto.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 180).isActive = true
         self.profilePhoto.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
         self.profilePhoto.heightAnchor.constraint(equalToConstant: 130).isActive = true
@@ -204,20 +200,20 @@ class NewDogSix : UIViewController {
     
     @objc func handleContinueButton() {
         UIDevice.vibrateLight()
-
+        
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     @objc func handleReturnToDashboard() {
         UIDevice.vibrateLight()
-
+        
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     @objc func handleAddNewPup() {
         
         self.navigationController?.dismiss(animated: true, completion: {
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "CALL_ADD_NEW_PUP"), object: self)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: Statics.CALL_ADD_NEW_PUP), object: self)
         })
     }
 }

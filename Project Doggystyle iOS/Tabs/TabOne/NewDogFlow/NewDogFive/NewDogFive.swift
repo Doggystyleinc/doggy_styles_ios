@@ -10,12 +10,12 @@ import UIKit
 import Firebase
 
 
-class NewDogFive : UIViewController {
+class NewDogFive : UIViewController, CustomAlertCallBackProtocol {
     
     let mainLoadingScreen = MainLoadingScreen(),
         storageRef = Storage.storage().reference(),
         databaseRef = Database.database().reference()
-
+    
     var headerContainer : UIView = {
         
         let hc = UIView()
@@ -75,7 +75,7 @@ class NewDogFive : UIViewController {
     }()
     
     let mainContainer : UIView = {
-
+        
         let wc = UIView()
         wc.translatesAutoresizingMaskIntoConstraints = false
         wc.backgroundColor = coreWhiteColor
@@ -89,8 +89,8 @@ class NewDogFive : UIViewController {
         wc.layer.shadowOffset = CGSize(width: 2, height: 3)
         wc.layer.shadowRadius = 9
         wc.layer.shouldRasterize = false
-       return wc
-
+        return wc
+        
     }()
     
     let dogImage : UIImageView = {
@@ -102,7 +102,7 @@ class NewDogFive : UIViewController {
         di.isUserInteractionEnabled = true
         di.layer.masksToBounds = true
         
-       return di
+        return di
     }()
     
     lazy var pencilIconButton : UIButton = {
@@ -140,7 +140,7 @@ class NewDogFive : UIViewController {
         cfs.translatesAutoresizingMaskIntoConstraints = false
         cfs.backgroundColor = coreWhiteColor
         
-       return cfs
+        return cfs
     }()
     
     lazy var newDogCollection : NewDogFiveCollectionview = {
@@ -149,7 +149,7 @@ class NewDogFive : UIViewController {
         layout.scrollDirection = .vertical
         let ndc = NewDogFiveCollectionview(frame: .zero, collectionViewLayout: layout)
         ndc.newDogFive = self
-       return ndc
+        return ndc
     }()
     
     override func viewDidLoad() {
@@ -165,14 +165,14 @@ class NewDogFive : UIViewController {
     
     func fillValues() {
         
-        //HEADER
+        //MARK: - HEADER
         let dogsName = globalNewDogBuilder.dogBuilderName ?? "Dog"
         self.basicDetailsLabel.text = "Confirm \(dogsName)'s details"
         
         let image = globalNewDogBuilder.dogBuilderProfileImage ?? UIImage(named: "doggy_profile_filler")?.withRenderingMode(.alwaysOriginal)
         self.dogImage.image = image
         
-        //BODY
+        //MARK: - BODY
         self.k9Name.text = dogsName
         
         let size = globalNewDogBuilder.dogBuilderSize
@@ -183,14 +183,14 @@ class NewDogFive : UIViewController {
         let favoriteFood = globalNewDogBuilder.dogBuilderFavoriteFood ?? "n/a"
         let hasMedicalConditions = globalNewDogBuilder.dogBuilderHasMedicalConditions ?? false
         let hasBehavoirConcerns = globalNewDogBuilder.dogBuilderHasBehaviouralConditions ?? false
-       
+        
         let medicalDescription = globalNewDogBuilder.medicalConditionDescription ?? ""
         let behaviorDescription = globalNewDogBuilder.behavioralConditionDescription ?? ""
-
+        
         
         var medicalCondition = "no"
         var behaviorCondition = "no"
-
+        
         if hasMedicalConditions == true {
             medicalCondition = "yes"
         } else {
@@ -205,7 +205,7 @@ class NewDogFive : UIViewController {
         
         var frequencyString : String = ""
         var sizeString : String = ""
-
+        
         if frequency == .fourWeeks {
             frequencyString = "4 weeks"
         } else {
@@ -221,7 +221,7 @@ class NewDogFive : UIViewController {
         } else if size == .xlarge {
             sizeString = "X-Large"
         }
-
+        
         self.fetchedArray = ["\(sizeString)", "\(breed)", "\(age)", "\(frequencyString)", "\(favoriteTreat)", "\(favoriteFood)", "\(medicalCondition)", "\(medicalDescription)", "\(behaviorCondition)", "\(behaviorDescription)"]
         self.newDogCollection.valueArray = self.fetchedArray
         
@@ -243,8 +243,8 @@ class NewDogFive : UIViewController {
         self.mainContainer.addSubview(self.pencilIconButton)
         self.mainContainer.addSubview(self.containerForSize)
         self.mainContainer.addSubview(self.newDogCollection)
-
-
+        
+        
         self.headerContainer.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         self.headerContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.headerContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
@@ -293,7 +293,7 @@ class NewDogFive : UIViewController {
         self.newDogCollection.leftAnchor.constraint(equalTo: self.mainContainer.leftAnchor, constant: 0).isActive = true
         self.newDogCollection.rightAnchor.constraint(equalTo: self.mainContainer.rightAnchor, constant: 0).isActive = true
         self.newDogCollection.bottomAnchor.constraint(equalTo: self.mainContainer.bottomAnchor, constant: -10).isActive = true
-
+        
     }
     
     @objc func handlePencilButton() {
@@ -313,6 +313,30 @@ class NewDogFive : UIViewController {
         newDogSix.navigationController?.navigationBar.isHidden = true
         self.navigationController?.pushViewController(newDogSix, animated: true)
         
+    }
+    
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.OK: print(Statics.OK)
+            
+        default: print("Should not hit")
+            
+        }
     }
 }
 
@@ -340,10 +364,10 @@ extension NewDogFive {
         let dog_builder_has_vaccine_file_path = globalNewDogBuilder.dogBuilderHasUploadedVaccineFilePath ?? "nil"
         let dog_builder_medical_description = globalNewDogBuilder.medicalConditionDescription ?? "nil"
         let dog_builder_behavior_description = globalNewDogBuilder.behavioralConditionDescription ?? "nil"
-
+        
         var dog_builder_size = ""
         var dog_builder_frequency = ""
-
+        
         switch globalNewDogBuilder.dogBuilderSize {
         
         case .small : dog_builder_size = "Small"
@@ -357,7 +381,7 @@ extension NewDogFive {
         
         case .fourWeeks : dog_builder_frequency = "4 Weeks"
         case .eightWeeks : dog_builder_frequency = "8 Weeks"
-
+            
         }
         
         self.uploadPhotoWithCustomPath(path: "dog_profile_images", imageToUpload: profileImageFetch!) { isComplete, profileURL in
@@ -367,46 +391,46 @@ extension NewDogFive {
                 if dog_builder_has_vaccine_card == true {
                     
                     if dog_builder_has_vaccine_file_path == "nil" {
-                    
-                    //MARK: - HAS VACCINE PHOTO
-                    self.uploadPhotoWithCustomPath(path: "vaccine_images", imageToUpload: vaccineImage!) { isComplete, vaccineURL in
                         
-                        let values : [String : Any] = ["dog_builder_name" : dog_builder_name,
-                                                       "dog_builder_breed" : dog_builder_breed,
-                                                       "dog_builder_birthday" : dog_builder_birthday,
-                                                       "dog_builder_favorite_treat" : dog_builder_favorite_treat,
-                                                       "dog_builder_favorite_food" : dog_builder_favorite_food,
-                                                       "dog_builder_has_medical_conditions" : dog_builder_has_medical_conditions,
-                                                       "dog_builder_has_behavioral_conditions" : dog_builder_has_behavioral_conditions,
-                                                       "dog_builder_has_vaccine_card" : true,
-                                                       "dog_builder_size" : dog_builder_size,
-                                                       "dog_builder_frequency" : dog_builder_frequency,
-                                                       "dog_builder_profile_url" : profileURL,
-                                                       "dog_builder_vaccine_card_url" : vaccineURL,
-                                                       "ref_key" : path.key ?? "nil",
-                                                       "user_uid" : user_uid,
-                                                       "parent_key" : path.parent?.key ?? "nil",
-                                                       "time_stamp" : time_stamp,
-                                                       "vaccine_proof_is_image" : true,
-                                                       "dog_builder_medical_description" : dog_builder_medical_description,
-                                                       "dog_builder_behavior_description" : dog_builder_behavior_description
-                                                       ]
-                        
-                        let path = self.databaseRef.child("doggy_profile_builder").child(user_uid).childByAutoId()
-                        path.updateChildValues(values) { error, ref in
+                        //MARK: - HAS VACCINE PHOTO
+                        self.uploadPhotoWithCustomPath(path: "vaccine_images", imageToUpload: vaccineImage!) { isComplete, vaccineURL in
                             
-                            if error != nil {
-                                print(error?.localizedDescription as Any)
+                            let values : [String : Any] = ["dog_builder_name" : dog_builder_name,
+                                                           "dog_builder_breed" : dog_builder_breed,
+                                                           "dog_builder_birthday" : dog_builder_birthday,
+                                                           "dog_builder_favorite_treat" : dog_builder_favorite_treat,
+                                                           "dog_builder_favorite_food" : dog_builder_favorite_food,
+                                                           "dog_builder_has_medical_conditions" : dog_builder_has_medical_conditions,
+                                                           "dog_builder_has_behavioral_conditions" : dog_builder_has_behavioral_conditions,
+                                                           "dog_builder_has_vaccine_card" : true,
+                                                           "dog_builder_size" : dog_builder_size,
+                                                           "dog_builder_frequency" : dog_builder_frequency,
+                                                           "dog_builder_profile_url" : profileURL,
+                                                           "dog_builder_vaccine_card_url" : vaccineURL,
+                                                           "ref_key" : path.key ?? "nil",
+                                                           "user_uid" : user_uid,
+                                                           "parent_key" : path.parent?.key ?? "nil",
+                                                           "time_stamp" : time_stamp,
+                                                           "vaccine_proof_is_image" : true,
+                                                           "dog_builder_medical_description" : dog_builder_medical_description,
+                                                           "dog_builder_behavior_description" : dog_builder_behavior_description
+                            ]
+                            
+                            let path = self.databaseRef.child("doggy_profile_builder").child(user_uid).childByAutoId()
+                            path.updateChildValues(values) { error, ref in
+                                
+                                if error != nil {
+                                    print(error?.localizedDescription as Any)
+                                    self.mainLoadingScreen.cancelMainLoadingScreen()
+                                    self.handleCustomPopUpAlert(title: "FAILED", message: "Seems something wen't wrong, please try again.", passedButtons: [Statics.OK])
+                                    return
+                                }
+                                
                                 self.mainLoadingScreen.cancelMainLoadingScreen()
-                                self.presentAlertOnMainThread(title: "Failed", message: "Seems something wen't wrong, please try again.", buttonTitle: "Ok")
-                                return
+                                self.handleNextButton()
                             }
-                            
-                            self.mainLoadingScreen.cancelMainLoadingScreen()
-                            self.handleNextButton()
                         }
-                    }
-                    
+                        
                     } else {
                         
                         //MARK: - HAS VACCINE FILE
@@ -433,8 +457,8 @@ extension NewDogFive {
                                                            "vaccine_proof_is_image" : false,
                                                            "dog_builder_medical_description" : dog_builder_medical_description,
                                                            "dog_builder_behavior_description" : dog_builder_behavior_description
-
-                                                           ]
+                                                           
+                            ]
                             
                             let path = self.databaseRef.child("doggy_profile_builder").child(user_uid).childByAutoId()
                             path.updateChildValues(values) { error, ref in
@@ -442,7 +466,7 @@ extension NewDogFive {
                                 if error != nil {
                                     print(error?.localizedDescription as Any)
                                     self.mainLoadingScreen.cancelMainLoadingScreen()
-                                    self.presentAlertOnMainThread(title: "Failed", message: "Seems something wen't wrong, please try again.", buttonTitle: "Ok")
+                                    self.handleCustomPopUpAlert(title: "FAILED", message: "Seems something wen't wrong, please try again.", passedButtons: [Statics.OK])
                                     return
                                 }
                                 
@@ -454,7 +478,7 @@ extension NewDogFive {
                     }
                     
                 } else {
-                   
+                    
                     //MARK: - HAS VACCINE INFO
                     let values : [String : Any] = ["dog_builder_name" : dog_builder_name,
                                                    "dog_builder_breed" : dog_builder_breed,
@@ -475,15 +499,15 @@ extension NewDogFive {
                                                    "vaccine_proof_is_image" : false,
                                                    "dog_builder_medical_description" : dog_builder_medical_description,
                                                    "dog_builder_behavior_description" : dog_builder_behavior_description
-
-                                                   ]
+                                                   
+                    ]
                     
                     path.updateChildValues(values) { error, ref in
                         
                         if error != nil {
                             print(error?.localizedDescription as Any)
                             self.mainLoadingScreen.cancelMainLoadingScreen()
-                            self.presentAlertOnMainThread(title: "Failed", message: "That's odd, please try again.", buttonTitle: "Ok")
+                            self.handleCustomPopUpAlert(title: "FAILED", message: "Seems something wen't wrong, please try again.", passedButtons: [Statics.OK])
                             return
                         }
                         
@@ -495,7 +519,7 @@ extension NewDogFive {
                 
             } else {
                 self.mainLoadingScreen.cancelMainLoadingScreen()
-                self.presentAlertOnMainThread(title: "Failed", message: "That's odd, please try again.", buttonTitle: "Ok")
+                self.handleCustomPopUpAlert(title: "FAILED", message: "Seems something wen't wrong, please try again.", passedButtons: [Statics.OK])
             }
         }
     }
@@ -525,7 +549,7 @@ extension NewDogFive {
                 if let uploadUrl = urlGRab?.absoluteString {
                     
                     completion(true, uploadUrl)
-
+                    
                 }
             })
         }

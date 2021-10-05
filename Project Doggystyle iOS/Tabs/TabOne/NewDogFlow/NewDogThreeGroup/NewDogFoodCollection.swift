@@ -13,9 +13,8 @@ class NewDogFoodTableView : UITableView, UITableViewDelegate, UITableViewDataSou
     
     private let newDogFoodID = "newDogFoodID"
     
-    var newDogFoodSubview : NewDogFoodSubview?
-    
-    var newDogFoodArray : [String] = [String]()
+    var newDogFoodSubview : NewDogFoodSubview?,
+        newDogFoodArray : [String] = [String]()
     
     lazy var footer: UIButton = {
         
@@ -32,19 +31,16 @@ class NewDogFoodTableView : UITableView, UITableViewDelegate, UITableViewDataSou
         let str = String.fontAwesomeIcon(name: .plus) + "   Can't find it? Add it"
         let attributedStr = NSMutableAttributedString(string: str)
         
-        //Apply FontAwesome to the first character
         let range1 = NSRange(location: 0, length: 1)
         attributedStr.addAttribute(.font,
                                    value: UIFont.fontAwesome(ofSize: 18, style: .solid),
                                    range: range1)
         
-        //Apply the system font to the rest of the string
         let range2 = NSRange(location: 1, length: (str as NSString).length - 1)
         attributedStr.addAttribute(.font,
                                    value: UIFont(name: dsHeaderFont, size: 18)!,
                                    range: range2)
         
-        //Set the attributed text for the button
         cbf.setAttributedTitle(attributedStr, for: .normal)
         cbf.addTarget(self, action: #selector(self.handleCantFindIt), for: .touchUpInside)
         
@@ -71,18 +67,17 @@ class NewDogFoodTableView : UITableView, UITableViewDelegate, UITableViewDataSou
         self.register(NewDogFoodFeeder.self, forCellReuseIdentifier: self.newDogFoodID)
         
         self.footer.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 48.0)
-
         
     }
     
     @objc func handleCantFindIt() {
         
-       guard let text = self.newDogFoodSubview?.breedTextField.text else {
-             self.newDogFoodSubview?.breedTextField.layer.borderColor = coreRedColor.cgColor
-        return
+        guard let text = self.newDogFoodSubview?.breedTextField.text else {
+            self.newDogFoodSubview?.breedTextField.layer.borderColor = coreRedColor.cgColor
+            return
+            
+        }
         
-       }
-       
         if text.isEmpty {
             self.newDogFoodSubview?.breedTextField.layer.borderColor = coreRedColor.cgColor
         } else {
@@ -118,7 +113,7 @@ class NewDogFoodTableView : UITableView, UITableViewDelegate, UITableViewDataSou
         self.newDogFoodSubview?.newDogThree?.fillDogs(breedType: feeder)
         self.newDogFoodSubview?.centerConstraint?.constant = 0
         self.newDogFoodSubview?.breedTextField.layer.borderColor = dividerGrey.withAlphaComponent(0.2).cgColor
-
+        
     }
     
     required init?(coder aDecoder: NSCoder) {

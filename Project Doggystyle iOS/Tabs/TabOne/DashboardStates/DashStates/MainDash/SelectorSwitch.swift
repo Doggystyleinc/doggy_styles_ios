@@ -10,7 +10,8 @@ import UIKit
 
 class SelectorSwitch : UIView {
     
-    var dashMainView : DashMainView?
+    var dashMainView : DashMainView?,
+        leftConstraint : NSLayoutConstraint?
     
     lazy var upcomingLabel : UIButton = {
         
@@ -25,7 +26,7 @@ class SelectorSwitch : UIView {
         ul.tag = 1
         ul.addTarget(self, action: #selector(self.selectorChange(sender:)), for: .touchUpInside)
         
-       return ul
+        return ul
         
     }()
     
@@ -41,8 +42,8 @@ class SelectorSwitch : UIView {
         ul.layer.cornerRadius = 26 / 2
         ul.tag = 2
         ul.addTarget(self, action: #selector(self.selectorChange(sender:)), for: .touchUpInside)
-
-       return ul
+        
+        return ul
         
     }()
     
@@ -53,10 +54,10 @@ class SelectorSwitch : UIView {
         ov.backgroundColor = coreOrangeColor.withAlphaComponent(0.1)
         ov.layer.masksToBounds = true
         ov.layer.cornerRadius = 26 / 2
-
-       return ov
+        
+        return ov
     }()
-  
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -69,14 +70,12 @@ class SelectorSwitch : UIView {
         self.addViews()
     }
     
-    var leftConstraint : NSLayoutConstraint?
-    
     func addViews() {
         
         self.addSubview(self.upcomingLabel)
         self.addSubview(self.previousLabel)
         self.addSubview(self.orangeView)
-
+        
         let width = UIScreen.main.bounds.width - 60
         
         self.upcomingLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 3).isActive = true
@@ -111,7 +110,7 @@ class SelectorSwitch : UIView {
                 self.leftConstraint?.constant = 3
                 self.layoutIfNeeded()
             }
-
+            
             self.upcomingLabel.tintColor = coreOrangeColor
             self.previousLabel.tintColor = coreBlackColor
             
@@ -121,18 +120,16 @@ class SelectorSwitch : UIView {
                 self.leftConstraint?.constant = (width / 2) - 3
                 self.layoutIfNeeded()
             }
-
+            
             self.upcomingLabel.tintColor = coreBlackColor
             self.previousLabel.tintColor = coreOrangeColor
             
         default: print("Never called")
-        
+            
         }
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }

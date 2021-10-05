@@ -9,20 +9,19 @@ import Foundation
 import UIKit
 import Firebase
 
-final class PinNumberVerificationEntryController: UIViewController, UITextFieldDelegate {
-   
+final class PinNumberVerificationEntryController: UIViewController, UITextFieldDelegate, CustomAlertCallBackProtocol {
+    
     private let logo = LogoImageView(frame: .zero)
     private var errorCounter = 0
     
-    //AND ANY OTHER DATA YOU WOULD LIKE TO PASS IN HERE
-    var phoneNumber: String!
-    var countryCode: String!
-    var firstName: String!
-    var lastName: String!
-    var email: String!
-    var password: String!
-    var pinTimer: Timer?
-    var pinCounter: Int = 120
+    var phoneNumber: String!,
+        countryCode: String!,
+        firstName: String!,
+        lastName: String!,
+        email: String!,
+        password: String!,
+        pinTimer: Timer?,
+        pinCounter: Int = 120
     
     let mainLoadingScreen = MainLoadingScreen()
     
@@ -107,11 +106,10 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        dismissKeyboardTapGesture()
         configureVC()
         addViews()
         pinTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.handleCountDown), userInfo: nil, repeats: true)
-       
+        
         let phoneNumber = self.phoneNumber ?? "xxxx"
         let phoneTrim = phoneNumber.suffix(4)
         
@@ -188,8 +186,7 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
                     self.handleVerifiedPinState()
                 } else {
                     self.mainLoadingScreen.cancelMainLoadingScreen()
-                    self.presentAlertOnMainThread(title: "Error", message: "Please check your pin # and try again.", buttonTitle: "Ok")
-                    self.navigationController?.popViewController(animated: true)
+                    self.handleCustomPopUpAlert(title: "ERROR", message: "Please check your pin # and try again.", passedButtons: [Statics.GOT_IT])
                 }
             }
         }
@@ -217,7 +214,7 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
             self.navigationController?.popViewController(animated: true)
             return
         }
-
+        
         self.handleVerification(phone: safePhoneNumber, countryCode: safeCountryCode, enteredCode: pin)
     }
     
@@ -235,12 +232,13 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
     }
     
     private func resignation() {
+        
         self.slotOneTextField.resignFirstResponder()
         self.slotTwoTextField.resignFirstResponder()
         self.slotThreeTextField.resignFirstResponder()
         self.slotFourTextField.resignFirstResponder()
+        
     }
-    
     
     private func registerUserInfo() {
         Service.shared.FirebaseRegistrationAndLogin(userFirstName: firstName, userLastName: lastName, usersEmailAddress: email, usersPassword: password, mobileNumber: phoneNumber, referralCode: "referralCode", signInMethod: Constants.email) { registrationSucces, response, responseCode in
@@ -255,7 +253,7 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
                             self.handleVerifiedPinState()
                         } else {
                             //Firebase error. User is registered but unable to login.
-                            self.presentAlertOnMainThread(title: "Error", message: "Unable to login. Please try again later.", buttonTitle: "Ok")
+                            self.handleCustomPopUpAlert(title: "ERROR", message: "Unable to login. Please try again.", passedButtons: [Statics.OK])
                         }
                     }
                 case 500:
@@ -264,12 +262,39 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
                         self.registerUserInfo()
                     } else {
                         //Firebase error. Clear text fields. Prompt user to try again.
-                        self.presentAlertOnMainThread(title: "Error", message: "Unable to register. Please try again.", buttonTitle: "Ok")
+                        self.handleCustomPopUpAlert(title: "ERROR", message: "Unable to register. Please try again.", passedButtons: [Statics.OK])
                     }
                 default:
                     break
                 }
             }
+        }
+    }
+    
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        self.mainLoadingScreen.cancelMainLoadingScreen()
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.OK: print(Statics.OK)
+        case Statics.GOT_IT: self.navigationController?.popViewController(animated: true)
+            
+        default: print("Should not hit")
+            
         }
     }
 }
@@ -293,28 +318,24 @@ extension PinNumberVerificationEntryController {
         let slotFourText = self.slotFourTextField.text ?? ""
         
         if slotOneText.isEmpty {
-            //
         } else {
             self.slotOneTextField.layer.borderColor = UIColor.dsOrange.cgColor
             self.slotOneTextField.layer.borderWidth = 0.5
         }
         
         if slotTwoText.isEmpty {
-            //
         } else {
             self.slotTwoTextField.layer.borderColor = UIColor.dsOrange.cgColor
             self.slotTwoTextField.layer.borderWidth = 0.5
         }
         
         if slotThreeText.isEmpty {
-            //
         } else {
             self.slotThreeTextField.layer.borderColor = UIColor.dsOrange.cgColor
             self.slotThreeTextField.layer.borderWidth = 0.5
         }
         
         if slotFourText.isEmpty {
-            //
         } else {
             self.slotFourTextField.layer.borderColor = UIColor.dsOrange.cgColor
             self.slotFourTextField.layer.borderWidth = 0.5
@@ -336,10 +357,8 @@ extension PinNumberVerificationEntryController {
         self.handlePinCompletionEntry()
     }
     
-    //User is verified - push them to the next controller in the flow
     @objc func handleVerifiedPinState() {
         
-        //FROM HERE WE NEED TO GO THROUGH THE LOCATION SCREENS
         let homeVC = LocationFinder()
         let navVC = UINavigationController(rootViewController: homeVC)
         navVC.modalPresentationStyle = .fullScreen

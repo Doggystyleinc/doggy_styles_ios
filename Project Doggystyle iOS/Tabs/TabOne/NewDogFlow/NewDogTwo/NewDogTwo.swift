@@ -8,10 +8,10 @@
 import Foundation
 import UIKit
 
-class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
+class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, CustomAlertCallBackProtocol {
     
     lazy var stackView : UIStackView = {
-              
+        
         let sv = UIStackView()
         sv.translatesAutoresizingMaskIntoConstraints = false
         sv.axis = .horizontal
@@ -28,7 +28,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         hc.backgroundColor = .clear
         hc.isUserInteractionEnabled = false
         
-       return hc
+        return hc
     }()
     
     lazy var cancelButton : UIButton = {
@@ -56,7 +56,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
         
-       return nl
+        return nl
     }()
     
     lazy var nextButton : UIButton = {
@@ -86,7 +86,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         hbo.backgroundColor = coreOrangeColor
         hbo.layer.masksToBounds = true
         
-       return hbo
+        return hbo
     }()
     
     let headerBarTwo : UIView = {
@@ -94,7 +94,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
         hbo.backgroundColor = coreOrangeColor
-       return hbo
+        return hbo
     }()
     
     let headerBarThree : UIView = {
@@ -102,7 +102,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
         hbo.backgroundColor = circleGrey
-       return hbo
+        return hbo
     }()
     
     let headerBarFour : UIView = {
@@ -110,7 +110,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
         hbo.backgroundColor = circleGrey
-       return hbo
+        return hbo
     }()
     
     let timeCover : UIView = {
@@ -119,7 +119,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         tc.translatesAutoresizingMaskIntoConstraints = false
         tc.backgroundColor = coreBackgroundWhite
         
-       return tc
+        return tc
     }()
     
     let sizeLabel : UILabel = {
@@ -133,7 +133,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
         
-       return nl
+        return nl
     }()
     
     let groomingFrequency : UILabel = {
@@ -147,7 +147,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
         
-       return nl
+        return nl
     }()
     
     lazy var weightSmallButton : UIButton = {
@@ -197,7 +197,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.tintColor = coreBlackColor
         cbf.titleLabel?.textAlignment = .center
         cbf.tag = 2
-
+        
         cbf.layer.borderWidth = 1
         cbf.layer.borderColor = UIColor .clear.cgColor
         cbf.layer.shadowColor = coreOrangeColor.cgColor
@@ -207,7 +207,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.layer.shouldRasterize = false
         
         cbf.addTarget(self, action: #selector(self.handleSizeSelection), for: .touchUpInside)
-
+        
         
         return cbf
         
@@ -231,7 +231,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.tag = 3
         cbf.layer.borderWidth = 1
         cbf.layer.borderColor = UIColor .clear.cgColor
-
+        
         cbf.layer.shadowColor = coreOrangeColor.cgColor
         cbf.layer.shadowOpacity = 0.35
         cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
@@ -239,7 +239,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.layer.shouldRasterize = false
         
         cbf.addTarget(self, action: #selector(self.handleSizeSelection), for: .touchUpInside)
-
+        
         
         return cbf
         
@@ -263,7 +263,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.tag = 4
         cbf.layer.borderWidth = 1
         cbf.layer.borderColor = UIColor .clear.cgColor
-
+        
         cbf.layer.shadowColor = coreOrangeColor.cgColor
         cbf.layer.shadowOpacity = 0.35
         cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
@@ -271,13 +271,13 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.layer.shouldRasterize = false
         
         cbf.addTarget(self, action: #selector(self.handleSizeSelection), for: .touchUpInside)
-
+        
         return cbf
         
     }()
     
     lazy var informationButton : UIButton = {
-    
+        
         let dcl = UIButton(type: .system)
         dcl.translatesAutoresizingMaskIntoConstraints = false
         dcl.backgroundColor = coreWhiteColor
@@ -296,7 +296,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         dcl.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
         dcl.setTitle(String.fontAwesomeIcon(name: .infoCircle), for: .normal)
         dcl.addTarget(self, action: #selector(self.handleInformationButton), for: .touchUpInside)
-    
+        
         return dcl
     }()
     
@@ -318,7 +318,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.tag = 1
         cbf.layer.borderWidth = 1
         cbf.layer.borderColor = coreOrangeColor.cgColor
-
+        
         cbf.layer.shadowColor = coreOrangeColor.cgColor
         cbf.layer.shadowOpacity = 0.35
         cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
@@ -327,12 +327,12 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         
         cbf.addTarget(self, action: #selector(self.handleGroomingFrequency), for: .touchUpInside)
-    
+        
         return cbf
     }()
     
     lazy var eightWeeksButton : UIButton = {
-    
+        
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
         cbf.setTitle("8 weeks", for: UIControl.State.normal)
@@ -349,7 +349,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         cbf.layer.borderWidth = 1
         cbf.layer.masksToBounds = false
         cbf.layer.borderColor = UIColor .clear.cgColor
-
+        
         cbf.layer.shadowColor = coreOrangeColor.cgColor
         cbf.layer.shadowOpacity = 0.35
         cbf.layer.shadowOffset = CGSize(width: 0, height: 0)
@@ -377,7 +377,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         
         globalNewDogBuilder.dogBuilderSize = .small
         globalNewDogBuilder.dogBuilderGroomingFrequency = .fourWeeks
-
+        
     }
     
     func addViews() {
@@ -404,7 +404,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.view.addSubview(self.informationButton)
         self.view.addSubview(self.fourWeeksButton)
         self.view.addSubview(self.eightWeeksButton)
-
+        
         self.view.addSubview(timeCover)
         
         self.headerBarOne.widthAnchor.constraint(equalToConstant: 9).isActive = true
@@ -486,23 +486,23 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
         self.informationButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.informationButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
         self.informationButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-
+        
         self.fourWeeksButton.rightAnchor.constraint(equalTo: self.view.centerXAnchor, constant: -8).isActive = true
         self.fourWeeksButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.fourWeeksButton.topAnchor.constraint(equalTo: self.groomingFrequency.bottomAnchor, constant: 20).isActive = true
         self.fourWeeksButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
-
+        
         self.eightWeeksButton.leftAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 8).isActive = true
         self.eightWeeksButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.eightWeeksButton.topAnchor.constraint(equalTo: self.groomingFrequency.bottomAnchor, constant: 20).isActive = true
         self.eightWeeksButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
-
+        
     }
     
     @objc func handleGroomingFrequency(sender : UIButton) {
         
         UIDevice.vibrateLight()
-
+        
         switch sender.tag {
         
         case 1:
@@ -516,21 +516,21 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
             self.eightWeeksButton.backgroundColor = dividerGrey
             self.eightWeeksButton.layer.borderColor = UIColor .clear.cgColor
             self.eightWeeksButton.layer.shadowRadius = 0
-
+            
         case 2:
             
             globalNewDogBuilder.dogBuilderGroomingFrequency = .eightWeeks
-
+            
             self.fourWeeksButton.backgroundColor = dividerGrey
             self.fourWeeksButton.layer.shadowRadius = 0
             self.fourWeeksButton.layer.borderColor = UIColor .clear.cgColor
-
+            
             self.eightWeeksButton.backgroundColor = coreWhiteColor
             self.eightWeeksButton.layer.borderColor = coreOrangeColor.cgColor
             self.eightWeeksButton.layer.shadowRadius = 4
-
+            
         default: print("Only 2 buttons here")
-        
+            
         }
     }
     
@@ -551,15 +551,15 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
             self.weightMediumButton.backgroundColor = dividerGrey
             self.weightMediumButton.layer.borderColor = UIColor .clear.cgColor
             self.weightMediumButton.layer.shadowRadius = 0
-
+            
             self.weightLargeButton.backgroundColor = dividerGrey
             self.weightLargeButton.layer.borderColor = UIColor .clear.cgColor
             self.weightLargeButton.layer.shadowRadius = 0
-
+            
             self.weightExtraLargeButton.backgroundColor = dividerGrey
             self.weightExtraLargeButton.layer.borderColor = UIColor .clear.cgColor
             self.weightExtraLargeButton.layer.shadowRadius = 0
-
+            
         case 2:
             
             globalNewDogBuilder.dogBuilderSize = .medium
@@ -567,19 +567,19 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
             self.weightSmallButton.backgroundColor = dividerGrey
             self.weightSmallButton.layer.borderColor = UIColor .clear.cgColor
             self.weightSmallButton.layer.shadowRadius = 0
-
+            
             self.weightMediumButton.backgroundColor = coreWhiteColor
             self.weightMediumButton.layer.borderColor = coreOrangeColor.cgColor
             self.weightMediumButton.layer.shadowRadius = 4
-
+            
             self.weightLargeButton.backgroundColor = dividerGrey
             self.weightLargeButton.layer.borderColor = UIColor .clear.cgColor
             self.weightLargeButton.layer.shadowRadius = 0
-
+            
             self.weightExtraLargeButton.backgroundColor = dividerGrey
             self.weightExtraLargeButton.layer.borderColor = UIColor .clear.cgColor
             self.weightExtraLargeButton.layer.shadowRadius = 0
-
+            
         case 3:
             
             globalNewDogBuilder.dogBuilderSize = .large
@@ -587,19 +587,19 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
             self.weightSmallButton.backgroundColor = dividerGrey
             self.weightSmallButton.layer.borderColor = UIColor .clear.cgColor
             self.weightSmallButton.layer.shadowRadius = 0
-
+            
             self.weightMediumButton.backgroundColor = dividerGrey
             self.weightMediumButton.layer.borderColor = UIColor .clear.cgColor
             self.weightMediumButton.layer.shadowRadius = 0
-
+            
             self.weightLargeButton.backgroundColor = coreWhiteColor
             self.weightLargeButton.layer.borderColor = coreOrangeColor.cgColor
             self.weightLargeButton.layer.shadowRadius = 4
-
+            
             self.weightExtraLargeButton.backgroundColor = dividerGrey
             self.weightExtraLargeButton.layer.borderColor = UIColor .clear.cgColor
             self.weightExtraLargeButton.layer.shadowRadius = 0
-
+            
         case 4:
             
             globalNewDogBuilder.dogBuilderSize = .xlarge
@@ -607,28 +607,50 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
             self.weightSmallButton.backgroundColor = dividerGrey
             self.weightSmallButton.layer.borderColor = UIColor .clear.cgColor
             self.weightSmallButton.layer.shadowRadius = 0
-
+            
             self.weightMediumButton.backgroundColor = dividerGrey
             self.weightMediumButton.layer.borderColor = UIColor .clear.cgColor
             self.weightMediumButton.layer.shadowRadius = 0
-
+            
             self.weightLargeButton.backgroundColor = dividerGrey
             self.weightLargeButton.layer.borderColor = UIColor .clear.cgColor
             self.weightLargeButton.layer.shadowRadius = 0
-
+            
             self.weightExtraLargeButton.backgroundColor = coreWhiteColor
             self.weightExtraLargeButton.layer.borderColor = coreOrangeColor.cgColor
             self.weightExtraLargeButton.layer.shadowRadius = 4
-
+            
         default: print("only 4 buttons, this will never hit")
-        
+            
         }
     }
     
     @objc func handleInformationButton() {
         
-        AlertControllerCompletion.handleAlertWithCompletion(title: "Frequency", message: "grooming frequency description") { done in
-            print("done")
+        self.handleCustomPopUpAlert(title: "FREQUENCY", message: "Frequency Description here TODO", passedButtons: [Statics.OK])
+    }
+    
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.OK: print(Statics.OK)
+            
+        default: print("Should not hit")
+            
         }
     }
     
@@ -640,7 +662,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
     @objc func handleNextButton() {
         
         UIDevice.vibrateLight()
-
+        
         let newDogTwo = NewDogThree()
         newDogTwo.modalPresentationStyle = .fullScreen
         newDogTwo.navigationController?.navigationBar.isHidden = true

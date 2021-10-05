@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 class DashMainView : UIView {
     
     var dashboardController : DashboardViewController?
@@ -20,7 +19,7 @@ class DashMainView : UIView {
         let rpc = RegisteredPetCollection(frame: .zero, collectionViewLayout: layout)
         rpc.dashMainView = self
         
-       return rpc
+        return rpc
     }()
     
     lazy var mainDashCollectionView : MainDashboardCollectionView = {
@@ -30,14 +29,14 @@ class DashMainView : UIView {
         let rpc = MainDashboardCollectionView(frame: .zero, collectionViewLayout: layout)
         rpc.dashMainView = self
         
-       return rpc
+        return rpc
     }()
     
     lazy var selectorSwitch : SelectorSwitch = {
         
         let ss = SelectorSwitch()
         ss.translatesAutoresizingMaskIntoConstraints = false
-       return ss
+        return ss
         
     }()
     
@@ -59,31 +58,28 @@ class DashMainView : UIView {
         cbf.layer.shadowOffset = CGSize(width: 2, height: 3)
         cbf.layer.shadowRadius = 4
         cbf.layer.shouldRasterize = false
-       
+        
         
         let str = String.fontAwesomeIcon(name: .calendarPlus) + "   Book now"
         let attributedStr = NSMutableAttributedString(string: str)
-
-        //Apply FontAwesome to the first character
+        
         let range1 = NSRange(location: 0, length: 1)
         attributedStr.addAttribute(.font,
                                    value: UIFont.fontAwesome(ofSize: 18, style: .solid),
                                    range: range1)
-
-        //Apply the system font to the rest of the string
+        
         let range2 = NSRange(location: 1, length: (str as NSString).length - 1)
         attributedStr.addAttribute(.font,
                                    value: UIFont(name: dsHeaderFont, size: 18)!,
                                    range: range2)
-
-        //Set the attributed text for the button
+        
         cbf.setAttributedTitle(attributedStr, for: .normal)
         cbf.addTarget(self, action: #selector(self.handleBookingController), for: .touchUpInside)
         
         return cbf
         
     }()
-   
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -99,7 +95,7 @@ class DashMainView : UIView {
         self.addSubview(self.selectorSwitch)
         self.addSubview(self.mainDashCollectionView)
         self.addSubview(self.bookNowButton)
-
+        
         self.registeredPetCollection.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
         self.registeredPetCollection.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         self.registeredPetCollection.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
@@ -125,7 +121,7 @@ class DashMainView : UIView {
     @objc func handleBookingController() {
         self.dashboardController?.presentAppointmentsController()
     }
-   
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

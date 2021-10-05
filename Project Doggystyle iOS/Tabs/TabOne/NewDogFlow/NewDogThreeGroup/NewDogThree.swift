@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
+class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, CustomAlertCallBackProtocol {
     
     var dogTreatJsonGrabber = DogTreatHelper(),
         dogTreatJson : [String] = [],
@@ -17,7 +17,6 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         dogFoodJsonGrabber = DogFoodHelper(),
         dogFoodJson : [String] = [],
         predictionStringFood : String = ""
-
     
     lazy var newDogTreatSubview : NewDogTreatSubview = {
         
@@ -57,7 +56,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
     }()
     
     lazy var stackView : UIStackView = {
-              
+        
         let sv = UIStackView()
         sv.translatesAutoresizingMaskIntoConstraints = false
         sv.axis = .horizontal
@@ -74,7 +73,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         hc.backgroundColor = .clear
         hc.isUserInteractionEnabled = false
         
-       return hc
+        return hc
     }()
     
     lazy var cancelButton : UIButton = {
@@ -102,7 +101,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
         
-       return nl
+        return nl
     }()
     
     lazy var favoriteTreatTextField : UITextField = {
@@ -142,8 +141,8 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         etfc.layer.cornerRadius = 10
         
         etfc.addTarget(self, action: #selector(self.handleTreatTap), for: .touchDown)
-
-
+        
+        
         return etfc
         
     }()
@@ -185,7 +184,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         etfc.layer.cornerRadius = 10
         
         etfc.addTarget(self, action: #selector(self.handleFoodTap), for: .touchDown)
-
+        
         return etfc
         
     }()
@@ -218,7 +217,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         hbo.backgroundColor = coreOrangeColor
         hbo.layer.masksToBounds = true
         
-       return hbo
+        return hbo
     }()
     
     let headerBarTwo : UIView = {
@@ -226,7 +225,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
         hbo.backgroundColor = coreOrangeColor
-       return hbo
+        return hbo
     }()
     
     let headerBarThree : UIView = {
@@ -234,7 +233,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
         hbo.backgroundColor = coreOrangeColor
-       return hbo
+        return hbo
     }()
     
     let headerBarFour : UIView = {
@@ -242,7 +241,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         let hbo = UIView()
         hbo.translatesAutoresizingMaskIntoConstraints = false
         hbo.backgroundColor = circleGrey
-       return hbo
+        return hbo
     }()
     
     let timeCover : UIView = {
@@ -251,7 +250,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         tc.translatesAutoresizingMaskIntoConstraints = false
         tc.backgroundColor = coreBackgroundWhite
         
-       return tc
+        return tc
     }()
     
     lazy var toolBar : UIToolbar = {
@@ -282,7 +281,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
         
-       return nl
+        return nl
     }()
     
     let foodLabel : UILabel = {
@@ -296,7 +295,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
         
-       return nl
+        return nl
     }()
     
     @objc func handleTreatTap() {
@@ -331,18 +330,18 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         self.dogTreatJson = self.dogTreatJsonGrabber.dogTreatJSON
         self.dogFoodJson = self.dogFoodJsonGrabber.dogFoodJSON
         
-        //SET TEXTFIELD CONTENT TYPES
+        //MARK: - SET TEXTFIELD CONTENT TYPES
         self.favoriteTreatTextField.textContentType = UITextContentType(rawValue: "")
         self.dogFoodTextField.textContentType = UITextContentType(rawValue: "")
-
+        
         self.favoriteTreatTextField.setUpImage(imageName: "magnifyingGlass", on: .left)
         self.dogFoodTextField.setUpImage(imageName: "magnifyingGlass", on: .left)
         
         self.favoriteTreatTextField.inputView = UIView()
         self.dogFoodTextField.inputView = UIView()
-
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-
+        
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -353,7 +352,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
     func fillValues() {
         
         
-        //SET TEXTFIELD CONTENT TYPES
+        //MARK: - SET TEXTFIELD CONTENT TYPES
         self.favoriteTreatTextField.textContentType = UITextContentType(rawValue: "")
         self.dogFoodTextField.textContentType = UITextContentType(rawValue: "")
         
@@ -371,7 +370,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         
         self.view.addSubview(scrollView)
         self.view.addSubview(self.stackView)
-
+        
         self.stackView.addArrangedSubview(self.headerBarOne)
         self.stackView.addArrangedSubview(self.headerBarTwo)
         self.stackView.addArrangedSubview(self.headerBarThree)
@@ -383,7 +382,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         
         self.scrollView.addSubview(self.treatLabel)
         self.scrollView.addSubview(self.foodLabel)
-
+        
         self.scrollView.addSubview(self.favoriteTreatTextField)
         self.scrollView.addSubview(self.dogFoodTextField)
         
@@ -392,7 +391,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         self.view.addSubview(timeCover)
         self.view.addSubview(newDogTreatSubview)
         self.view.addSubview(newDogFoodSubview)
-
+        
         self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         self.scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
@@ -492,7 +491,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
         self.newDogFoodSubview.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.newDogFoodSubview.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.newDogFoodSubview.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
-
+        
     }
     
     @objc func fillBreed(breedType : String) {
@@ -522,9 +521,9 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
     }
     
     @objc func handleManualScrolling(sender : UITextField) {
-       
-        if sender == self.favoriteTreatTextField {
         
+        if sender == self.favoriteTreatTextField {
+            
             self.scrollView.scrollToTop()
             
         } else if sender == self.dogFoodTextField {
@@ -553,15 +552,15 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
             self.dogFoodTextField.becomeFirstResponder()
             let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
             self.scrollView.setContentOffset(bottomOffset, animated: true)
-
+            
         } else if dogFoodTextField.isFirstResponder {
             
             self.dogFoodTextField.resignFirstResponder()
             self.favoriteTreatTextField.becomeFirstResponder()
-
+            
             let bottomOffset = CGPoint(x: 0, y: self.scrollView.contentSize.height - self.scrollView.bounds.size.height)
             self.scrollView.setContentOffset(bottomOffset, animated: true)
-        
+            
         }
     }
     
@@ -587,18 +586,43 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate 
                 self.moveToNewDogFour()
                 
             } else {
-                presentAlertOnMainThread(title: "Treat", message: "Please make sure the treat is more than two characters.", buttonTitle: "ok")
+                self.handleCustomPopUpAlert(title: "FOOD", message: "Please make sure 'FOOD' is more than two characters.", passedButtons: [Statics.OK])
             }
             
         } else {
-            presentAlertOnMainThread(title: "Treat", message: "Please make sure the treat is more than two characters.", buttonTitle: "ok")
+            self.handleCustomPopUpAlert(title: "TREAT", message: "Please make sure 'TREAT' is more than two characters.", passedButtons: [Statics.OK])
+        }
+    }
+    
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.GOT_IT: self.handleBackButton()
+        case Statics.OK: print(Statics.OK)
+            
+        default: print("Should not hit")
+            
         }
     }
     
     @objc func moveToNewDogFour() {
         
         UIDevice.vibrateLight()
-
+        
         let newDogTwo = NewDogFour()
         newDogTwo.modalPresentationStyle = .fullScreen
         newDogTwo.navigationController?.navigationBar.isHidden = true

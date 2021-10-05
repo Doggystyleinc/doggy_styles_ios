@@ -94,6 +94,20 @@ var friends_array_phone_number = [String](),
  
 var globalPetDataSource = [DoggyProfileDataSource]()
 
+extension UIScrollView {
+    
+    func scrollToTop() {
+        let desiredOffset = CGPoint(x: 0, y: -contentInset.top)
+        setContentOffset(desiredOffset, animated: true)
+    }
+    
+    func scrollToBottom() {
+        let bottomOffset = CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height)
+        self.setContentOffset(bottomOffset, animated: true)
+    }
+}
+
+
 class fileUPloader : NSObject {
     
    static func upload(localFilePath : URL, completion : @escaping (_ isComplete : Bool, _ urlToStoreInDatabase : String)->()) {
@@ -273,34 +287,6 @@ public enum CurrentDevice {
     
 }
 
-//
-//func determineDeviceType () {
-//    
-//    /*
-//    926: iPhone 12 Pro Max
-//    896: iPhone 11 : iPhone 11 Pro Max
-//    844: iPhone 12 : iPhone 12 Pro
-//    812: 12 mini : iPhone 11 Pro
-//    736: iPhone 8 Plus
-//    667: iPhone 8
-//    */
-//    
-//    let screenHeight = UIScreen.main.bounds.height
-//    
-//    switch screenHeight {
-//    
-//    case 926: CurrentDevice.iPhone12ProMax
-//    case 896:
-//    case 844:
-//    case 812:
-//    case 736:
-//    case 667:
-//    default: print("no phone found")
-//    }
-//}
-
-
-
 //MARK: - URLS/KEYS/TONES
 struct Statics {
     
@@ -317,6 +303,18 @@ struct Statics {
     
     static let PAW_ANIMATION : String = "paw_animation"
     
+    //MARK: - ERROR/ALERT CODES
+    static let GOT_IT : String = "Got it"
+    static let OK : String = "Ok"
+    static let FILE : String = "file"
+    static let PHOTO : String = "photo"
+    static let CANCEL : String = "cancel"
+    
+    //MARK: - LISTENERS AND OBSERVERS
+    static let CALL_ADD_NEW_PUP : String = "CALL_ADD_NEW_PUP"
+
+    
+
 }
 
 extension UICollectionView {
@@ -1025,24 +1023,6 @@ extension UIView {
         
     }
     
-}
-
-class AlertControllerCompletion : NSObject {
-    
-    static func handleAlertWithCompletion(title : String, message : String, completion : @escaping (_ isFinished : Bool)->()) {
-        
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
-        let actionOne = UIAlertAction(title: "Ok", style: .default) { (action) in
-            completion(true)
-        }
-        
-        alertController.addAction(actionOne)
-        
-        if let topViewController = UIApplication.getTopMostViewController() {
-            topViewController.present(alertController, animated: true, completion: nil)
-        }
-    }
 }
 
 //MARK: - TOP VIEW CONTROLLER METHOD

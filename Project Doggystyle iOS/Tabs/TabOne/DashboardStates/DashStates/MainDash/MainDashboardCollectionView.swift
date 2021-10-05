@@ -13,9 +13,8 @@ class MainDashboardCollectionView : UICollectionView, UICollectionViewDelegateFl
     
     private let mainCollectionID = "mainCollectionID"
     
-    var dashMainView : DashMainView?
-    
-    var doggyProfileDataSource = [DoggyProfileDataSource]()
+    var dashMainView : DashMainView?,
+        doggyProfileDataSource = [DoggyProfileDataSource]()
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -52,7 +51,7 @@ class MainDashboardCollectionView : UICollectionView, UICollectionViewDelegateFl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = self.dequeueReusableCell(withReuseIdentifier: self.mainCollectionID, for: indexPath) as! MainCollectionFeeder
-            
+        
         let feeder = self.doggyProfileDataSource[indexPath.item]
         
         let dogProfileImage = feeder.dog_builder_profile_url ?? "nil"
@@ -62,13 +61,6 @@ class MainDashboardCollectionView : UICollectionView, UICollectionViewDelegateFl
         cell.dogOneImage.loadImageGeneralUse(dogProfileImage) { loaded in
             print("Loaded")
         }
-            
-        
-        
-        
-        
-        
-        
         
         return cell
         
@@ -105,7 +97,7 @@ class MainCollectionFeeder : UICollectionViewCell {
         cv.layer.shadowRadius = 9
         cv.layer.shouldRasterize = false
         
-       return cv
+        return cv
     }()
     
     let dogOneImage : UIImageView = {
@@ -117,8 +109,8 @@ class MainCollectionFeeder : UICollectionViewCell {
         vi.isUserInteractionEnabled = false
         vi.backgroundColor = coreOrangeColor.withAlphaComponent(0.1)
         vi.layer.masksToBounds = true
-
-       return vi
+        
+        return vi
     }()
     
     let dogTwoImage : UIImageView = {
@@ -131,7 +123,7 @@ class MainCollectionFeeder : UICollectionViewCell {
         vi.backgroundColor = coreOrangeColor.withAlphaComponent(0.1)
         vi.layer.masksToBounds = true
         
-       return vi
+        return vi
     }()
     
     let dateLabel : UILabel = {
@@ -145,7 +137,7 @@ class MainCollectionFeeder : UICollectionViewCell {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.textColor = coreBlackColor
-
+        
         return hl
     }()
     
@@ -175,7 +167,7 @@ class MainCollectionFeeder : UICollectionViewCell {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.textColor = dividerGrey
-
+        
         return hl
     }()
     
@@ -187,7 +179,7 @@ class MainCollectionFeeder : UICollectionViewCell {
         cbf.tintColor = coreOrangeColor
         cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 16, style: .solid)
         cbf.setTitle(String.fontAwesomeIcon(name: .pencilAlt), for: .normal)
-      
+        
         return cbf
         
     }()
@@ -211,8 +203,7 @@ class MainCollectionFeeder : UICollectionViewCell {
         self.addSubview(self.recurringLabel)
         
         self.addSubview(self.editButton)
-
-
+        
         self.container.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
         self.container.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
         self.container.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
@@ -234,7 +225,7 @@ class MainCollectionFeeder : UICollectionViewCell {
         self.editButton.centerYAnchor.constraint(equalTo: self.dogTwoImage.centerYAnchor, constant: 0).isActive = true
         self.editButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         self.editButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
-
+        
         self.dateLabel.topAnchor.constraint(equalTo: self.dogOneImage.bottomAnchor, constant: 16).isActive = true
         self.dateLabel.leftAnchor.constraint(equalTo: self.dogOneImage.leftAnchor, constant: 0).isActive = true
         self.dateLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 2.5).isActive = true
@@ -249,7 +240,7 @@ class MainCollectionFeeder : UICollectionViewCell {
         self.recurringLabel.leftAnchor.constraint(equalTo: self.dogOneImage.leftAnchor, constant: 0).isActive = true
         self.recurringLabel.rightAnchor.constraint(equalTo: self.container.rightAnchor, constant: -10).isActive = true
         self.recurringLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
-
+        
     }
     
     required init?(coder: NSCoder) {

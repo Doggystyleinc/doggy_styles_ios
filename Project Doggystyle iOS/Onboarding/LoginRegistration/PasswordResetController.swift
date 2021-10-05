@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PasswordResetController: UIViewController, UITextFieldDelegate {
+final class PasswordResetController: UIViewController, UITextFieldDelegate, CustomAlertCallBackProtocol {
     
     private let logo = LogoImageView(frame: .zero)
     private let resetLabel = DSBoldLabel(title: "Reset Password", size: 24)
@@ -204,7 +204,7 @@ extension PasswordResetController {
         self.emailTextField.resignFirstResponder()
         
         guard let email = self.emailTextField.text, email.isValidEmail else {
-            self.presentAlertOnMainThread(title: "Invalid Address", message: "Please check your email address", buttonTitle: "Ok")
+            self.handleCustomPopUpAlert(title: "ADDRESS", message: "Please check your email address and try again.", passedButtons: [Statics.OK])
             return
         }
         
@@ -220,9 +220,34 @@ extension PasswordResetController {
                 
             } else {
                 
-                self.mainLoadingScreen.cancelMainLoadingScreen()
-                self.presentAlertOnMainThread(title: "Error", message: "This is on us. Please try again.", buttonTitle: "Ok")
+                self.handleCustomPopUpAlert(title: "ERROR", message: "This is on us. Please try again.", passedButtons: [Statics.OK])
             }
+            
+        }
+    }
+    
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        self.mainLoadingScreen.cancelMainLoadingScreen()
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.OK: print(Statics.OK)
+            
+        default: print("Should not hit")
             
         }
     }

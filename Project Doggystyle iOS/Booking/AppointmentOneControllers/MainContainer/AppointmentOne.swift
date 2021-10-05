@@ -5,13 +5,8 @@
 //  Created by Charlie Arcodia on 8/19/21.
 //
 
-
-
 import Foundation
 import UIKit
-
-
-
 
 class AppointmentOne : UIViewController,  UITextFieldDelegate, UIScrollViewDelegate {
     

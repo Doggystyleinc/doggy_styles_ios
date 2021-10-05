@@ -38,7 +38,7 @@ final class ServiceHTTP : NSObject {
         let slug = "twilio_auth"
         
         //create the url with NSURL
-        let url = URL(string: "https://doggystyle-dev.herokuapp.com/\(slug)")!
+        let url = URL(string: "https://doggystyle-backend.herokuapp.com/\(slug)")!
         
         //create the session object
         let session = URLSession.shared

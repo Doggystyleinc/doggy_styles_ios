@@ -8,7 +8,7 @@
 import UIKit
 import Foundation
 
-class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
+class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate, CustomAlertCallBackProtocol {
     
     var selectedImage : UIImage?,
         medicalDifference : CGFloat = 0.0,
@@ -18,7 +18,6 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
         containerThreeTopConstraint : NSLayoutConstraint?,
         adjustmentDifference : CGFloat = 25.0,
         offSetDifference : CGFloat = 70.0
-
     
     lazy var scrollView : UIScrollView = {
         
@@ -37,7 +36,6 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
         return sv
         
     }()
-    
     
     lazy var stackView : UIStackView = {
         
@@ -554,7 +552,7 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
         bc.translatesAutoresizingMaskIntoConstraints = false
         bc.backgroundColor = coreBackgroundWhite
         
-       return bc
+        return bc
     }()
     
     override func viewDidLoad() {
@@ -572,7 +570,7 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         
     }
-   
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         let dogsName = globalNewDogBuilder.dogBuilderName ?? "Dog"
@@ -623,9 +621,9 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
         
         self.scrollView.addSubview(self.selectedVaccineButton)
         self.selectedVaccineButton.addSubview(self.vaccineIconButton)
-
+        
         self.scrollView.addSubview(self.nextButton)
-
+        
         self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         self.scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
@@ -734,7 +732,7 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
         self.vaccineUploadButton.topAnchor.constraint(equalTo: self.vaccineLabel.bottomAnchor, constant: 20).isActive = true
         self.vaccineUploadButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         self.vaccineUploadButton.rightAnchor.constraint(equalTo: self.containerThree.rightAnchor, constant: -30).isActive = true
-      
+        
         self.filePhotoImage.rightAnchor.constraint(equalTo: self.vaccineUploadButton.rightAnchor, constant: -6).isActive = true
         self.filePhotoImage.centerYAnchor.constraint(equalTo: self.vaccineUploadButton.centerYAnchor, constant: 0).isActive = true
         self.filePhotoImage.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -781,7 +779,7 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
         
         self.selectedVaccineButton.isHidden = true
         self.selectedVaccineButton.text = ""
-
+        
         globalNewDogBuilder.dogBuilderHasUploadedVaccineCard = false
         globalNewDogBuilder.dogBuilderHasUploadedVaccineImage = UIImage()
         globalNewDogBuilder.dogBuilderHasUploadedVaccineFilePath = "nil"
@@ -849,13 +847,6 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
             self.medicalNoButton.layer.borderColor = coreOrangeColor.cgColor
             self.medicalNoButton.layer.shadowRadius = 4
             
-            
-//            self.medicalNoButton.backgroundColor = coreWhiteColor
-//            self.medicalNoButton.tintColor = coreOrangeColor
-            
-//            self.medicalYesButton.backgroundColor = dividerGrey.withAlphaComponent(0.2)
-//            self.medicalYesButton.tintColor = dividerGrey
-            
             self.medicalYesButton.backgroundColor = dividerGrey
             self.medicalYesButton.layer.borderColor = UIColor .clear.cgColor
             self.medicalYesButton.layer.shadowRadius = 0
@@ -883,8 +874,6 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
             self.medicalYesButton.layer.borderColor = coreOrangeColor.cgColor
             self.medicalYesButton.layer.shadowRadius = 4
             
-            
-            
         default: print("only 2 items here")
         }
     }
@@ -906,11 +895,11 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
             self.resetContentView()
             
             globalNewDogBuilder.dogBuilderHasBehaviouralConditions = false
-          
+            
             self.behaviorNoButton.backgroundColor = coreWhiteColor
             self.behaviorNoButton.layer.borderColor = coreOrangeColor.cgColor
             self.behaviorNoButton.layer.shadowRadius = 4
-           
+            
             self.behaviorYesButton.backgroundColor = dividerGrey
             self.behaviorYesButton.layer.borderColor = UIColor .clear.cgColor
             self.behaviorYesButton.layer.shadowRadius = 0
@@ -935,7 +924,6 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
             self.behaviorNoButton.layer.borderColor = UIColor .clear.cgColor
             self.behaviorNoButton.layer.shadowRadius = 0
             
-           
             self.behaviorYesButton.backgroundColor = coreWhiteColor
             self.behaviorYesButton.layer.borderColor = coreOrangeColor.cgColor
             self.behaviorYesButton.layer.shadowRadius = 4
@@ -947,27 +935,33 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate {
     }
     
     @objc func customAlertDecision() {
+        self.handleCustomPopUpAlert(title: "VACCINE UPLOAD", message: "Would you like to upload a file or a photo?", passedButtons: [Statics.PHOTO, Statics.FILE, Statics.CANCEL])
+    }
+    
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
         
-        let alertController = UIAlertController(title: "Vaccine upload", message: "Would you like to upload a file or a photo?", preferredStyle: .alert)
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
         
-        let actionOne = UIAlertAction(title: "Photo", style: .default) { res in
-            self.checkForGalleryAuth()
-        }
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
         
-        let actionTwo = UIAlertAction(title: "File", style: .default) { res in
-            self.checkForFiles()
-        }
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
         
-        let actionThree = UIAlertAction(title: "Cancel", style: .destructive) { res in
+        switch type {
+        
+        case Statics.PHOTO: self.checkForGalleryAuth()
+        case Statics.FILE: self.checkForFiles()
+        case Statics.CANCEL: print(Statics.CANCEL)
+            
+        default: print("Should not hit")
             
         }
-        
-        alertController.addAction(actionOne)
-        alertController.addAction(actionTwo)
-        alertController.addAction(actionThree)
-        
-        self.present(alertController, animated: true, completion: nil)
-        
     }
     
     @objc func checkForFiles() {
@@ -1053,7 +1047,7 @@ extension NewDogFour : UIImagePickerControllerDelegate, UINavigationControllerDe
             
             globalNewDogBuilder.dogBuilderHasUploadedVaccineFilePath = sandboxFileURL.path
             globalNewDogBuilder.dogBuilderHasUploadedVaccineCard = true
-           
+            
             globalNewDogBuilder.dogBuilderHasUploadedVaccineImage = UIImage()
             
             self.fileDifference = adjustmentDifference
@@ -1094,24 +1088,19 @@ extension NewDogFour : UIImagePickerControllerDelegate, UINavigationControllerDe
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization({
                 (newStatus) in
-                
                 if newStatus ==  PHAuthorizationStatus.authorized {
                     self.openGallery()
+                } else {
+                    self.handleCustomPopUpAlert(title: "PERMISSIONS", message: "Please allow Photo Library Permissions in the Settings application.", passedButtons: [Statics.OK])
                 }
             })
             
         case .restricted:
-            AlertControllerCompletion.handleAlertWithCompletion(title: "Permissions", message: "Please allow Photo Library Permissions in the Settings application.") { (complete) in
-                print("Alert presented")
-            }
+            self.handleCustomPopUpAlert(title: "PERMISSIONS", message: "Please allow Photo Library Permissions in the Settings application.", passedButtons: [Statics.OK])
         case .denied:
-            AlertControllerCompletion.handleAlertWithCompletion(title: "Permissions", message: "Please allow Photo Library Permissions in the Settings application.") { (complete) in
-                print("Alert presented")
-            }
+            self.handleCustomPopUpAlert(title: "PERMISSIONS", message: "Please allow Photo Library Permissions in the Settings application.", passedButtons: [Statics.OK])
         default :
-            AlertControllerCompletion.handleAlertWithCompletion(title: "Permissions", message: "Please allow Photo Library Permissions in the Settings application.") { (complete) in
-                print("Alert presented")
-            }
+            self.handleCustomPopUpAlert(title: "PERMISSIONS", message: "Please allow Photo Library Permissions in the Settings application.", passedButtons: [Statics.OK])
         }
     }
     
@@ -1168,7 +1157,7 @@ extension NewDogFour : UIImagePickerControllerDelegate, UINavigationControllerDe
                 if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
                     
                     self.selectedImage = editedImage
-
+                    
                     globalNewDogBuilder.dogBuilderHasUploadedVaccineCard = true
                     globalNewDogBuilder.dogBuilderHasUploadedVaccineImage = self.selectedImage
                     

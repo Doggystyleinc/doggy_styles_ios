@@ -9,16 +9,13 @@ import UIKit
 import Firebase
 import SDWebImage
 
-//TODO: - Initialize this view with a user object or fetch on viewDidLoad
-
-final class DashboardViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class DashboardViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var observingRefOne = Database.database().reference(),
         handleOne = DatabaseHandle(),
         childCounter : Int = 0,
         homeController: HomeViewController?
     
-    private let package = Package.examplePackage
     private let databaseRef = Database.database().reference()
     private let pets: [Pet] = [Pet.allPets, Pet.petOne, Pet.petTwo, Pet.petThree, Pet.petFour]
     private let appointment = Appointment.exampleAppointment
@@ -165,7 +162,7 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         self.callDataEngine()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleNewDogFlow), name: NSNotification.Name("CALL_ADD_NEW_PUP"), object: nil)
-
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -196,10 +193,10 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         let countingRef = self.databaseRef.child("doggy_profile_builder").child(user_uid)
         
         let observingRef = self.databaseRef.child("doggy_profile_builder").child(user_uid)
-
+        
         self.observingRefOne = self.databaseRef.child("doggy_profile_builder").child(user_uid)
-      
-        //FOREVER LISTEN FOR CHANGES
+        
+        //MARK: - FOREVER LISTEN FOR CHANGES
         observingRef.observe(.value) { listener in
             
             self.doggyProfileDataSource.removeAll()
@@ -209,33 +206,33 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
             self.dashMainView.registeredPetCollection.doggyProfileDataSource.removeAll()
             
             self.childCounter = 0
-        
-            //CHECK COUNTS TP MATCH UP
-            countingRef.observeSingleEvent(of: .value) { snapCount in
             
-            if snapCount.exists() {
+            //MARK: - CHECK COUNTS TP MATCH UP
+            countingRef.observeSingleEvent(of: .value) { snapCount in
                 
-                let childrenCount = Int(snapCount.childrenCount)
-                
-                self.handleOne = self.observingRefOne.observe(.childAdded, with: { snapLoop in
+                if snapCount.exists() {
                     
-                    self.childCounter += 1
+                    let childrenCount = Int(snapCount.childrenCount)
                     
-                    guard let JSON = snapLoop.value as? [String : Any] else {return}
+                    self.handleOne = self.observingRefOne.observe(.childAdded, with: { snapLoop in
+                        
+                        self.childCounter += 1
+                        
+                        guard let JSON = snapLoop.value as? [String : Any] else {return}
+                        
+                        let post = DoggyProfileDataSource(json: JSON)
+                        
+                        self.doggyProfileDataSource.append(post)
+                        
+                        if childrenCount == self.childCounter {
+                            completion(true)
+                        }
+                    })
                     
-                    let post = DoggyProfileDataSource(json: JSON)
-                    
-                    self.doggyProfileDataSource.append(post)
-                    
-                    if childrenCount == self.childCounter {
-                        completion(true)
-                    }
-                })
-                
-            } else {
-                completion(false)
+                } else {
+                    completion(false)
+                }
             }
-        }
             
         }
     }
@@ -254,7 +251,7 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         
         self.dashMainView.registeredPetCollection.doggyProfileDataSource.removeAll()
         self.doggyProfileDataSource.removeAll()
-
+        
         DispatchQueue.main.async {
             self.dashMainView.registeredPetCollection.reloadData()
         }
@@ -272,7 +269,7 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
         
         var datasourceReplica = self.doggyProfileDataSource
         globalPetDataSource = self.doggyProfileDataSource
-
+        
         let post = DoggyProfileDataSource(json: ["dog":"dog"])
         datasourceReplica.insert(post, at: 0)
         
@@ -290,18 +287,18 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
     
     func addViews() {
         
-        //HEADER
+        //MARK: - HEADER
         self.view.addSubview(self.referButton)
         self.view.addSubview(self.dsCompanyLogoImage)
         self.view.addSubview(self.notificationIcon)
         self.view.addSubview(self.notificationBubble)
         self.view.addSubview(self.headerLabel)
         
-        //EMPTY STATE ONE
+        //MARK: - EMPTY STATE ONE
         self.view.addSubview(self.emptyStateOne)
         self.view.addSubview(self.emptyStateTwo)
         
-        //DASH VIEWS
+        //MARK: - DASH VIEWS
         self.view.addSubview(self.dashMainView)
         self.view.addSubview(self.todaysDashView)
         
@@ -358,9 +355,7 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
     
     @objc func handleNewDogFlow() {
         
-        print("Called again")
-        
-        //HAS ALREADY SEEN THE ENTRY PAGE
+        //MARK: - HAS ALREADY SEEN THE ENTRY PAGE
         if let _ = UserDefaults.standard.object(forKey: "entry_path_one") as? Bool {
             
             let newDogOne = NewDogOne()
@@ -371,7 +366,7 @@ final class DashboardViewController: UIViewController, UICollectionViewDelegate,
             
         } else {
             
-            //HAD NOT SEEN THE ENTRY PAGE
+            //MARK: - HAD NOT SEEN THE ENTRY PAGE
             UserDefaults.standard.set(true, forKey:"entry_path_one")
             
             let newDogEntry = NewDogEntry()

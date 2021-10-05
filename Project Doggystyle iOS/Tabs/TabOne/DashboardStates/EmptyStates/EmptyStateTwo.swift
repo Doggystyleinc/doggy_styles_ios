@@ -13,7 +13,7 @@ class EmptyStateTwo : UIView {
     var dashboardController : DashboardViewController?
     
     let welcomeSubContainer : UIView = {
-
+        
         let wc = UIView()
         wc.translatesAutoresizingMaskIntoConstraints = false
         wc.backgroundColor = coreWhiteColor
@@ -27,8 +27,8 @@ class EmptyStateTwo : UIView {
         wc.layer.shadowOffset = CGSize(width: 2, height: 3)
         wc.layer.shadowRadius = 9
         wc.layer.shouldRasterize = false
-       return wc
-
+        return wc
+        
     }()
     
     let newUserLabel : UILabel = {
@@ -43,7 +43,7 @@ class EmptyStateTwo : UIView {
         hl.textAlignment = .center
         hl.textColor = coreBlackColor
         
-       return hl
+        return hl
     }()
     
     lazy var tourButton : UIButton = {
@@ -84,7 +84,7 @@ class EmptyStateTwo : UIView {
         vi.clipsToBounds = true
         vi.layer.masksToBounds = true
         
-       return vi
+        return vi
     }()
     
     let dogImage : UIImageView = {
@@ -100,9 +100,8 @@ class EmptyStateTwo : UIView {
         vi.clipsToBounds = true
         vi.layer.masksToBounds = true
         
-       return vi
+        return vi
     }()
-
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -120,7 +119,7 @@ class EmptyStateTwo : UIView {
         self.addSubview(self.tourButton)
         self.addSubview(self.dogOrangeShadow)
         self.addSubview(self.dogImage)
-
+        
         self.welcomeSubContainer.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
         self.welcomeSubContainer.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.welcomeSubContainer.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
@@ -145,11 +144,10 @@ class EmptyStateTwo : UIView {
         self.dogImage.leftAnchor.constraint(equalTo: self.welcomeSubContainer.leftAnchor, constant: 15).isActive = true
         self.dogImage.rightAnchor.constraint(equalTo: self.welcomeSubContainer.rightAnchor, constant: 0).isActive = true
         self.dogImage.bottomAnchor.constraint(equalTo: self.tourButton.topAnchor, constant: 0).isActive = true
-
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }

@@ -13,19 +13,19 @@ class EmptyStateOne : UIView {
     var dashboardController : DashboardViewController?
     
     let welcomeContainer : UIView = {
-
+        
         let wc = UIView()
         wc.translatesAutoresizingMaskIntoConstraints = false
         wc.backgroundColor = coreOrangeColor
         wc.isUserInteractionEnabled = true
         wc.layer.masksToBounds = true
         wc.layer.cornerRadius = 20
-
-       return wc
+        
+        return wc
     }()
-
+    
     let welcomeSubContainer : UIView = {
-
+        
         let wc = UIView()
         wc.translatesAutoresizingMaskIntoConstraints = false
         wc.backgroundColor = coreWhiteColor
@@ -39,12 +39,12 @@ class EmptyStateOne : UIView {
         wc.layer.shadowOffset = CGSize(width: 2, height: 3)
         wc.layer.shadowRadius = 9
         wc.layer.shouldRasterize = false
-       return wc
-
+        return wc
+        
     }()
-
+    
     lazy var welcomeContainerCreateDoggyprofileButton : UIButton = {
-
+        
         let wcc = UIButton(type: .system)
         wcc.translatesAutoresizingMaskIntoConstraints = false
         wcc.backgroundColor = coreWhiteColor
@@ -55,11 +55,11 @@ class EmptyStateOne : UIView {
         wcc.imageView?.contentMode = .scaleAspectFill
         wcc.contentMode = .scaleAspectFill
         wcc.addTarget(self.dashboardController, action: #selector(self.dashboardController?.handleNewDogFlow), for: .touchUpInside)
-       return wcc
+        return wcc
     }()
-
+    
     let welcomeContainerLabel : UILabel = {
-
+        
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
@@ -69,8 +69,8 @@ class EmptyStateOne : UIView {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.textColor = coreWhiteColor
-
-       return hl
+        
+        return hl
     }()
     
     let headerLabelEmptyStateOne : UILabel = {
@@ -86,7 +86,7 @@ class EmptyStateOne : UIView {
         hl.textColor = coreBlackColor
         hl.textAlignment = .center
         
-       return hl
+        return hl
     }()
     
     lazy var refurFriendButton : UIButton = {
@@ -121,7 +121,7 @@ class EmptyStateOne : UIView {
         es.isUserInteractionEnabled = true
         es.translatesAutoresizingMaskIntoConstraints = false
         
-      return es
+        return es
     }()
     
     let vehicleImage : UIImageView = {
@@ -134,7 +134,7 @@ class EmptyStateOne : UIView {
         let image = UIImage(named: "vehicle_image")?.withRenderingMode(.alwaysOriginal)
         vi.image = image
         
-       return vi
+        return vi
     }()
     
     
@@ -164,7 +164,7 @@ class EmptyStateOne : UIView {
         self.emptyStateOneContainer.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -90).isActive = true
         self.emptyStateOneContainer.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
         self.emptyStateOneContainer.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
-
+        
         self.welcomeContainer.topAnchor.constraint(equalTo: self.emptyStateOneContainer.topAnchor, constant: 15).isActive = true
         self.welcomeContainer.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.welcomeContainer.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
@@ -180,7 +180,7 @@ class EmptyStateOne : UIView {
         self.welcomeContainerCreateDoggyprofileButton.heightAnchor.constraint(equalToConstant: 98).isActive = true
         self.welcomeContainerCreateDoggyprofileButton.widthAnchor.constraint(equalToConstant: 98).isActive = true
         self.welcomeContainerCreateDoggyprofileButton.layer.cornerRadius = 98/2
-
+        
         self.welcomeContainerLabel.leftAnchor.constraint(equalTo: self.welcomeContainerCreateDoggyprofileButton.rightAnchor, constant: 15).isActive = true
         self.welcomeContainerLabel.rightAnchor.constraint(equalTo: self.welcomeContainer.rightAnchor, constant: -10).isActive = true
         self.welcomeContainerLabel.topAnchor.constraint(equalTo: self.welcomeContainer.topAnchor, constant: 5).isActive = true

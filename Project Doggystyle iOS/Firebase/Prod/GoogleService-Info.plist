@@ -3,32 +3,34 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>701488023457-u560qeq3tr466ps9vcd3udacc7cgk245.apps.googleusercontent.com</string>
+	<string>786208476267-ui1cl65sn02b7onj15n4mblltftlb77t.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.701488023457-u560qeq3tr466ps9vcd3udacc7cgk245</string>
+	<string>com.googleusercontent.apps.786208476267-ui1cl65sn02b7onj15n4mblltftlb77t</string>
 	<key>API_KEY</key>
-	<string>AIzaSyD1XCe1AjtqR2zG-NTJhy95N8CMv27wbzc</string>
+	<string>AIzaSyD3yW8pu0esbp5zZTdBd-i--qEm1e1DxyY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>701488023457</string>
+	<string>786208476267</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.doggystyle.Project-Doggystyle-iOS</string>
 	<key>PROJECT_ID</key>
-	<string>doggystyle-prod</string>
+	<string>doggystyle-production</string>
 	<key>STORAGE_BUCKET</key>
-	<string>doggystyle-prod.appspot.com</string>
+	<string>doggystyle-production.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:701488023457:ios:68df4fed285019feb96de0</string>
+	<string>1:786208476267:ios:3a23eb775e20f9c1b8352e</string>
+	<key>DATABASE_URL</key>
+	<string>https://doggystyle-production-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>
