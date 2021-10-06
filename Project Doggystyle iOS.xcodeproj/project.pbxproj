@@ -136,6 +136,7 @@
 		E326573C26B218CA004A15F6 /* NewDogSix.swift in Sources */ = {isa = PBXBuildFile; fileRef = E326573B26B218CA004A15F6 /* NewDogSix.swift */; };
 		E334FB98270B911E003F24D5 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334FB97270B911E003F24D5 /* AlertController.swift */; };
 		E334FB9A270BD328003F24D5 /* NewDogBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334FB99270BD328003F24D5 /* NewDogBuilder.swift */; };
+		E334FBA1270E40F0003F24D5 /* ServiceBroadcastExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334FBA0270E40F0003F24D5 /* ServiceBroadcastExtension.swift */; };
 		E352FF6526A63369003BD59F /* group18322.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6226A63368003BD59F /* group18322.png */; };
 		E352FF6626A63369003BD59F /* group18322@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6326A63369003BD59F /* group18322@2x.png */; };
 		E352FF6726A63369003BD59F /* group18322@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6426A63369003BD59F /* group18322@3x.png */; };
@@ -378,6 +379,7 @@
 		E326573B26B218CA004A15F6 /* NewDogSix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogSix.swift; sourceTree = "<group>"; };
 		E334FB97270B911E003F24D5 /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		E334FB99270BD328003F24D5 /* NewDogBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogBuilder.swift; sourceTree = "<group>"; };
+		E334FBA0270E40F0003F24D5 /* ServiceBroadcastExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceBroadcastExtension.swift; sourceTree = "<group>"; };
 		E352FF6226A63368003BD59F /* group18322.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group18322.png; sourceTree = "<group>"; };
 		E352FF6326A63369003BD59F /* group18322@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group18322@2x.png"; sourceTree = "<group>"; };
 		E352FF6426A63369003BD59F /* group18322@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group18322@3x.png"; sourceTree = "<group>"; };
@@ -644,6 +646,7 @@
 				E352FF6126A62CF1003BD59F /* TutorialFlow */,
 				E3D53F3826AA21A6003B4317 /* LoginRegistration */,
 				E3D53F3926AA21B9003B4317 /* Location */,
+				E334FB9F270E1B34003F24D5 /* Notifications */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -765,12 +768,13 @@
 		CDE871122652E2EE0082551B /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				E334FBA5270E447F003F24D5 /* LoadingScreens */,
+				E334FBA4270E4472003F24D5 /* NetworkMonitoring */,
 				E3B11AC1268FCC4600B5B6F8 /* Extensions.swift */,
 				CDCCD0AF265D4DB4007ABECF /* Constants.swift */,
 				CDE871162652E3030082551B /* Firebase+Ext.swift */,
 				CD6DD0192680FC4100BC376B /* GrabDeviceID.swift */,
 				CDE871292652E3310082551B /* Localizable.strings */,
-				CDE871172652E3030082551B /* NetworkMonitor.swift */,
 				CD6DD050268B9E8400BC376B /* ServiceSingleton.swift */,
 				CDE8711A2652E3030082551B /* String + Ext.swift */,
 				CDE871132652E3030082551B /* TextField+Ext.swift */,
@@ -778,7 +782,6 @@
 				CDE871152652E3030082551B /* UIColor+Ext.swift */,
 				CDE8711B2652E3030082551B /* UIFont+Ext.swift */,
 				CDE871192652E3030082551B /* UIViewController+Ext.swift */,
-				E3107F8526961A6B00CDBB37 /* MainLoadingScreen.swift */,
 				E3B582112698ACE900EC469B /* Notes.swift */,
 				E3A0AD5A26C0446500E813D5 /* DogBreedHelper.swift */,
 				E38B7FD426C453130013D72D /* BorderSingleton.swift */,
@@ -946,6 +949,31 @@
 				E326573B26B218CA004A15F6 /* NewDogSix.swift */,
 			);
 			path = NewDogSix;
+			sourceTree = "<group>";
+		};
+		E334FB9F270E1B34003F24D5 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				E36EE56726B7A75F0009A0EF /* NotificationsController.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		E334FBA4270E4472003F24D5 /* NetworkMonitoring */ = {
+			isa = PBXGroup;
+			children = (
+				CDE871172652E3030082551B /* NetworkMonitor.swift */,
+				E334FBA0270E40F0003F24D5 /* ServiceBroadcastExtension.swift */,
+			);
+			path = NetworkMonitoring;
+			sourceTree = "<group>";
+		};
+		E334FBA5270E447F003F24D5 /* LoadingScreens */ = {
+			isa = PBXGroup;
+			children = (
+				E3107F8526961A6B00CDBB37 /* MainLoadingScreen.swift */,
+			);
+			path = LoadingScreens;
 			sourceTree = "<group>";
 		};
 		E352FF6126A62CF1003BD59F /* TutorialFlow */ = {
@@ -1263,7 +1291,6 @@
 				CD6DD01E26827EA500BC376B /* RegistrationController.swift */,
 				CD6DD023268636DA00BC376B /* PinNumberEntryController.swift */,
 				CDE871602652E69B0082551B /* PasswordResetController.swift */,
-				E36EE56726B7A75F0009A0EF /* NotificationsController.swift */,
 			);
 			path = LoginRegistration;
 			sourceTree = "<group>";
@@ -1676,6 +1703,7 @@
 				CDE870DE2652E1610082551B /* AppDelegate.swift in Sources */,
 				E38B7FDE26C45C6D0013D72D /* NewDogOnceCollection.swift in Sources */,
 				CD6868842654373A0064ADFE /* UIButton+Ext.swift in Sources */,
+				E334FBA1270E40F0003F24D5 /* ServiceBroadcastExtension.swift in Sources */,
 				CD6DD024268636DA00BC376B /* PinNumberEntryController.swift in Sources */,
 				CD6DD02226839ED600BC376B /* DSTextField.swift in Sources */,
 				E397405826D2DCE50084742F /* SelectCustomServices.swift in Sources */,

@@ -24,30 +24,30 @@ class NetworkMonitor {
             
             //MARK: - SATISFIED
             if path.status == .satisfied {
-                
+                print("satisfied")
                 DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: NSNotification.Name("HANDLE_SERVICE_SATISFIED"), object: nil)
+                    NotificationCenter.default.post(name: NSNotification.Name(Statics.HANDLE_SERVICE_SATISFIED), object: nil)
                 }
                 
                 //MARK: - UNSATISFIED
             } else if path.status == .unsatisfied {
-                
+                print("unsatisfied")
+
                 DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: NSNotification.Name("HANDLE_SERVICE_UNSATISIFED"), object: nil)
+                    NotificationCenter.default.post(name: NSNotification.Name(Statics.HANDLE_SERVICE_UNSATISIFED), object: nil)
                 }
                 
                 //MARK: - REQUIRES CONNECTION
             } else if path.status == .requiresConnection {
-                
+                print("requiresConnection")
+
                 DispatchQueue.main.async {
-                    print("requiresConnection!")
-                    NotificationCenter.default.post(name: NSNotification.Name("HANDLE_SERVICE_UNSATISIFED"), object: nil)
+                    NotificationCenter.default.post(name: NSNotification.Name(Statics.HANDLE_SERVICE_UNSATISIFED), object: nil)
                 }
                 
             } else {
                 print("HIT THE ELSE FOR NETWORK")
             }
-            print(path.isExpensive)
         }
         
         let queue = DispatchQueue(label: "NetworkMonitor")

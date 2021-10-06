@@ -59,24 +59,30 @@ final class DecisionController: UIViewController {
     }
     
     func authenticationCheck() {
+        
         let auth = Auth.auth().currentUser?.uid ?? nil
         
         //USER IS NOT AUTHENTICATED
         if auth == nil {
-            self.perform(#selector(presentWelcomeController), with: nil, afterDelay: 1.0)
-            
+            self.perform(#selector(self.presentWelcomeController), with: nil, afterDelay: 1.0)
             //USER IS AUTHENTICATED
         } else if auth != nil {
             //DOUBLE CHECK A NODE UNDER ALL USERS TO MAKE SURE IT EXISTS-> WE CAN ROUTE HERE AND AUTOFILL THEIR DATA
             Service.shared.authCheck { (hasAuth) in
                 if hasAuth {
-                    Service.shared.fetchCurrentUser()
-                    self.perform(#selector(self.presentHomeController), with: nil, afterDelay: 1.0)
-                } else {
-                    guard let userEmail = Auth.auth().currentUser?.email else { return }
-                    Service.shared.updateAllUsers(usersEmail: userEmail, userSignInMethod: Constants.email) { success in
-                        self.perform(#selector(self.presentHomeController), with: nil, afterDelay: 1.0)
+                    //MARK: - USER HAS AUTH AND IS FOUND IN OUR SYSTEM
+                    Service.shared.fetchCurrentUserData { isComplete in
+                        
+                        if isComplete == true {
+                            self.perform(#selector(self.presentHomeController), with: nil, afterDelay: 1.0)
+                        } else {
+                            self.perform(#selector(self.presentWelcomeController), with: nil, afterDelay: 1.0)
+                        }
                     }
+                } else {
+                    //MARK: - USER HAS AUTH BUT WAS DELETED FROM OUR SYSTEM
+                    Service.shared.handleFirebaseLogout()
+                    self.perform(#selector(self.presentWelcomeController), with: nil, afterDelay: 1.0)
                 }
             }
         }

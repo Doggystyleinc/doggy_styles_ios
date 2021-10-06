@@ -9,7 +9,9 @@ import Foundation
 import UIKit
 import UserNotifications
 
-class NotificationsController : UIViewController, UNUserNotificationCenterDelegate {
+class NotificationsController : UIViewController, UNUserNotificationCenterDelegate, CustomAlertCallBackProtocol {
+    
+    let mainLoadingScreen = MainLoadingScreen()
     
     lazy var backButton : UIButton = {
         
@@ -157,13 +159,74 @@ class NotificationsController : UIViewController, UNUserNotificationCenterDelega
         
         let center  = UNUserNotificationCenter.current()
         center.delegate = self
+        
         center.requestAuthorization(options: [.sound, .alert, .badge]) { (granted, error) in
-            if error == nil{
+          
+            if error == nil {
+                
                 DispatchQueue.main.async(execute: {
+                    
                     UIApplication.shared.registerForRemoteNotifications()
-                    self.handleConfirmButton()
+                    userOnboardingStruct.user_enabled_notifications = true
+                    self.loadAllTheLogic()
+
                 })
+            } else {
+                userOnboardingStruct.user_enabled_notifications = false
+                self.loadAllTheLogic()
+
             }
+        }
+    }
+    
+    @objc func handleDisableNotifications() {
+        UIApplication.shared.unregisterForRemoteNotifications()
+        userOnboardingStruct.user_enabled_notifications = false
+        self.loadAllTheLogic()
+    }
+    
+    @objc func loadAllTheLogic() {
+        
+        self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
+        
+        Service.shared.FirebaseRegistrationAndLogin { isComplete, response, code in
+            
+            if isComplete == false {
+                self.handleCustomPopUpAlert(title: "ERROR", message: "Seems there was an error with your registration. Please try again.", passedButtons: [Statics.GOT_IT])
+            } else {
+                
+                Service.shared.fetchCurrentUserData { isComplete in
+
+                self.mainLoadingScreen.cancelMainLoadingScreen()
+                self.handleConfirmButton()
+                    
+                }
+            }
+        }
+    }
+    
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        self.mainLoadingScreen.cancelMainLoadingScreen()
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.GOT_IT: self.dismiss(animated: true, completion: nil)
+            
+        default: print("Should not hit")
+            
         }
     }
     
@@ -174,10 +237,5 @@ class NotificationsController : UIViewController, UNUserNotificationCenterDelega
         navVC.modalPresentationStyle = .fullScreen
         navigationController?.present(navVC, animated: true)
         
-    }
-    
-    @objc func handleDisableNotifications() {
-        UIApplication.shared.unregisterForRemoteNotifications()
-        self.handleConfirmButton()
     }
 }

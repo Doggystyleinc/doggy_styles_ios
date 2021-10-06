@@ -17,6 +17,13 @@ class HomeViewController: UITabBarController {
     let storageRef = Storage.storage().reference()
     let databaseRef = Database.database().reference()
     
+    lazy var flagView : NoServiceFlag = {
+        
+        let fv = NoServiceFlag()
+        fv.homeViewController = self
+        
+        return fv
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +33,12 @@ class HomeViewController: UITabBarController {
         self.addViews()
         self.configureTabIcons()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleServiceSatisfied), name: NSNotification.Name(Statics.HANDLE_SERVICE_SATISFIED), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleServiceUnsatisfied), name: NSNotification.Name(Statics.HANDLE_SERVICE_UNSATISIFED), object: nil)
+        
+        //MARK: - EXTENSION - CHECKS FOR SERVICE AND THROWS A NO SERVICE FLAG IS SERVICE IS DOWN
+        NetworkMonitor.shared.startMonitoring()
+
     }
     
     private func addViews() {
@@ -38,6 +51,13 @@ class HomeViewController: UITabBarController {
     
     func switchTabs(tabIndex : Int) {
         self.selectedIndex = tabIndex
+    }
+    
+    @objc func handleServiceSatisfied() {
+        self.flagView.cancelFlagView()
+    }
+    @objc func handleServiceUnsatisfied() {
+        self.flagView.callFlagWindow()
     }
     
     private func configureTabIcons() {
@@ -105,10 +125,10 @@ class HomeViewController: UITabBarController {
                 
                 if let uploadUrl = urlGRab?.absoluteString {
                     
-                    let values : [String : Any] = ["profile_image_url" : uploadUrl]
+                    let values : [String : Any] = ["users_profile_image_url" : uploadUrl]
                     let refUploadPath = self.databaseRef.child("all_users").child(userUid)
                     
-                    userProfileStruct.profile_image_url = uploadUrl
+                    userProfileStruct.users_profile_image_url = uploadUrl
                     
                     refUploadPath.updateChildValues(values, withCompletionBlock: { (error, ref) in
                         if error != nil {

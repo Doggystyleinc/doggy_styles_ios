@@ -151,7 +151,6 @@ class DashboardViewController: UIViewController, UICollectionViewDelegate, UICol
         self.view.backgroundColor = .dsViewBackground
         
         self.fillValues()
-        Service.shared.fetchCurrentUser()
         self.addViews()
         
         self.emptyStateOne.isHidden = true
@@ -169,7 +168,6 @@ class DashboardViewController: UIViewController, UICollectionViewDelegate, UICol
         super.viewWillAppear(animated)
         
         self.navigationController?.navigationBar.isHidden = true
-        Service.shared.fetchCurrentUser()
         self.fillValues()
         
     }

@@ -182,8 +182,6 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
         ServiceHTTP.shared.twilioGetRequest(function_call: "request_for_authorization", users_country_code: countryCode, users_phone_number: phone, delivery_method: "sms", entered_code: enteredCode) { object, error in
             
             guard let obj = object else {return}
-            
-            self.mainLoadingScreen.cancelMainLoadingScreen()
         
             for (key,value) in obj {
                 

@@ -95,6 +95,7 @@ extension ProfileController : UIImagePickerControllerDelegate, UINavigationContr
                 if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
                     
                     self.activityInvoke(shouldStart: true)
+                    self.profileImageView.image = editedImage
                     self.homeController?.uploadProfileImage(imageToUpload: editedImage) { complete in
                         self.fetchJSON()
                         self.activityInvoke(shouldStart: false)
@@ -103,6 +104,7 @@ extension ProfileController : UIImagePickerControllerDelegate, UINavigationContr
                     
                 } else if let originalImage = info[.originalImage] as? UIImage  {
                     self.activityInvoke(shouldStart: true)
+                    self.profileImageView.image = originalImage
                     self.homeController?.uploadProfileImage(imageToUpload: originalImage) { complete in
                         self.fetchJSON()
                         self.activityInvoke(shouldStart: false)

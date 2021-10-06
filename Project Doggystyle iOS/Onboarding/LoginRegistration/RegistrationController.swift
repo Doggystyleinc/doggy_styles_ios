@@ -7,6 +7,7 @@
 
 import UIKit
 import PhoneNumberKit
+import Firebase
 
 class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate, UITextViewDelegate, CustomAlertCallBackProtocol {
     
@@ -855,6 +856,19 @@ class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollVie
         
     }
     
+    //MARK: - HACKY WAY TO CHECK IF EMAIL EXISTS BEFORE WALKING THE USER THROUGH 5 SCRENS AND THEN LETTING THEM KNOW
+    func checkForEmailValidation(emailAddress : String, completion : @escaping (_ doesUserExist : Bool)->()) {
+        
+        Auth.auth().fetchSignInMethods(forEmail: emailAddress) { providers, error in
+            
+            if providers != nil {
+                completion(true)
+            } else {
+                completion(false)
+            }
+        }
+    }
+    
     @objc func handleConfirmButton() {
         
         self.resignation()
@@ -878,52 +892,62 @@ class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollVie
             return
         }
         
-        do {
-            let phoneNumber = try phoneNumberKit.parse(safeMobile)
-            let countryCode = "\(phoneNumber.countryCode)"
-            let nationalNumber = "\(phoneNumber.nationalNumber)"
+        self.checkForEmailValidation(emailAddress: safeEmail) { doesUserAlreadyExist in
             
-            self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
-            
-            ServiceHTTP.shared.twilioGetRequest(function_call: "request_for_pin", users_country_code: countryCode, users_phone_number: nationalNumber, delivery_method: "sms", entered_code: "nil") { object, error in
-                if error == nil {
-                    DispatchQueue.main.async {
-                        
-                        //THIS INFO IS NO LONGER NEEDED TO PASS - TODO: REMOVE
-                        let pinNumberVC = PinNumberVerificationEntryController()
-                        pinNumberVC.phoneNumber = nationalNumber
-                        pinNumberVC.countryCode = countryCode
-                        pinNumberVC.firstName = firstName
-                        pinNumberVC.lastName = lastName
-                        pinNumberVC.email = safeEmail
-                        pinNumberVC.password = safePassword
-                        
-                        //MARK: - ONLY FILL THE USERONBOARDING STRUCT HERE
-                        userOnboardingStruct.user_first_name = firstName
-                        userOnboardingStruct.user_last_name = lastName
-                        userOnboardingStruct.users_full_name = "\(firstName) \(lastName)"
-                        userOnboardingStruct.users_email = safeEmail
-                        userOnboardingStruct.users_phone_number = nationalNumber
-                        userOnboardingStruct.users_country_code = countryCode
-                        userOnboardingStruct.users_full_phone_number = "\(countryCode) \(nationalNumber)"
-                        userOnboardingStruct.is_groomer = false
-                        userOnboardingStruct.users_password = safePassword
-
-                        self.mainLoadingScreen.cancelMainLoadingScreen()
-                        
-                        let navVC = UINavigationController(rootViewController: pinNumberVC)
-                        navVC.modalPresentationStyle = .fullScreen
-                        self.navigationController?.present(navVC, animated: true)
+            if doesUserAlreadyExist == true {
+                
+                self.handleCustomPopUpAlert(title: "EMAIL EXISTS", message: "Doggystyle already has a registered email address under \(safeEmail). If this belongs to you, go back and login. ", passedButtons: [Statics.OK])
+                
+            } else {
+                
+                do {
+                    let phoneNumber = try self.phoneNumberKit.parse(safeMobile)
+                    let countryCode = "\(phoneNumber.countryCode)"
+                    let nationalNumber = "\(phoneNumber.nationalNumber)"
+                    
+                    self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
+                    
+                    ServiceHTTP.shared.twilioGetRequest(function_call: "request_for_pin", users_country_code: countryCode, users_phone_number: nationalNumber, delivery_method: "sms", entered_code: "nil") { object, error in
+                        if error == nil {
+                            DispatchQueue.main.async {
+                                
+                                //MARK: - THIS INFO IS NO LONGER NEEDED TO PASS - TODO: REMOVE
+                                let pinNumberVC = PinNumberVerificationEntryController()
+                                pinNumberVC.phoneNumber = nationalNumber
+                                pinNumberVC.countryCode = countryCode
+                                pinNumberVC.firstName = firstName
+                                pinNumberVC.lastName = lastName
+                                pinNumberVC.email = safeEmail
+                                pinNumberVC.password = safePassword
+                                
+                                //MARK: - ONLY FILL THE USERONBOARDING STRUCT HERE
+                                userOnboardingStruct.user_first_name = firstName
+                                userOnboardingStruct.user_last_name = lastName
+                                userOnboardingStruct.users_full_name = "\(firstName)\(lastName)"
+                                userOnboardingStruct.users_email = safeEmail
+                                userOnboardingStruct.users_phone_number = nationalNumber
+                                userOnboardingStruct.users_country_code = countryCode
+                                userOnboardingStruct.users_full_phone_number = "\(countryCode) \(nationalNumber)"
+                                userOnboardingStruct.is_groomer = false
+                                userOnboardingStruct.users_password = safePassword
+                                
+                                self.mainLoadingScreen.cancelMainLoadingScreen()
+                                
+                                let navVC = UINavigationController(rootViewController: pinNumberVC)
+                                navVC.modalPresentationStyle = .fullScreen
+                                self.navigationController?.present(navVC, animated: true)
+                            }
+                        } else {
+                            self.mainLoadingScreen.cancelMainLoadingScreen()
+                            let error = error?.localizedDescription as Any
+                            self.handleCustomPopUpAlert(title: "This is on us, please try again.", message: "\(error)", passedButtons: [Statics.OK])
+                        }
                     }
-                } else {
-                    self.mainLoadingScreen.cancelMainLoadingScreen()
-                    let error = error?.localizedDescription as Any
-                    self.handleCustomPopUpAlert(title: "This is on us, please try again.", message: "\(error)", passedButtons: [Statics.OK])
+                    
+                } catch {
+                    print("Error")
                 }
             }
-            
-        } catch {
-            print("Error")
         }
     }
     

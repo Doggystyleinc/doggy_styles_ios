@@ -21,15 +21,14 @@ struct UserOnboardingStruct {
         users_full_phone_number : String?,
         is_groomer : Bool?,
         users_password : String?,
-
         
         chosen_grooming_location_name : String?,
-        chosen_grooming_location_place_id : String?,
-
         chosen_grooming_location_latitude : Double?,
         chosen_grooming_location_longitude : Double?,
         
-        referral_code_grab : String?
+        referral_code_grab : String?,
+        user_enabled_notifications : Bool?
+
 }
 
 
@@ -41,16 +40,20 @@ struct UserProfileStruct {
     var user_first_name: String?,
         user_last_name: String?,
         users_full_name: String?,
-       
         users_email : String?,
-
         users_phone_number : String?,
         users_country_code : String?,
-        
         users_full_phone_number : String?,
-
-        profile_image_url: String?,
         is_groomer : Bool?,
-        users_profile_image : String?
-    
+        users_profile_image_url: String?,
+        chosen_grooming_location_name : String?,
+        chosen_grooming_location_latitude : Double?,
+        chosen_grooming_location_longitude : Double?,
+        referral_code_grab : String?,
+        user_enabled_notifications : Bool?,
+        users_firebase_uid : String?,
+        users_sign_up_date : String?,
+        uploaded_document_url : String?,
+        users_ref_key : String?
+
 }

@@ -170,23 +170,15 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
     }
     
     func fetchJSON() {
-        
-        let is_groomer = userProfileStruct.is_groomer ?? false
-        if is_groomer {
-            let usersName = "DOG LOVER" //userProfileStruct.groomers_full_name ?? 
-            self.nameLabel.text = usersName
-        } else {
-            let usersName = userProfileStruct.users_full_name ?? "DOG LOVER"
-            self.nameLabel.text = usersName
-        }
-        
-        let userProfilePhoto = userProfileStruct.profile_image_url ?? "nil"
-        
+      
+        let userProfilePhoto = userProfileStruct.users_profile_image_url ?? "nil"
+        let users_name = userProfileStruct.users_full_name ?? "Incognito"
+        self.nameLabel.text = users_name
+
         if userProfilePhoto == "nil" {
             self.profileImageView.image = UIImage(named: "Owner Profile Placeholder")?.withRenderingMode(.alwaysOriginal)
         } else {
             self.profileImageView.loadImageGeneralUse(userProfilePhoto) { complete in
-                print("Profile photo has been loaded.")
             }
         }
     }

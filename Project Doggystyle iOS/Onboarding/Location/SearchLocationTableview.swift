@@ -75,7 +75,6 @@ class SearchResultsTableView : UITableView, UITableViewDelegate, UITableViewData
             guard let placeName = self.arrayOfDicts[indexPath.item].placeName else {return}
             
             userOnboardingStruct.chosen_grooming_location_name = locationName
-            userOnboardingStruct.chosen_grooming_location_place_id = placeName
 
             self.locationFinder?.handleLocationSelection(passedPlaceID: placeName, passedLocationAddress: locationName)
            

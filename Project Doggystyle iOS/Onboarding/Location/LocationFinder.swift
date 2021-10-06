@@ -10,7 +10,7 @@ import UIKit
 import GooglePlaces
 import GoogleMaps
 
-class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerDelegate  {
+class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerDelegate, CustomAlertCallBackProtocol  {
     
     enum SearchStates {
         case idle
@@ -609,38 +609,45 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         self.askUserForPermissionsAgain()
         self.mapView.isHidden = true
-        
     }
     
     func askUserForPermissionsAgain() {
+        self.handleCustomPopUpAlert(title: "LOCATION SERVICES", message: "Please allow Doggystyle permission to the devices location so we can find nearby Groomers.", passedButtons: [Statics.CANCEL, Statics.GOT_IT])
+    }
+    
+    
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
         
-        let activityViewController = UIAlertController(title: "Location Services", message: "Please allow Doggystyle permission to the devices location so we can find nearby Groomers.", preferredStyle: .alert)
+        self.mainLoadingScreen.cancelMainLoadingScreen()
         
-        let actionOne = UIAlertAction(title: "Cancel", style: .default) { (alert : UIAlertAction) in
-            
-            self.navigationController?.dismiss(animated: true, completion: nil)
-            
-        }
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        alert.passedIconName = .mapPin
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
         
-        let actionTwo = UIAlertAction(title: "Enable", style: .default) { (alert : UIAlertAction) in
-            
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.CANCEL: print(Statics.CANCEL)
+        case Statics.GOT_IT:
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                
                 return
-                
             }
             
             if UIApplication.shared.canOpenURL(settingsUrl) {
                 UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
                 })
             }
+            
+        default: print("Should not hit")
         }
-        
-        activityViewController.addAction(actionOne)
-        activityViewController.addAction(actionTwo)
-        
-        self.present(activityViewController, animated: true, completion: nil)
-        
     }
     
     func listener() {
@@ -751,11 +758,13 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
 
 extension LocationFinder {
     
+    //MARK: - USER SEARCHES FOR THEIR ADDRESS BY USING PLACES API
     func handleLocationSelection(passedPlaceID : String, passedLocationAddress : String) {
         
         self.placesClient.lookUpPlaceID(passedPlaceID) { place, error in
             
             if let error = error {
+                print(error.localizedDescription as Any)
                 self.handleCancelCurrentSearchButton()
                 return
             }
@@ -765,16 +774,14 @@ extension LocationFinder {
                 return
             }
             
-            let latitude = place.coordinate.latitude
-            let longitude = place.coordinate.longitude
+            let latitude = place.coordinate.latitude,
+                longitude = place.coordinate.longitude
             
             userOnboardingStruct.chosen_grooming_location_latitude = latitude
             userOnboardingStruct.chosen_grooming_location_longitude = longitude
 
             self.mapView.clear()
-            
             self.mapView.isHidden = false
-            
             self.mapView.addCustomMarker(latitude: latitude, longitude: longitude)
             
         }
@@ -793,9 +800,9 @@ extension LocationFinder {
         
     }
     
+    //MARK: - USER SELECTS USE MY CURRENT LOCATION
     @objc func grabUsersCurrentLocation() {
         
-        print("in here?")
         self.resignation()
         self.resetTable()
         self.searchTextField.text = ""
@@ -803,8 +810,9 @@ extension LocationFinder {
         self.mapView.isHidden = false
         self.currentUserContainerButton.isHidden = true
         
-        let lat = self.locationManager.location?.coordinate.latitude ?? 0.0
-        let long = self.locationManager.location?.coordinate.longitude ?? 0.0
+        //MARK: - BUILDER
+        let lat = self.locationManager.location?.coordinate.latitude ?? 0.0,
+            long = self.locationManager.location?.coordinate.longitude ?? 0.0
         
         userOnboardingStruct.chosen_grooming_location_latitude = lat
         userOnboardingStruct.chosen_grooming_location_longitude = long
@@ -818,8 +826,7 @@ extension LocationFinder {
         }
         
         self.confirmLocationButton.isHidden = false
-        print("in again?")
-
+        
         let geocoder = GMSGeocoder()
         geocoder.reverseGeocodeCoordinate(coordinates) { response, error in
             if error != nil {
@@ -831,16 +838,8 @@ extension LocationFinder {
                 let finalResult = result[0]
                 self.searchTextField.text = "\(finalResult)"
                 
-                print("Admin area: ", response?.firstResult()?.administrativeArea)
-                print("Coordinate: ", response?.firstResult()?.coordinate)
-                print("Country: ", response?.firstResult()?.country)
-                print("Locality: ", response?.firstResult()?.locality)
-                print("Postal code: ", response?.firstResult()?.postalCode)
-                print("subLocality code: ", response?.firstResult()?.subLocality)
-                print("subLocality code: ", response?.firstResult()?.thoroughfare)
-
-                print("RESULT: \(finalResult)")
-                
+                //MARK: - BUILDER
+                userOnboardingStruct.chosen_grooming_location_name = finalResult
             }
         }
     }

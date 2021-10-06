@@ -474,8 +474,12 @@ final class LoginController: UIViewController, UITextFieldDelegate, CustomAlertC
                     self.handleCustomPopUpAlert(title: "Credential Mismatch", message: response, passedButtons: [Statics.OK])
                     return
                 }
-                self.mainLoadingScreen.cancelMainLoadingScreen()
-                self.presentHomeController()
+                
+                Service.shared.fetchCurrentUserData { isComplete in
+                    if isComplete == false {print("Data is not loading on the users behalf")}
+                    self.mainLoadingScreen.cancelMainLoadingScreen()
+                    self.presentHomeController()
+                }
             }
         }
     }

@@ -26,7 +26,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GMSPlacesClient.provideAPIKey("AIzaSyCsQHp5h7ReANC8G4hSJ3xFF-unyiSfgBs")
         
         //MARK: - GOOGLE MAPS KEY
-        GMSServices.provideAPIKey("AIzaSyCsQHp5h7ReANC8G4hSJ3xFF-unyiSfgBs")
+//        GMSServices.provideAPIKey("AIzaSyCsQHp5h7ReANC8G4hSJ3xFF-unyiSfgBs")
+        //MARK: - GOOGLE MAPS KEY
+        GMSServices.provideAPIKey("AIzaSyD3yW8pu0esbp5zZTdBd-i--qEm1e1DxyY")
         
         //MARK: - FACEBOOK CALLBACK
         ApplicationDelegate.shared.application(

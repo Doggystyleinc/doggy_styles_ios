@@ -17,6 +17,18 @@ import Firebase
 class Service : NSObject {
     static let shared = Service()
     
+    func handleFirebaseLogout() {
+        
+        do {
+            try Auth.auth().signOut()
+        } catch let logoutError {
+            print(logoutError)
+            return
+        }
+        
+        Database.database().reference().removeAllObservers()
+    }
+    
     //MARK: - DOUBLE CHECK FOR AUTH SO WE CAN MAKE SURE THERE ALL USERS NODE IS CURRENT
     func authCheck(completion : @escaping (_ hasAuth : Bool)->()) {
         
@@ -43,14 +55,27 @@ class Service : NSObject {
     
     
     //MARK: - REGISTRATION: ERROR CODE 200 PROMPTS REGISTRATION SUCCESS WITH LOGIN FAILURE, SO CALL LOGIN FUNCTION AGAIN INDEPENDENTLY. 500 = REGISTRATION FAILED, CALL THIS FUNCTION AGAIN FROM SCRATCH.
-    func FirebaseRegistrationAndLogin(userFirstName: String, userLastName: String, usersEmailAddress : String, usersPassword : String, mobileNumber : String, referralCode : String?, signInMethod : String, completion : @escaping (_ registrationSuccess : Bool, _ response : String, _ responseCode : Int)->()) {
+    func FirebaseRegistrationAndLogin( completion : @escaping (_ registrationSuccess : Bool, _ response : String, _ responseCode : Int)->()) {
         let databaseRef = Database.database().reference()
         
-        var referralCodeGrab : String = "no_code"
-        referralCodeGrab = referralCode != nil ? referralCode! : "no_code"
+        guard let user_first_name = userOnboardingStruct.user_first_name else {return}
+        guard let user_last_name = userOnboardingStruct.user_last_name else {return}
+        guard let users_full_name = userOnboardingStruct.users_full_name else {return}
+        guard let users_email = userOnboardingStruct.users_email else {return}
+        guard let users_phone_number = userOnboardingStruct.users_phone_number else {return}
+        guard let users_country_code = userOnboardingStruct.users_country_code else {return}
+        guard let users_full_phone_number = userOnboardingStruct.users_full_phone_number else {return}
+        guard let is_groomer = userOnboardingStruct.is_groomer else {return}
+        guard let users_password = userOnboardingStruct.users_password else {return}
+        guard let user_enabled_notifications = userOnboardingStruct.user_enabled_notifications else {return}
+        
+        guard let chosen_grooming_location_name = userOnboardingStruct.chosen_grooming_location_name else {return}
+        guard let chosen_grooming_location_latitude = userOnboardingStruct.chosen_grooming_location_latitude else {return}
+        guard let chosen_grooming_location_longitude = userOnboardingStruct.chosen_grooming_location_longitude else {return}
+        let referral_code_grab = userOnboardingStruct.referral_code_grab ?? "nil"
         
         //STEP 1 - AUTHENTICATE A NEW ACCOUNT ON BEHALF OF THE USER
-        Auth.auth().createUser(withEmail: usersEmailAddress, password: usersPassword) { (result, error) in
+        Auth.auth().createUser(withEmail: users_email, password: users_password) { (result, error) in
             if error != nil {
                 if let errCode = AuthErrorCode(rawValue: error!._code) {
                     
@@ -70,7 +95,7 @@ class Service : NSObject {
                 }
             } else {
                 //STEP 2 - SIGN THE USER IN WITH THEIR NEW CREDENTIALS
-                Auth.auth().signIn(withEmail: usersEmailAddress, password: usersPassword) { (user, error) in
+                Auth.auth().signIn(withEmail: users_email, password: users_password) { (user, error) in
                     
                     if error != nil {
                         completion(false, "Login Error: \(error?.localizedDescription as Any).", 200)
@@ -89,17 +114,30 @@ class Service : NSObject {
                         ref_key = ref.key ?? "nil_key"
                     
                     let values : [String : Any] = [
+                        
                         "users_firebase_uid" : firebase_uid,
-                        "user_first_name" : userFirstName,
-                        "user_last_name" : userLastName,
-                        "users_email" : usersEmailAddress,
-                        "users_sign_in_method" : signInMethod,
+                        "user_first_name" : user_first_name,
+                        "user_last_name" : user_last_name,
+                        "users_full_name" : users_full_name,
+                        "users_email" : users_email,
+                        "users_phone_number" : users_phone_number,
+                        "users_country_code" : users_country_code,
+                        "users_full_phone_number" : users_full_phone_number,
+                        
+                        
+                        "users_sign_in_method" : "email",
                         "users_sign_up_date" : timeStamp,
-                        "is_groomer" : false,
+                        "is_groomer" : is_groomer,
                         "is_users_terms_and_conditions_accepted" : true,
-                        "users_phone_number" : mobileNumber,
+                        
                         "users_ref_key" : ref_key,
-                        "referral_code_grab" : referralCodeGrab
+                        
+                        "chosen_grooming_location_name" : chosen_grooming_location_name,
+                        "chosen_grooming_location_latitude" : chosen_grooming_location_latitude,
+                        "chosen_grooming_location_longitude" : chosen_grooming_location_longitude,
+                        "referral_code_grab" : referral_code_grab,
+                        "user_enabled_notifications" : user_enabled_notifications
+                        
                     ]
                     
                     ref.updateChildValues(values) { (error, ref) in
@@ -228,300 +266,361 @@ class Service : NSObject {
             }
         }
     }
+     
+    }
     
-    func updateAllUsers(usersEmail: String, userSignInMethod: String, completion: @escaping (_ updateUserSuccess: Bool) -> ()) {
-        if let user_uid = Auth.auth().currentUser?.uid {
-            let ref = Database.database().reference().child(Constants.allUsers).child(user_uid)
-            let timeStamp : Double = NSDate().timeIntervalSince1970
-            let ref_key = ref.key ?? "nil_key"
+    //MARK: - Fetch Current User Data
+    extension Service {
+        
+        func fetchCurrentUserData(completion : @escaping (_ isComplete : Bool)->()) {
             
-            let values : [String : Any] = [
-                "users_firebase_uid" : user_uid,
-                "users_email" : usersEmail,
-                "users_sign_in_method" : userSignInMethod,
-                "users_sign_up_date" : timeStamp,
-                "is_groomer" : false,
-                "is_users_terms_and_conditions_accepted" : true,
-                "users_ref_key" : ref_key]
+            guard let userUID = Auth.auth().currentUser?.uid else { return }
+            let databaseRef = Database.database().reference()
+            let ref = databaseRef.child(Constants.allUsers).child(userUID)
             
-            ref.updateChildValues(values) { error, databaseReference in
-                if error != nil {
-                    completion(false)
-                } else {
+            ref.observeSingleEvent(of: .value) { snapshot in
+                
+                if let JSON = snapshot.value as? [String : Any] {
+                    
+                    let users_firebase_uid = JSON["users_firebase_uid"] as? String ?? "nil"
+                    let user_first_name = JSON["user_first_name"] as? String ?? "nil"
+                    let user_last_name = JSON["user_last_name"] as? String ?? "nil"
+                    let users_full_name = JSON["users_full_name"] as? String ?? "nil"
+                    let users_email = JSON["users_email"] as? String ?? "nil"
+                    let users_phone_number = JSON["users_phone_number"] as? String ?? "nil"
+                    let users_country_code = JSON["users_country_code"] as? String ?? "nil"
+                    let users_full_phone_number = JSON["users_full_phone_number"] as? String ?? "nil"
+                    
+                    let users_sign_up_date = JSON["users_sign_up_date"] as? String ?? "nil"
+                    let is_groomer = JSON["is_groomer"] as? Bool ?? false
+                    
+                    let users_ref_key = JSON["users_ref_key"] as? String ?? "nil"
+                    
+                    let chosen_grooming_location_name = JSON["chosen_grooming_location_name"] as? String ?? "nil"
+                    let chosen_grooming_location_latitude = JSON["chosen_grooming_location_latitude"] as? Double ?? 0.0
+                    let chosen_grooming_location_longitude = JSON["chosen_grooming_location_longitude"] as? Double ?? 0.0
+                    let referral_code_grab = JSON["referral_code_grab"] as? String ?? "nil"
+                    let user_enabled_notifications = JSON["user_enabled_notifications"] as? Bool ?? false
+                    
+                    let users_profile_image_url = JSON["users_profile_image_url"] as? String ?? "nil"
+                    let uploaded_document_url = JSON["uploaded_document_url"] as? String ?? "nil"
+                    
+                    userProfileStruct.users_firebase_uid = users_firebase_uid
+                    userProfileStruct.user_first_name = user_first_name
+                    
+                    userProfileStruct.user_last_name = user_last_name
+                    userProfileStruct.users_full_name = users_full_name
+                    userProfileStruct.users_email = users_email
+                    userProfileStruct.users_phone_number = users_phone_number
+                    userProfileStruct.users_country_code = users_country_code
+                    userProfileStruct.users_full_phone_number = users_full_phone_number
+                    
+                    userProfileStruct.users_sign_up_date = users_sign_up_date
+                    userProfileStruct.is_groomer = is_groomer
+                    
+                    userProfileStruct.users_ref_key = users_ref_key
+                    
+                    userProfileStruct.chosen_grooming_location_name = chosen_grooming_location_name
+                    userProfileStruct.chosen_grooming_location_latitude = chosen_grooming_location_latitude
+                    userProfileStruct.chosen_grooming_location_longitude = chosen_grooming_location_longitude
+                    userProfileStruct.referral_code_grab = referral_code_grab
+                    userProfileStruct.user_enabled_notifications = user_enabled_notifications
+                    
+                    userProfileStruct.users_profile_image_url = users_profile_image_url
+                    userProfileStruct.uploaded_document_url = uploaded_document_url
+                    
                     completion(true)
+                    
+                } else {
+                    
+                    completion(false)
+                    
                 }
             }
         }
     }
-}
-
-//MARK: - Fetch Current User Data
-extension Service {
-    func fetchCurrentUser() {
-        guard let userUID = Auth.auth().currentUser?.uid else { return }
-        let databaseRef = Database.database().reference()
-        let ref = databaseRef.child(Constants.allUsers).child(userUID)
-        
-        ref.observeSingleEvent(of: .value) { snapshot in
-            if let JSON = snapshot.value as? [String : Any] {
+    
+    //MARK: - Add / Update Profile Image
+    extension Service {
+        func uploadProfileImageData(data: Data, completion: @escaping (_ success: Bool) -> ()) {
+            let imageName = UUID().uuidString
+            let imageReference = Storage.storage().reference().child(Constants.profileImages).child(imageName)
+            
+            imageReference.putData(data, metadata: nil) { metaData, error in
+                if error != nil {
+                    print(error?.localizedDescription as Any)
+                    completion(false)
+                    return
+                }
                 
-                let userFirstName = JSON["user_first_name"] as? String ?? "nil"
-                let userLastName = JSON["user_last_name"] as? String ?? "nil"
-                let userPhoneNumber = JSON["users_phone_number"] as? String ?? "nil"
-                let userEmail = JSON["users_email"] as? String ?? "nil"
-                let userProfileImageURL = JSON["profile_image_url"] as? String ?? "nil"
-                let uploadedDocumentURL = JSON["uploaded_document_url"] as? String ?? "nil"
-                let isGroomer = JSON["is_groomer"] as? Bool ?? false
-                let usersFullName = userFirstName + " " + userLastName
-
-                userProfileStruct.user_first_name = userFirstName
-                userProfileStruct.user_last_name = userLastName
-                userProfileStruct.users_phone_number = userPhoneNumber
-                userProfileStruct.users_email = userEmail
-                userProfileStruct.profile_image_url = userProfileImageURL
-//                userProfileStruct.uploaded_document_url = uploadedDocumentURL
-                userProfileStruct.is_groomer = isGroomer
-                userProfileStruct.users_full_name = usersFullName
-//                userProfileStruct.groomers_full_name = usersFullName
-
-                let path = databaseRef.child(Constants.allUsers).child(userUID).child("pets")
-                path.observe(.childAdded) { snapshot in
+                imageReference.downloadURL { url, error in
+                    if error != nil {
+                        print(error?.localizedDescription as Any)
+                        completion(false)
+                        return
+                    }
                     
-                    if let JSON = snapshot.value as? [String : String] {
-                        let petsName = JSON["pet_name"] ?? "nil"
-                        
-                        let pet = Pet(name: petsName, imageURL: "testing")
-                        
-//                        if !userProfileStruct.pets.contains(pet) {
-//                            userProfileStruct.pets.append(pet)
-//                        }
+                    guard let url = url else {
+                        print(error?.localizedDescription as Any)
+                        completion(false)
+                        return
+                    }
+                    let urlString = url.absoluteString
+                    
+                    Service.shared.updateProfileImage(url: urlString) { success in
+                        if success {
+                            completion(true)
+                        }
+                    }
+                }
+                
+            }
+        }
+        
+        func updateProfileImage(url: String, completion: @escaping (_ success: Bool) -> ()) {
+            guard let userUID = Auth.auth().currentUser?.uid else { return }
+            let databaseRef = Database.database().reference()
+            let ref = databaseRef.child(Constants.allUsers).child(userUID)
+            
+            let values: [String : Any] = [
+                "profile_image_url" : url
+            ]
+            
+            ref.updateChildValues(values) { error, reference in
+                if error != nil {
+                    print(error?.localizedDescription as Any)
+                    completion(false)
+                    return
+                }
+                completion(true)
+            }
+        }
+    }
+    
+    //MARK: - Update/Add User Location
+    extension Service {
+        func uploadAddress(latitude: Double, longitude: Double, address: String, completion: @escaping (_ isComplete: Bool) -> ()) {
+            guard let userUID = Auth.auth().currentUser?.uid else { return }
+            let databaseRef = Database.database().reference()
+            let ref = databaseRef.child(Constants.allUsers).child(userUID)
+            let values: [String : Any] = [
+                "latitude" : latitude,
+                "longitude" : longitude,
+                "address" : address
+            ]
+            ref.updateChildValues(values) { error, reference in
+                if error != nil {
+                    print(error?.localizedDescription as Any)
+                    completion(false)
+                    return
+                }
+                completion(true)
+            }
+        }
+    }
+    
+    //MARK: - Notify Later
+    extension Service {
+        func notifyUserLater(mobileNumber: String, completion: @escaping (_ isComplete: Bool) -> ()) {
+            guard let userUID = Auth.auth().currentUser?.uid else { return }
+            let databaseRef = Database.database().reference()
+            let ref = databaseRef.child(Constants.allUsers).child(userUID)
+            
+            let values: [String : Any] = [
+                "notify_later_number" : mobileNumber
+            ]
+            
+            ref.updateChildValues(values) { error, reference in
+                if error != nil {
+                    print(error?.localizedDescription as Any)
+                    completion(false)
+                    return
+                }
+                completion(true)
+            }
+        }
+    }
+    
+    //MARK: - Upload Documents
+    extension Service {
+        func uploadDocument(url: URL, completion: @escaping (_ isComplete: Bool) -> ()) {
+            let fileName = "UploadedFile " + UUID().uuidString
+            let fileReference = Storage.storage().reference().child(Constants.uploadFiles).child(fileName)
+            
+            fileReference.putFile(from: url, metadata: nil) { _, error in
+                if error != nil {
+                    completion(false)
+                    return
+                }
+                completion(true)
+                
+                fileReference.downloadURL { url, error in
+                    if error != nil {
+                        print(error?.localizedDescription as Any)
+                        completion(false)
+                        return
+                    }
+                    
+                    guard let url = url else {
+                        print(error?.localizedDescription as Any)
+                        completion(false)
+                        return
+                    }
+                    
+                    let urlString = url.absoluteString
+                    Service.shared.storeDocument(url: urlString) { success in
+                        if !success {
+                            print("Error storing document.")
+                        }
                     }
                 }
             }
         }
-    }
-}
-
-//MARK: - Add / Update Profile Image
-extension Service {
-    func uploadProfileImageData(data: Data, completion: @escaping (_ success: Bool) -> ()) {
-        let imageName = UUID().uuidString
-        let imageReference = Storage.storage().reference().child(Constants.profileImages).child(imageName)
         
-        imageReference.putData(data, metadata: nil) { metaData, error in
-            if error != nil {
-                print(error?.localizedDescription as Any)
-                completion(false)
-                return
-            }
+        func storeDocument(url: String, completion: @escaping (_ success: Bool) -> ()) {
+            guard let userUID = Auth.auth().currentUser?.uid else { return }
+            let databaseRef = Database.database().reference()
+            let ref = databaseRef.child(Constants.allUsers).child(userUID)
             
-            imageReference.downloadURL { url, error in
+            let values: [String : Any] = [
+                "uploaded_document_url" : url
+            ]
+            
+            ref.updateChildValues(values) { error, reference in
                 if error != nil {
                     print(error?.localizedDescription as Any)
                     completion(false)
                     return
                 }
-                
-                guard let url = url else {
+                userProfileStruct.uploaded_document_url = url
+                completion(true)
+            }
+        }
+    }
+    
+    //MARK: - Add/Upload Pet
+    extension Service {
+        func uploadData(forPet pet: Pet, completion: @escaping (_ isComplete: Bool) -> ()) {
+            let databaseRef = Database.database().reference()
+            guard let user_uid = Auth.auth().currentUser?.uid else { return }
+            
+            let path = databaseRef.child(Constants.allUsers).child(user_uid).child("pets").childByAutoId()
+            
+            let value : [String : String] = [
+                "pet_name" : pet.name
+            ]
+            
+            path.updateChildValues(value) { error, databaseRef in
+                if error != nil {
                     print(error?.localizedDescription as Any)
                     completion(false)
                     return
                 }
-                let urlString = url.absoluteString
+                print("* Successfully Updated Pet Data *")
+                completion(true)
+            }
+        }
+    }
+    
+    //MARK: Add/Upload Appointment
+    extension Service {
+        func uploadData(forAppointment appointment: Appointment, completion: @escaping (_ isComplete: Bool) -> ()) {
+            let databaseRef = Database.database().reference()
+            guard let user_uid = Auth.auth().currentUser?.uid else { return }
+            
+            let path = databaseRef.child(Constants.allUsers).child(user_uid).child("appointments").childByAutoId()
+            
+            let value : [String : String] = [
+                "appointment_stylist" : appointment.stylist
+            ]
+            
+            path.updateChildValues(value) { error, databaseRef in
+                if error != nil {
+                    print(error?.localizedDescription as Any)
+                    completion(false)
+                    return
+                }
+                print("* Successfully Updated Appointment Data *")
+                completion(true)
+            }
+        }
+    }
+    
+    //MARK: - Twilio
+    extension Service {
+        //INITIAL TWILIO PING TO RECEIVE A CODE
+        func twilioPinRequest(phone: String, countryCode: String, deliveryMethod: String, completion: @escaping ( _ isComplete: Bool) -> () ) {
+            let unique_key = NSUUID().uuidString
+            
+            GrabDeviceID.getID { (isComplete, device_id) in
+                let ref = Database.database().reference().child("verification_requests").child(unique_key)
+                let values = [
+                    "unique_key" : unique_key,
+                    "users_phone_number" : phone,
+                    "users_country_code" : countryCode,
+                    "delivery_method" : deliveryMethod,
+                    "device_id" : device_id
+                ]
                 
-                Service.shared.updateProfileImage(url: urlString) { success in
-                    if success {
+                ref.updateChildValues(values) { (error, ref) in
+                    if error != nil {
+                        completion(false)
+                        return
+                    }
+                    
+                    //ALL CLEAR AND SUCCESSFUL
+                    self.twilioPinRequestListener(listeningKey: unique_key, phone: phone, countryCode: countryCode) { allSuccess in
+                        
+                        if allSuccess {
+                            completion(true)
+                        } else {
+                            completion(false)
+                        }
+                    }
+                }
+            }
+            
+        }
+        
+        func twilioPinRequestListener(listeningKey: String, phone: String, countryCode: String, completion: @escaping ( _ isComplete: Bool) -> () ) {
+            
+            var observingRefOne = Database.database().reference(),
+                handleOne = DatabaseHandle()
+            
+            observingRefOne = Database.database().reference().child("verification_responses").child(listeningKey)
+            
+            handleOne = observingRefOne.observe(.value) { (snap : DataSnapshot) in
+                if snap.exists() {
+                    guard let dic = snap.value as? [String : AnyObject] else {return}
+                    
+                    let status = dic["status"] as? String ?? ""
+                    
+                    switch status {
+                    case "error":
+                        observingRefOne.removeObserver(withHandle: handleOne)
+                        completion(false)
+                        
+                    default: print("Default for pin request")
+                        observingRefOne.removeObserver(withHandle: handleOne)
                         completion(true)
                     }
+                    
+                } else if !snap.exists() {
+                    print("nothing yet here from the doggystyle linker")
                 }
             }
+        }
+        
+        //TWILIO - SEND RECEIVED PIN UP FOR APPROVAL
+        func twilioPinApprovalRequest(phone : String, countryCode : String, enteredCode : String, completion : @escaping ( _ isComplete : Bool)->()) {
             
-        }
-    }
-    
-    func updateProfileImage(url: String, completion: @escaping (_ success: Bool) -> ()) {
-        guard let userUID = Auth.auth().currentUser?.uid else { return }
-        let databaseRef = Database.database().reference()
-        let ref = databaseRef.child(Constants.allUsers).child(userUID)
-        
-        let values: [String : Any] = [
-            "profile_image_url" : url
-        ]
-        
-        ref.updateChildValues(values) { error, reference in
-            if error != nil {
-                print(error?.localizedDescription as Any)
-                completion(false)
-                return
-            }
-            completion(true)
-        }
-    }
-}
-
-//MARK: - Update/Add User Location
-extension Service {
-    func uploadAddress(latitude: Double, longitude: Double, address: String, completion: @escaping (_ isComplete: Bool) -> ()) {
-        guard let userUID = Auth.auth().currentUser?.uid else { return }
-        let databaseRef = Database.database().reference()
-        let ref = databaseRef.child(Constants.allUsers).child(userUID)
-        let values: [String : Any] = [
-            "latitude" : latitude,
-            "longitude" : longitude,
-            "address" : address
-        ]
-        ref.updateChildValues(values) { error, reference in
-            if error != nil {
-                print(error?.localizedDescription as Any)
-                completion(false)
-                return
-            }
-            completion(true)
-        }
-    }
-}
-
-//MARK: - Notify Later
-extension Service {
-    func notifyUserLater(mobileNumber: String, completion: @escaping (_ isComplete: Bool) -> ()) {
-        guard let userUID = Auth.auth().currentUser?.uid else { return }
-        let databaseRef = Database.database().reference()
-        let ref = databaseRef.child(Constants.allUsers).child(userUID)
-        
-        let values: [String : Any] = [
-            "notify_later_number" : mobileNumber
-        ]
-        
-        ref.updateChildValues(values) { error, reference in
-            if error != nil {
-                print(error?.localizedDescription as Any)
-                completion(false)
-                return
-            }
-            completion(true)
-        }
-    }
-}
-
-//MARK: - Upload Documents
-extension Service {
-    func uploadDocument(url: URL, completion: @escaping (_ isComplete: Bool) -> ()) {
-        let fileName = "UploadedFile " + UUID().uuidString
-        let fileReference = Storage.storage().reference().child(Constants.uploadFiles).child(fileName)
-        
-        fileReference.putFile(from: url, metadata: nil) { _, error in
-            if error != nil {
-                completion(false)
-                return
-            }
-            completion(true)
-            
-            fileReference.downloadURL { url, error in
-                if error != nil {
-                    print(error?.localizedDescription as Any)
-                    completion(false)
-                    return
-                }
-                
-                guard let url = url else {
-                    print(error?.localizedDescription as Any)
-                    completion(false)
-                    return
-                }
-                
-                let urlString = url.absoluteString
-                Service.shared.storeDocument(url: urlString) { success in
-                    if !success {
-                        print("Error storing document.")
-                    }
-                }
-            }
-        }
-    }
-    
-    func storeDocument(url: String, completion: @escaping (_ success: Bool) -> ()) {
-        guard let userUID = Auth.auth().currentUser?.uid else { return }
-        let databaseRef = Database.database().reference()
-        let ref = databaseRef.child(Constants.allUsers).child(userUID)
-        
-        let values: [String : Any] = [
-            "uploaded_document_url" : url
-        ]
-        
-        ref.updateChildValues(values) { error, reference in
-            if error != nil {
-                print(error?.localizedDescription as Any)
-                completion(false)
-                return
-            }
-            completion(true)
-            Service.shared.fetchCurrentUser()
-        }
-    }
-}
-
-//MARK: - Add/Upload Pet
-extension Service {
-    func uploadData(forPet pet: Pet, completion: @escaping (_ isComplete: Bool) -> ()) {
-        let databaseRef = Database.database().reference()
-        guard let user_uid = Auth.auth().currentUser?.uid else { return }
-        
-        let path = databaseRef.child(Constants.allUsers).child(user_uid).child("pets").childByAutoId()
-        
-        let value : [String : String] = [
-            "pet_name" : pet.name
-        ]
-        
-        path.updateChildValues(value) { error, databaseRef in
-            if error != nil {
-                print(error?.localizedDescription as Any)
-                completion(false)
-                return
-            }
-            print("* Successfully Updated Pet Data *")
-            completion(true)
-        }
-    }
-}
-
-//MARK: Add/Upload Appointment
-extension Service {
-    func uploadData(forAppointment appointment: Appointment, completion: @escaping (_ isComplete: Bool) -> ()) {
-        let databaseRef = Database.database().reference()
-        guard let user_uid = Auth.auth().currentUser?.uid else { return }
-        
-        let path = databaseRef.child(Constants.allUsers).child(user_uid).child("appointments").childByAutoId()
-        
-        let value : [String : String] = [
-            "appointment_stylist" : appointment.stylist
-        ]
-        
-        path.updateChildValues(value) { error, databaseRef in
-            if error != nil {
-                print(error?.localizedDescription as Any)
-                completion(false)
-                return
-            }
-            print("* Successfully Updated Appointment Data *")
-            completion(true)
-        }
-    }
-}
-
-//MARK: - Twilio
-extension Service {
-    //INITIAL TWILIO PING TO RECEIVE A CODE
-    func twilioPinRequest(phone: String, countryCode: String, deliveryMethod: String, completion: @escaping ( _ isComplete: Bool) -> () ) {
-        let unique_key = NSUUID().uuidString
-        
-        GrabDeviceID.getID { (isComplete, device_id) in
-            let ref = Database.database().reference().child("verification_requests").child(unique_key)
+            let unique_key = NSUUID().uuidString
+            let ref = Database.database().reference().child("pin_verification_requests").child(unique_key)
             let values = [
                 "unique_key" : unique_key,
                 "users_phone_number" : phone,
                 "users_country_code" : countryCode,
-                "delivery_method" : deliveryMethod,
-                "device_id" : device_id
+                "entered_code" : enteredCode
             ]
             
             ref.updateChildValues(values) { (error, ref) in
@@ -530,10 +629,9 @@ extension Service {
                     return
                 }
                 
-                //ALL CLEAR AND SUCCESSFUL
-                self.twilioPinRequestListener(listeningKey: unique_key, phone: phone, countryCode: countryCode) { allSuccess in
-                    
-                    if allSuccess {
+                //ALL CLEAR
+                self.twilioPinApprovalRequestListener(listeningKey: unique_key, phone: phone, countryCode: countryCode) { isComplete in
+                    if isComplete {
                         completion(true)
                     } else {
                         completion(false)
@@ -542,116 +640,56 @@ extension Service {
             }
         }
         
-    }
-    
-    func twilioPinRequestListener(listeningKey: String, phone: String, countryCode: String, completion: @escaping ( _ isComplete: Bool) -> () ) {
-        
-        var observingRefOne = Database.database().reference(),
-            handleOne = DatabaseHandle()
-        
-        observingRefOne = Database.database().reference().child("verification_responses").child(listeningKey)
-        
-        handleOne = observingRefOne.observe(.value) { (snap : DataSnapshot) in
-            if snap.exists() {
-                guard let dic = snap.value as? [String : AnyObject] else {return}
-                
-                let status = dic["status"] as? String ?? ""
-                
-                switch status {
-                case "error":
-                    observingRefOne.removeObserver(withHandle: handleOne)
-                    completion(false)
-                    
-                default: print("Default for pin request")
-                    observingRefOne.removeObserver(withHandle: handleOne)
-                    completion(true)
-                }
-                
-            } else if !snap.exists() {
-                print("nothing yet here from the doggystyle linker")
-            }
-        }
-    }
-    
-    //TWILIO - SEND RECEIVED PIN UP FOR APPROVAL
-    func twilioPinApprovalRequest(phone : String, countryCode : String, enteredCode : String, completion : @escaping ( _ isComplete : Bool)->()) {
-        
-        let unique_key = NSUUID().uuidString
-        let ref = Database.database().reference().child("pin_verification_requests").child(unique_key)
-        let values = [
-            "unique_key" : unique_key,
-            "users_phone_number" : phone,
-            "users_country_code" : countryCode,
-            "entered_code" : enteredCode
-        ]
-        
-        ref.updateChildValues(values) { (error, ref) in
-            if error != nil {
-                completion(false)
-                return
-            }
+        //TWILIO - RECEIVE TWILIO PIN RESPONSE
+        func twilioPinApprovalRequestListener(listeningKey : String, phone : String, countryCode : String, completion : @escaping ( _ isComplete : Bool)->()) {
             
-            //ALL CLEAR
-            self.twilioPinApprovalRequestListener(listeningKey: unique_key, phone: phone, countryCode: countryCode) { isComplete in
-                if isComplete {
-                    completion(true)
-                } else {
-                    completion(false)
-                }
-            }
-        }
-    }
-    
-    //TWILIO - RECEIVE TWILIO PIN RESPONSE
-    func twilioPinApprovalRequestListener(listeningKey : String, phone : String, countryCode : String, completion : @escaping ( _ isComplete : Bool)->()) {
-        
-        var observingRefOne = Database.database().reference(),
-            handleOne = DatabaseHandle()
-        
-        observingRefOne = Database.database().reference().child("pin_verification_responses").child(listeningKey)
-        
-        handleOne = observingRefOne.observe(.value) { (snap : DataSnapshot) in
+            var observingRefOne = Database.database().reference(),
+                handleOne = DatabaseHandle()
             
-            if snap.exists() {
-                guard let dic = snap.value as? [String : AnyObject] else {return}
+            observingRefOne = Database.database().reference().child("pin_verification_responses").child(listeningKey)
+            
+            handleOne = observingRefOne.observe(.value) { (snap : DataSnapshot) in
                 
-                let status = dic["status"] as? String ?? ""
-                switch status {
-                
-                case "error":
-                    print("Error on the listening key")
-                    observingRefOne.removeObserver(withHandle: handleOne)
-                    completion(false)
+                if snap.exists() {
+                    guard let dic = snap.value as? [String : AnyObject] else {return}
                     
-                case "expired":
-                    print("Verification has expired")
-                    observingRefOne.removeObserver(withHandle: handleOne)
-                    completion(false)
+                    let status = dic["status"] as? String ?? ""
+                    switch status {
                     
-                case "failed":
-                    print("Failed Verification")
-                    observingRefOne.removeObserver(withHandle: handleOne)
-                    completion(false)
+                    case "error":
+                        print("Error on the listening key")
+                        observingRefOne.removeObserver(withHandle: handleOne)
+                        completion(false)
+                        
+                    case "expired":
+                        print("Verification has expired")
+                        observingRefOne.removeObserver(withHandle: handleOne)
+                        completion(false)
+                        
+                    case "failed":
+                        print("Failed Verification")
+                        observingRefOne.removeObserver(withHandle: handleOne)
+                        completion(false)
+                        
+                    case "canceled":
+                        print("Canceled Verification")
+                        observingRefOne.removeObserver(withHandle: handleOne)
+                        completion(false)
+                        
+                    case "approved":
+                        print("Verification code has been approved")
+                        observingRefOne.removeObserver(withHandle: handleOne)
+                        completion(true)
+                        
+                    default:
+                        print("Default for pin approval")
+                        observingRefOne.removeObserver(withHandle: handleOne)
+                        completion(false)
+                    }
                     
-                case "canceled":
-                    print("Canceled Verification")
-                    observingRefOne.removeObserver(withHandle: handleOne)
-                    completion(false)
-                    
-                case "approved":
-                    print("Verification code has been approved")
-                    observingRefOne.removeObserver(withHandle: handleOne)
-                    completion(true)
-                    
-                default:
-                    print("Default for pin approval")
-                    observingRefOne.removeObserver(withHandle: handleOne)
-                    completion(false)
+                } else if !snap.exists() {
+                    print("Waiting for pin approval response...")
                 }
-                
-            } else if !snap.exists() {
-                print("Waiting for pin approval response...")
             }
         }
     }
-}
