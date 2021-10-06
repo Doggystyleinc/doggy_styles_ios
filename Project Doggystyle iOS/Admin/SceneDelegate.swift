@@ -10,7 +10,9 @@ import TinyConstraints
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
-    var window: UIWindow?
+    var window: UIWindow?,
+        counter : Int = 0
+
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
@@ -39,6 +41,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = navigationController
         
         self.window = window
+    }
+    
+    func sceneDidBecomeActive(_ scene: UIScene) {
+
+        self.counter += 1
+        
+        if self.counter > 1 {
+        //APPLICATION - IS PUSHED TO THE FOREGROUND FROM ANY STATE
+        NotificationCenter.default.post(name: NSNotification.Name(Statics.RUN_LOCATION_CHECKER), object: nil)
+            
+        }
     }
 }
 

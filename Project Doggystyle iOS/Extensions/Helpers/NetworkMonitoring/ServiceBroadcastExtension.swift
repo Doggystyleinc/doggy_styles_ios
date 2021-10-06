@@ -30,7 +30,7 @@ class NoServiceFlag : NSObject {
         
         let nsl = UILabel()
         nsl.translatesAutoresizingMaskIntoConstraints = false
-        nsl.backgroundColor = dmMainColor
+        nsl.backgroundColor = coreOrangeColor
         nsl.textColor = coreWhiteColor
         nsl.text = "Looking for service"
         nsl.textAlignment = .left

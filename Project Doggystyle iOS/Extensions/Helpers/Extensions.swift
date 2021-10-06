@@ -335,6 +335,7 @@ struct Statics {
     static let HANDLE_CLEAR_OTHER_COLLECTIONS_CUSTOM : String = "HANDLE_CLEAR_OTHER_COLLECTIONS_CUSTOM"
     static let HANDLE_SERVICE_SATISFIED : String = "HANDLE_SERVICE_SATISFIED"
     static let HANDLE_SERVICE_UNSATISIFED : String = "HANDLE_SERVICE_UNSATISIFED"
+    static let RUN_LOCATION_CHECKER : String = "RUN_LOCATION_CHECKER"
 
 }
 
@@ -382,13 +383,10 @@ extension UIImageView {
     
     func takeScreenshot() -> UIImage {
         
-        // Begin context
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.main.scale)
         
-        // Draw view in that context
         drawHierarchy(in: self.bounds, afterScreenUpdates: true)
         
-        // And finally, get image
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         

@@ -8,25 +8,19 @@
 import UIKit
 import Firebase
 import SDWebImage
+import GoogleMaps
+import GooglePlaces
 
-class DashboardViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class DashboardViewController: UIViewController {
     
     var observingRefOne = Database.database().reference(),
         handleOne = DatabaseHandle(),
         childCounter : Int = 0,
-        homeController: HomeViewController?
+        homeController: HomeViewController?,
+        doggyProfileDataSource = [DoggyProfileDataSource]()
     
-    private let databaseRef = Database.database().reference()
-    private let pets: [Pet] = [Pet.allPets, Pet.petOne, Pet.petTwo, Pet.petThree, Pet.petFour]
-    private let appointment = Appointment.exampleAppointment
-    
-    private let logo = LogoImageView(frame: .zero)
-    private let appointmentHeader = DSBoldLabel(title: "Upcoming Appointment", size: 22.0)
-    private let serviceHeader = DSBoldLabel(title: "Service of the Week", size: 22.0)
-    private let appointmentContainer = DSContainerView(frame: .zero)
-    private let servicesContainer = DSContainerView(frame: .zero)
-    
-    var doggyProfileDataSource = [DoggyProfileDataSource]()
+    let databaseRef = Database.database().reference(),
+        logo = LogoImageView(frame: .zero)
     
     lazy var referButton : UIButton = {
         
@@ -109,6 +103,16 @@ class DashboardViewController: UIViewController, UICollectionViewDelegate, UICol
         return hl
     }()
     
+    let broadcastingColorCircle : UIView = {
+        
+        let bcc = UIView()
+        bcc.translatesAutoresizingMaskIntoConstraints = false
+        bcc.layer.masksToBounds = true
+        bcc.backgroundColor = coreRedColor
+        
+        return bcc
+    }()
+    
     lazy var emptyStateOne : EmptyStateOne = {
         
         let eso = EmptyStateOne(frame: .zero)
@@ -160,7 +164,7 @@ class DashboardViewController: UIViewController, UICollectionViewDelegate, UICol
         
         self.callDataEngine()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handleNewDogFlow), name: NSNotification.Name("CALL_ADD_NEW_PUP"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleNewDogFlow), name: NSNotification.Name(Statics.CALL_ADD_NEW_PUP), object: nil)
         
     }
     
@@ -172,6 +176,77 @@ class DashboardViewController: UIViewController, UICollectionViewDelegate, UICol
         
     }
     
+    func addViews() {
+        
+        //MARK: - HEADER
+        self.view.addSubview(self.referButton)
+        self.view.addSubview(self.dsCompanyLogoImage)
+        self.view.addSubview(self.notificationIcon)
+        self.view.addSubview(self.notificationBubble)
+        self.view.addSubview(self.headerLabel)
+        self.view.addSubview(self.broadcastingColorCircle)
+        
+        //MARK: - EMPTY STATE ONE
+        self.view.addSubview(self.emptyStateOne)
+        self.view.addSubview(self.emptyStateTwo)
+        
+        //MARK: - DASH VIEWS
+        self.view.addSubview(self.dashMainView)
+        self.view.addSubview(self.todaysDashView)
+        
+        self.referButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+        self.referButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.referButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        self.referButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        
+        self.dsCompanyLogoImage.centerYAnchor.constraint(equalTo: self.referButton.centerYAnchor, constant: 0).isActive = true
+        self.dsCompanyLogoImage.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
+        self.dsCompanyLogoImage.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        
+        self.notificationIcon.centerYAnchor.constraint(equalTo: self.referButton.centerYAnchor, constant: 0).isActive = true
+        self.notificationIcon.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.notificationIcon.heightAnchor.constraint(equalToConstant: 54).isActive = true
+        self.notificationIcon.widthAnchor.constraint(equalToConstant: 54).isActive = true
+        
+        self.notificationBubble.topAnchor.constraint(equalTo: self.notificationIcon.topAnchor, constant: 7).isActive = true
+        self.notificationBubble.rightAnchor.constraint(equalTo: self.notificationIcon.rightAnchor, constant: -7).isActive = true
+        self.notificationBubble.heightAnchor.constraint(equalToConstant: 23).isActive = true
+        self.notificationBubble.widthAnchor.constraint(equalToConstant: 23).isActive = true
+        self.notificationBubble.layer.cornerRadius = 23/2
+        
+        self.broadcastingColorCircle.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -100).isActive = true
+        self.broadcastingColorCircle.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 100).isActive = true
+        self.broadcastingColorCircle.heightAnchor.constraint(equalToConstant: 5).isActive = true
+        self.broadcastingColorCircle.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 45).isActive = true
+        self.broadcastingColorCircle.layer.cornerRadius = 2.5
+        
+        self.headerLabel.topAnchor.constraint(equalTo: self.dsCompanyLogoImage.bottomAnchor, constant: 50).isActive = true
+        self.headerLabel.leftAnchor.constraint(equalTo: self.referButton.leftAnchor, constant: 5).isActive = true
+        self.headerLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.headerLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        self.emptyStateOne.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 10).isActive = true
+        self.emptyStateOne.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.emptyStateOne.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.emptyStateOne.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        
+        self.emptyStateTwo.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 10).isActive = true
+        self.emptyStateTwo.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.emptyStateTwo.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.emptyStateTwo.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        
+        self.dashMainView.topAnchor.constraint(equalTo: self.headerLabel.topAnchor, constant: -10).isActive = true
+        self.dashMainView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.dashMainView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.dashMainView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        
+        self.todaysDashView.topAnchor.constraint(equalTo: self.headerLabel.topAnchor, constant: -10).isActive = true
+        self.todaysDashView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.todaysDashView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.todaysDashView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        
+    }
+   
     func callDataEngine() {
         
         self.fetchDataSource { isSuccess in
@@ -231,7 +306,6 @@ class DashboardViewController: UIViewController, UICollectionViewDelegate, UICol
                     completion(false)
                 }
             }
-            
         }
     }
     
@@ -283,70 +357,6 @@ class DashboardViewController: UIViewController, UICollectionViewDelegate, UICol
         self.headerLabel.text = "Welcome, \(usersFirstName)"
     }
     
-    func addViews() {
-        
-        //MARK: - HEADER
-        self.view.addSubview(self.referButton)
-        self.view.addSubview(self.dsCompanyLogoImage)
-        self.view.addSubview(self.notificationIcon)
-        self.view.addSubview(self.notificationBubble)
-        self.view.addSubview(self.headerLabel)
-        
-        //MARK: - EMPTY STATE ONE
-        self.view.addSubview(self.emptyStateOne)
-        self.view.addSubview(self.emptyStateTwo)
-        
-        //MARK: - DASH VIEWS
-        self.view.addSubview(self.dashMainView)
-        self.view.addSubview(self.todaysDashView)
-        
-        self.referButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
-        self.referButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        self.referButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        self.referButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        
-        self.dsCompanyLogoImage.centerYAnchor.constraint(equalTo: self.referButton.centerYAnchor, constant: 0).isActive = true
-        self.dsCompanyLogoImage.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
-        self.dsCompanyLogoImage.heightAnchor.constraint(equalToConstant: 26).isActive = true
-        
-        self.notificationIcon.centerYAnchor.constraint(equalTo: self.referButton.centerYAnchor, constant: 0).isActive = true
-        self.notificationIcon.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-        self.notificationIcon.heightAnchor.constraint(equalToConstant: 54).isActive = true
-        self.notificationIcon.widthAnchor.constraint(equalToConstant: 54).isActive = true
-        
-        self.notificationBubble.topAnchor.constraint(equalTo: self.notificationIcon.topAnchor, constant: 7).isActive = true
-        self.notificationBubble.rightAnchor.constraint(equalTo: self.notificationIcon.rightAnchor, constant: -7).isActive = true
-        self.notificationBubble.heightAnchor.constraint(equalToConstant: 23).isActive = true
-        self.notificationBubble.widthAnchor.constraint(equalToConstant: 23).isActive = true
-        self.notificationBubble.layer.cornerRadius = 23/2
-        
-        self.headerLabel.topAnchor.constraint(equalTo: self.dsCompanyLogoImage.bottomAnchor, constant: 50).isActive = true
-        self.headerLabel.leftAnchor.constraint(equalTo: self.referButton.leftAnchor, constant: 5).isActive = true
-        self.headerLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-        self.headerLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
-        self.emptyStateOne.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 10).isActive = true
-        self.emptyStateOne.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
-        self.emptyStateOne.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.emptyStateOne.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
-        
-        self.emptyStateTwo.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 10).isActive = true
-        self.emptyStateTwo.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
-        self.emptyStateTwo.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.emptyStateTwo.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
-        
-        self.dashMainView.topAnchor.constraint(equalTo: self.headerLabel.topAnchor, constant: -10).isActive = true
-        self.dashMainView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
-        self.dashMainView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.dashMainView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
-        
-        self.todaysDashView.topAnchor.constraint(equalTo: self.headerLabel.topAnchor, constant: -10).isActive = true
-        self.todaysDashView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
-        self.todaysDashView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.todaysDashView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
-        
-    }
-    
     @objc func handleReferAFriendButton() {
         self.didTapRefur()
     }
@@ -394,27 +404,12 @@ class DashboardViewController: UIViewController, UICollectionViewDelegate, UICol
         print("Handle tour")
     }
     
-    @objc private func didTapAll() {
-        print(#function)
-    }
-    
     @objc private func didTapViewAllAppointments() {
         homeController?.switchTabs(tabIndex: 2)
     }
     
     @objc private func didTapViewAllServices() {
         homeController?.switchTabs(tabIndex: 1)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return pets.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PetCollectionViewCell.reuseIdentifier, for: indexPath) as! PetCollectionViewCell
-        let pet = pets[indexPath.row]
-        cell.configure(with: pet)
-        return cell
     }
 }
 

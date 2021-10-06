@@ -7,15 +7,19 @@
 
 import UIKit
 import Firebase
+import GoogleMaps
+import GooglePlaces
 
-class HomeViewController: UITabBarController {
+class HomeViewController: UITabBarController, CLLocationManagerDelegate, CustomAlertCallBackProtocol {
     
-    private let dashboardController = DashboardViewController()
-    private let appointmentController = AppointmentsViewController()
-    private let profileController = ProfileController()
-    private let servicesController = ServicesController()
-    let storageRef = Storage.storage().reference()
-    let databaseRef = Database.database().reference()
+    private let dashboardController = DashboardViewController(),
+                appointmentController = AppointmentsViewController(),
+                profileController = ProfileController(),
+                servicesController = ServicesController()
+    
+    let storageRef = Storage.storage().reference(),
+        databaseRef = Database.database().reference(),
+        locationManager = CLLocationManager()
     
     lazy var flagView : NoServiceFlag = {
         
@@ -30,15 +34,25 @@ class HomeViewController: UITabBarController {
         
         self.view.backgroundColor = .dsViewBackground
         
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
         self.addViews()
         self.configureTabIcons()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleServiceSatisfied), name: NSNotification.Name(Statics.HANDLE_SERVICE_SATISFIED), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleServiceUnsatisfied), name: NSNotification.Name(Statics.HANDLE_SERVICE_UNSATISIFED), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.checkForLocationServices), name: NSNotification.Name(Statics.RUN_LOCATION_CHECKER), object: nil)
         
         //MARK: - EXTENSION - CHECKS FOR SERVICE AND THROWS A NO SERVICE FLAG IS SERVICE IS DOWN
         NetworkMonitor.shared.startMonitoring()
-
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        self.checkForLocationServices()
     }
     
     private func addViews() {
@@ -140,6 +154,59 @@ class HomeViewController: UITabBarController {
                     })
                 }
             })
+        }
+    }
+    
+    @objc func checkForLocationServices() {
+        
+        if CLLocationManager.locationServicesEnabled() {
+            
+            switch self.locationManager.authorizationStatus {
+            
+            case .authorizedAlways, .authorizedWhenInUse:
+                
+                self.dashboardController.broadcastingColorCircle.backgroundColor = coreGreenColor
+                LocationBroadcaster.shared.runBroadcaster()
+            default:
+                
+                self.handleCustomPopUpAlert(title: "LOCATION SERVICES", message: "To use the Doggystyle application, Location Services is required to let the groomers know when you’ll arrive.", passedButtons: [Statics.GOT_IT])
+                self.dashboardController.broadcastingColorCircle.backgroundColor = coreRedColor
+            }
+        } else {
+            self.dashboardController.broadcastingColorCircle.backgroundColor = coreRedColor
+        }
+    }
+    
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        alert.passedIconName = .mapPin
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.GOT_IT:
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+            
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                    print("in the settings with a flag of: \(success)")
+                })
+            }
+            
+        default: print("Should not hit")
+            
         }
     }
     
