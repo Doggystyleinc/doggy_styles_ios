@@ -279,10 +279,10 @@ extension Service {
                 userProfileStruct.users_phone_number = userPhoneNumber
                 userProfileStruct.users_email = userEmail
                 userProfileStruct.profile_image_url = userProfileImageURL
-                userProfileStruct.uploaded_document_url = uploadedDocumentURL
+//                userProfileStruct.uploaded_document_url = uploadedDocumentURL
                 userProfileStruct.is_groomer = isGroomer
                 userProfileStruct.users_full_name = usersFullName
-                userProfileStruct.groomers_full_name = usersFullName
+//                userProfileStruct.groomers_full_name = usersFullName
 
                 let path = databaseRef.child(Constants.allUsers).child(userUID).child("pets")
                 path.observe(.childAdded) { snapshot in
@@ -292,9 +292,9 @@ extension Service {
                         
                         let pet = Pet(name: petsName, imageURL: "testing")
                         
-                        if !userProfileStruct.pets.contains(pet) {
-                            userProfileStruct.pets.append(pet)
-                        }
+//                        if !userProfileStruct.pets.contains(pet) {
+//                            userProfileStruct.pets.append(pet)
+//                        }
                     }
                 }
             }

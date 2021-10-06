@@ -173,7 +173,7 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         
         let is_groomer = userProfileStruct.is_groomer ?? false
         if is_groomer {
-            let usersName = userProfileStruct.groomers_full_name ?? "DOG LOVER"
+            let usersName = "DOG LOVER" //userProfileStruct.groomers_full_name ?? 
             self.nameLabel.text = usersName
         } else {
             let usersName = userProfileStruct.users_full_name ?? "DOG LOVER"

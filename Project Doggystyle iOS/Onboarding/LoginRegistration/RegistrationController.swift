@@ -535,6 +535,9 @@ class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollVie
         self.addViews()
         self.setupObserversAndContentTypes()
         
+        //MARK: - RESET THE ONBOARDING STRUCT IF THEY HIT CONTINUE-ONBOARDING
+        userOnboardingStruct = UserOnboardingStruct()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -886,6 +889,7 @@ class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollVie
                 if error == nil {
                     DispatchQueue.main.async {
                         
+                        //THIS INFO IS NO LONGER NEEDED TO PASS - TODO: REMOVE
                         let pinNumberVC = PinNumberVerificationEntryController()
                         pinNumberVC.phoneNumber = nationalNumber
                         pinNumberVC.countryCode = countryCode
@@ -894,8 +898,21 @@ class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollVie
                         pinNumberVC.email = safeEmail
                         pinNumberVC.password = safePassword
                         
+                        //MARK: - ONLY FILL THE USERONBOARDING STRUCT HERE
+                        userOnboardingStruct.user_first_name = firstName
+                        userOnboardingStruct.user_last_name = lastName
+                        userOnboardingStruct.users_full_name = "\(firstName) \(lastName)"
+                        userOnboardingStruct.users_email = safeEmail
+                        userOnboardingStruct.users_phone_number = nationalNumber
+                        userOnboardingStruct.users_country_code = countryCode
+                        userOnboardingStruct.users_full_phone_number = "\(countryCode) \(nationalNumber)"
+                        userOnboardingStruct.is_groomer = false
+                        userOnboardingStruct.users_password = safePassword
+
                         self.mainLoadingScreen.cancelMainLoadingScreen()
+                        
                         let navVC = UINavigationController(rootViewController: pinNumberVC)
+                        navVC.modalPresentationStyle = .fullScreen
                         self.navigationController?.present(navVC, animated: true)
                     }
                 } else {
@@ -917,6 +934,7 @@ class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollVie
         alert.passedMmessage = message
         alert.passedButtonSelections = passedButtons
         alert.customAlertCallBackProtocol = self
+        alert.passedIconName = .infoCircle
         
         alert.modalPresentationStyle = .overCurrentContext
         self.navigationController?.present(alert, animated: true, completion: nil)

@@ -35,7 +35,7 @@ class FilterResultsFeeder : UITableViewCell {
         
         self.addSubview(self.placeLabel)
         
-        self.placeLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
+        self.placeLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.placeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 3).isActive = true
         self.placeLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
         self.placeLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -3).isActive = true

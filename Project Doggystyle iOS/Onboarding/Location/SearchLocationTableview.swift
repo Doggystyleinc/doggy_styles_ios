@@ -24,7 +24,7 @@ class SearchResultsTableView : UITableView, UITableViewDelegate, UITableViewData
     private let tableId = "tableId"
     var placesArray = [String](),
         arrayOfDicts = [PlacesDictionary](),
-        groomerLocationOne : LocationFinder?
+        locationFinder : LocationFinder?
     
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
@@ -54,7 +54,6 @@ class SearchResultsTableView : UITableView, UITableViewDelegate, UITableViewData
             
             let feeder = self.arrayOfDicts[indexPath.item]
             cell.placeLabel.text = feeder.locationName
-            
         }
         
         return cell
@@ -72,11 +71,14 @@ class SearchResultsTableView : UITableView, UITableViewDelegate, UITableViewData
         
         if !self.arrayOfDicts.isEmpty {
             
-            guard let placeName = self.arrayOfDicts[indexPath.item].placeName else {return}
             guard let locationName = self.arrayOfDicts[indexPath.item].locationName else {return}
+            guard let placeName = self.arrayOfDicts[indexPath.item].placeName else {return}
             
-            self.groomerLocationOne?.handleLocationSelection(passedPlaceID: placeName, passedLocationAddress: locationName)
-            
+            userOnboardingStruct.chosen_grooming_location_name = locationName
+            userOnboardingStruct.chosen_grooming_location_place_id = placeName
+
+            self.locationFinder?.handleLocationSelection(passedPlaceID: placeName, passedLocationAddress: locationName)
+           
         }
     }
     

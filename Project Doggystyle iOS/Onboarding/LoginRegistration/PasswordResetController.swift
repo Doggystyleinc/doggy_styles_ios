@@ -57,7 +57,7 @@ final class PasswordResetController: UIViewController, UITextFieldDelegate, Cust
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = true
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()
@@ -72,7 +72,7 @@ final class PasswordResetController: UIViewController, UITextFieldDelegate, Cust
         tel.textAlignment = .left
         tel.translatesAutoresizingMaskIntoConstraints = false
         tel.isHidden = false
-        tel.textColor = dividerGrey
+        tel.textColor = dsFlatBlack.withAlphaComponent(0.4)
         
         return tel
     }()
@@ -114,28 +114,12 @@ final class PasswordResetController: UIViewController, UITextFieldDelegate, Cust
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         configureVC()
         addViews()
-        //        self.emailTextField.becomeFirstResponder()
+        
     }
     
-    @objc func handleBackButton() {
-        
-        self.navigationController?.popViewController(animated: true)
-        
-    }
-}
-
-//MARK: - Configure View Controller
-extension PasswordResetController {
-    private func configureVC() {
-        view.backgroundColor = .dsViewBackground
-        navigationController?.navigationBar.isHidden = true
-    }
-}
-
-//MARK: - Configure Views
-extension PasswordResetController {
     private func addViews() {
         
         self.view.addSubview(self.backButton)
@@ -183,6 +167,11 @@ extension PasswordResetController {
         self.sendButton.right(to: resetLabel)
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.didTapSend()
+        return false
+    }
+    
     @objc func handleEmailTextFieldChange() {
         
         guard let emailText = self.emailTextField.text else {return}
@@ -191,7 +180,7 @@ extension PasswordResetController {
         if self.emailTextField.text != "" {
             typingEmailLabel.isHidden = false
             placeHolderEmailLabel.isHidden = true
-        } 
+        }
     }
     
     @objc func handleEmailTextFieldBegin() {
@@ -204,7 +193,7 @@ extension PasswordResetController {
         self.emailTextField.resignFirstResponder()
         
         guard let email = self.emailTextField.text, email.isValidEmail else {
-            self.handleCustomPopUpAlert(title: "ADDRESS", message: "Please check your email address and try again.", passedButtons: [Statics.OK])
+            self.handleCustomPopUpAlert(title: "ADDRESS", message: "Email address is invalid. Please check the format and try again. If this issue persists, please reach out to HQ @ \(Statics.SUPPORT_EMAIL_ADDRESS)", passedButtons: [Statics.GOT_IT])
             return
         }
         
@@ -219,10 +208,8 @@ extension PasswordResetController {
                 self.navigationController?.pushViewController(resetSuccessVC, animated: true)
                 
             } else {
-                
                 self.handleCustomPopUpAlert(title: "ERROR", message: "This is on us. Please try again.", passedButtons: [Statics.OK])
             }
-            
         }
     }
     
@@ -235,6 +222,7 @@ extension PasswordResetController {
         alert.passedMmessage = message
         alert.passedButtonSelections = passedButtons
         alert.customAlertCallBackProtocol = self
+        alert.passedIconName = .infoCircle
         
         alert.modalPresentationStyle = .overCurrentContext
         self.navigationController?.present(alert, animated: true, completion: nil)
@@ -246,9 +234,19 @@ extension PasswordResetController {
         switch type {
         
         case Statics.OK: print(Statics.OK)
+        case Statics.GOT_IT: self.emailTextField.becomeFirstResponder()
             
         default: print("Should not hit")
             
         }
+    }
+    
+    private func configureVC() {
+        view.backgroundColor = .dsViewBackground
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    @objc func handleBackButton() {
+        self.navigationController?.popViewController(animated: true)
     }
 }

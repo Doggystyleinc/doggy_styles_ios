@@ -10,29 +10,9 @@ import UIKit
 import GooglePlaces
 import GoogleMaps
 
-struct GoogleMapData {
-    
-    var locationName : String
-    var placeId : String
-    
-    init(json : [String : Any]) {
-        self.locationName = json["locationName"] as? String ?? ""
-        self.placeId = json["placeId"] as? String ?? ""
-    }
-}
-
-class TextFieldWithImage: UITextField {
-    
-    override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
-        let leftViewHeight: CGFloat = 24
-        let y = bounds.size.height / 2 - leftViewHeight / 2
-        return .init(x: 20, y: y, width: leftViewHeight + 20, height: leftViewHeight)
-    }
-}
-
 class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerDelegate  {
     
-    private enum SearchStates {
+    enum SearchStates {
         case idle
         case error
         case success
@@ -42,9 +22,8 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         placesClient: GMSPlacesClient!,
         arrayLocationNames : [String] = [String](),
         locationServicesEnabled : Bool = false,
-        mapViewTopLayoutConstraint : NSLayoutConstraint?
-    
-    private var searchStates = SearchStates.idle
+        mapViewTopLayoutConstraint : NSLayoutConstraint?,
+        searchStates = SearchStates.idle
     
     let locationManager = CLLocationManager(),
         mainLoadingScreen = MainLoadingScreen()
@@ -118,7 +97,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
         let etfc = CustomTextFieldMaps()
         etfc.translatesAutoresizingMaskIntoConstraints = false
-        let placeholder = NSAttributedString(string: "Enter address", attributes: [NSAttributedString.Key.foregroundColor: dividerGrey])
+        let placeholder = NSAttributedString(string: "Enter address", attributes: [NSAttributedString.Key.foregroundColor: dsFlatBlack.withAlphaComponent(0.4)])
         etfc.attributedPlaceholder = placeholder
         etfc.textAlignment = .left
         etfc.backgroundColor = UIColor .white
@@ -373,7 +352,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
     lazy var searchResultsTableView : SearchResultsTableView = {
         
         let mc = SearchResultsTableView()
-        mc.groomerLocationOne = self
+        mc.locationFinder = self
         return mc
         
     }()
@@ -387,6 +366,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         mv.layer.masksToBounds = true
         mv.layer.cornerRadius = 12
         mv.locationFinder = self
+        mv.isHidden = true
         
         return mv
     }()
@@ -398,7 +378,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         cbf.backgroundColor = .clear
         cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 18, style: .solid)
         cbf.setTitle(String.fontAwesomeIcon(name: .timesCircle), for: .normal)
-        cbf.tintColor = dividerGrey
+        cbf.tintColor = dsFlatBlack.withAlphaComponent(0.4)
         cbf.contentMode = .scaleAspectFit
         cbf.imageView?.contentMode = .scaleAspectFit
         cbf.addTarget(self, action: #selector(self.handleCancelCurrentSearchButton), for: .touchUpInside)
@@ -431,7 +411,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.errorContainer.isHidden = true
         
         self.handleLocationServicesAuthorization()
-        
+
     }
     
     func addViews() {
@@ -573,11 +553,10 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
     }
     
-    
-    //ENABLE LOCATION SERVICES OR ELSE DISMISS THE CONTROLLER
     @objc func handleLocationServicesAuthorization() {
         
         self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
         if CLLocationManager.locationServicesEnabled() {
             
@@ -586,15 +565,18 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
             case .authorizedAlways, .authorizedWhenInUse:
                 
                 self.locationServicesEnabled = true
+                self.mapView.isHidden = false
                 
             case .notDetermined, .restricted :
                 
                 self.locationManager.requestWhenInUseAuthorization()
+                self.mapView.isHidden = true
                 
             case .denied:
                 
                 self.askUserForPermissionsAgain()
-                
+                self.mapView.isHidden = true
+
             default : print("Hit an unknown state")
                 
             }
@@ -602,8 +584,32 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         } else {
             
             self.askUserForPermissionsAgain()
-            
+            self.mapView.isHidden = true
+
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+
+        switch status {
+        
+        case .authorizedWhenInUse, .authorizedAlways:
+            self.locationServicesEnabled = true
+            self.mapView.isHidden = false
+            
+        case .notDetermined, .restricted:
+            self.askUserForPermissionsAgain()
+            self.mapView.isHidden = true
+        default:
+            self.askUserForPermissionsAgain()
+            self.mapView.isHidden = true
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        self.askUserForPermissionsAgain()
+        self.mapView.isHidden = true
+        
     }
     
     func askUserForPermissionsAgain() {
@@ -626,17 +632,13 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
             
             if UIApplication.shared.canOpenURL(settingsUrl) {
                 UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                    
-                    print(success)
-                    print("Good to go here as well")
-                    self.locationServicesEnabled = true
-                    
                 })
             }
         }
         
         activityViewController.addAction(actionOne)
         activityViewController.addAction(actionTwo)
+        
         self.present(activityViewController, animated: true, completion: nil)
         
     }
@@ -694,13 +696,16 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
     
     func placesAutocomplete(passedPlace:String) {
         
+        self.searchResultsTableView.arrayOfDicts.removeAll()
+        self.searchResultsTableView.placesArray.removeAll()
+
         let token = GMSAutocompleteSessionToken.init(),
             filter = GMSAutocompleteFilter()
         filter.type = .address
         
         placesClient?.findAutocompletePredictions(fromQuery: passedPlace, filter: filter, sessionToken: token, callback: { (results, error) in
-            if let error = error {
-                print("Autocomplete error: \(error)")
+           
+            if let _ = error {
                 return
             }
             
@@ -717,18 +722,8 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
                         dic : [String : Any] = ["locationName" : placeName as Any, "placeName" : placesId as Any],
                         posts = PlacesDictionary(json: dic)
                     
-                    //CHECK TO REMOVE DUPLICATES AND FILTER BY MOST RELEVANT
-                    if !self.arrayLocationNames.contains(placesId) {
-                        self.arrayLocationNames.append(placesId)
-                        self.searchResultsTableView.arrayOfDicts.append(posts)
-                    }
-                    
-                    let array = self.searchResultsTableView.arrayOfDicts,
-                        arraySlice = array.suffix(3),
-                        newArray = Array(arraySlice)
-                    
-                    self.searchResultsTableView.arrayOfDicts = newArray
-                    
+                    self.searchResultsTableView.arrayOfDicts.append(posts)
+
                     DispatchQueue.main.async {
                         
                         self.searchResultsTableView.reloadData()
@@ -761,13 +756,11 @@ extension LocationFinder {
         self.placesClient.lookUpPlaceID(passedPlaceID) { place, error in
             
             if let error = error {
-                print("lookup place id query error: \(error.localizedDescription)")
                 self.handleCancelCurrentSearchButton()
                 return
             }
             
             guard let place = place else {
-                print("No place details for \(passedPlaceID)")
                 self.handleCancelCurrentSearchButton()
                 return
             }
@@ -775,6 +768,9 @@ extension LocationFinder {
             let latitude = place.coordinate.latitude
             let longitude = place.coordinate.longitude
             
+            userOnboardingStruct.chosen_grooming_location_latitude = latitude
+            userOnboardingStruct.chosen_grooming_location_longitude = longitude
+
             self.mapView.clear()
             
             self.mapView.isHidden = false
@@ -799,6 +795,7 @@ extension LocationFinder {
     
     @objc func grabUsersCurrentLocation() {
         
+        print("in here?")
         self.resignation()
         self.resetTable()
         self.searchTextField.text = ""
@@ -808,6 +805,10 @@ extension LocationFinder {
         
         let lat = self.locationManager.location?.coordinate.latitude ?? 0.0
         let long = self.locationManager.location?.coordinate.longitude ?? 0.0
+        
+        userOnboardingStruct.chosen_grooming_location_latitude = lat
+        userOnboardingStruct.chosen_grooming_location_longitude = long
+        
         self.mapView.addCustomMarker(latitude: lat, longitude: long)
         
         let coordinates = CLLocationCoordinate2DMake(lat, long)
@@ -817,7 +818,8 @@ extension LocationFinder {
         }
         
         self.confirmLocationButton.isHidden = false
-        
+        print("in again?")
+
         let geocoder = GMSGeocoder()
         geocoder.reverseGeocodeCoordinate(coordinates) { response, error in
             if error != nil {
@@ -828,7 +830,17 @@ extension LocationFinder {
                 
                 let finalResult = result[0]
                 self.searchTextField.text = "\(finalResult)"
+                
+                print("Admin area: ", response?.firstResult()?.administrativeArea)
+                print("Coordinate: ", response?.firstResult()?.coordinate)
+                print("Country: ", response?.firstResult()?.country)
+                print("Locality: ", response?.firstResult()?.locality)
+                print("Postal code: ", response?.firstResult()?.postalCode)
+                print("subLocality code: ", response?.firstResult()?.subLocality)
+                print("subLocality code: ", response?.firstResult()?.thoroughfare)
+
                 print("RESULT: \(finalResult)")
+                
             }
         }
     }

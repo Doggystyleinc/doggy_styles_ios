@@ -11,8 +11,9 @@ import Firebase
 
 final class PinNumberVerificationEntryController: UIViewController, UITextFieldDelegate, CustomAlertCallBackProtocol {
     
-    private let logo = LogoImageView(frame: .zero)
-    private var errorCounter = 0
+    let logo = LogoImageView(frame: .zero),
+        mainLoadingScreen = MainLoadingScreen(),
+        databaseRef = Database.database().reference()
     
     var phoneNumber: String!,
         countryCode: String!,
@@ -21,13 +22,11 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
         email: String!,
         password: String!,
         pinTimer: Timer?,
-        pinCounter: Int = 120
+        pinCounter: Int = 120,
+        errorCounter = 0
     
-    let mainLoadingScreen = MainLoadingScreen()
-    
-    let databaseRef = Database.database().reference()
-    
-    private let cancelButton: UIButton = {
+    let cancelButton: UIButton = {
+        
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
         cbf.backgroundColor = .white
@@ -42,10 +41,13 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
         cbf.layer.shouldRasterize = false
         cbf.layer.cornerRadius = 4
         cbf.addTarget(self, action: #selector(handleCancelButton), for: UIControl.Event.touchUpInside)
+        
         return cbf
+        
     }()
     
     private let mainHeaderLabel = DSBoldLabel(title: "SMS Verification", size: 24)
+    
     private lazy var subHeaderLabel = DSRegularLabel(title: "", size: 16)
     
     private let registerButton: DSButton = {
@@ -179,20 +181,46 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
         
         ServiceHTTP.shared.twilioGetRequest(function_call: "request_for_authorization", users_country_code: countryCode, users_phone_number: phone, delivery_method: "sms", entered_code: enteredCode) { object, error in
             
-            DispatchQueue.main.async {
-                if error == nil {
-                    self.mainLoadingScreen.cancelMainLoadingScreen()
-                    self.registerUserInfo()
-                    self.handleVerifiedPinState()
-                } else {
-                    self.mainLoadingScreen.cancelMainLoadingScreen()
-                    self.handleCustomPopUpAlert(title: "ERROR", message: "Please check your pin # and try again.", passedButtons: [Statics.GOT_IT])
+            guard let obj = object else {return}
+            
+            self.mainLoadingScreen.cancelMainLoadingScreen()
+        
+            for (key,value) in obj {
+                
+                let response = String(describing: value)
+                
+                if key == "twilio_response" {
+                    
+                    switch response {
+                    
+                    case "denied" :
+                        DispatchQueue.main.async {
+                            self.mainLoadingScreen.cancelMainLoadingScreen()
+                            self.handleCustomPopUpAlert(title: "Incorrect Pin", message: "Please try again.", passedButtons: [Statics.GOT_IT])
+                        }
+                       
+                    case "failed" :
+                        DispatchQueue.main.async {
+                            self.mainLoadingScreen.cancelMainLoadingScreen()
+                            self.handleCustomPopUpAlert(title: "Internal Error", message: "Please try again.", passedButtons: [Statics.GOT_IT])
+                        }
+                        
+                    case "approved" :
+                        DispatchQueue.main.async {
+                            self.mainLoadingScreen.cancelMainLoadingScreen()
+                            self.handleVerifiedPinState()
+                        }
+                        
+                    default: print("unknown from twilio")
+                    
+                    }
                 }
             }
         }
     }
     
     private func handlePinCompletionEntry() {
+        
         let slotOne = self.slotOneTextField.text ?? ""
         let slotTwo = self.slotTwoTextField.text ?? ""
         let slotThree = self.slotThreeTextField.text ?? ""
@@ -239,38 +267,7 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
         self.slotFourTextField.resignFirstResponder()
         
     }
-    
-    private func registerUserInfo() {
-        Service.shared.FirebaseRegistrationAndLogin(userFirstName: firstName, userLastName: lastName, usersEmailAddress: email, usersPassword: password, mobileNumber: phoneNumber, referralCode: "referralCode", signInMethod: Constants.email) { registrationSucces, response, responseCode in
-            
-            if registrationSucces == true {
-                self.handleVerifiedPinState()
-            } else  {
-                switch responseCode {
-                case 200:
-                    Service.shared.FirebaseLogin(usersEmailAddress: self.email, usersPassword: self.password) { success, response, responseCode in
-                        if success == true {
-                            self.handleVerifiedPinState()
-                        } else {
-                            //Firebase error. User is registered but unable to login.
-                            self.handleCustomPopUpAlert(title: "ERROR", message: "Unable to login. Please try again.", passedButtons: [Statics.OK])
-                        }
-                    }
-                case 500:
-                    self.errorCounter += 1
-                    if self.errorCounter < 2 {
-                        self.registerUserInfo()
-                    } else {
-                        //Firebase error. Clear text fields. Prompt user to try again.
-                        self.handleCustomPopUpAlert(title: "ERROR", message: "Unable to register. Please try again.", passedButtons: [Statics.OK])
-                    }
-                default:
-                    break
-                }
-            }
-        }
-    }
-    
+  
     @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
         
         self.mainLoadingScreen.cancelMainLoadingScreen()

@@ -287,17 +287,37 @@ public enum CurrentDevice {
     
 }
 
+struct GoogleMapData {
+    
+    var locationName : String
+    var placeId : String
+    
+    init(json : [String : Any]) {
+        self.locationName = json["locationName"] as? String ?? ""
+        self.placeId = json["placeId"] as? String ?? ""
+    }
+}
+
+class TextFieldWithImage: UITextField {
+    
+    override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
+        let leftViewHeight: CGFloat = 24
+        let y = bounds.size.height / 2 - leftViewHeight / 2
+        return .init(x: 20, y: y, width: leftViewHeight + 20, height: leftViewHeight)
+    }
+}
+
 //MARK: - STATICS
 struct Statics {
     
     //MARK: - URLS AND LINKS FOR DUV MESSENGER
     static let  TERMS_OF_SERVICE : String = "https://doggystyle.ca"
     static let  PRIVACY_POLICY : String = "https://doggystyle.ca"
-    static let  SUPPORT_EMAIL_ADDRESS : String = "support@.com"
+    static let  SUPPORT_EMAIL_ADDRESS : String = "support@doggystyle.ca"
     static let  FAQS : String = "https://www..com"
     static let  APP_STORE_URL : String = "https://"
-    static let GOOGLE_SIGN_IN : String = "google"
-    static let EMAIL_SIGN_IN : String = "email"
+    static let  GOOGLE_SIGN_IN : String = "google"
+    static let  EMAIL_SIGN_IN : String = "email"
     
     //MARK: - ANIMATIONS FROM LOTTI JSON
     static let PAW_ANIMATION : String = "paw_animation"

@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import AudioToolbox
 import Firebase
+import FontAwesome_swift
 
 protocol CustomAlertCallBackProtocol {
     func onSelectionPassBack(buttonTitleForSwitchStatement: String)
@@ -16,17 +17,20 @@ protocol CustomAlertCallBackProtocol {
 
 class AlertController : UIViewController {
     
-    var customAlertCallBackProtocol : CustomAlertCallBackProtocol?
-    
-    var passedTitle : String?
-    var passedMmessage : String?
-    var hasViewBeenLaidOut : Bool = false
-    var passedButtonSelections : [String]?
-    var buttonOne = UIButton(type: .system)
-    var buttonTwo = UIButton(type: .system)
-    var buttonThree = UIButton(type: .system)
-    var mainTopAnchorConstraint : NSLayoutConstraint?
-    var passedViewController : UIViewController?
+    var customAlertCallBackProtocol : CustomAlertCallBackProtocol?,
+        passedTitle : String?,
+        passedMmessage : String?,
+        hasViewBeenLaidOut : Bool = false,
+        passedButtonSelections : [String]?,
+        buttonOne = UIButton(type: .system),
+        buttonTwo = UIButton(type: .system),
+        buttonThree = UIButton(type: .system),
+        mainTopAnchorConstraint : NSLayoutConstraint?,
+        passedViewController : UIViewController?,
+        passedIconName : FontAwesome?,
+        headerIconHeightConstraint : NSLayoutConstraint?,
+        headerIconTopConstraint : NSLayoutConstraint?
+
     
     let mainContainer : UIView = {
         
@@ -65,6 +69,20 @@ class AlertController : UIViewController {
         return thl
         
     }()
+
+    lazy var headerIcon : UIButton = {
+        
+        let cbf = UIButton()
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.backgroundColor = .clear
+        cbf.contentMode = .scaleAspectFill
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 60, style: .solid)
+        cbf.setTitle(String.fontAwesomeIcon(name: .infoCircle), for: .normal)
+        cbf.setTitleColor(coreOrangeColor, for: .normal)
+        cbf.isUserInteractionEnabled = false
+        return cbf
+        
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,12 +115,24 @@ class AlertController : UIViewController {
         guard let safeMessage = self.passedMmessage else {return}
         guard let safeTitle = self.passedTitle else {return}
         guard let safeButtonSelections = self.passedButtonSelections else {return}
+        var buffer : CGFloat = 132
+
+        var heightForIcon : CGFloat = 0.0
+        
+        if self.passedIconName == nil {
+            heightForIcon = 30.0
+            self.headerIcon.isHidden = true
+            buffer = 132
+        } else {
+            heightForIcon = 60.0
+            self.headerIcon.isHidden = false
+            buffer = 132 + 50
+        }
 
         self.headerLabel.text = safeTitle
         self.descriptionLabel.text = safeMessage
 
         let width : CGFloat = UIScreen.main.bounds.width / 1.2
-        let buffer : CGFloat = 132
 
         let size = CGSize(width: (UIScreen.main.bounds.width / 1.2) - 81, height: 2000),
         options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin),
@@ -112,6 +142,7 @@ class AlertController : UIViewController {
         let estimatedDescriptionHeight = estimatedMessageFrame.height
 
         self.view.addSubview(self.mainContainer)
+        self.mainContainer.addSubview(self.headerIcon)
         self.mainContainer.addSubview(self.headerLabel)
         self.mainContainer.addSubview(self.descriptionLabel)
 
@@ -121,7 +152,14 @@ class AlertController : UIViewController {
         self.mainContainer.heightAnchor.constraint(equalToConstant: estimatedDescriptionHeight + buffer).isActive = true
         self.mainContainer.widthAnchor.constraint(equalToConstant: width).isActive = true
         
-        self.headerLabel.topAnchor.constraint(equalTo: self.mainContainer.topAnchor, constant: 48).isActive = true
+        self.headerIconTopConstraint = self.headerIcon.topAnchor.constraint(equalTo: self.mainContainer.topAnchor, constant: 26)
+        self.headerIconTopConstraint?.isActive = true
+        self.headerIcon.centerXAnchor.constraint(equalTo: self.mainContainer.centerXAnchor, constant: 0).isActive = true
+        self.headerIcon.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        self.headerIconHeightConstraint = self.headerIcon.heightAnchor.constraint(equalToConstant: heightForIcon)
+        self.headerIconHeightConstraint?.isActive = true
+
+        self.headerLabel.topAnchor.constraint(equalTo: self.headerIcon.bottomAnchor, constant: 20).isActive = true
         self.headerLabel.leftAnchor.constraint(equalTo: self.mainContainer.leftAnchor, constant: 20).isActive = true
         self.headerLabel.rightAnchor.constraint(equalTo: self.mainContainer.rightAnchor, constant: -20).isActive = true
         self.headerLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -129,7 +167,13 @@ class AlertController : UIViewController {
         self.descriptionLabel.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 10).isActive = true
         self.descriptionLabel.leftAnchor.constraint(equalTo: self.mainContainer.leftAnchor, constant: 41).isActive = true
         self.descriptionLabel.rightAnchor.constraint(equalTo: self.mainContainer.rightAnchor, constant: -41).isActive = true
-        self.descriptionLabel.bottomAnchor.constraint(equalTo: self.mainContainer.bottomAnchor, constant: -48).isActive = true
+        self.descriptionLabel.sizeToFit()
+        
+        if self.passedIconName == nil {
+            self.headerIconTopConstraint?.constant = 0.0
+        } else {
+            self.headerIconTopConstraint?.constant = 26.0
+        }
         
         if safeButtonSelections.count == 0 {
             self.perform(#selector(self.handleLightDismiss), with: nil, afterDelay: 2.0)

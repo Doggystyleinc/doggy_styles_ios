@@ -12,7 +12,7 @@ import Firebase
 import FBSDKLoginKit
 
 class WelcomePageController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
-   
+    
     private var pages = [UIViewController](),
                 isNotificationsEnabled : Bool = false,
                 gradientLayer: CAGradientLayer!,
@@ -122,7 +122,7 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
         self.delegate = self
         
         self.addViews()
-        
+      
     }
     
     override func viewDidAppear(_ animated: Bool) {
