@@ -11,11 +11,98 @@
 import Foundation
 import UIKit
 import Firebase
+import GoogleMaps
+import GooglePlaces
 //import GoogleSignIn
 
 //MARK: - SERVICE SINGLETON FOR CRUD OPERATIONS
 class Service : NSObject {
+    
     static let shared = Service()
+    
+    func locationChecker(preferredLatitude : Double?, preferredLongitude : Double?, completion : @escaping (_ foundLocation : Bool)->()) {
+        
+        let databaseRef = Database.database().reference()
+        
+        var counter : Int = 0,
+            observingRefOne = Database.database().reference(),
+            handleOne = DatabaseHandle()
+            
+        if preferredLatitude == nil || preferredLongitude == nil {
+            completion(false)
+        } else {
+            
+            guard let safePreferredLatitude = preferredLatitude else {return}
+            guard let safePreferredLongitude = preferredLongitude else {return}
+            
+            let clients_preferred_location = CLLocation(latitude: safePreferredLatitude, longitude: safePreferredLongitude)
+            
+            let clients_preferred_location_coordinates = clients_preferred_location
+
+            let ref = databaseRef.child("service_locations")
+            
+            ref.observeSingleEvent(of: .value) { snapCount in
+                
+                if snapCount.exists() {
+                    
+                    let snapChildrenCount = Int(snapCount.childrenCount)
+                    
+                    observingRefOne = databaseRef.child("service_locations")
+                    
+                    handleOne = observingRefOne.observe(.childAdded, with: { snapLoop in
+                        
+                        if let JSON = snapLoop.value as? [String : Any] {
+                            
+                            counter += 1
+                            
+                            let latitude = JSON["latitude"] as? Double ?? 0.0
+                            let longitude = JSON["longitude"] as? Double ?? 0.0
+                            let address = JSON["address"] as? String ?? "nil"
+                            let website = JSON["website"] as? String ?? "nil"
+
+                            let doggystyle_services_preferred_location = CLLocation(latitude: latitude, longitude: longitude)
+                            
+                            let differenceInMeters = abs(clients_preferred_location_coordinates.distance(from: doggystyle_services_preferred_location))
+                            
+                            let threeMileThresholdInMeters = 4828.03
+                            
+                            if differenceInMeters > threeMileThresholdInMeters {
+                                print("not servicing \(address) because the client is \(differenceInMeters) meters away which is greater than the threshold of \(threeMileThresholdInMeters) - they can be found at \(website)")
+                                
+                                if counter >= snapChildrenCount {
+                                    //MARK: - HERE NO BUILDING WAS FOUND, SO WE HAVE TO ADD THEM TO A WAIT LIST AND SEE IF SOME MORE PEOPLE VOTE ON THEIR LOCATION TO HAVE IT ADDED
+                                    
+                                    
+                                    completion(false)
+                                    observingRefOne.removeObserver(withHandle: handleOne)
+                                    return
+                                }
+                                
+                            } else {
+                                print("MATCH FOUND! We are servicing \(address) because the client is \(differenceInMeters) meters away which is less than the threshold of \(threeMileThresholdInMeters) - they can be found at \(website)")
+                                observingRefOne.removeObserver(withHandle: handleOne)
+                                completion(true)
+                                return
+                            }
+                            
+                        } else {
+                            observingRefOne.removeObserver(withHandle: handleOne)
+                            completion(false)
+                        }
+                        
+                    })
+                   
+                } else {
+                    observingRefOne.removeObserver(withHandle: handleOne)
+                    completion(false)
+                }
+            }
+        }
+    
+        //if it is, we serialize them to that location
+        //if it is not, we alert them when that location is ready
+        
+    }
     
     func handleFirebaseLogout() {
         

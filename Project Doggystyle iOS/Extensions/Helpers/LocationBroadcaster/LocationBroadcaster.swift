@@ -14,30 +14,24 @@ class LocationBroadcaster : NSObject, CLLocationManagerDelegate {
     
     static let shared = LocationBroadcaster()
     
-    let locationManager = CLLocationManager()
-    let databaseRef = Database.database().reference()
-
+    let locationManager = CLLocationManager(),
+        databaseRef = Database.database().reference()
+    
     var locationServicesEnabled : Bool = false
     
     func runBroadcaster() {
         
         self.checkForLocationPermissions { enabled in
             
-            if !enabled {
-                print("no location services available")
-            } else {
-              
+            if enabled {
                 self.locationManager.delegate = self
                 self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
                 self.locationManager.startUpdatingLocation()
-                
             }
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
-        print(locations)
         
         if locations.count != 0 {
             
@@ -58,14 +52,14 @@ class LocationBroadcaster : NSObject, CLLocationManagerDelegate {
             
             //MARK: - UPDATE DATABASE FOR THE HEAT MAP
             guard let user_uid = Auth.auth().currentUser?.uid else {return}
-
+            
             let ref = self.databaseRef.child("client_groomer_location_broadcaster").child(user_uid)
             
             let user_first_name = userProfileStruct.user_first_name ?? "no first name"
             let user_last_name = userProfileStruct.user_last_name ?? "no last name"
             let users_firebase_uid = userProfileStruct.users_firebase_uid ?? "no UID"
             let users_ref_key = ref.key ?? "no key"
-         
+            
             let values : [String : Any] = ["raw_speed" : rawSpeed, "speed_mph" :  speedToMPH, "speed_kph" : speedToKPH,
                                            "longitude" : longitude, "latitude" : latitude, "altitude_feet" : altitudeInFeet,
                                            "altitude_meters" : altitudeInMeters,
@@ -73,9 +67,9 @@ class LocationBroadcaster : NSObject, CLLocationManagerDelegate {
                                            "user_last_name" : user_last_name,
                                            "users_firebase_uid" : users_firebase_uid,
                                            "users_ref_key" : users_ref_key, "is_groomer" : false]
-           
+            
             ref.updateChildValues(values)
-           
+            
         }
     }
     
@@ -104,7 +98,7 @@ class LocationBroadcaster : NSObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-
+        
         switch status {
         
         case .authorizedWhenInUse, .authorizedAlways:
