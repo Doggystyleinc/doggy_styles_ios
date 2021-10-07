@@ -20,16 +20,18 @@ class Service : NSObject {
     
     static let shared = Service()
     
-    func locationChecker(preferredLatitude : Double?, preferredLongitude : Double?, completion : @escaping (_ foundLocation : Bool)->()) {
+    func locationChecker(preferredLatitude : Double?, preferredLongitude : Double?, completion : @escaping (_ foundLocation : Bool, _ latitude : Double, _ longitude : Double, _ address : String, _ website : String, _ distanceInMeters : Double)->()) {
         
         let databaseRef = Database.database().reference()
+        
+        var isFound : Bool = false
         
         var counter : Int = 0,
             observingRefOne = Database.database().reference(),
             handleOne = DatabaseHandle()
             
         if preferredLatitude == nil || preferredLongitude == nil {
-            completion(false)
+            completion(true, 0.0, 0.0, "nil", "nil", 0.0)
         } else {
             
             guard let safePreferredLatitude = preferredLatitude else {return}
@@ -51,6 +53,8 @@ class Service : NSObject {
                     
                     handleOne = observingRefOne.observe(.childAdded, with: { snapLoop in
                         
+                        if isFound == true {return}
+                        
                         if let JSON = snapLoop.value as? [String : Any] {
                             
                             counter += 1
@@ -71,37 +75,34 @@ class Service : NSObject {
                                 
                                 if counter >= snapChildrenCount {
                                     //MARK: - HERE NO BUILDING WAS FOUND, SO WE HAVE TO ADD THEM TO A WAIT LIST AND SEE IF SOME MORE PEOPLE VOTE ON THEIR LOCATION TO HAVE IT ADDED
-                                    
-                                    
-                                    completion(false)
+                                    completion(false, 0.0, 0.0, "nil", "nil", differenceInMeters)
                                     observingRefOne.removeObserver(withHandle: handleOne)
                                     return
                                 }
                                 
                             } else {
                                 print("MATCH FOUND! We are servicing \(address) because the client is \(differenceInMeters) meters away which is less than the threshold of \(threeMileThresholdInMeters) - they can be found at \(website)")
+                                isFound = true
+                                counter = snapChildrenCount
                                 observingRefOne.removeObserver(withHandle: handleOne)
-                                completion(true)
+                                
+                                completion(true, latitude, longitude, address, website, differenceInMeters)
                                 return
                             }
                             
                         } else {
                             observingRefOne.removeObserver(withHandle: handleOne)
-                            completion(false)
+                            completion(false, 0.0, 0.0, "nil", "nil", 0.0)
                         }
                         
                     })
                    
                 } else {
                     observingRefOne.removeObserver(withHandle: handleOne)
-                    completion(false)
+                    completion(false, 0.0, 0.0, "nil", "nil", 0.0)
                 }
             }
         }
-    
-        //if it is, we serialize them to that location
-        //if it is not, we alert them when that location is ready
-        
     }
     
     func handleFirebaseLogout() {
@@ -159,6 +160,8 @@ class Service : NSObject {
         guard let chosen_grooming_location_name = userOnboardingStruct.chosen_grooming_location_name else {return}
         guard let chosen_grooming_location_latitude = userOnboardingStruct.chosen_grooming_location_latitude else {return}
         guard let chosen_grooming_location_longitude = userOnboardingStruct.chosen_grooming_location_longitude else {return}
+        guard let user_grooming_locational_data = userOnboardingStruct.user_grooming_locational_data else {return}
+
         let referral_code_grab = userOnboardingStruct.referral_code_grab ?? "nil"
         
         //STEP 1 - AUTHENTICATE A NEW ACCOUNT ON BEHALF OF THE USER
@@ -223,7 +226,8 @@ class Service : NSObject {
                         "chosen_grooming_location_latitude" : chosen_grooming_location_latitude,
                         "chosen_grooming_location_longitude" : chosen_grooming_location_longitude,
                         "referral_code_grab" : referral_code_grab,
-                        "user_enabled_notifications" : user_enabled_notifications
+                        "user_enabled_notifications" : user_enabled_notifications,
+                        "user_grooming_locational_data" : user_grooming_locational_data
                         
                     ]
                     
@@ -232,7 +236,21 @@ class Service : NSObject {
                             completion(false, "Login Error: \(error?.localizedDescription as Any).", 200)
                             return
                         }
-                        completion(true, "Success", 200)
+                        
+                        let found_grooming_location = user_grooming_locational_data["found_grooming_location"] as? Bool ?? false
+                        
+                        if found_grooming_location == true {
+                            completion(true, "Success", 200)
+                        } else {
+                            //did not find the grooming location, add it to the requested node
+                            
+                            let requestRef = databaseRef.child("requested_locations_per_user").child(firebase_uid)
+                            
+                            let values : [String : Any] = ["\(chosen_grooming_location_latitude)*****\(chosen_grooming_location_longitude)" : user_grooming_locational_data]
+                            requestRef.updateChildValues(values) { error, ref in
+                                completion(true, "Success", 200)
+                            }
+                        }
                     }
                 }
             }

@@ -173,7 +173,7 @@ class DashboardViewController: UIViewController {
         
         self.navigationController?.navigationBar.isHidden = true
         self.fillValues()
-        
+    
     }
     
     func addViews() {

@@ -138,6 +138,9 @@
 		E334FB9A270BD328003F24D5 /* NewDogBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334FB99270BD328003F24D5 /* NewDogBuilder.swift */; };
 		E334FBA1270E40F0003F24D5 /* ServiceBroadcastExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334FBA0270E40F0003F24D5 /* ServiceBroadcastExtension.swift */; };
 		E334FBAB270E461A003F24D5 /* LocationBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334FBAA270E461A003F24D5 /* LocationBroadcaster.swift */; };
+		E334FBB2270F9E8C003F24D5 /* Dogm 1.png in Resources */ = {isa = PBXBuildFile; fileRef = E334FBAF270F9E8C003F24D5 /* Dogm 1.png */; };
+		E334FBB3270F9E8C003F24D5 /* Dogm 1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E334FBB0270F9E8C003F24D5 /* Dogm 1@2x.png */; };
+		E334FBB4270F9E8C003F24D5 /* Dogm 1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E334FBB1270F9E8C003F24D5 /* Dogm 1@3x.png */; };
 		E352FF6526A63369003BD59F /* group18322.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6226A63368003BD59F /* group18322.png */; };
 		E352FF6626A63369003BD59F /* group18322@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6326A63369003BD59F /* group18322@2x.png */; };
 		E352FF6726A63369003BD59F /* group18322@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E352FF6426A63369003BD59F /* group18322@3x.png */; };
@@ -382,6 +385,9 @@
 		E334FB99270BD328003F24D5 /* NewDogBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogBuilder.swift; sourceTree = "<group>"; };
 		E334FBA0270E40F0003F24D5 /* ServiceBroadcastExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceBroadcastExtension.swift; sourceTree = "<group>"; };
 		E334FBAA270E461A003F24D5 /* LocationBroadcaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationBroadcaster.swift; sourceTree = "<group>"; };
+		E334FBAF270F9E8C003F24D5 /* Dogm 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Dogm 1.png"; sourceTree = "<group>"; };
+		E334FBB0270F9E8C003F24D5 /* Dogm 1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Dogm 1@2x.png"; sourceTree = "<group>"; };
+		E334FBB1270F9E8C003F24D5 /* Dogm 1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Dogm 1@3x.png"; sourceTree = "<group>"; };
 		E352FF6226A63368003BD59F /* group18322.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group18322.png; sourceTree = "<group>"; };
 		E352FF6326A63369003BD59F /* group18322@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group18322@2x.png"; sourceTree = "<group>"; };
 		E352FF6426A63369003BD59F /* group18322@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group18322@3x.png"; sourceTree = "<group>"; };
@@ -852,6 +858,9 @@
 		E326572426B20866004A15F6 /* DashboardIcons */ = {
 			isa = PBXGroup;
 			children = (
+				E334FBAF270F9E8C003F24D5 /* Dogm 1.png */,
+				E334FBB0270F9E8C003F24D5 /* Dogm 1@2x.png */,
+				E334FBB1270F9E8C003F24D5 /* Dogm 1@3x.png */,
 				E304ED6F26EBEF93002D625A /* tab_calendar_icon@1x.png */,
 				E304ED6E26EBEF93002D625A /* tab_calendar_icon@2x.png */,
 				E304ED7126EBEF94002D625A /* tab_calendar_icon@3x.png */,
@@ -1474,6 +1483,7 @@
 				E39C665726A899F0004A0E93 /* Rubik-LightItalic.ttf in Resources */,
 				E39C665F26A8CEEF004A0E93 /* paw_animation.json in Resources */,
 				E39C665826A899F0004A0E93 /* Rubik-Medium.ttf in Resources */,
+				E334FBB2270F9E8C003F24D5 /* Dogm 1.png in Resources */,
 				E39C665926A899F0004A0E93 /* Rubik-MediumItalic.ttf in Resources */,
 				E39C665A26A899F0004A0E93 /* Rubik-Regular.ttf in Resources */,
 				E39C665B26A899F0004A0E93 /* Rubik-SemiBold.ttf in Resources */,
@@ -1511,6 +1521,7 @@
 				E376FDF326AB4F5800902C36 /* art_icon.jpg in Resources */,
 				E326572F26B2149D004A15F6 /* 65430TifDsVan1@2x.png in Resources */,
 				E304ED7726EBEF95002D625A /* tab_calendar_icon@2x.png in Resources */,
+				E334FBB4270F9E8C003F24D5 /* Dogm 1@3x.png in Resources */,
 				E36EE55226B77D9B0009A0EF /* hoverLight1@2x.png in Resources */,
 				CDE8710C2652E2080082551B /* Roboto-Italic.ttf in Resources */,
 				E326571326AF24EF004A15F6 /* cpmbo1 shutterstock_355672793 1@3x.png in Resources */,
@@ -1558,6 +1569,7 @@
 				CDE871092652E2080082551B /* Roboto-Regular.ttf in Resources */,
 				E304ED7C26EBEF95002D625A /* tab_home_icon@2x.png in Resources */,
 				CD319F72267936AD00F48E3C /* Poppins-Regular.ttf in Resources */,
+				E334FBB3270F9E8C003F24D5 /* Dogm 1@2x.png in Resources */,
 				E326571926AF2636004A15F6 /* Splash.png in Resources */,
 				CDE871052652E2080082551B /* Roboto-Thin.ttf in Resources */,
 			);

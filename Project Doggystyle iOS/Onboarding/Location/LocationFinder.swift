@@ -124,20 +124,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         return etfc
         
     }()
-    
-    let orangePinIcon : UIImageView = {
-        
-        let dcl = UIImageView()
-        dcl.translatesAutoresizingMaskIntoConstraints = false
-        dcl.backgroundColor = .clear
-        dcl.contentMode = .scaleAspectFit
-        dcl.isUserInteractionEnabled = false
-        let image = UIImage(named: "orange_pin")?.withRenderingMode(.alwaysOriginal)
-        dcl.image = image
-        
-        return dcl
-    }()
-    
+   
     lazy var errorLabel : UILabel = {
         
         let el = UILabel()
@@ -148,8 +135,8 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         el.font = UIFont(name: dsSubHeaderFont, size: 16)
         el.isUserInteractionEnabled = false
         el.numberOfLines = -1
-        el.text = "We’re sorry, no appointments are currently available. We will send you an email once we begin servicing your area.\n\nWant to receive additional notifications? Choose your preferred contact method. "
-        el.isHidden = true
+        el.text = "Sorry! Doggystyle isn’t servicing your neighborhood yet. We’ll send you an email once we’re in the area!\n\nWant to receive additional notifications? "
+        el.isHidden = false
         
         return el
         
@@ -170,13 +157,13 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.setTitle("SMS", for: UIControl.State.normal)
+        cbf.setTitle("Update me via SMS", for: UIControl.State.normal)
         cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 16)
         cbf.titleLabel?.adjustsFontSizeToFitWidth = true
         cbf.titleLabel?.numberOfLines = 1
         cbf.titleLabel?.adjustsFontForContentSizeCategory = true
         cbf.titleLabel?.textColor = coreBlackColor
-        cbf.backgroundColor = coreWhiteColor
+        cbf.backgroundColor = coreOrangeColor.withAlphaComponent(0.2)
         cbf.layer.cornerRadius = 14
         cbf.layer.masksToBounds = false
         cbf.tintColor = coreOrangeColor
@@ -195,13 +182,13 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.setTitle("WhatsApp", for: UIControl.State.normal)
+        cbf.setTitle("Update me via Whatsapp", for: UIControl.State.normal)
         cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 16)
         cbf.titleLabel?.adjustsFontSizeToFitWidth = true
         cbf.titleLabel?.numberOfLines = 1
         cbf.titleLabel?.adjustsFontForContentSizeCategory = true
         cbf.titleLabel?.textColor = coreBlackColor
-        cbf.backgroundColor = coreWhiteColor
+        cbf.backgroundColor = coreOrangeColor.withAlphaComponent(0.2)
         cbf.layer.cornerRadius = 14
         cbf.layer.masksToBounds = false
         cbf.tintColor = coreOrangeColor
@@ -221,11 +208,11 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         let thl = UILabel()
         thl.translatesAutoresizingMaskIntoConstraints = false
         thl.textAlignment = .center
-        thl.text = "Uh oh..."
-        thl.font = UIFont(name: dsHeaderFont, size: 21)
+        thl.text = "Ruh-Roh!"
+        thl.font = UIFont(name: rubikBold, size: 24)
         thl.numberOfLines = 1
         thl.adjustsFontSizeToFitWidth = true
-        thl.textColor = coreBlackColor
+        thl.textColor = coreOrangeColor
         
         return thl
         
@@ -315,7 +302,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         cbf.layer.shadowRadius = 9
         cbf.layer.shouldRasterize = false
         cbf.isHidden = true
-        cbf.addTarget(self, action: #selector(self.handleConfirmAddressButton), for: UIControl.Event.touchUpInside)
+        cbf.addTarget(self, action: #selector(self.runLocationalRadiusChecker), for: UIControl.Event.touchUpInside)
         
         return cbf
         
@@ -330,7 +317,18 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         let image = UIImage(named: "location_success_image")?.withRenderingMode(.alwaysOriginal)
         si.image = image
         si.isUserInteractionEnabled = false
+        return si
+    }()
+    
+    let errorImage : UIImageView = {
         
+        let si = UIImageView()
+        si.translatesAutoresizingMaskIntoConstraints = false
+        si.backgroundColor = .clear
+        si.contentMode = .scaleAspectFit
+        let image = UIImage(named: "doggy_location_not_found")?.withRenderingMode(.alwaysOriginal)
+        si.image = image
+        si.isUserInteractionEnabled = false
         return si
     }()
     
@@ -340,10 +338,10 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         thl.translatesAutoresizingMaskIntoConstraints = false
         thl.textAlignment = .center
         thl.text = "Let's get Doggystyled!"
-        thl.font = UIFont(name: rubikRegular, size: 16)
+        thl.font = UIFont(name: rubikRegular, size: 20)
         thl.numberOfLines = 1
         thl.adjustsFontSizeToFitWidth = true
-        thl.textColor = coreBlackColor
+        thl.textColor = styledGray
         
         return thl
         
@@ -411,7 +409,11 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.errorContainer.isHidden = true
         
         self.handleLocationServicesAuthorization()
-
+        
+        //testing here to be removed.
+        self.searchStates = .error
+        self.listener()
+        
     }
     
     func addViews() {
@@ -432,12 +434,12 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.view.addSubview(self.mapView)
         self.view.addSubview(self.cancelSearchButton)
         
-        self.errorContainer.addSubview(self.orangePinIcon)
         self.errorContainer.addSubview(self.smsButton)
         self.errorContainer.addSubview(self.whatsappButton)
         self.errorContainer.addSubview(self.uhOhLabel)
         self.errorContainer.addSubview(self.errorLabel)
-        
+        self.errorContainer.addSubview(self.errorImage)
+
         self.successContainer.addSubview(self.locationSupportedLabel)
         self.successContainer.addSubview(self.successImage)
         self.successContainer.addSubview(self.confirmButton)
@@ -462,31 +464,31 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.errorContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.errorContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.errorContainer.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
-        
-        self.orangePinIcon.centerXAnchor.constraint(equalTo: self.errorContainer.centerXAnchor, constant: 0).isActive = true
-        self.orangePinIcon.topAnchor.constraint(equalTo: self.errorContainer.topAnchor, constant: 20).isActive = true
-        self.orangePinIcon.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        self.orangePinIcon.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        self.uhOhLabel.topAnchor.constraint(equalTo: self.orangePinIcon.bottomAnchor, constant: 5).isActive = true
+       
+        self.uhOhLabel.topAnchor.constraint(equalTo: self.errorContainer.topAnchor, constant: 25).isActive = true
         self.uhOhLabel.leftAnchor.constraint(equalTo: self.errorContainer.leftAnchor, constant: 20).isActive = true
         self.uhOhLabel.rightAnchor.constraint(equalTo: self.errorContainer.rightAnchor, constant: -20).isActive = true
         self.uhOhLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
-        self.smsButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
+        self.smsButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
         self.smsButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.smsButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.smsButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        self.whatsappButton.bottomAnchor.constraint(equalTo: self.smsButton.topAnchor, constant: -20).isActive = true
+        self.whatsappButton.bottomAnchor.constraint(equalTo: self.smsButton.topAnchor, constant: -10).isActive = true
         self.whatsappButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.whatsappButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.whatsappButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        self.errorLabel.topAnchor.constraint(equalTo: self.uhOhLabel.bottomAnchor, constant: 10).isActive = true
         self.errorLabel.leftAnchor.constraint(equalTo: self.errorContainer.leftAnchor, constant: 30).isActive = true
         self.errorLabel.rightAnchor.constraint(equalTo: self.errorContainer.rightAnchor, constant: -30).isActive = true
         self.errorLabel.bottomAnchor.constraint(equalTo: self.whatsappButton.topAnchor, constant: -10).isActive = true
+        errorLabel.sizeToFit()
+        
+        self.errorImage.bottomAnchor.constraint(equalTo: self.errorLabel.topAnchor, constant: -25).isActive = true
+        self.errorImage.topAnchor.constraint(equalTo: self.uhOhLabel.bottomAnchor, constant: 25).isActive = true
+        self.errorImage.leftAnchor.constraint(equalTo: self.successContainer.leftAnchor, constant: 0).isActive = true
+        self.errorImage.rightAnchor.constraint(equalTo: self.successContainer.rightAnchor, constant: 0).isActive = true
         
         self.successContainer.topAnchor.constraint(equalTo: self.userCurrentLocationButton.bottomAnchor, constant: 0).isActive = true
         self.successContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
@@ -503,15 +505,15 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.confirmButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.confirmButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        self.getStyledLabel.bottomAnchor.constraint(equalTo: self.confirmButton.topAnchor, constant: -20).isActive = true
+        self.getStyledLabel.bottomAnchor.constraint(equalTo: self.confirmButton.topAnchor, constant: -28).isActive = true
         self.getStyledLabel.leftAnchor.constraint(equalTo: self.successContainer.leftAnchor, constant: 20).isActive = true
         self.getStyledLabel.rightAnchor.constraint(equalTo: self.successContainer.rightAnchor, constant: -20).isActive = true
-        self.getStyledLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        self.getStyledLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
         
-        self.successImage.topAnchor.constraint(equalTo: self.locationSupportedLabel.bottomAnchor, constant: 10).isActive = true
+        self.successImage.topAnchor.constraint(equalTo: self.locationSupportedLabel.bottomAnchor, constant: 35).isActive = true
         self.successImage.leftAnchor.constraint(equalTo: self.successContainer.leftAnchor, constant: 0).isActive = true
-        self.successImage.rightAnchor.constraint(equalTo: self.successContainer.rightAnchor, constant: 0).isActive = true
-        self.successImage.bottomAnchor.constraint(equalTo: self.getStyledLabel.topAnchor, constant: -10).isActive = true
+        self.successImage.rightAnchor.constraint(equalTo: self.successContainer.rightAnchor, constant: -20).isActive = true
+        self.successImage.bottomAnchor.constraint(equalTo: self.getStyledLabel.topAnchor, constant: -5).isActive = true
         
         self.searchResultsTableView.topAnchor.constraint(equalTo: self.searchTextField.bottomAnchor, constant: 10).isActive = true
         self.searchResultsTableView.leftAnchor.constraint(equalTo: self.searchTextField.leftAnchor, constant: 0).isActive = true
@@ -576,7 +578,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
                 
                 self.askUserForPermissionsAgain()
                 self.mapView.isHidden = true
-
+                
             default : print("Hit an unknown state")
                 
             }
@@ -585,12 +587,12 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
             
             self.askUserForPermissionsAgain()
             self.mapView.isHidden = true
-
+            
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-
+        
         switch status {
         
         case .authorizedWhenInUse, .authorizedAlways:
@@ -615,7 +617,6 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.handleCustomPopUpAlert(title: "LOCATION SERVICES", message: "Please allow Doggystyle permission to the devices location so we can find nearby Groomers.", passedButtons: [Statics.CANCEL, Statics.GOT_IT])
     }
     
-    
     @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
         
         self.mainLoadingScreen.cancelMainLoadingScreen()
@@ -636,6 +637,8 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         switch type {
         
         case Statics.CANCEL: print(Statics.CANCEL)
+        case Statics.OK: print(Statics.OK)
+            
         case Statics.GOT_IT:
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                 return
@@ -655,14 +658,21 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         switch self.searchStates {
         
         case .idle:
+            self.mapView.isHidden = false
             self.errorContainer.isHidden = true
             self.successContainer.isHidden = true
         case .error:
+            self.mapView.isHidden = true
             self.errorContainer.isHidden = false
             self.successContainer.isHidden = true
+            self.currentUserContainerButton.isHidden = true
+
         case .success:
+            self.mapView.isHidden = true
             self.errorContainer.isHidden = true
             self.successContainer.isHidden = false
+            self.currentUserContainerButton.isHidden = true
+
         }
     }
     
@@ -687,7 +697,6 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.userCurrentLocationIcon.isHidden = false
         self.userCurrentLocationButton.isHidden = false
         
-        
         if safeText.count == 0 {
             UIView.animate(withDuration: 0.45) {
                 self.placesHeightAnchor?.constant = 0
@@ -705,13 +714,13 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
         self.searchResultsTableView.arrayOfDicts.removeAll()
         self.searchResultsTableView.placesArray.removeAll()
-
+        
         let token = GMSAutocompleteSessionToken.init(),
             filter = GMSAutocompleteFilter()
         filter.type = .address
         
         placesClient?.findAutocompletePredictions(fromQuery: passedPlace, filter: filter, sessionToken: token, callback: { (results, error) in
-           
+            
             if let _ = error {
                 return
             }
@@ -730,7 +739,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
                         posts = PlacesDictionary(json: dic)
                     
                     self.searchResultsTableView.arrayOfDicts.append(posts)
-
+                    
                     DispatchQueue.main.async {
                         
                         self.searchResultsTableView.reloadData()
@@ -779,7 +788,7 @@ extension LocationFinder {
             
             userOnboardingStruct.chosen_grooming_location_latitude = latitude
             userOnboardingStruct.chosen_grooming_location_longitude = longitude
-
+            
             self.mapView.clear()
             self.mapView.isHidden = false
             self.mapView.addCustomMarker(latitude: latitude, longitude: longitude)
@@ -856,7 +865,6 @@ extension LocationFinder {
         }
     }
     
-    
     @objc func handleCancelCurrentSearchButton() {
         
         self.searchTextField.text = ""
@@ -872,17 +880,40 @@ extension LocationFinder {
         self.successContainer.isHidden = true
         self.errorContainer.isHidden = true
         self.confirmLocationButton.isHidden = true
+        self.mapView.isHidden = false
         
         UIView.animate(withDuration: 0.25) {
             self.mapViewTopLayoutConstraint?.constant = 10
         }
     }
     
-    @objc func handleConfirmAddressButton() {
+    @objc func runLocationalRadiusChecker() {
         
-        self.mapView.isHidden = true
-        self.confirmLocationButton.isHidden = true
-        self.successContainer.isHidden = false
+        let latitude = userOnboardingStruct.chosen_grooming_location_latitude ?? 0.0
+        let longitude = userOnboardingStruct.chosen_grooming_location_longitude ?? 0.0
+        
+        if latitude == 0.0 || longitude == 0.0 {
+            self.handleCustomPopUpAlert(title: "LOCATION NOT FOUND", message: "We are unable to process that location at this time. An error report has been sent up and will be resolved shortly. Thank you for your patience.", passedButtons: [Statics.OK])
+        } else {
+            
+            Service.shared.locationChecker(preferredLatitude: latitude, preferredLongitude: longitude) { foundLocation, latitude, longitude, address, website, distanceInMeters  in
+                
+                //MARK: - HERE WE A LOCATIONAL MATCH
+                if foundLocation {
+                    self.searchStates = .success
+                    let user_grooming_locational_data : [String : Any] = ["found_grooming_location" : true, "latitude" : latitude, "longitude" : longitude, "address" : address, "website" : website, "distance_in_meters" : distanceInMeters]
+                    userOnboardingStruct.user_grooming_locational_data = user_grooming_locational_data
+                    self.listener()
+                    
+                    //MARK: - NO LOCATIONAL MATCH - UPDATE VOTERS
+                } else {
+                    self.searchStates = .error
+                    let user_grooming_locational_data : [String : Any] = ["found_grooming_location" : false, "latitude" : 0.0, "longitude" : 0.0, "address" : "nil", "website" : "nil", "distance_in_meters" : 0.0]
+                    userOnboardingStruct.user_grooming_locational_data = user_grooming_locational_data
+                    self.listener()
+                }
+            }
+        }
         
     }
     

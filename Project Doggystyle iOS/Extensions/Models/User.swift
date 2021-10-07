@@ -27,7 +27,10 @@ struct UserOnboardingStruct {
         chosen_grooming_location_longitude : Double?,
         
         referral_code_grab : String?,
-        user_enabled_notifications : Bool?
+        user_enabled_notifications : Bool?,
+        user_grooming_locational_data : [String : Any]?
+
+    //MARK: - LOCATION FOUND SPECIFIC
 
 }
 
