@@ -197,6 +197,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         cbf.layer.shadowOffset = CGSize(width: 2, height: 3)
         cbf.layer.shadowRadius = 9
         cbf.layer.shouldRasterize = false
+        cbf.alpha = 0
         cbf.addTarget(self, action: #selector(self.handleWhatsAppButton), for: UIControl.Event.touchUpInside)
         
         return cbf
@@ -411,7 +412,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.handleLocationServicesAuthorization()
         
         //testing here to be removed.
-        self.searchStates = .error
+        self.searchStates = .success
         self.listener()
         
     }
