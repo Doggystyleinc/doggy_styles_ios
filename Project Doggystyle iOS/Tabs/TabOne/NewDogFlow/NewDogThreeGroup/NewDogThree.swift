@@ -410,7 +410,7 @@ class NewDogThree : UIViewController, UITextFieldDelegate, UIScrollViewDelegate,
         self.contentView.addSubview(self.favoriteTreatTextField)
         self.contentView.addSubview(self.dogFoodTextField)
         
-        self.contentView.addSubview(self.nextButton)
+        self.view.addSubview(self.nextButton)
         
         self.view.addSubview(timeCover)
         self.view.addSubview(newDogTreatSubview)

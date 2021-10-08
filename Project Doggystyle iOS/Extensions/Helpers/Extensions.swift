@@ -337,6 +337,8 @@ struct Statics {
     static let HANDLE_SERVICE_SATISFIED : String = "HANDLE_SERVICE_SATISFIED"
     static let HANDLE_SERVICE_UNSATISIFED : String = "HANDLE_SERVICE_UNSATISIFED"
     static let RUN_LOCATION_CHECKER : String = "RUN_LOCATION_CHECKER"
+    static let RUN_DATA_ENGINE : String = "RUN_DATA_ENGINE"
+
 
 }
 

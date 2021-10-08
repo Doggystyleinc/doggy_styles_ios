@@ -308,6 +308,10 @@ class NewDogFive : UIViewController, CustomAlertCallBackProtocol {
         
         UIDevice.vibrateLight()
         
+        //RESET THE DASHBOARD AND UPDATE ACCORDINGLY
+        print("resetting the dashboard for a new state")
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: Statics.RUN_DATA_ENGINE), object: self)
+        
         let newDogSix = NewDogSix()
         newDogSix.modalPresentationStyle = .fullScreen
         newDogSix.navigationController?.navigationBar.isHidden = true

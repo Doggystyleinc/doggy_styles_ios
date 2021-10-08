@@ -152,6 +152,7 @@ class EmptyStateOne : UIView {
         self.addSubview(self.emptyStateOneContainer)
         self.addSubview(self.welcomeContainer)
         self.addSubview(self.welcomeSubContainer)
+        
         self.welcomeContainer.addSubview(self.welcomeContainerCreateDoggyprofileButton)
         self.welcomeContainer.addSubview(self.welcomeContainerLabel)
         self.welcomeSubContainer.addSubview(self.headerLabelEmptyStateOne)

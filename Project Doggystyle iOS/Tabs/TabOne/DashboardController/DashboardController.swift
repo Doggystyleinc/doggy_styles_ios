@@ -16,9 +16,9 @@ class DashboardViewController: UIViewController {
     enum StateListener {
         
         case YesGroomerLocationYesDoggyProfile
-        case NoGroomerLocationYesDoggyProfile
         case YesGroomerLocationNoDoggyProfile
         case NoGroomerLocationNoDoggyProfile
+        case NoGroomerLocationYesDoggyProfile
         
     }
     
@@ -175,7 +175,8 @@ class DashboardViewController: UIViewController {
         self.callDataEngine()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleNewDogFlow), name: NSNotification.Name(Statics.CALL_ADD_NEW_PUP), object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.callDataEngine), name: NSNotification.Name(Statics.RUN_DATA_ENGINE), object: nil)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -183,6 +184,7 @@ class DashboardViewController: UIViewController {
         
         self.navigationController?.navigationBar.isHidden = true
         self.fillValues()
+        
         
     }
     
@@ -257,7 +259,9 @@ class DashboardViewController: UIViewController {
         
     }
     
-    func callDataEngine() {
+    @objc func callDataEngine() {
+
+        self.handleDatasourceFailure()
         
         //MARK: - LOCATIONAL DATA FOR HAS A GROOMING LOCATION
         let locational_data = userProfileStruct.user_grooming_locational_data ?? ["nil" : "nil"]
@@ -266,27 +270,30 @@ class DashboardViewController: UIViewController {
         //MARK: - CHECK FOR DOGGY PROFILES (HEADER)
         self.fetchDataSource { isSuccess in
             
+            //MARK: - HAS DOGGY PROFILE
             if isSuccess {
                 
                 if hasGroomingLocation == true {
                     //MARK: - USER HAS A GROOMING LOCATION AND A DOGGY PROFILE - YesGroomerLocationYesDoggyProfile
                     self.stateListener = .YesGroomerLocationYesDoggyProfile
-                    
+                    self.callListener()
                 } else {
                     //MARK: - USER DOES NOT HAVE A GROOMING LOCATION BUT HAS A DOGGY PROFILE - NoGroomerLocationYesDoggyProfile
                     self.stateListener = .NoGroomerLocationYesDoggyProfile
-                    
+                    self.callListener()
                 }
+                
+            //MARK: - DOES NOT HAVE DOGGY PROFILE
             } else {
                 
                 if hasGroomingLocation == true {
                     //MARK: - USER DOES NOT HAVE A DOGGY PROFILE BUT HAS A GROOMING LOCATION - YesGroomerLocationNoDoggyProfile
                     self.stateListener = .YesGroomerLocationNoDoggyProfile
-                    
+                    self.callListener()
                 } else {
                     //MARK: - USER DOES NOT HAVE A DOGGY PROFILE AND DOES NOT HAVE A LOCATION
                     self.stateListener = .NoGroomerLocationNoDoggyProfile
-                    
+                    self.callListener()
                 }
             }
         }
@@ -342,26 +349,56 @@ class DashboardViewController: UIViewController {
         }
     }
     
+    //MARK: - STATE MACHINE FOR DASHBOARD ENTRY
     func callListener() {
         
         switch self.stateListener {
         
         case .NoGroomerLocationNoDoggyProfile: print("NoGroomerLocationNoDoggyProfile")
-        case .NoGroomerLocationYesDoggyProfile: print("NoGroomerLocationYesDoggyProfile")
+            
+            self.emptyStateOne.isHidden = false
+            self.emptyStateTwo.isHidden = true
+            self.dashMainView.isHidden = true
+            self.todaysDashView.isHidden = true
+            
+            self.handleDatasourceFailure()
+            
         case .YesGroomerLocationNoDoggyProfile: print("YesGroomerLocationNoDoggyProfile")
+            
+            self.emptyStateOne.isHidden = true
+            self.emptyStateTwo.isHidden = false
+            self.dashMainView.isHidden = true
+            self.todaysDashView.isHidden = true
+            
+            self.handleDatasourceFailure()
+            
         case .YesGroomerLocationYesDoggyProfile: print("YesGroomerLocationYesDoggyProfile")
+            
+            self.emptyStateOne.isHidden = true
+            self.emptyStateTwo.isHidden = true
+            self.dashMainView.isHidden = false
+            self.dashMainView.locationFoundState = true
+            self.dashMainView.runScreenChange()
+            self.todaysDashView.isHidden = true
         
+            self.handleDatasourceSuccess()
+            
+        case .NoGroomerLocationYesDoggyProfile: print("NoGroomerLocationYesDoggyProfile")
+
+            self.emptyStateOne.isHidden = true
+            self.emptyStateTwo.isHidden = true
+            self.dashMainView.isHidden = false
+            self.dashMainView.locationFoundState = false
+            self.dashMainView.runScreenChange()
+            self.todaysDashView.isHidden = true
+        
+            self.handleDatasourceSuccess()
+
         }
-        
     }
     
     func handleDatasourceFailure() {
-        
-        self.emptyStateOne.isHidden = true //has refur a friends at the bottom - and add doggy profile, the one that has been there for a while now
-        self.emptyStateTwo.isHidden = true //new to doggystyle, tour the truick
-        self.dashMainView.isHidden = true //not sure, just has a selector - prob the main view
-        self.todaysDashView.isHidden = false // todays apt view with the stats, get ready etc...
-        
+       
         globalPetDataSource.removeAll()
         
         self.observingRefOne.removeObserver(withHandle: self.handleOne)
@@ -376,12 +413,7 @@ class DashboardViewController: UIViewController {
     }
     
     func handleDatasourceSuccess() {
-        
-        self.emptyStateOne.isHidden = false
-        self.emptyStateTwo.isHidden = true
-        self.dashMainView.isHidden = false
-        self.todaysDashView.isHidden = true
-        
+       
         self.observingRefOne.removeObserver(withHandle: self.handleOne)
         self.childCounter = 0
         

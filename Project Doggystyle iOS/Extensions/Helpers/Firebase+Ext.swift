@@ -242,11 +242,11 @@ class Service : NSObject {
                         if found_grooming_location == true {
                             completion(true, "Success", 200)
                         } else {
-                            //did not find the grooming location, add it to the requested node
                             
+                            //MARK: - DID NOT FIND GROOMING LOCATION, SO ADD IT TO THE REQUESTS FOR VOTERS
                             let requestRef = databaseRef.child("requested_locations_per_user").child(firebase_uid)
                             
-                            let values : [String : Any] = ["\(chosen_grooming_location_latitude)*****\(chosen_grooming_location_longitude)" : user_grooming_locational_data]
+                            let values : [String : Any] = ["client_location_request" : user_grooming_locational_data]
                             requestRef.updateChildValues(values) { error, ref in
                                 completion(true, "Success", 200)
                             }
