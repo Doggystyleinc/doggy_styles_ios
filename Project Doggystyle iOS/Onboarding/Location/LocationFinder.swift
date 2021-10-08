@@ -124,7 +124,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         return etfc
         
     }()
-   
+    
     lazy var errorLabel : UILabel = {
         
         let el = UILabel()
@@ -147,8 +147,8 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         let ec = UIView()
         ec.translatesAutoresizingMaskIntoConstraints = false
         ec.backgroundColor = .clear
-        ec.isUserInteractionEnabled = false
         ec.isHidden = true
+        ec.isUserInteractionEnabled = true
         
         return ec
     }()
@@ -172,6 +172,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         cbf.layer.shadowOffset = CGSize(width: 2, height: 3)
         cbf.layer.shadowRadius = 9
         cbf.layer.shouldRasterize = false
+        cbf.isUserInteractionEnabled = true
         cbf.addTarget(self, action: #selector(self.handleSMSButton), for: UIControl.Event.touchUpInside)
         
         return cbf
@@ -411,10 +412,6 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
         self.handleLocationServicesAuthorization()
         
-        //testing here to be removed.
-        self.searchStates = .success
-        self.listener()
-        
     }
     
     func addViews() {
@@ -440,7 +437,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.errorContainer.addSubview(self.uhOhLabel)
         self.errorContainer.addSubview(self.errorLabel)
         self.errorContainer.addSubview(self.errorImage)
-
+        
         self.successContainer.addSubview(self.locationSupportedLabel)
         self.successContainer.addSubview(self.successImage)
         self.successContainer.addSubview(self.confirmButton)
@@ -465,7 +462,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.errorContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.errorContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.errorContainer.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
-       
+        
         self.uhOhLabel.topAnchor.constraint(equalTo: self.errorContainer.topAnchor, constant: 25).isActive = true
         self.uhOhLabel.leftAnchor.constraint(equalTo: self.errorContainer.leftAnchor, constant: 20).isActive = true
         self.uhOhLabel.rightAnchor.constraint(equalTo: self.errorContainer.rightAnchor, constant: -20).isActive = true
@@ -667,13 +664,15 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
             self.errorContainer.isHidden = false
             self.successContainer.isHidden = true
             self.currentUserContainerButton.isHidden = true
-
+            self.confirmLocationButton.isHidden = true
+            
         case .success:
             self.mapView.isHidden = true
             self.errorContainer.isHidden = true
             self.successContainer.isHidden = false
             self.currentUserContainerButton.isHidden = true
-
+            self.confirmLocationButton.isHidden = true
+            
         }
     }
     
@@ -897,6 +896,8 @@ extension LocationFinder {
             self.handleCustomPopUpAlert(title: "LOCATION NOT FOUND", message: "We are unable to process that location at this time. An error report has been sent up and will be resolved shortly. Thank you for your patience.", passedButtons: [Statics.OK])
         } else {
             
+            self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
+            
             Service.shared.locationChecker(preferredLatitude: latitude, preferredLongitude: longitude) { foundLocation, latitude, longitude, address, website, distanceInMeters  in
                 
                 //MARK: - HERE WE A LOCATIONAL MATCH
@@ -905,6 +906,7 @@ extension LocationFinder {
                     let user_grooming_locational_data : [String : Any] = ["found_grooming_location" : true, "latitude" : latitude, "longitude" : longitude, "address" : address, "website" : website, "distance_in_meters" : distanceInMeters]
                     userOnboardingStruct.user_grooming_locational_data = user_grooming_locational_data
                     self.listener()
+                    self.mainLoadingScreen.cancelMainLoadingScreen()
                     
                     //MARK: - NO LOCATIONAL MATCH - UPDATE VOTERS
                 } else {
@@ -912,10 +914,11 @@ extension LocationFinder {
                     let user_grooming_locational_data : [String : Any] = ["found_grooming_location" : false, "latitude" : 0.0, "longitude" : 0.0, "address" : "nil", "website" : "nil", "distance_in_meters" : 0.0]
                     userOnboardingStruct.user_grooming_locational_data = user_grooming_locational_data
                     self.listener()
+                    self.mainLoadingScreen.cancelMainLoadingScreen()
+                    
                 }
             }
         }
-        
     }
     
     @objc func handleWhatsAppButton() {
@@ -924,6 +927,8 @@ extension LocationFinder {
     
     @objc func handleSMSButton() {
         //HERE WE ARE SETTING UP THROUGHT SMS
+        print("tapped")
+        self.handleConfirmButton()
     }
     
     //FINAL STEP

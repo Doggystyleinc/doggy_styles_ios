@@ -13,11 +13,21 @@ import GooglePlaces
 
 class DashboardViewController: UIViewController {
     
+    enum StateListener {
+        
+        case YesGroomerLocationYesDoggyProfile
+        case NoGroomerLocationYesDoggyProfile
+        case YesGroomerLocationNoDoggyProfile
+        case NoGroomerLocationNoDoggyProfile
+        
+    }
+    
     var observingRefOne = Database.database().reference(),
         handleOne = DatabaseHandle(),
         childCounter : Int = 0,
         homeController: HomeViewController?,
-        doggyProfileDataSource = [DoggyProfileDataSource]()
+        doggyProfileDataSource = [DoggyProfileDataSource](),
+        stateListener : StateListener = .NoGroomerLocationNoDoggyProfile
     
     let databaseRef = Database.database().reference(),
         logo = LogoImageView(frame: .zero)
@@ -173,7 +183,7 @@ class DashboardViewController: UIViewController {
         
         self.navigationController?.navigationBar.isHidden = true
         self.fillValues()
-    
+        
     }
     
     func addViews() {
@@ -246,15 +256,38 @@ class DashboardViewController: UIViewController {
         self.todaysDashView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
         
     }
-   
+    
     func callDataEngine() {
         
+        //MARK: - LOCATIONAL DATA FOR HAS A GROOMING LOCATION
+        let locational_data = userProfileStruct.user_grooming_locational_data ?? ["nil" : "nil"]
+        let hasGroomingLocation = locational_data["found_grooming_location"] as? Bool ?? false
+        
+        //MARK: - CHECK FOR DOGGY PROFILES (HEADER)
         self.fetchDataSource { isSuccess in
             
             if isSuccess {
-                self.handleDatasourceSuccess()
+                
+                if hasGroomingLocation == true {
+                    //MARK: - USER HAS A GROOMING LOCATION AND A DOGGY PROFILE - YesGroomerLocationYesDoggyProfile
+                    self.stateListener = .YesGroomerLocationYesDoggyProfile
+                    
+                } else {
+                    //MARK: - USER DOES NOT HAVE A GROOMING LOCATION BUT HAS A DOGGY PROFILE - NoGroomerLocationYesDoggyProfile
+                    self.stateListener = .NoGroomerLocationYesDoggyProfile
+                    
+                }
             } else {
-                self.handleDatasourceFailure()
+                
+                if hasGroomingLocation == true {
+                    //MARK: - USER DOES NOT HAVE A DOGGY PROFILE BUT HAS A GROOMING LOCATION - YesGroomerLocationNoDoggyProfile
+                    self.stateListener = .YesGroomerLocationNoDoggyProfile
+                    
+                } else {
+                    //MARK: - USER DOES NOT HAVE A DOGGY PROFILE AND DOES NOT HAVE A LOCATION
+                    self.stateListener = .NoGroomerLocationNoDoggyProfile
+                    
+                }
             }
         }
     }
@@ -309,12 +342,25 @@ class DashboardViewController: UIViewController {
         }
     }
     
+    func callListener() {
+        
+        switch self.stateListener {
+        
+        case .NoGroomerLocationNoDoggyProfile: print("NoGroomerLocationNoDoggyProfile")
+        case .NoGroomerLocationYesDoggyProfile: print("NoGroomerLocationYesDoggyProfile")
+        case .YesGroomerLocationNoDoggyProfile: print("YesGroomerLocationNoDoggyProfile")
+        case .YesGroomerLocationYesDoggyProfile: print("YesGroomerLocationYesDoggyProfile")
+        
+        }
+        
+    }
+    
     func handleDatasourceFailure() {
         
-        self.emptyStateOne.isHidden = false
-        self.emptyStateTwo.isHidden = true
-        self.dashMainView.isHidden = true
-        self.todaysDashView.isHidden = true
+        self.emptyStateOne.isHidden = true //has refur a friends at the bottom - and add doggy profile, the one that has been there for a while now
+        self.emptyStateTwo.isHidden = true //new to doggystyle, tour the truick
+        self.dashMainView.isHidden = true //not sure, just has a selector - prob the main view
+        self.todaysDashView.isHidden = false // todays apt view with the stats, get ready etc...
         
         globalPetDataSource.removeAll()
         
@@ -331,7 +377,7 @@ class DashboardViewController: UIViewController {
     
     func handleDatasourceSuccess() {
         
-        self.emptyStateOne.isHidden = true
+        self.emptyStateOne.isHidden = false
         self.emptyStateTwo.isHidden = true
         self.dashMainView.isHidden = false
         self.todaysDashView.isHidden = true

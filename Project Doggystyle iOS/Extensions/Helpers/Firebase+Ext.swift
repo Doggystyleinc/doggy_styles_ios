@@ -409,6 +409,7 @@ class Service : NSObject {
                     
                     let users_profile_image_url = JSON["users_profile_image_url"] as? String ?? "nil"
                     let uploaded_document_url = JSON["uploaded_document_url"] as? String ?? "nil"
+                    let user_grooming_locational_data = JSON["user_grooming_locational_data"] as? [String : Any] ?? ["nil":"nil"]
                     
                     userProfileStruct.users_firebase_uid = users_firebase_uid
                     userProfileStruct.user_first_name = user_first_name
@@ -433,6 +434,7 @@ class Service : NSObject {
                     
                     userProfileStruct.users_profile_image_url = users_profile_image_url
                     userProfileStruct.uploaded_document_url = uploaded_document_url
+                    userProfileStruct.user_grooming_locational_data = user_grooming_locational_data
                     
                     completion(true)
                     

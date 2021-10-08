@@ -57,6 +57,7 @@ struct UserProfileStruct {
         users_firebase_uid : String?,
         users_sign_up_date : String?,
         uploaded_document_url : String?,
-        users_ref_key : String?
+        users_ref_key : String?,
+        user_grooming_locational_data : [String : Any]?
 
 }
