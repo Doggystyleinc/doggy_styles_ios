@@ -97,7 +97,7 @@ class AlertController : UIViewController {
         super.viewWillAppear(true)
         
         UIView.animate(withDuration: 0.75) {
-            self.view.backgroundColor = UIColor (white: 0.0, alpha: 0.2)
+            self.view.backgroundColor = UIColor (white: 0.0, alpha: 0.4)
         }
     }
     

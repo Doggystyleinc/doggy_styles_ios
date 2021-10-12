@@ -657,7 +657,14 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
     }
     
     @objc func handleBackButton() {
+        if groomLocationFollowOnRoute == .fromApplication {
             self.navigationController?.dismiss(animated: true, completion: nil)
+        } else if groomLocationFollowOnRoute == .fromRegistration {
+            let homeVC = HomeViewController()
+            let navVC = UINavigationController(rootViewController: homeVC)
+            navVC.modalPresentationStyle = .fullScreen
+            navigationController?.present(navVC, animated: true)
+        }
     }
     
     @objc func handleNextButton() {

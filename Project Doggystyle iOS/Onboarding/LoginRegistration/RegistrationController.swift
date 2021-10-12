@@ -538,6 +538,7 @@ class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollVie
         
         //MARK: - RESET THE ONBOARDING STRUCT IF THEY HIT CONTINUE-ONBOARDING
         userOnboardingStruct = UserOnboardingStruct()
+        groomLocationFollowOnRoute = .fromRegistration
         
     }
     
@@ -923,7 +924,7 @@ class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollVie
                                 //MARK: - ONLY FILL THE USERONBOARDING STRUCT HERE
                                 userOnboardingStruct.user_first_name = firstName
                                 userOnboardingStruct.user_last_name = lastName
-                                userOnboardingStruct.users_full_name = "\(firstName)\(lastName)"
+                                userOnboardingStruct.users_full_name = "\(firstName) \(lastName)"
                                 userOnboardingStruct.users_email = safeEmail
                                 userOnboardingStruct.users_phone_number = nationalNumber
                                 userOnboardingStruct.users_country_code = countryCode

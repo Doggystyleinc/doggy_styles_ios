@@ -966,6 +966,7 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate, 
         case Statics.PHOTO: self.checkForGalleryAuth()
         case Statics.FILE: self.checkForFiles()
         case Statics.CANCEL: print(Statics.CANCEL)
+        case Statics.OK: self.presentNewDogFive()
             
         default: print("Should not hit")
             
@@ -985,20 +986,7 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate, 
     
     @objc func customAlertDecisionForNoVaccinationCard() {
         
-        let alertController = UIAlertController(title: "Vaccine upload", message: "Just so you know, a vaccine card will have to be uploaded in order to book a service", preferredStyle: .alert)
-        
-        let actionOne = UIAlertAction(title: "Ok", style: .default) { res in
-            self.presentNewDogFive()
-        }
-        
-        let actionThree = UIAlertAction(title: "Go Back", style: .destructive) { res in
-            print("User is staying")
-        }
-        
-        alertController.addAction(actionOne)
-        alertController.addAction(actionThree)
-        
-        self.present(alertController, animated: true, completion: nil)
+        self.handleCustomPopUpAlert(title: "Vaccine upload", message: "Just so you know, a vaccine card will have to be uploaded in order to book a service.", passedButtons: [Statics.OK, Statics.CANCEL])
         
     }
     

@@ -89,17 +89,22 @@ final class DecisionController: UIViewController {
     }
     
     @objc func presentHomeController() {
+        
+        groomLocationFollowOnRoute = .fromApplication
+
         let homeVC = HomeViewController()
         let navVC = UINavigationController(rootViewController: homeVC)
         navVC.modalPresentationStyle = .fullScreen
+        navVC.navigationBar.isHidden = true
         navigationController?.present(navVC, animated: true)
     }
     
     @objc func presentWelcomeController() {
+        
         let signUpVC = WelcomePageController()
         let navVC = UINavigationController(rootViewController: signUpVC)
-        
         navVC.modalPresentationStyle = .fullScreen
+        navVC.navigationBar.isHidden = true
         navigationController?.present(navVC, animated: true)
     }
 }

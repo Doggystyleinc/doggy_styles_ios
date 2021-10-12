@@ -263,7 +263,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.setTitle("Explore Doggystyle", for: UIControl.State.normal)
+        cbf.setTitle("Create doggy profile", for: UIControl.State.normal)
         cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
         cbf.titleLabel?.adjustsFontSizeToFitWidth = true
         cbf.titleLabel?.numberOfLines = 1
@@ -278,7 +278,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         cbf.layer.shadowOffset = CGSize(width: 2, height: 3)
         cbf.layer.shadowRadius = 9
         cbf.layer.shouldRasterize = false
-        cbf.addTarget(self, action: #selector(self.handleConfirmButton), for: UIControl.Event.touchUpInside)
+        cbf.addTarget(self, action: #selector(self.loadAllTheLogic), for: UIControl.Event.touchUpInside)
         
         return cbf
         
@@ -654,7 +654,6 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
     func listener() {
         
         switch self.searchStates {
-        
         case .idle:
             self.mapView.isHidden = false
             self.errorContainer.isHidden = true
@@ -665,14 +664,12 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
             self.successContainer.isHidden = true
             self.currentUserContainerButton.isHidden = true
             self.confirmLocationButton.isHidden = true
-            
         case .success:
             self.mapView.isHidden = true
             self.errorContainer.isHidden = true
             self.successContainer.isHidden = false
             self.currentUserContainerButton.isHidden = true
             self.confirmLocationButton.isHidden = true
-            
         }
     }
     
@@ -911,7 +908,7 @@ extension LocationFinder {
                     //MARK: - NO LOCATIONAL MATCH - UPDATE VOTERS
                 } else {
                     self.searchStates = .error
-                    let user_grooming_locational_data : [String : Any] = ["found_grooming_location" : false, "latitude" : 0.0, "longitude" : 0.0, "address" : "nil", "website" : "nil", "distance_in_meters" : 0.0]
+                    let user_grooming_locational_data : [String : Any] = ["found_grooming_location" : false, "latitude" : latitude, "longitude" : longitude, "address" : address, "website" : website, "distance_in_meters" : distanceInMeters]
                     userOnboardingStruct.user_grooming_locational_data = user_grooming_locational_data
                     self.listener()
                     self.mainLoadingScreen.cancelMainLoadingScreen()
@@ -927,21 +924,82 @@ extension LocationFinder {
     
     @objc func handleSMSButton() {
         //HERE WE ARE SETTING UP THROUGHT SMS
-        print("tapped")
-        self.handleConfirmButton()
+        self.loadAllTheLogic()
     }
     
     //FINAL STEP
-    @objc func handleConfirmButton() {
+    @objc func handlePresentDogProfileController() {
         
-        //FROM HERE WE NEED TO GO THROUGH THE LOCATION SCREENS
-        let homeVC = NotificationsController()
-        let navVC = UINavigationController(rootViewController: homeVC)
-        navVC.modalPresentationStyle = .fullScreen
-        navigationController?.present(navVC, animated: true)
+        //MARK: - HAS ALREADY SEEN THE ENTRY PAGE
+        if let _ = UserDefaults.standard.object(forKey: "entry_path_one") as? Bool {
+            
+            let newDogOne = NewDogOne()
+            let navigationController = UINavigationController(rootViewController: newDogOne)
+            navigationController.modalPresentationStyle = .fullScreen
+            navigationController.navigationBar.isHidden = true
+            self.navigationController?.present(navigationController, animated: true, completion: nil)
+            
+        } else {
+            
+            //MARK: - HAD NOT SEEN THE ENTRY PAGE
+            UserDefaults.standard.set(true, forKey:"entry_path_one")
+            
+            let newDogEntry = NewDogEntry()
+            let navigationController = UINavigationController(rootViewController: newDogEntry)
+            navigationController.modalPresentationStyle = .fullScreen
+            navigationController.navigationBar.isHidden = true
+            self.navigationController?.present(navigationController, animated: true, completion: nil)
+        
+            }
+  
+    }
+    
+    @objc func loadAllTheLogic() {
+        
+        if self.searchStates == .idle {return}
+        
+        self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
+        
+        Service.shared.FirebaseRegistrationAndLogin { isComplete, response, code in
+            
+            if isComplete == false {
+                self.handleCustomPopUpAlert(title: "ERROR", message: "Seems there was an error with your registration. Please try again.", passedButtons: [Statics.OK])
+            } else {
+                
+                Service.shared.fetchCurrentUserData { isComplete in
+                    
+                    self.mainLoadingScreen.cancelMainLoadingScreen()
+                    
+                    //MARK: - IF THE USER HAS FOUND A GROOMING LOCATION, TAKE THEM TO THE DOGGY PROFILE SCREEN : HOMEVIEWCONTROLLER
+                    if self.searchStates == .error {
+                        self.presentHomeController()
+                    } else if self.searchStates == .success {
+                        self.handlePresentDogProfileController()
+                    }
+                }
+            }
+        }
+    }
+    
+    func presentHomeController() {
+        
+        let homeViewController = HomeViewController()
+        let nav = UINavigationController(rootViewController: homeViewController)
+        nav.modalPresentationStyle = .fullScreen
+        nav.navigationBar.isHidden = true
+        self.navigationController?.present(nav, animated: true, completion: nil)
         
     }
 }
+
+//MARK: - HERE WE CAN TELL IF THE DOGGY PROFILE SHOULD DISMISS OR PRESENT THE HOME CONTROLLER
+public enum GroomLocationFollowOnRoute {
+    case fromRegistration
+    case fromApplication
+}
+
+var groomLocationFollowOnRoute = GroomLocationFollowOnRoute.fromApplication
+
 
 
 

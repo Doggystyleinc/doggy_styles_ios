@@ -175,6 +175,7 @@ class DashboardViewController: UIViewController {
         self.callDataEngine()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleNewDogFlow), name: NSNotification.Name(Statics.CALL_ADD_NEW_PUP), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.presentAppointmentsController), name: NSNotification.Name(Statics.CALL_BOOK_NOW), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.callDataEngine), name: NSNotification.Name(Statics.RUN_DATA_ENGINE), object: nil)
 
     }
@@ -206,7 +207,7 @@ class DashboardViewController: UIViewController {
         self.view.addSubview(self.dashMainView)
         self.view.addSubview(self.todaysDashView)
         
-        self.referButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+        self.referButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
         self.referButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.referButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         self.referButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
@@ -440,6 +441,8 @@ class DashboardViewController: UIViewController {
     }
     
     @objc func handleNewDogFlow() {
+        
+        groomLocationFollowOnRoute = .fromApplication
         
         //MARK: - HAS ALREADY SEEN THE ENTRY PAGE
         if let _ = UserDefaults.standard.object(forKey: "entry_path_one") as? Bool {

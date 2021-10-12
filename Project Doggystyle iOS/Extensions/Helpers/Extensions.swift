@@ -58,6 +58,7 @@ var friends_array_phone_number = [String](),
     globalStatusBarHeight : CGFloat = 0.0,
     globalFooterHeight : CGFloat = 0.0,
     styledGray = UIColor(hex : 0x4D4D4D),
+    dsDeepBlue = UIColor(hex: 0x020659),
     
     //FOR THE CHAT CONTROLLER, WHEN A USER SWIPES LEFT TO EXPOSE THE REPLY ARROW
     globalIsReplyExpanded : Bool = false,
@@ -319,26 +320,29 @@ struct Statics {
     static let  APP_STORE_URL : String = "https://"
     static let  GOOGLE_SIGN_IN : String = "google"
     static let  EMAIL_SIGN_IN : String = "email"
-    
+    static let DOGGYSTYLE_STYLIST_APP_URL : String = "https://apps.apple.com/us/app/doggystylist/id1577824638"
+    static let DOGGYSTYLE_CONSUMER_APP_URL : String = "https://apps.apple.com/us/app/doggystylist/id1577824638"
+
     //MARK: - ANIMATIONS FROM LOTTI JSON
     static let PAW_ANIMATION : String = "paw_animation"
     
     //MARK: - ERROR/ALERT CODES
     static let GOT_IT : String = "Got it"
     static let OK : String = "Ok"
-    static let FILE : String = "file"
-    static let PHOTO : String = "photo"
-    static let CANCEL : String = "cancel"
+    static let FILE : String = "File"
+    static let PHOTO : String = "Photo"
+    static let CANCEL : String = "Cancel"
     
     //MARK: - LISTENERS AND OBSERVERS
+    
     static let CALL_ADD_NEW_PUP : String = "CALL_ADD_NEW_PUP"
+    static let CALL_BOOK_NOW : String = "CALL_BOOK_NOW"
     static let HANDLE_CLEAR_OTHER_COLLECTIONS : String = "HANDLE_CLEAR_OTHER_COLLECTIONS"
     static let HANDLE_CLEAR_OTHER_COLLECTIONS_CUSTOM : String = "HANDLE_CLEAR_OTHER_COLLECTIONS_CUSTOM"
     static let HANDLE_SERVICE_SATISFIED : String = "HANDLE_SERVICE_SATISFIED"
     static let HANDLE_SERVICE_UNSATISIFED : String = "HANDLE_SERVICE_UNSATISIFED"
     static let RUN_LOCATION_CHECKER : String = "RUN_LOCATION_CHECKER"
     static let RUN_DATA_ENGINE : String = "RUN_DATA_ENGINE"
-
 
 }
 

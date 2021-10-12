@@ -11,7 +11,7 @@ import GoogleSignIn
 import Firebase
 import FBSDKLoginKit
 
-class WelcomePageController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+class WelcomePageController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UITextViewDelegate {
     
     private var pages = [UIViewController](),
                 isNotificationsEnabled : Bool = false,
@@ -25,7 +25,7 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
                 page3 = SlideThree(),
                 mainLoadingScreen = MainLoadingScreen()
     
-    private let orangeContainer : UIView = {
+    private let topContainer : UIView = {
         
         let oc = UIView()
         oc.translatesAutoresizingMaskIntoConstraints = false
@@ -36,84 +36,144 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
         
     }()
     
-    private lazy var signUpButton: UIButton = {
+    var bottomContainer : UIView = {
+        
+        let tc = UIView()
+        tc.translatesAutoresizingMaskIntoConstraints = false
+        tc.backgroundColor = coreBackgroundWhite
+        tc.isUserInteractionEnabled = true
+        
+       return tc
+    }()
+    
+    lazy var registrationButton : UIButton = {
         
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.setTitle("Sign up with email", for: UIControl.State.normal)
+        cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
+        cbf.titleLabel?.adjustsFontSizeToFitWidth = true
+        cbf.titleLabel?.numberOfLines = 1
+        cbf.titleLabel?.adjustsFontForContentSizeCategory = true
+        cbf.titleLabel?.textColor = coreBlackColor
         cbf.backgroundColor = coreOrangeColor
-        cbf.setTitle("Sign up with email", for: .normal)
-        cbf.titleLabel?.font = UIFont(name: dsHeaderFont, size: 18)
+        cbf.layer.cornerRadius = 15
+        cbf.layer.masksToBounds = true
         cbf.tintColor = coreWhiteColor
-        cbf.layer.masksToBounds = true
-        cbf.layer.cornerRadius = 20
         cbf.addTarget(self, action: #selector(self.handleSignUpButton), for: UIControl.Event.touchUpInside)
+        
         return cbf
+        
     }()
     
-    private lazy var loginButton: UIButton = {
+    lazy var applyButton : UIButton = {
         
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.backgroundColor = dsTransparentOrange
-        cbf.setTitle("Login with email", for: .normal)
-        cbf.titleLabel?.font = UIFont(name: dsHeaderFont, size: 18)
+        cbf.setTitle("Login with email", for: UIControl.State.normal)
+        cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
+        cbf.titleLabel?.adjustsFontSizeToFitWidth = true
+        cbf.titleLabel?.numberOfLines = 1
+        cbf.titleLabel?.adjustsFontForContentSizeCategory = true
+        cbf.backgroundColor = coreOrangeColor.withAlphaComponent(0.2)
+        cbf.layer.cornerRadius = 15
+        cbf.layer.masksToBounds = true
         cbf.tintColor = coreOrangeColor
-        cbf.layer.masksToBounds = true
-        cbf.layer.cornerRadius = 20
         cbf.addTarget(self, action: #selector(self.handleLoginButton), for: UIControl.Event.touchUpInside)
-        return cbf
-    }()
-    
-    private let dsCompanyLogoImage = LogoImageView(withImage: UIImage(named: Constants.dsLogoWhite))
-    
-    lazy var registerWithfacebookButton : UIButton = {
-        
-        let cbf = UIButton(type: .system)
-        cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.backgroundColor = coreWhiteColor
-        cbf.layer.masksToBounds = true
-        cbf.layer.borderWidth = 1
-        cbf.layer.borderColor = coreBlackColor.withAlphaComponent(0.1).cgColor
-        cbf.layer.masksToBounds = true
-        cbf.layer.cornerRadius = 20
-        let image = UIImage(named: "Facebook Connect")?.withRenderingMode(.alwaysOriginal)
-        cbf.setImage(image, for: .normal)
-        cbf.imageView?.contentMode = .scaleAspectFit
-        cbf.addTarget(self, action: #selector(self.handleFacebookRegistration), for: UIControl.Event.touchUpInside)
+
         return cbf
         
     }()
     
-    lazy var registerWithGoogleButton : UIButton = {
+    let dsLogoImage : UIImageView = {
         
-        let cbf = UIButton(type: .system)
-        cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.backgroundColor = coreWhiteColor
-        cbf.layer.masksToBounds = true
-        cbf.layer.borderWidth = 1
-        cbf.layer.borderColor = coreBlackColor.withAlphaComponent(0.1).cgColor
-        cbf.layer.masksToBounds = true
-        cbf.layer.cornerRadius = 20
-        let image = UIImage(named: "Google Connect")?.withRenderingMode(.alwaysOriginal)
-        cbf.setImage(image, for: .normal)
-        cbf.imageView?.contentMode = .scaleAspectFit
-        cbf.addTarget(self, action: #selector(self.handleGoogleRegistration), for: UIControl.Event.touchUpInside)
-        return cbf
+        let dcl = UIImageView()
+        dcl.translatesAutoresizingMaskIntoConstraints = false
+        dcl.backgroundColor = .clear
+        dcl.contentMode = .scaleAspectFit
+        dcl.isUserInteractionEnabled = false
+        let image = UIImage(named: "DS Logo White")?.withRenderingMode(.alwaysOriginal)
+        dcl.image = image
+        
+        return dcl
+    }()
+    
+    let welcomeLabel : UILabel = {
+        
+        let thl = UILabel()
+        thl.translatesAutoresizingMaskIntoConstraints = false
+        thl.textAlignment = .left
+        thl.text = "Welcome to the Doggystyle app!"
+        thl.font = UIFont(name: dsHeaderFont, size: 28)
+        thl.numberOfLines = 2
+        thl.adjustsFontSizeToFitWidth = false
+        thl.textColor = coreWhiteColor
+        return thl
         
     }()
     
-    lazy var stackView : UIStackView = {
-              
-        let sv = UIStackView()
-        sv.translatesAutoresizingMaskIntoConstraints = false
-        sv.axis = .vertical
-        sv.distribution = .equalCentering
-        sv.alignment = .center
-        sv.spacing = 2
+    let vanImage : UIImageView = {
         
-        return sv
+        let dcl = UIImageView()
+        dcl.translatesAutoresizingMaskIntoConstraints = false
+        dcl.backgroundColor = .clear
+        dcl.contentMode = .scaleAspectFill
+        dcl.isUserInteractionEnabled = false
+        let image = UIImage(named: "stylist_van_image")?.withRenderingMode(.alwaysOriginal)
+        dcl.image = image
+        
+        return dcl
     }()
     
+    lazy var termsTextView : UITextView = {
+        
+        let tv = UITextView()
+        
+        tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.backgroundColor = UIColor .clear
+        
+        var myMutableString = NSMutableAttributedString()
+        
+        let partOne = "Inquiring?"
+        let partTwo = " Get the Stylist app"
+        
+        let screenHeight = UIScreen.main.bounds.height
+        var fontSize : CGFloat = 12
+        
+        myMutableString = NSMutableAttributedString(string: partOne + partTwo as String, attributes: [NSAttributedString.Key.font:UIFont(name: rubikRegular, size: 14)!])
+        
+        myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: dsDeepBlue.withAlphaComponent(1.0), range: NSRange(location:0,length:partOne.count))
+        
+        myMutableString.addAttribute(NSAttributedString.Key.font, value: UIFont(name: rubikRegular, size: fontSize)!, range: NSRange(location: 0,length:partOne.count))
+        
+        myMutableString.addAttribute(NSAttributedString.Key.foregroundColor, value: dsDeepBlue.withAlphaComponent(1.0), range: NSRange(location:partOne.count,length:partTwo.count))
+        
+        myMutableString.addAttribute(NSAttributedString.Key.font, value: UIFont(name: rubikRegular, size: fontSize)!, range: NSRange(location: partOne.count,length:partTwo.count))
+        
+        myMutableString.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: NSRange(location: partOne.count,length:partTwo.count))
+       
+        _ = myMutableString.setAsLink(textToFind: "Get the Stylist app", linkURL: Statics.DOGGYSTYLE_STYLIST_APP_URL)
+        
+        tv.linkTextAttributes = [
+            .foregroundColor: dsDeepBlue,
+            .underlineColor: dsDeepBlue,
+            .underlineStyle: NSUnderlineStyle.single.rawValue,
+            .font : dsHeaderFont
+        ]
+        
+        tv.attributedText = myMutableString
+        tv.layer.masksToBounds = true
+        tv.textAlignment = .center
+        tv.delegate = self
+        tv.isUserInteractionEnabled = true
+        tv.isScrollEnabled = true
+        tv.isEditable = false
+        tv.isSelectable = true
+        
+        return tv
+        
+    }()
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -142,30 +202,17 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
     
     private func addViews() {
         
-        self.view.addSubview(self.orangeContainer)
-        self.view.addSubview(self.dsCompanyLogoImage)
+        self.view.addSubview(self.topContainer)
+        self.topContainer.addSubview(self.dsLogoImage)
+        self.topContainer.addSubview(self.welcomeLabel)
+        self.topContainer.addSubview(self.vanImage)
+        
+        self.view.addSubview(self.bottomContainer)
+        self.bottomContainer.addSubview(self.registrationButton)
+        self.bottomContainer.addSubview(self.applyButton)
+        self.bottomContainer.addSubview(self.termsTextView)
+
         self.view.addSubview(self.pageControl)
-        self.view.addSubview(self.stackView)
-        
-        self.stackView.addArrangedSubview(self.signUpButton)
-        self.stackView.addArrangedSubview(self.loginButton)
-        self.stackView.addArrangedSubview(self.registerWithGoogleButton)
-        self.stackView.addArrangedSubview(self.registerWithfacebookButton)
-        
-        self.signUpButton.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height / 2.3) / 5.5).isActive = true
-        self.loginButton.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height / 2.3) / 5.5).isActive = true
-        self.registerWithGoogleButton.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height / 2.3) / 6.0).isActive = true
-        self.registerWithfacebookButton.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.height / 2.3) / 6.0).isActive = true
-        
-        self.signUpButton.widthAnchor.constraint(equalToConstant: self.view.frame.width / 1.15).isActive = true
-        self.loginButton.widthAnchor.constraint(equalToConstant: self.view.frame.width / 1.15).isActive = true
-        self.registerWithGoogleButton.widthAnchor.constraint(equalToConstant: self.view.frame.width / 1.15).isActive = true
-        self.registerWithfacebookButton.widthAnchor.constraint(equalToConstant: self.view.frame.width / 1.15).isActive = true
-        
-        self.stackView.topAnchor.constraint(equalTo: self.orangeContainer.bottomAnchor, constant: 20).isActive = true
-        self.stackView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
-        self.stackView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
-        self.stackView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
 
         self.pages.append(self.page1)
         self.pages.append(self.page2)
@@ -183,19 +230,60 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
         self.page2.tutorialClass = self
         self.page1.tutorialClass = self
         
-        self.orangeContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
-        self.orangeContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
-        self.orangeContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.orangeContainer.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 1.7).isActive = true
-        
-        self.dsCompanyLogoImage.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
-        self.dsCompanyLogoImage.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 120).isActive = true
-        self.dsCompanyLogoImage.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -120).isActive = true
-        self.dsCompanyLogoImage.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        self.bottomContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        self.bottomContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.bottomContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.bottomContainer.heightAnchor.constraint(equalToConstant: self.view.frame.height / 3).isActive = true
 
+        self.topContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
+        self.topContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.topContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.topContainer.bottomAnchor.constraint(equalTo: self.bottomContainer.topAnchor, constant: 0).isActive = true
+        
         self.pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
         self.pageControl.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -20).isActive = true
-        self.pageControl.bottomAnchor.constraint(equalTo: self.orangeContainer.bottomAnchor, constant: -36).isActive = true
+        self.pageControl.bottomAnchor.constraint(equalTo: self.topContainer.bottomAnchor, constant: -26).isActive = true
+        
+        self.registrationButton.topAnchor.constraint(equalTo: self.bottomContainer.topAnchor, constant: 25).isActive = true
+        self.registrationButton.leftAnchor.constraint(equalTo: self.bottomContainer.leftAnchor, constant: 30).isActive = true
+        self.registrationButton.rightAnchor.constraint(equalTo: self.bottomContainer.rightAnchor, constant: -30).isActive = true
+        self.registrationButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        self.applyButton.topAnchor.constraint(equalTo: self.registrationButton.bottomAnchor, constant: 20).isActive = true
+        self.applyButton.leftAnchor.constraint(equalTo: self.bottomContainer.leftAnchor, constant: 30).isActive = true
+        self.applyButton.rightAnchor.constraint(equalTo: self.bottomContainer.rightAnchor, constant: -30).isActive = true
+        self.applyButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        self.registrationButton.topAnchor.constraint(equalTo: self.bottomContainer.topAnchor, constant: 25).isActive = true
+        self.registrationButton.leftAnchor.constraint(equalTo: self.bottomContainer.leftAnchor, constant: 30).isActive = true
+        self.registrationButton.rightAnchor.constraint(equalTo: self.bottomContainer.rightAnchor, constant: -30).isActive = true
+        self.registrationButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        self.applyButton.topAnchor.constraint(equalTo: self.registrationButton.bottomAnchor, constant: 20).isActive = true
+        self.applyButton.leftAnchor.constraint(equalTo: self.bottomContainer.leftAnchor, constant: 30).isActive = true
+        self.applyButton.rightAnchor.constraint(equalTo: self.bottomContainer.rightAnchor, constant: -30).isActive = true
+        self.applyButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        self.dsLogoImage.topAnchor.constraint(equalTo: self.topContainer.topAnchor, constant: 108).isActive = true
+        self.dsLogoImage.leftAnchor.constraint(equalTo: self.topContainer.leftAnchor, constant: 59).isActive = true
+        self.dsLogoImage.widthAnchor.constraint(equalToConstant: 106).isActive = true
+        self.dsLogoImage.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        
+        self.welcomeLabel.topAnchor.constraint(equalTo: self.dsLogoImage.bottomAnchor, constant: 20).isActive = true
+        self.welcomeLabel.leftAnchor.constraint(equalTo: self.dsLogoImage.leftAnchor, constant: 0).isActive = true
+        self.welcomeLabel.rightAnchor.constraint(equalTo: self.topContainer.rightAnchor, constant: -30).isActive = true
+        self.welcomeLabel.sizeToFit()
+        
+        self.vanImage.topAnchor.constraint(equalTo: self.dsLogoImage.bottomAnchor, constant: 0).isActive = true
+        self.vanImage.leftAnchor.constraint(equalTo: self.topContainer.leftAnchor, constant: 0).isActive = true
+        self.vanImage.rightAnchor.constraint(equalTo: self.topContainer.rightAnchor, constant: 0).isActive = true
+        self.vanImage.bottomAnchor.constraint(equalTo: self.topContainer.bottomAnchor, constant: -40).isActive = true
+        
+        self.termsTextView.bottomAnchor.constraint(equalTo: self.bottomContainer.bottomAnchor, constant: -30).isActive = true
+        self.termsTextView.leftAnchor.constraint(equalTo: self.bottomContainer.leftAnchor, constant: 30).isActive = true
+        self.termsTextView.rightAnchor.constraint(equalTo: self.bottomContainer.rightAnchor, constant: -30).isActive = true
+        self.termsTextView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
     }
     
     @objc func presentHomeController() {

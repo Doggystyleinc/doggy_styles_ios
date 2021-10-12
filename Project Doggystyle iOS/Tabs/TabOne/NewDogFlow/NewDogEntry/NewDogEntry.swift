@@ -20,6 +20,7 @@ class NewDogEntry : UIViewController {
         cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 24, style: .solid)
         cbf.setTitle(String.fontAwesomeIcon(name: .chevronLeft), for: .normal)
         cbf.addTarget(self, action: #selector(self.handleBackButton), for: UIControl.Event.touchUpInside)
+        cbf.isHidden = true
         return cbf
         
     }()
@@ -116,6 +117,7 @@ class NewDogEntry : UIViewController {
     }
     
     @objc func handleBackButton() {
+        
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     

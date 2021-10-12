@@ -247,6 +247,7 @@ final class LoginController: UIViewController, UITextFieldDelegate, CustomAlertC
         cbf.setImage(image, for: .normal)
         cbf.imageView?.contentMode = .scaleAspectFit
         cbf.addTarget(self, action: #selector(self.handleFacebookRegistration), for: UIControl.Event.touchUpInside)
+        cbf.isHidden = true
         return cbf
         
     }()
@@ -265,6 +266,7 @@ final class LoginController: UIViewController, UITextFieldDelegate, CustomAlertC
         cbf.setImage(image, for: .normal)
         cbf.imageView?.contentMode = .scaleAspectFit
         cbf.addTarget(self, action: #selector(self.handleGoogleRegistration), for: UIControl.Event.touchUpInside)
+        cbf.isHidden = true
         return cbf
         
     }()

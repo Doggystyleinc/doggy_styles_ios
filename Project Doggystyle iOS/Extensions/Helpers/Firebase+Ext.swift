@@ -75,7 +75,7 @@ class Service : NSObject {
                                 
                                 if counter >= snapChildrenCount {
                                     //MARK: - HERE NO BUILDING WAS FOUND, SO WE HAVE TO ADD THEM TO A WAIT LIST AND SEE IF SOME MORE PEOPLE VOTE ON THEIR LOCATION TO HAVE IT ADDED
-                                    completion(false, 0.0, 0.0, "nil", "nil", differenceInMeters)
+                                    completion(false, safePreferredLatitude, safePreferredLongitude, "nil", "nil", differenceInMeters)
                                     observingRefOne.removeObserver(withHandle: handleOne)
                                     return
                                 }

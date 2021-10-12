@@ -168,12 +168,12 @@ class NotificationsController : UIViewController, UNUserNotificationCenterDelega
                     
                     UIApplication.shared.registerForRemoteNotifications()
                     userOnboardingStruct.user_enabled_notifications = true
-                    self.loadAllTheLogic()
+                    self.handleConfirmButton()
 
                 })
             } else {
                 userOnboardingStruct.user_enabled_notifications = false
-                self.loadAllTheLogic()
+                self.handleConfirmButton()
 
             }
         }
@@ -182,27 +182,7 @@ class NotificationsController : UIViewController, UNUserNotificationCenterDelega
     @objc func handleDisableNotifications() {
         UIApplication.shared.unregisterForRemoteNotifications()
         userOnboardingStruct.user_enabled_notifications = false
-        self.loadAllTheLogic()
-    }
-    
-    @objc func loadAllTheLogic() {
-        
-        self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
-        
-        Service.shared.FirebaseRegistrationAndLogin { isComplete, response, code in
-            
-            if isComplete == false {
-                self.handleCustomPopUpAlert(title: "ERROR", message: "Seems there was an error with your registration. Please try again.", passedButtons: [Statics.GOT_IT])
-            } else {
-                
-                Service.shared.fetchCurrentUserData { isComplete in
-
-                self.mainLoadingScreen.cancelMainLoadingScreen()
-                self.handleConfirmButton()
-                    
-                }
-            }
-        }
+        self.handleConfirmButton()
     }
     
     @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
@@ -232,10 +212,10 @@ class NotificationsController : UIViewController, UNUserNotificationCenterDelega
     
     @objc func handleConfirmButton() {
         
-        let homeVC = HomeViewController()
-        let navVC = UINavigationController(rootViewController: homeVC)
-        navVC.modalPresentationStyle = .fullScreen
-        navigationController?.present(navVC, animated: true)
+        let locationFinder = LocationFinder()
+        let nav = UINavigationController(rootViewController: locationFinder)
+        nav.modalPresentationStyle = .fullScreen
+        navigationController?.present(nav, animated: true)
         
     }
 }

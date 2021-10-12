@@ -286,7 +286,14 @@ final class PinNumberVerificationEntryController: UIViewController, UITextFieldD
         switch type {
         
         case Statics.OK: print(Statics.OK)
-        case Statics.GOT_IT: self.navigationController?.popViewController(animated: true)
+        case Statics.GOT_IT:
+            
+            self.slotOneTextField.text = ""
+            self.slotTwoTextField.text = ""
+            self.slotThreeTextField.text = ""
+            self.slotFourTextField.text = ""
+            
+            self.slotOneTextField.becomeFirstResponder()
             
         default: print("Should not hit")
             
@@ -354,10 +361,10 @@ extension PinNumberVerificationEntryController {
     
     @objc func handleVerifiedPinState() {
         
-        let homeVC = LocationFinder()
-        let navVC = UINavigationController(rootViewController: homeVC)
-        navVC.modalPresentationStyle = .fullScreen
-        navigationController?.present(navVC, animated: true)
+        let notificationsController = NotificationsController()
+        let nav = UINavigationController(rootViewController: notificationsController)
+        nav.modalPresentationStyle = .fullScreen
+        navigationController?.present(nav, animated: true)
     }
     
     @objc func handleCancelButton() {

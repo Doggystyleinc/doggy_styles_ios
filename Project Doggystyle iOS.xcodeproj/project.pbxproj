@@ -653,8 +653,8 @@
 			children = (
 				E352FF6126A62CF1003BD59F /* TutorialFlow */,
 				E3D53F3826AA21A6003B4317 /* LoginRegistration */,
-				E3D53F3926AA21B9003B4317 /* Location */,
 				E334FB9F270E1B34003F24D5 /* Notifications */,
+				E3D53F3926AA21B9003B4317 /* Location */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";

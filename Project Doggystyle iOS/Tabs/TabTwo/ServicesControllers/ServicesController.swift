@@ -103,7 +103,7 @@ final class ServicesController: UIViewController {
         self.view.addSubview(self.servicesCollection)
         self.view.addSubview(self.bookNowButton)
         
-        self.dsCompanyLogoImage.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+        self.dsCompanyLogoImage.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
         self.dsCompanyLogoImage.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
         self.dsCompanyLogoImage.heightAnchor.constraint(equalToConstant: 26).isActive = true
         self.dsCompanyLogoImage.sizeToFit()

@@ -93,7 +93,7 @@ class NewDogSix : UIViewController {
                                    range: range2)
         
         cbf.setAttributedTitle(attributedStr, for: .normal)
-        cbf.addTarget(self, action: #selector(self.handleReturnToDashboard), for: .touchUpInside)
+        cbf.addTarget(self, action: #selector(self.handleBookNow), for: .touchUpInside)
         
         return cbf
         
@@ -153,6 +153,22 @@ class NewDogSix : UIViewController {
         let image = globalNewDogBuilder.dogBuilderProfileImage ?? UIImage(named: "doggy_profile_filler")?.withRenderingMode(.alwaysOriginal)
         self.profilePhoto.image = image
         
+        if groomLocationFollowOnRoute == .fromRegistration {
+            self.returnToDashboard.setTitle("Go to Dashboard", for: .normal)
+        } else {
+            self.returnToDashboard.setTitle("Return to Dashboard", for: .normal)
+        }
+        
+        let locational_data = userProfileStruct.user_grooming_locational_data ?? ["nil" : "nil"]
+        let hasGroomingLocation = locational_data["found_grooming_location"] as? Bool ?? false
+        
+        //IF WE DO SERVICE THE CLIENTS LOCATION, WE ENABLE THE BOOK NOW BUTTON
+        if hasGroomingLocation == true {
+            self.bookNowButton.isHidden = false
+        } else {
+        //IF WE DO NOT SERVICE THE CLIENTS LOCATION, WE CANNOT BOOK THEM AN APT
+            self.bookNowButton.isHidden = true
+        }
     }
     
     func addViews() {
@@ -197,23 +213,63 @@ class NewDogSix : UIViewController {
         self.returnToDashboard.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
     }
-    
-    @objc func handleContinueButton() {
-        UIDevice.vibrateLight()
-        
-        self.navigationController?.dismiss(animated: true, completion: nil)
-    }
-    
+   
+    //MARK: - RETURN OR GO TO DASHBOARD
     @objc func handleReturnToDashboard() {
-        UIDevice.vibrateLight()
         
+        if groomLocationFollowOnRoute == .fromApplication {
+        UIDevice.vibrateLight()
         self.navigationController?.dismiss(animated: true, completion: nil)
+        } else if groomLocationFollowOnRoute == .fromRegistration {
+            self.presentHomeController()
+        }
     }
     
+    //MARK: - HANDLE ADD NEW PUP
     @objc func handleAddNewPup() {
         
+        if groomLocationFollowOnRoute == .fromApplication {
+
         self.navigationController?.dismiss(animated: true, completion: {
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: Statics.CALL_ADD_NEW_PUP), object: self)
         })
+        
+        } else if groomLocationFollowOnRoute == .fromRegistration {
+            let homeVC = HomeViewController()
+            let navVC = UINavigationController(rootViewController: homeVC)
+            navVC.modalPresentationStyle = .fullScreen
+            navigationController?.present(navVC, animated: true, completion: {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Statics.CALL_ADD_NEW_PUP), object: self)
+            })
+        }
+    }
+    
+    //MARK: - HANDLE ADD NEW PUP
+    @objc func handleBookNow() {
+        
+        if groomLocationFollowOnRoute == .fromApplication {
+
+        self.navigationController?.dismiss(animated: true, completion: {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: Statics.CALL_BOOK_NOW), object: self)
+        })
+        
+        } else if groomLocationFollowOnRoute == .fromRegistration {
+            let homeVC = HomeViewController()
+            let navVC = UINavigationController(rootViewController: homeVC)
+            navVC.modalPresentationStyle = .fullScreen
+            navVC.navigationBar.isHidden = true
+            self.navigationController?.present(navVC, animated: true, completion: {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Statics.CALL_BOOK_NOW), object: self)
+            })
+        }
+    }
+    
+    func presentHomeController() {
+        let homeVC = HomeViewController()
+        let navVC = UINavigationController(rootViewController: homeVC)
+        navVC.modalPresentationStyle = .fullScreen
+        navVC.navigationBar.isHidden = true
+        self.navigationController?.present(navVC, animated: true)
+        
     }
 }
