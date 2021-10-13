@@ -89,10 +89,11 @@ class ProfileCollectionSubview : UICollectionView, UICollectionViewDelegateFlowL
         switch feederLabels {
         
         case "My dogs" : print("My dogs")
-        case "Payment" : print("Payment")
+        case "Payment Methods" : print("Payment")
+        case "Notifications" : print("Notifications")
         case "Contact Us" : print("Contact Us")
-        case "Re-fur a Friend" : print("Re-fur a Friend")
-            
+        case "Re-fur a Doggy" : print("Re-fur a Friend")
+
         default : print("Button not found, add it to the array")
             
         }

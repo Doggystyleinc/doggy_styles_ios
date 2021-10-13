@@ -138,6 +138,7 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         super.viewDidLoad()
         
         self.view.backgroundColor = coreBackgroundWhite
+        self.navigationController?.navigationBar.isHidden = true
         
         self.addViews()
         self.fetchJSON()
@@ -205,11 +206,11 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         self.profileCollectionSubview.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.profileCollectionSubview.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
         
-        self.activityIndicator.topAnchor.constraint(equalTo: self.dsCompanyLogoImage.bottomAnchor, constant: 20).isActive = true
-        self.activityIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
-        self.activityIndicator.heightAnchor.constraint(equalToConstant: 130).isActive = true
-        self.activityIndicator.widthAnchor.constraint(equalToConstant: 130).isActive = true
-        self.activityIndicator.layer.cornerRadius = 130/2
+        self.activityIndicator.centerYAnchor.constraint(equalTo: self.profileImageView.centerYAnchor, constant: 0).isActive = true
+        self.activityIndicator.centerXAnchor.constraint(equalTo: self.profileImageView.centerXAnchor, constant: 0).isActive = true
+        self.activityIndicator.heightAnchor.constraint(equalToConstant: 107).isActive = true
+        self.activityIndicator.widthAnchor.constraint(equalToConstant: 107).isActive = true
+        self.activityIndicator.layer.cornerRadius = 107/2
         
     }
     

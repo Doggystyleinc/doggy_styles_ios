@@ -204,6 +204,7 @@
 		E376FDF026AB4E4300902C36 /* ios_doggystyle_icon87.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E376FDE826AB4E4200902C36 /* ios_doggystyle_icon87.jpg */; };
 		E376FDF126AB4E4300902C36 /* ios_doggystyle_icon40.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E376FDE926AB4E4300902C36 /* ios_doggystyle_icon40.jpg */; };
 		E376FDF326AB4F5800902C36 /* art_icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E376FDF226AB4F5800902C36 /* art_icon.jpg */; };
+		E37D20C12717373F00BF859A /* AddDogEntryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D20C02717373F00BF859A /* AddDogEntryController.swift */; };
 		E38B7FD526C453130013D72D /* BorderSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FD426C453130013D72D /* BorderSingleton.swift */; };
 		E38B7FD926C457640013D72D /* invalidName.png in Resources */ = {isa = PBXBuildFile; fileRef = E38B7FD626C457640013D72D /* invalidName.png */; };
 		E38B7FDA26C457640013D72D /* invalidName@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E38B7FD726C457640013D72D /* invalidName@3x.png */; };
@@ -453,6 +454,7 @@
 		E376FDE826AB4E4200902C36 /* ios_doggystyle_icon87.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ios_doggystyle_icon87.jpg; sourceTree = "<group>"; };
 		E376FDE926AB4E4300902C36 /* ios_doggystyle_icon40.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ios_doggystyle_icon40.jpg; sourceTree = "<group>"; };
 		E376FDF226AB4F5800902C36 /* art_icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = art_icon.jpg; sourceTree = "<group>"; };
+		E37D20C02717373F00BF859A /* AddDogEntryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDogEntryController.swift; sourceTree = "<group>"; };
 		E38B7FD426C453130013D72D /* BorderSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderSingleton.swift; sourceTree = "<group>"; };
 		E38B7FD626C457640013D72D /* invalidName.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = invalidName.png; sourceTree = "<group>"; };
 		E38B7FD726C457640013D72D /* invalidName@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invalidName@3x.png"; sourceTree = "<group>"; };
@@ -1116,6 +1118,25 @@
 			path = YourNotificationsControllers;
 			sourceTree = "<group>";
 		};
+		E37D20BE27166B0200BF859A /* MainProfileController */ = {
+			isa = PBXGroup;
+			children = (
+				E3B11AB9268FCBB200B5B6F8 /* ProfileController.swift */,
+				E3B11ABB268FCBC900B5B6F8 /* ProfileCollectionView.swift */,
+				E3B11ABD268FCBE300B5B6F8 /* ProfileCollectionFeeder.swift */,
+				E3B11ABF268FCC0400B5B6F8 /* ProfilePhotoUploadExt.swift */,
+			);
+			path = MainProfileController;
+			sourceTree = "<group>";
+		};
+		E37D20BF27166B1400BF859A /* MyDogsControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E37D20C02717373F00BF859A /* AddDogEntryController.swift */,
+			);
+			path = MyDogsControllers;
+			sourceTree = "<group>";
+		};
 		E38B7FDC26C45C530013D72D /* NewDogOneGroup */ = {
 			isa = PBXGroup;
 			children = (
@@ -1296,10 +1317,8 @@
 		E3B11AB8268FC9C700B5B6F8 /* TabFour */ = {
 			isa = PBXGroup;
 			children = (
-				E3B11AB9268FCBB200B5B6F8 /* ProfileController.swift */,
-				E3B11ABB268FCBC900B5B6F8 /* ProfileCollectionView.swift */,
-				E3B11ABD268FCBE300B5B6F8 /* ProfileCollectionFeeder.swift */,
-				E3B11ABF268FCC0400B5B6F8 /* ProfilePhotoUploadExt.swift */,
+				E37D20BE27166B0200BF859A /* MainProfileController */,
+				E37D20BF27166B1400BF859A /* MyDogsControllers */,
 			);
 			path = TabFour;
 			sourceTree = "<group>";
@@ -1696,6 +1715,7 @@
 				CDE871652652E6E60082551B /* DSButton.swift in Sources */,
 				CDE871232652E3030082551B /* String + Ext.swift in Sources */,
 				E357D2FC26E2D11B00CDF90E /* ConfirmBookingController.swift in Sources */,
+				E37D20C12717373F00BF859A /* AddDogEntryController.swift in Sources */,
 				E3A0AD5426BDAA2000E813D5 /* NewDogFour.swift in Sources */,
 				CD6DCFFA267A8D7400BC376B /* DSSemiBoldLabel.swift in Sources */,
 				CD6DD01D26827E6A00BC376B /* LoginController.swift in Sources */,
