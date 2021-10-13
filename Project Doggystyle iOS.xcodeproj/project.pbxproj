@@ -205,6 +205,11 @@
 		E376FDF126AB4E4300902C36 /* ios_doggystyle_icon40.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E376FDE926AB4E4300902C36 /* ios_doggystyle_icon40.jpg */; };
 		E376FDF326AB4F5800902C36 /* art_icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E376FDF226AB4F5800902C36 /* art_icon.jpg */; };
 		E37D20C12717373F00BF859A /* AddDogEntryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D20C02717373F00BF859A /* AddDogEntryController.swift */; };
+		E37D20C627173B2500BF859A /* addnew_dog 1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E37D20C327173B2400BF859A /* addnew_dog 1@2x.png */; };
+		E37D20C727173B2500BF859A /* addnew_dog 1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E37D20C427173B2400BF859A /* addnew_dog 1@3x.png */; };
+		E37D20C827173B2500BF859A /* addnew_dog 1.png in Resources */ = {isa = PBXBuildFile; fileRef = E37D20C527173B2500BF859A /* addnew_dog 1.png */; };
+		E37D20CA2717516A00BF859A /* MyDogsCollectionContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D20C92717516A00BF859A /* MyDogsCollectionContainer.swift */; };
+		E37D20CC2717643B00BF859A /* MyDogsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D20CB2717643B00BF859A /* MyDogsCollectionView.swift */; };
 		E38B7FD526C453130013D72D /* BorderSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FD426C453130013D72D /* BorderSingleton.swift */; };
 		E38B7FD926C457640013D72D /* invalidName.png in Resources */ = {isa = PBXBuildFile; fileRef = E38B7FD626C457640013D72D /* invalidName.png */; };
 		E38B7FDA26C457640013D72D /* invalidName@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E38B7FD726C457640013D72D /* invalidName@3x.png */; };
@@ -455,6 +460,11 @@
 		E376FDE926AB4E4300902C36 /* ios_doggystyle_icon40.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ios_doggystyle_icon40.jpg; sourceTree = "<group>"; };
 		E376FDF226AB4F5800902C36 /* art_icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = art_icon.jpg; sourceTree = "<group>"; };
 		E37D20C02717373F00BF859A /* AddDogEntryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDogEntryController.swift; sourceTree = "<group>"; };
+		E37D20C327173B2400BF859A /* addnew_dog 1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "addnew_dog 1@2x.png"; sourceTree = "<group>"; };
+		E37D20C427173B2400BF859A /* addnew_dog 1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "addnew_dog 1@3x.png"; sourceTree = "<group>"; };
+		E37D20C527173B2500BF859A /* addnew_dog 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "addnew_dog 1.png"; sourceTree = "<group>"; };
+		E37D20C92717516A00BF859A /* MyDogsCollectionContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDogsCollectionContainer.swift; sourceTree = "<group>"; };
+		E37D20CB2717643B00BF859A /* MyDogsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDogsCollectionView.swift; sourceTree = "<group>"; };
 		E38B7FD426C453130013D72D /* BorderSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderSingleton.swift; sourceTree = "<group>"; };
 		E38B7FD626C457640013D72D /* invalidName.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = invalidName.png; sourceTree = "<group>"; };
 		E38B7FD726C457640013D72D /* invalidName@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invalidName@3x.png"; sourceTree = "<group>"; };
@@ -1133,8 +1143,20 @@
 			isa = PBXGroup;
 			children = (
 				E37D20C02717373F00BF859A /* AddDogEntryController.swift */,
+				E37D20C92717516A00BF859A /* MyDogsCollectionContainer.swift */,
+				E37D20CB2717643B00BF859A /* MyDogsCollectionView.swift */,
 			);
 			path = MyDogsControllers;
+			sourceTree = "<group>";
+		};
+		E37D20C227173B1700BF859A /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				E37D20C527173B2500BF859A /* addnew_dog 1.png */,
+				E37D20C327173B2400BF859A /* addnew_dog 1@2x.png */,
+				E37D20C427173B2400BF859A /* addnew_dog 1@3x.png */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 		E38B7FDC26C45C530013D72D /* NewDogOneGroup */ = {
@@ -1275,6 +1297,7 @@
 		E3B11AB4268FA8C300B5B6F8 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				E37D20C227173B1700BF859A /* Images */,
 				E326572426B20866004A15F6 /* DashboardIcons */,
 				E39C665D26A8CEE0004A0E93 /* Animations */,
 				E39C662F26A88C37004A0E93 /* AppIcon */,
@@ -1494,6 +1517,7 @@
 				E36EE57426B876500009A0EF /* profile_doggy@2x.png in Resources */,
 				E39C665626A899F0004A0E93 /* Rubik-Light.ttf in Resources */,
 				E3E9F7E526BC62CE00C3A57A /* Doggy_filler_photo@3x.png in Resources */,
+				E37D20C627173B2500BF859A /* addnew_dog 1@2x.png in Resources */,
 				E304ED7626EBEF95002D625A /* tab_person_icon@2x.png in Resources */,
 				E376FDF126AB4E4300902C36 /* ios_doggystyle_icon40.jpg in Resources */,
 				E376FDEC26AB4E4300902C36 /* ios_doggystyle_icon.jpg in Resources */,
@@ -1540,6 +1564,7 @@
 				E376FDF326AB4F5800902C36 /* art_icon.jpg in Resources */,
 				E326572F26B2149D004A15F6 /* 65430TifDsVan1@2x.png in Resources */,
 				E304ED7726EBEF95002D625A /* tab_calendar_icon@2x.png in Resources */,
+				E37D20C827173B2500BF859A /* addnew_dog 1.png in Resources */,
 				E334FBB4270F9E8C003F24D5 /* Dogm 1@3x.png in Resources */,
 				E36EE55226B77D9B0009A0EF /* hoverLight1@2x.png in Resources */,
 				CDE8710C2652E2080082551B /* Roboto-Italic.ttf in Resources */,
@@ -1590,6 +1615,7 @@
 				CD319F72267936AD00F48E3C /* Poppins-Regular.ttf in Resources */,
 				E334FBB3270F9E8C003F24D5 /* Dogm 1@2x.png in Resources */,
 				E326571926AF2636004A15F6 /* Splash.png in Resources */,
+				E37D20C727173B2500BF859A /* addnew_dog 1@3x.png in Resources */,
 				CDE871052652E2080082551B /* Roboto-Thin.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1719,6 +1745,7 @@
 				E3A0AD5426BDAA2000E813D5 /* NewDogFour.swift in Sources */,
 				CD6DCFFA267A8D7400BC376B /* DSSemiBoldLabel.swift in Sources */,
 				CD6DD01D26827E6A00BC376B /* LoginController.swift in Sources */,
+				E37D20CA2717516A00BF859A /* MyDogsCollectionContainer.swift in Sources */,
 				CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */,
 				E3107F8626961A6B00CDBB37 /* MainLoadingScreen.swift in Sources */,
 				E397406426D426040084742F /* AppointmentThreeCollection.swift in Sources */,
@@ -1788,6 +1815,7 @@
 				E3636FEB26E6A9F200E5B76E /* AvailableAptScreen.swift in Sources */,
 				CD203BFC2667FAB300335D93 /* ServicesController.swift in Sources */,
 				E3A0AD5926BDD29400E813D5 /* NewDogFiveCollectionview.swift in Sources */,
+				E37D20CC2717643B00BF859A /* MyDogsCollectionView.swift in Sources */,
 				E3B11AC2268FCC4600B5B6F8 /* Extensions.swift in Sources */,
 				E38B7FE026C469600013D72D /* NewDogSearchSubView.swift in Sources */,
 				CD6DD051268B9E8400BC376B /* ServiceSingleton.swift in Sources */,

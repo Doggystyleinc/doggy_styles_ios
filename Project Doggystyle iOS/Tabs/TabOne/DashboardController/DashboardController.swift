@@ -274,6 +274,8 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
             //MARK: - HAS DOGGY PROFILE
             if isSuccess {
                 
+                userProfileStruct.user_has_doggy_profile = true
+                
                 if hasGroomingLocation == true {
                     //MARK: - USER HAS A GROOMING LOCATION AND A DOGGY PROFILE - YesGroomerLocationYesDoggyProfile
                     self.stateListener = .YesGroomerLocationYesDoggyProfile
@@ -287,6 +289,8 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
             //MARK: - DOES NOT HAVE DOGGY PROFILE
             } else {
                 
+                userProfileStruct.user_has_doggy_profile = false
+
                 if hasGroomingLocation == true {
                     //MARK: - USER DOES NOT HAVE A DOGGY PROFILE BUT HAS A GROOMING LOCATION - YesGroomerLocationNoDoggyProfile
                     self.stateListener = .YesGroomerLocationNoDoggyProfile
@@ -432,8 +436,10 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
     }
     
     func fillValues() {
+        
         let usersFirstName = userProfileStruct.user_first_name ?? "Dog Lover"
         self.headerLabel.text = "Welcome, \(usersFirstName)"
+        
     }
     
     @objc func handleReferAFriendButton() {
@@ -441,30 +447,9 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
     }
     
     @objc func handleNewDogFlow() {
+       
+        self.homeController?.handleAddNewDogFlow()
         
-        groomLocationFollowOnRoute = .fromApplication
-        
-        //MARK: - HAS ALREADY SEEN THE ENTRY PAGE
-        if let _ = UserDefaults.standard.object(forKey: "entry_path_one") as? Bool {
-            
-            let newDogOne = NewDogOne()
-            let navigationController = UINavigationController(rootViewController: newDogOne)
-            navigationController.modalPresentationStyle = .fullScreen
-            navigationController.navigationBar.isHidden = true
-            self.navigationController?.present(navigationController, animated: true, completion: nil)
-            
-        } else {
-            
-            //MARK: - HAD NOT SEEN THE ENTRY PAGE
-            UserDefaults.standard.set(true, forKey:"entry_path_one")
-            
-            let newDogEntry = NewDogEntry()
-            let navigationController = UINavigationController(rootViewController: newDogEntry)
-            navigationController.modalPresentationStyle = .fullScreen
-            navigationController.navigationBar.isHidden = true
-            self.navigationController?.present(navigationController, animated: true, completion: nil)
-            
-        }
     }
     
     @objc func presentAppointmentsController() {

@@ -292,4 +292,35 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         self.navigationController?.present(nav, animated: true, completion: nil)
         
     }
+    
+    @objc func handleAddDogController() {
+        
+        var hasDog : Bool = false
+        
+        if userProfileStruct.user_has_doggy_profile != nil {
+            guard let has_profile = userProfileStruct.user_has_doggy_profile else {return}
+            hasDog = has_profile
+        } else {
+            hasDog = false
+        }
+        
+        if hasDog == false {
+        
+            //MARK: - PRESENT IF THEIR ARE NO DOGS IN THEIR PROFILE
+            let addDogEntryController = AddDogEntryController()
+            let nav = UINavigationController(rootViewController: addDogEntryController)
+            nav.modalPresentationStyle = .fullScreen
+            nav.navigationController?.navigationBar.isHidden = true
+            self.navigationController?.present(nav, animated: true, completion: nil)
+            
+        } else {
+            
+            //MARK: - PRESENT IF THEIR ARE DOGS IN THEIR PROFILE
+            let myDogsCollectionContainer = MyDogsCollectionContainer()
+            myDogsCollectionContainer.navigationController?.navigationBar.isHidden = true
+            myDogsCollectionContainer.modalPresentationStyle = .fullScreen
+            self.navigationController?.pushViewController(myDogsCollectionContainer, animated: true)
+            
+        }
+    }
 }
