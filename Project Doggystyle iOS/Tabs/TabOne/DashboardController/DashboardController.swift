@@ -11,7 +11,7 @@ import SDWebImage
 import GoogleMaps
 import GooglePlaces
 
-class DashboardViewController: UIViewController {
+class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
     
     enum StateListener {
         
@@ -468,7 +468,33 @@ class DashboardViewController: UIViewController {
     }
     
     @objc func presentAppointmentsController() {
-        self.homeController?.presentBookingController()
+        
+        self.handleCustomPopUpAlert(title: "BETA", message: "We'll be up and running shortly for booking", passedButtons: [Statics.GOT_IT])
+        //self.homeController?.presentBookingController()
+    }
+    
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        alert.passedIconName = .paw //leave commented if no header icon is needed
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.GOT_IT: print("got it")
+            
+        default: print("Should not hit")
+            
+        }
     }
     
     @objc private func didTapRefur() {

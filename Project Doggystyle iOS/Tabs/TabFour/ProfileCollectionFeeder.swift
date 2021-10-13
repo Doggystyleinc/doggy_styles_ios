@@ -21,9 +21,9 @@ class ProfileFeeder : UICollectionViewCell {
         dc.clipsToBounds = false
         dc.layer.masksToBounds = false
         dc.layer.shadowColor = coreBlackColor.cgColor
-        dc.layer.shadowOpacity = 0.1
+        dc.layer.shadowOpacity = 0.05
         dc.layer.shadowOffset = CGSize(width: 0, height: 0)
-        dc.layer.shadowRadius = 7
+        dc.layer.shadowRadius = 8
         dc.layer.shouldRasterize = false
         dc.addTarget(self, action: #selector(self.handleButtonSelection), for: .touchUpInside)
         
@@ -44,8 +44,7 @@ class ProfileFeeder : UICollectionViewCell {
         let nl = UILabel()
         nl.translatesAutoresizingMaskIntoConstraints = false
         nl.backgroundColor = .clear
-        nl.text = "This is my label here"
-        nl.font = UIFont(name: dsHeaderFont, size: 16)
+        nl.font = UIFont(name: rubikRegular, size: 18)
         nl.textColor = coreBlackColor
         nl.textAlignment = .left
         nl.numberOfLines = 1
@@ -72,7 +71,7 @@ class ProfileFeeder : UICollectionViewCell {
         self.mainContainer.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5).isActive = true
         self.mainContainer.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5).isActive = true
         self.mainContainer.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5).isActive = true
-        self.mainContainer.layer.cornerRadius = 12
+        self.mainContainer.layer.cornerRadius = 15
         
         self.feederIcon.leftAnchor.constraint(equalTo: self.mainContainer.leftAnchor, constant: 17).isActive = true
         self.feederIcon.centerYAnchor.constraint(equalTo: self.mainContainer.centerYAnchor, constant: 0).isActive = true

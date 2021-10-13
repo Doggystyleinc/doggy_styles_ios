@@ -123,10 +123,14 @@ class AlertController : UIViewController {
             heightForIcon = 30.0
             self.headerIcon.isHidden = true
             buffer = 132
+            self.headerIcon.setTitle(String.fontAwesomeIcon(name: .infoCircle), for: .normal)
         } else {
             heightForIcon = 60.0
             self.headerIcon.isHidden = false
             buffer = 132 + 50
+            guard let iconName = self.passedIconName else {return}
+            self.headerIcon.setTitle(String.fontAwesomeIcon(name: iconName), for: .normal)
+
         }
 
         self.headerLabel.text = safeTitle

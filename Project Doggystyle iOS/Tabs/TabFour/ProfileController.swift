@@ -33,7 +33,7 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         dcl.translatesAutoresizingMaskIntoConstraints = false
         dcl.backgroundColor = .clear
         dcl.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
-        dcl.setTitle(String.fontAwesomeIcon(name: .cogs), for: .normal)
+        dcl.setTitle(String.fontAwesomeIcon(name: .powerOff), for: .normal)
         dcl.tintColor = coreOrangeColor
         dcl.addTarget(self, action: #selector(self.handleLogout), for: .touchUpInside)
         
@@ -65,6 +65,7 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         cv.layer.shadowOffset = CGSize(width: 0, height: 0)
         cv.layer.shadowRadius = 7
         cv.layer.shouldRasterize = false
+        cv.layer.cornerRadius = 15
         
         return cv
     }()
@@ -76,9 +77,25 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         nl.backgroundColor = .clear
         nl.text = ""
         nl.font = UIFont(name: dsHeaderFont, size: 20)
-        nl.textColor = coreBlackColor
-        nl.textAlignment = .center
+        nl.textColor = dsFlatBlack
+        nl.textAlignment = .left
         nl.adjustsFontSizeToFitWidth = true
+        nl.numberOfLines = 1
+        
+        return nl
+    }()
+    
+    let stylingSinceLabel : UILabel = {
+        
+        let nl = UILabel()
+        nl.translatesAutoresizingMaskIntoConstraints = false
+        nl.backgroundColor = .clear
+        nl.text = ""
+        nl.font = UIFont(name: rubikRegular, size: 13)
+        nl.textColor = coreOrangeColor
+        nl.textAlignment = .left
+        nl.adjustsFontSizeToFitWidth = true
+        nl.numberOfLines = 1
         
         return nl
     }()
@@ -103,6 +120,20 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         return ai
     }()
     
+    lazy var pencilIcon : UIButton = {
+        
+        let cbf = UIButton()
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.backgroundColor = .clear
+        cbf.contentMode = .scaleAspectFill
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 15, style: .solid)
+        cbf.setTitle(String.fontAwesomeIcon(name: .pencilAlt), for: .normal)
+        cbf.setTitleColor(coreOrangeColor, for: .normal)
+        cbf.addTarget(self, action: #selector(self.handleEditProfilePencil), for: UIControl.Event.touchUpInside)
+        return cbf
+        
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -121,13 +152,17 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
     
     func addViews() {
         
+        self.view.addSubview(self.notificationIcon)
         self.view.addSubview(self.dsCompanyLogoImage)
+        
         self.view.addSubview(self.containerView)
-        self.view.addSubview(self.profileImageView)
-        self.view.addSubview(self.nameLabel)
+        self.containerView.addSubview(self.profileImageView)
+        self.containerView.addSubview(self.nameLabel)
+        self.containerView.addSubview(self.stylingSinceLabel)
+        self.containerView.addSubview(self.pencilIcon)
+
         self.view.addSubview(self.profileCollectionSubview)
         self.view.addSubview(self.activityIndicator)
-        self.view.addSubview(self.notificationIcon)
         
         self.notificationIcon.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
         self.notificationIcon.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
@@ -139,23 +174,32 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         self.dsCompanyLogoImage.widthAnchor.constraint(equalToConstant: self.view.frame.width / 2.5).isActive = true
         self.dsCompanyLogoImage.heightAnchor.constraint(equalToConstant: 26).isActive = true
         
-        self.profileImageView.topAnchor.constraint(equalTo: self.dsCompanyLogoImage.bottomAnchor, constant: 20).isActive = true
-        self.profileImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
-        self.profileImageView.heightAnchor.constraint(equalToConstant: 130).isActive = true
-        self.profileImageView.widthAnchor.constraint(equalToConstant: 130).isActive = true
-        self.profileImageView.layer.cornerRadius = 130/2
+        self.containerView.topAnchor.constraint(equalTo: self.dsCompanyLogoImage.bottomAnchor, constant: 34).isActive = true
+        self.containerView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.containerView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.containerView.heightAnchor.constraint(equalToConstant: 147).isActive = true
         
-        self.containerView.topAnchor.constraint(equalTo: self.profileImageView.centerYAnchor, constant: 0).isActive = true
-        self.containerView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
-        self.containerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 1.15).isActive = true
-        self.containerView.heightAnchor.constraint(equalToConstant: 120).isActive = true
-        self.containerView.layer.cornerRadius = 12
+        self.profileImageView.centerYAnchor.constraint(equalTo: self.containerView.centerYAnchor, constant: 0).isActive = true
+        self.profileImageView.leftAnchor.constraint(equalTo: self.containerView.leftAnchor, constant: 20).isActive = true
+        self.profileImageView.heightAnchor.constraint(equalToConstant: 107).isActive = true
+        self.profileImageView.widthAnchor.constraint(equalToConstant: 107).isActive = true
+        self.profileImageView.layer.cornerRadius = 107/2
         
-        self.nameLabel.topAnchor.constraint(equalTo: self.profileImageView.bottomAnchor, constant: 15).isActive = true
-        self.nameLabel.leftAnchor.constraint(equalTo: self.containerView.leftAnchor, constant: 15).isActive = true
-        self.nameLabel.rightAnchor.constraint(equalTo: self.containerView.rightAnchor, constant: -15).isActive = true
-        self.nameLabel.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        self.nameLabel.centerYAnchor.constraint(equalTo: self.profileImageView.centerYAnchor, constant: -12).isActive = true
+        self.nameLabel.leftAnchor.constraint(equalTo: self.profileImageView.rightAnchor, constant: 20).isActive = true
+        self.nameLabel.rightAnchor.constraint(equalTo: self.containerView.rightAnchor, constant: -30).isActive = true
+        self.nameLabel.sizeToFit()
         
+        self.stylingSinceLabel.centerYAnchor.constraint(equalTo: self.profileImageView.centerYAnchor, constant: 12).isActive = true
+        self.stylingSinceLabel.leftAnchor.constraint(equalTo: self.profileImageView.rightAnchor, constant: 20).isActive = true
+        self.stylingSinceLabel.rightAnchor.constraint(equalTo: self.containerView.rightAnchor, constant: -30).isActive = true
+        self.stylingSinceLabel.sizeToFit()
+        
+        self.pencilIcon.topAnchor.constraint(equalTo: self.containerView.topAnchor, constant: 18).isActive = true
+        self.pencilIcon.rightAnchor.constraint(equalTo: self.containerView.rightAnchor, constant: -18).isActive = true
+        self.pencilIcon.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        self.pencilIcon.widthAnchor.constraint(equalToConstant: 20).isActive = true
+
         self.profileCollectionSubview.topAnchor.constraint(equalTo: self.containerView.bottomAnchor, constant: 20).isActive = true
         self.profileCollectionSubview.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.profileCollectionSubview.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
@@ -174,13 +218,31 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         let userProfilePhoto = userProfileStruct.users_profile_image_url ?? "nil"
         let users_name = userProfileStruct.users_full_name ?? "Incognito"
         self.nameLabel.text = users_name
-
+        
+        let accountCreationDate = Auth.auth().currentUser?.metadata.creationDate ?? nil
+        
+        if accountCreationDate == nil {
+            self.stylingSinceLabel.text = "Doggystyling since 2021"
+        } else {
+            
+            guard let dateFetch = accountCreationDate else {return}
+            
+            let calendar = Calendar.current
+            let registrationYear = calendar.component(.year, from: dateFetch)
+            self.stylingSinceLabel.text = "Doggystyling since \(registrationYear)"
+            
+        }
+        
         if userProfilePhoto == "nil" {
             self.profileImageView.image = UIImage(named: "Owner Profile Placeholder")?.withRenderingMode(.alwaysOriginal)
         } else {
             self.profileImageView.loadImageGeneralUse(userProfilePhoto) { complete in
             }
         }
+    }
+    
+    @objc func handleEditProfilePencil() {
+        print("pencil here")
     }
     
     @objc func handleProfileSelection(sender : UIImageView) {

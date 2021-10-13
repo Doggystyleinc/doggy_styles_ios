@@ -839,6 +839,8 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate, 
         
         case 1:
             
+            self.scrollView.scrollToTop()
+            
             UIView.animate(withDuration: 0.15) {
                 self.containerTwoTopConstraint?.constant = 0
                 self.medicalConditionTextField.alpha = 0
@@ -861,6 +863,8 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate, 
             
         case 2:
             
+            self.scrollView.scrollToBottom()
+
             UIView.animate(withDuration: 0.15) {
                 self.containerTwoTopConstraint?.constant = self.offSetDifference
                 self.medicalConditionTextField.alpha = 1
@@ -887,11 +891,13 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate, 
     }
     
     @objc func handleBehavioralConcernsSelection(sender : UIButton) {
-        
+
         switch sender.tag {
         
         case 1:
             
+            self.scrollView.scrollToTop()
+
             UIView.animate(withDuration: 0.15) {
                 self.containerThreeTopConstraint?.constant = 0
                 self.behavioralConditionTextField.alpha = 0
@@ -914,6 +920,8 @@ class NewDogFour : UIViewController, UIScrollViewDelegate, UITextFieldDelegate, 
             
             
         case 2:
+            
+            self.scrollView.scrollToBottom()
             
             UIView.animate(withDuration: 0.15) {
                 self.containerThreeTopConstraint?.constant = self.offSetDifference

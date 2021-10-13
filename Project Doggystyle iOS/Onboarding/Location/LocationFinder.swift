@@ -951,7 +951,6 @@ extension LocationFinder {
             self.navigationController?.present(navigationController, animated: true, completion: nil)
         
             }
-  
     }
     
     @objc func loadAllTheLogic() {
@@ -994,8 +993,10 @@ extension LocationFinder {
 
 //MARK: - HERE WE CAN TELL IF THE DOGGY PROFILE SHOULD DISMISS OR PRESENT THE HOME CONTROLLER
 public enum GroomLocationFollowOnRoute {
+    
     case fromRegistration
     case fromApplication
+    
 }
 
 var groomLocationFollowOnRoute = GroomLocationFollowOnRoute.fromApplication

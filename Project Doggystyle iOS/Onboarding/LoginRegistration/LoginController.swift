@@ -354,7 +354,7 @@ final class LoginController: UIViewController, UITextFieldDelegate, CustomAlertC
         self.typingPasswordLabel.topAnchor.constraint(equalTo: self.passwordTextField.topAnchor, constant: 14).isActive = true
         self.typingPasswordLabel.sizeToFit()
         
-        self.passwordTextField.topAnchor.constraint(equalTo: self.emailTextField.bottomAnchor, constant: 25).isActive = true
+        self.passwordTextField.topAnchor.constraint(equalTo: self.emailTextField.bottomAnchor, constant: 16).isActive = true
         self.passwordTextField.leftAnchor.constraint(equalTo: self.headerLabel.leftAnchor, constant: 0).isActive = true
         self.passwordTextField.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.passwordTextField.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -520,6 +520,7 @@ final class LoginController: UIViewController, UITextFieldDelegate, CustomAlertC
         let homeVC = HomeViewController()
         let navVC = UINavigationController(rootViewController: homeVC)
         navVC.modalPresentationStyle = .fullScreen
+        navVC.navigationBar.isHidden = true
         navigationController?.present(navVC, animated: true)
     }
     

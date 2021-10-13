@@ -10,7 +10,7 @@ import UIKit
 
 class ProfileCollectionSubview : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
-    private let profileID = "profileID", arrayOfStaticLabels = ["My dogs","Payment", "Contact Us", "Re-fur a Friend"]
+    private let profileID = "profileID", arrayOfStaticLabels = ["My dogs","Payment Methods", "Notifications", "Contact Us", "Re-fur a Doggy"]
     
     var profileController : ProfileController?
     
@@ -53,15 +53,19 @@ class ProfileCollectionSubview : UICollectionView, UICollectionViewDelegateFlowL
             cell.feederIcon.font = UIFont.fontAwesome(ofSize: 22, style: .solid)
             cell.feederIcon.text = String.fontAwesomeIcon(name: .dog)
             cell.feederIcon.textColor = coreOrangeColor
-        case "Payment" :
+        case "Payment Methods" :
             cell.feederIcon.font = UIFont.fontAwesome(ofSize: 22, style: .solid)
             cell.feederIcon.text = String.fontAwesomeIcon(name: .dollarSign)
             cell.feederIcon.textColor = coreOrangeColor
         case "Contact Us" :
             cell.feederIcon.font = UIFont.fontAwesome(ofSize: 22, style: .solid)
-            cell.feederIcon.text = String.fontAwesomeIcon(name: .lifeRing)
+            cell.feederIcon.text = String.fontAwesomeIcon(name: .comment)
             cell.feederIcon.textColor = coreOrangeColor
-        case "Re-fur a Friend" :
+        case "Notifications" :
+            cell.feederIcon.font = UIFont.fontAwesome(ofSize: 22, style: .solid)
+            cell.feederIcon.text = String.fontAwesomeIcon(name: .bell)
+            cell.feederIcon.textColor = coreOrangeColor
+        case "Re-fur a Doggy" :
             cell.feederIcon.font = UIFont.fontAwesome(ofSize: 22, style: .solid)
             cell.feederIcon.text = String.fontAwesomeIcon(name: .gift)
             cell.feederIcon.textColor = coreOrangeColor

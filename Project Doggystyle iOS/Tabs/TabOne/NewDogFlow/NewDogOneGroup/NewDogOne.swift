@@ -18,7 +18,9 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
         isSelectedNameChosen : Bool = false,
         isKeyboardShowing : Bool = false,
         lastKeyboardHeight : CGFloat = 0.0,
-        contentHeight : CGFloat = 645.0
+        contentHeight : CGFloat = 645.0,
+        isSearchInProgress = false
+
     
     lazy var newDogSearchBreedSubview : NewDogSearchBreedSubview = {
         
@@ -408,6 +410,8 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
     
     @objc func handleBreedTap() {
         
+        self.isSearchInProgress = true
+
         self.resignation()
         self.newDogSearchBreedSubview.isHidden = false
         self.newDogSearchBreedSubview.moveConstraints()
@@ -560,6 +564,8 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
     
     @objc func handleKeyboardShow(notification : Notification) {
         
+        if self.isSearchInProgress == true {return}
+
         let userInfo:NSDictionary = notification.userInfo! as NSDictionary
         let keyboardFrame:NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
         let keyboardRectangle = keyboardFrame.cgRectValue
@@ -647,6 +653,8 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
     
     @objc func fillBreed(breedType : String) {
         
+        self.isSearchInProgress = false
+
         self.breedTextField.text = breedType
         self.isSelectedNameChosen = true
         self.newDogSearchBreedSubview.breedTextField.resignFirstResponder()
