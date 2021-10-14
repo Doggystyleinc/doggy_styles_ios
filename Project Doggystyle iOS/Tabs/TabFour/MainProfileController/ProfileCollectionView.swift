@@ -92,7 +92,7 @@ class ProfileCollectionSubview : UICollectionView, UICollectionViewDelegateFlowL
         case "Payment Methods" : print("Payment")
         case "Notifications" : print("Notifications")
         case "Contact Us" : print("Contact Us")
-        case "Re-fur a Doggy" : print("Re-fur a Friend")
+        case "Re-fur a Doggy" : self.profileController?.handleRefurFriend()
 
         default : print("Button not found, add it to the array")
             

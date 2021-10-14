@@ -212,8 +212,6 @@ class HomeViewController: UITabBarController, CLLocationManagerDelegate, CustomA
     
     func handleAddNewDogFlow() {
         
-        groomLocationFollowOnRoute = .fromApplication
-        
         //MARK: - HAS ALREADY SEEN THE ENTRY PAGE
         if let _ = UserDefaults.standard.object(forKey: "entry_path_one") as? Bool {
             

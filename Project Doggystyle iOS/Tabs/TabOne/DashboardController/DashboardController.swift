@@ -11,6 +11,8 @@ import SDWebImage
 import GoogleMaps
 import GooglePlaces
 
+var doggyProfileDataSource = [DoggyProfileDataSource]()
+
 class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
     
     enum StateListener {
@@ -26,7 +28,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         handleOne = DatabaseHandle(),
         childCounter : Int = 0,
         homeController: HomeViewController?,
-        doggyProfileDataSource = [DoggyProfileDataSource](),
+//        doggyProfileDataSource = [DoggyProfileDataSource](),
         stateListener : StateListener = .NoGroomerLocationNoDoggyProfile
     
     let databaseRef = Database.database().reference(),
@@ -275,6 +277,9 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
             if isSuccess {
                 
                 userProfileStruct.user_has_doggy_profile = true
+
+                //MARK: - SHARED DATASOURCE FOR THE MAIN DASH AND THE PROFILE MY DOGS TAB
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: Statics.RELOAD_DOGGY_PROFILE_SETTINGS), object: self)
                 
                 if hasGroomingLocation == true {
                     //MARK: - USER HAS A GROOMING LOCATION AND A DOGGY PROFILE - YesGroomerLocationYesDoggyProfile
@@ -317,7 +322,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         //MARK: - FOREVER LISTEN FOR CHANGES
         observingRef.observe(.value) { listener in
             
-            self.doggyProfileDataSource.removeAll()
+            doggyProfileDataSource.removeAll()
             
             self.dashMainView.mainDashCollectionView.doggyProfileDataSource.removeAll()
             
@@ -340,7 +345,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
                         
                         let post = DoggyProfileDataSource(json: JSON)
                         
-                        self.doggyProfileDataSource.append(post)
+                        doggyProfileDataSource.append(post)
                         
                         if childrenCount == self.childCounter {
                             completion(true)
@@ -410,7 +415,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         self.childCounter = 0
         
         self.dashMainView.registeredPetCollection.doggyProfileDataSource.removeAll()
-        self.doggyProfileDataSource.removeAll()
+        doggyProfileDataSource.removeAll()
         
         DispatchQueue.main.async {
             self.dashMainView.registeredPetCollection.reloadData()
@@ -422,8 +427,8 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         self.observingRefOne.removeObserver(withHandle: self.handleOne)
         self.childCounter = 0
         
-        var datasourceReplica = self.doggyProfileDataSource
-        globalPetDataSource = self.doggyProfileDataSource
+        var datasourceReplica = doggyProfileDataSource
+        globalPetDataSource = doggyProfileDataSource
         
         let post = DoggyProfileDataSource(json: ["dog":"dog"])
         datasourceReplica.insert(post, at: 0)
@@ -448,13 +453,14 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
     
     @objc func handleNewDogFlow() {
        
+        groomLocationFollowOnRoute = .fromApplication
         self.homeController?.handleAddNewDogFlow()
         
     }
     
     @objc func presentAppointmentsController() {
         
-        self.handleCustomPopUpAlert(title: "BETA", message: "We'll be up and running shortly for booking", passedButtons: [Statics.GOT_IT])
+        self.handleCustomPopUpAlert(title: "🚧CONSTRUCTION🚧", message: "We'll be up and running shortly for booking - thank you.", passedButtons: [Statics.GOT_IT])
         //self.homeController?.presentBookingController()
     }
     

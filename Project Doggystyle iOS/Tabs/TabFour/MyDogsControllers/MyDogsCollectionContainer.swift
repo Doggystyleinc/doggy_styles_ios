@@ -8,8 +8,9 @@
 import Foundation
 import UIKit
 
-
 class MyDogsCollectionContainer : UIViewController {
+    
+    var homeViewController : HomeViewController?
     
     lazy var backButton : UIButton = {
         
@@ -53,7 +54,13 @@ class MyDogsCollectionContainer : UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
-        self.callDataEngine()
+        self.reloadDoggyCollection()
+        self.addObservers()
+    }
+    
+    func addObservers() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.reloadDoggyCollection), name: NSNotification.Name(Statics.RELOAD_DOGGY_PROFILE_SETTINGS), object: nil)
     }
     
     func addViews() {
@@ -79,11 +86,16 @@ class MyDogsCollectionContainer : UIViewController {
 
     }
     
-    func callDataEngine() {
+   @objc func reloadDoggyCollection() {
         
+        DispatchQueue.main.async {
+            self.myDogsCollectionView.reloadData()
+        }
+    }
+    
+    @objc func handleAddNewDog() {
         
-        
-        
+        self.homeViewController?.handleAddNewDogFlow()
     }
     
     @objc func handleBackButton() {

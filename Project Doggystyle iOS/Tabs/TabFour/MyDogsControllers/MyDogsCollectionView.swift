@@ -11,7 +11,8 @@ import UIKit
 class MyDogsCollectionView : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
     private let addDogsCollecctionID = "addDogsCollecctionID"
-    
+    private let footerID = "footerID"
+
     var myDogsCollectionContainer : MyDogsCollectionContainer?
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
@@ -34,13 +35,30 @@ class MyDogsCollectionView : UICollectionView, UICollectionViewDelegateFlowLayou
         self.delaysContentTouches = true
         
         self.register(MyDogsCollectionFeeder.self, forCellWithReuseIdentifier: self.addDogsCollecctionID)
+        self.register(DoggyFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: self.footerID)
         
         
     }
     
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+
+        if let cell = self.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: footerID, for: indexPath) as? DoggyFooter {
+            cell.myDogsCollectionView = self
+            return cell
+            
+        } else {
+            return UICollectionReusableView()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        
+        return CGSize(width: UIScreen.main.bounds.width, height: 50)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return 4
+        return doggyProfileDataSource.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -54,6 +72,32 @@ class MyDogsCollectionView : UICollectionView, UICollectionViewDelegateFlowLayou
         let cell = self.dequeueReusableCell(withReuseIdentifier: self.addDogsCollecctionID, for: indexPath) as! MyDogsCollectionFeeder
         
         cell.myDogsCollectionView = self
+        
+        if doggyProfileDataSource.count > 0 {
+            
+            let feeder = doggyProfileDataSource[indexPath.item]
+            
+            let dogProfileImageURL = feeder.dog_builder_profile_url ?? "nil"
+            let dogName = feeder.dog_builder_name ?? "nil"
+            let dogBreed = feeder.dog_builder_breed ?? "nil"
+            
+            //PROFILE PHOTO
+            if dogProfileImageURL != "nil" {
+                cell.profileImageView.loadImageGeneralUse(dogProfileImageURL) { complete in
+                    print("Loaded the pups name")
+                }
+            }
+            
+            //NAME
+            if dogName != "nil" {
+                cell.dogNameLabel.text = dogName.capitalizingFirstLetter()
+            }
+            
+            //NAME
+            if dogBreed != "nil" {
+                cell.breedLabel.text = dogBreed.capitalizingFirstLetter()
+            }
+        }
         
         return cell
     }
@@ -73,6 +117,13 @@ class MyDogsCollectionView : UICollectionView, UICollectionViewDelegateFlowLayou
         
         print(indexPath)
     }
+    
+    
+    @objc func handleAddNewDogButton(sender : UIButton) {
+        
+        self.myDogsCollectionContainer?.handleAddNewDog()
+    }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -206,8 +257,61 @@ class MyDogsCollectionFeeder : UICollectionViewCell {
         self.myDogsCollectionView?.handleEditButton(sender : sender)
         
     }
+   
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class DoggyFooter : UICollectionViewCell {
+    
+    var myDogsCollectionView : MyDogsCollectionView?
+    
+    lazy var addNewButton : UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.setTitle("+ Add New", for: UIControl.State.normal)
+        cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
+        cbf.titleLabel?.adjustsFontSizeToFitWidth = true
+        cbf.titleLabel?.numberOfLines = 1
+        cbf.titleLabel?.adjustsFontForContentSizeCategory = true
+        cbf.titleLabel?.textColor = coreOrangeColor
+        cbf.backgroundColor = .clear
+        cbf.tintColor = coreOrangeColor
+        cbf.addTarget(self, action: #selector(self.handleAddNewDogButton(sender:)), for: .touchUpInside)
+        
+        return cbf
+        
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.backgroundColor = .clear
+        self.addViews()
+        
+    }
+    
+    func addViews() {
+        
+        self.addSubview(self.addNewButton)
+        
+        self.addNewButton.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0).isActive = true
+        self.addNewButton.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
+        self.addNewButton.sizeToFit()
+        
+    }
+    
+    @objc func handleAddNewDogButton(sender : UIButton) {
+        
+        print("added here")
+        groomLocationFollowOnRoute = .fromSettings
+        self.myDogsCollectionView?.handleAddNewDogButton(sender:sender)
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
 }

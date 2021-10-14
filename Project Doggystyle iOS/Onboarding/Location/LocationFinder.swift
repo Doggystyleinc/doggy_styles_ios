@@ -996,6 +996,7 @@ public enum GroomLocationFollowOnRoute {
     
     case fromRegistration
     case fromApplication
+    case fromSettings
     
 }
 

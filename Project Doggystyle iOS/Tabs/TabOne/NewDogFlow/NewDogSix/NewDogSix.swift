@@ -162,12 +162,21 @@ class NewDogSix : UIViewController {
         let locational_data = userProfileStruct.user_grooming_locational_data ?? ["nil" : "nil"]
         let hasGroomingLocation = locational_data["found_grooming_location"] as? Bool ?? false
         
+        if groomLocationFollowOnRoute != .fromSettings {
+        
         //IF WE DO SERVICE THE CLIENTS LOCATION, WE ENABLE THE BOOK NOW BUTTON
         if hasGroomingLocation == true {
             self.bookNowButton.isHidden = false
         } else {
         //IF WE DO NOT SERVICE THE CLIENTS LOCATION, WE CANNOT BOOK THEM AN APT
             self.bookNowButton.isHidden = true
+        }
+            
+        } else {
+            self.bookNowButton.isHidden = true
+            self.addAnotherPupButton.isHidden = true
+            self.returnToDashboard.setTitle("Return to My Dogs", for: .normal)
+            self.returnToDashboard.isHidden = false
         }
     }
     
@@ -217,7 +226,7 @@ class NewDogSix : UIViewController {
     //MARK: - RETURN OR GO TO DASHBOARD
     @objc func handleReturnToDashboard() {
         
-        if groomLocationFollowOnRoute == .fromApplication {
+        if groomLocationFollowOnRoute == .fromApplication || groomLocationFollowOnRoute == .fromSettings {
         UIDevice.vibrateLight()
         self.navigationController?.dismiss(animated: true, completion: nil)
         } else if groomLocationFollowOnRoute == .fromRegistration {

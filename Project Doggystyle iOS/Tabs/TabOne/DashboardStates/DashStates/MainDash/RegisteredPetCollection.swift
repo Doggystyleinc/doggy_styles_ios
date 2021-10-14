@@ -213,6 +213,7 @@ class PetCollectionFeeder : UICollectionViewCell {
         
         if let tappableArea = sender.view as? UIImageView {
             
+            groomLocationFollowOnRoute = .fromApplication
             self.registeredPetCollection?.handleAddDog(sender:tappableArea)
             
         }

@@ -350,6 +350,9 @@ struct Statics {
     static let HANDLE_SERVICE_UNSATISIFED : String = "HANDLE_SERVICE_UNSATISIFED"
     static let RUN_LOCATION_CHECKER : String = "RUN_LOCATION_CHECKER"
     static let RUN_DATA_ENGINE : String = "RUN_DATA_ENGINE"
+    static let RELOAD_DOGGY_PROFILE_SETTINGS : String = "RELOAD_DOGGY_PROFILE_SETTINGS"
+
+    
 
 }
 
@@ -1016,32 +1019,43 @@ extension Float {
     }
 }
 
-//Radian Conversions - 3D
+//MARK: - Radian Conversions - 3D
 extension BinaryInteger {
     var degreesToRadians: CGFloat { return CGFloat(Int(self)) * .pi / 180 }
 }
 
-//Reverse conversions - 3d
+//MARK: - Reverse conversions - 3d
 extension FloatingPoint {
     var degreesToRadians: Self { return self * .pi / 180 }
     var radiansToDegrees: Self { return self * 180 / .pi }
 }
 
-//removes all white spaces before, after and in between from a string
+//MARK: - removes all white spaces before, after and in between from a string
 extension String {
     func removingWhitespaces() -> String {
         return components(separatedBy: .whitespaces).joined()
     }
 }
 
-//FILTTERS STRINGS FOR NUMERIC VALUES ONLY
+//MARK: - FILTTERS STRINGS FOR NUMERIC VALUES ONLY
 extension String {
     var numbers: String {
         return String(filter { "0"..."9" ~= $0 })
     }
 }
 
-//OPENS URLS AS STRINGS
+//MARK: - STRING FORMATTING
+extension String {
+    func capitalizingFirstLetter() -> String {
+        return prefix(1).capitalized + dropFirst()
+    }
+
+    mutating func capitalizeFirstLetter() {
+        self = self.capitalizingFirstLetter()
+    }
+}
+
+//MARK: - OPENS URLS AS STRINGS
 extension UIView {
     
     func openUrl(passedUrlString : String) {

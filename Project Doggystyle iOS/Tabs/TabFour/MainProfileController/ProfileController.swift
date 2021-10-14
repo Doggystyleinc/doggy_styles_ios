@@ -293,6 +293,14 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         
     }
     
+    @objc func handleRefurFriend() {
+        
+        let refurAFriendController = RefurAFriendController()
+        refurAFriendController.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.present(refurAFriendController, animated: true, completion: nil)
+        
+    }
+    
     @objc func handleAddDogController() {
         
         var hasDog : Bool = false
@@ -317,6 +325,7 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
             
             //MARK: - PRESENT IF THEIR ARE DOGS IN THEIR PROFILE
             let myDogsCollectionContainer = MyDogsCollectionContainer()
+            myDogsCollectionContainer.homeViewController = self.homeController
             myDogsCollectionContainer.navigationController?.navigationBar.isHidden = true
             myDogsCollectionContainer.modalPresentationStyle = .fullScreen
             self.navigationController?.pushViewController(myDogsCollectionContainer, animated: true)
