@@ -108,7 +108,7 @@ class EmptyStateOne : UIView {
         cbf.layer.shadowOffset = CGSize(width: 2, height: 3)
         cbf.layer.shadowRadius = 9
         cbf.layer.shouldRasterize = false
-        cbf.addTarget(self.dashboardController, action: #selector(self.dashboardController?.handleReferAFriendButton), for: UIControl.Event.touchUpInside)
+        cbf.addTarget(self.dashboardController, action: #selector(self.dashboardController?.handleReferralProgram), for: UIControl.Event.touchUpInside)
         
         return cbf
         

@@ -28,7 +28,6 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         handleOne = DatabaseHandle(),
         childCounter : Int = 0,
         homeController: HomeViewController?,
-//        doggyProfileDataSource = [DoggyProfileDataSource](),
         stateListener : StateListener = .NoGroomerLocationNoDoggyProfile
     
     let databaseRef = Database.database().reference(),
@@ -43,7 +42,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         cbf.contentMode = .scaleAspectFill
         let image = UIImage(named: "ReFur Icon")?.withRenderingMode(.alwaysOriginal)
         cbf.setImage(image, for: .normal)
-        cbf.addTarget(self, action: #selector(self.didTapRefur), for: UIControl.Event.touchUpInside)
+        cbf.addTarget(self, action: #selector(self.handleReferralProgram), for: UIControl.Event.touchUpInside)
         cbf.clipsToBounds = false
         cbf.layer.masksToBounds = false
         cbf.layer.shadowColor = UIColor.black.cgColor
@@ -263,8 +262,6 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
     }
     
     @objc func callDataEngine() {
-
-        self.handleDatasourceFailure()
         
         //MARK: - LOCATIONAL DATA FOR HAS A GROOMING LOCATION
         let locational_data = userProfileStruct.user_grooming_locational_data ?? ["nil" : "nil"]
@@ -447,10 +444,6 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         
     }
     
-    @objc func handleReferAFriendButton() {
-        self.didTapRefur()
-    }
-    
     @objc func handleNewDogFlow() {
        
         groomLocationFollowOnRoute = .fromApplication
@@ -460,7 +453,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
     
     @objc func presentAppointmentsController() {
         
-        self.handleCustomPopUpAlert(title: "🚧CONSTRUCTION🚧", message: "We'll be up and running shortly for booking - thank you.", passedButtons: [Statics.GOT_IT])
+        self.handleCustomPopUpAlert(title: "🚧 CONSTRUCTION 🚧", message: "We'll be up and running shortly for 'booking' - thank you.", passedButtons: [Statics.GOT_IT])
         //self.homeController?.presentBookingController()
     }
     
@@ -488,9 +481,18 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         }
     }
     
-    @objc private func didTapRefur() {
-        let refurVC = RefurAFriendController()
-        self.present(refurVC, animated: true)
+    @objc func handleReferralProgram() {
+        
+        //MARK: - LOCATIONAL DATA FOR HAS A GROOMING LOCATION
+        let locational_data = userProfileStruct.user_grooming_locational_data ?? ["nil" : "nil"]
+        let hasGroomingLocation = locational_data["found_grooming_location"] as? Bool ?? false
+        
+        let referralProgram = ReferralProgram()
+        referralProgram.modalPresentationStyle = .fullScreen
+        referralProgram.navigationController?.navigationBar.isHidden = true
+        referralProgram.clientHasGroomingLocation = hasGroomingLocation
+        self.navigationController?.present(referralProgram, animated: true, completion: nil)
+        
     }
     
     @objc func handleNotificationsController() {

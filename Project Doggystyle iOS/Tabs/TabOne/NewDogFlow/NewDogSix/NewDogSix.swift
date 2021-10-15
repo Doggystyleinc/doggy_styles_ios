@@ -273,6 +273,7 @@ class NewDogSix : UIViewController {
         }
     }
     
+    //MARK: - HOME VIEW CONTROLLER
     func presentHomeController() {
         let homeVC = HomeViewController()
         let navVC = UINavigationController(rootViewController: homeVC)

@@ -295,9 +295,25 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
     
     @objc func handleRefurFriend() {
         
-        let refurAFriendController = RefurAFriendController()
-        refurAFriendController.navigationController?.navigationBar.isHidden = true
-        self.navigationController?.present(refurAFriendController, animated: true, completion: nil)
+        //MARK: - LOCATIONAL DATA FOR HAS A GROOMING LOCATION
+        let locational_data = userProfileStruct.user_grooming_locational_data ?? ["nil" : "nil"]
+        let hasGroomingLocation = locational_data["found_grooming_location"] as? Bool ?? false
+        
+        let referralProgram = ReferralProgram()
+        referralProgram.modalPresentationStyle = .fullScreen
+        referralProgram.navigationController?.navigationBar.isHidden = true
+        referralProgram.clientHasGroomingLocation = hasGroomingLocation
+        self.navigationController?.present(referralProgram, animated: true, completion: nil)
+
+    }
+    
+    @objc func handleContactUs() {
+        
+        let contactUsProfileController = ContactUsProfileController()
+        let nav = UINavigationController(rootViewController: contactUsProfileController)
+        nav.navigationController?.navigationBar.isHidden = true
+        nav.modalPresentationStyle = .fullScreen
+        self.navigationController?.present(nav, animated: true, completion: nil)
         
     }
     

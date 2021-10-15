@@ -351,9 +351,8 @@ struct Statics {
     static let RUN_LOCATION_CHECKER : String = "RUN_LOCATION_CHECKER"
     static let RUN_DATA_ENGINE : String = "RUN_DATA_ENGINE"
     static let RELOAD_DOGGY_PROFILE_SETTINGS : String = "RELOAD_DOGGY_PROFILE_SETTINGS"
-
+    static let  SUPPORT_PHONE_NUMBER : String = "6475988823"
     
-
 }
 
 extension UICollectionView {
