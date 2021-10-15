@@ -490,7 +490,8 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         let referralProgram = ReferralProgram()
         referralProgram.modalPresentationStyle = .fullScreen
         referralProgram.navigationController?.navigationBar.isHidden = true
-        referralProgram.clientHasGroomingLocation = hasGroomingLocation
+        referralProgram.clientHasGroomingLocation = true
+        
         self.navigationController?.present(referralProgram, animated: true, completion: nil)
         
     }

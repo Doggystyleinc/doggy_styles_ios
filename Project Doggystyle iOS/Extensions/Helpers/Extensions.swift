@@ -339,6 +339,8 @@ struct Statics {
     static let FILE : String = "File"
     static let PHOTO : String = "Photo"
     static let CANCEL : String = "Cancel"
+    static let SAVE : String = "Save"
+
     
     //MARK: - LISTENERS AND OBSERVERS
     
