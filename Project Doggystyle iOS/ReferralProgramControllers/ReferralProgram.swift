@@ -235,7 +235,6 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         self.earnLabel.topAnchor.constraint(equalTo: self.backButton.bottomAnchor, constant: 23).isActive = true
         self.earnLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.earnLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
-//        self.earnLabel.heightAnchor.constraint(equalToConstant: 35).isActive = true
         self.earnLabel.sizeToFit()
         
         self.descriptionLabel.topAnchor.constraint(equalTo: self.earnLabel.bottomAnchor, constant: 29).isActive = true

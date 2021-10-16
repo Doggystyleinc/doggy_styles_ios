@@ -216,6 +216,7 @@
 		E37D20D627188D5600BF859A /* glassesdog@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E37D20D327188D5600BF859A /* glassesdog@3x.png */; };
 		E37D20D727188D5600BF859A /* glassesdog.png in Resources */ = {isa = PBXBuildFile; fileRef = E37D20D427188D5600BF859A /* glassesdog.png */; };
 		E37D20DA2718BA1800BF859A /* ReferralProgram.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D20D92718BA1800BF859A /* ReferralProgram.swift */; };
+		E37D20DC271A53CA00BF859A /* ReferralMonetaryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D20DB271A53CA00BF859A /* ReferralMonetaryController.swift */; };
 		E38B7FD526C453130013D72D /* BorderSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FD426C453130013D72D /* BorderSingleton.swift */; };
 		E38B7FD926C457640013D72D /* invalidName.png in Resources */ = {isa = PBXBuildFile; fileRef = E38B7FD626C457640013D72D /* invalidName.png */; };
 		E38B7FDA26C457640013D72D /* invalidName@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E38B7FD726C457640013D72D /* invalidName@3x.png */; };
@@ -477,6 +478,7 @@
 		E37D20D327188D5600BF859A /* glassesdog@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "glassesdog@3x.png"; sourceTree = "<group>"; };
 		E37D20D427188D5600BF859A /* glassesdog.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glassesdog.png; sourceTree = "<group>"; };
 		E37D20D92718BA1800BF859A /* ReferralProgram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralProgram.swift; sourceTree = "<group>"; };
+		E37D20DB271A53CA00BF859A /* ReferralMonetaryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralMonetaryController.swift; sourceTree = "<group>"; };
 		E38B7FD426C453130013D72D /* BorderSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderSingleton.swift; sourceTree = "<group>"; };
 		E38B7FD626C457640013D72D /* invalidName.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = invalidName.png; sourceTree = "<group>"; };
 		E38B7FD726C457640013D72D /* invalidName@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invalidName@3x.png"; sourceTree = "<group>"; };
@@ -1188,6 +1190,7 @@
 			isa = PBXGroup;
 			children = (
 				E37D20D92718BA1800BF859A /* ReferralProgram.swift */,
+				E37D20DB271A53CA00BF859A /* ReferralMonetaryController.swift */,
 			);
 			path = ReferralProgramControllers;
 			sourceTree = "<group>";
@@ -1819,6 +1822,7 @@
 				CD6DCFF6267A820700BC376B /* Pet.swift in Sources */,
 				E397406226D423A30084742F /* AppointmentThree.swift in Sources */,
 				CDE8711C2652E3030082551B /* TextField+Ext.swift in Sources */,
+				E37D20DC271A53CA00BF859A /* ReferralMonetaryController.swift in Sources */,
 				E36EE55B26B781050009A0EF /* RegisteredPetCollection.swift in Sources */,
 				CD6DD001267AD81100BC376B /* AppointmentsViewController.swift in Sources */,
 				E3A0AD5B26C0446500E813D5 /* DogBreedHelper.swift in Sources */,
