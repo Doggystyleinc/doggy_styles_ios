@@ -89,8 +89,8 @@ class ProfileCollectionSubview : UICollectionView, UICollectionViewDelegateFlowL
         switch feederLabels {
         
         case "My dogs" : self.profileController?.handleAddDogController()
-        case "Payment Methods" : print("Payment")
-        case "Notifications" : print("Notifications")
+        case "Payment Methods" : self.profileController?.handlePaymentPreferencesController()
+        case "Notifications" : self.profileController?.handleNotificationManagementController()
         case "Contact Us" : self.profileController?.handleContactUs()
         case "Re-fur a Doggy" : self.profileController?.handleRefurFriend()
 

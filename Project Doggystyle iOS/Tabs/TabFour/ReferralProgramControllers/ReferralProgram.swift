@@ -415,7 +415,7 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
                     } else {
                        
                         self.completeAndFinalizeCode(referralCode: stringIteration, user_uid: user_uid) { completion in
-                            print("updated referral code")
+                            self.pushOverReferralMonetaryController()
                         }
                     }
                 }
@@ -423,10 +423,18 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
             } else {
                 
                 self.completeAndFinalizeCode(referralCode: stringIteration, user_uid: user_uid) { completion in
-                    print("updated referral code")
+                    self.pushOverReferralMonetaryController()
                 }
             }
         }
+    }
+    
+    func pushOverReferralMonetaryController() {
+        
+        let referralMonetaryController = ReferralMonetaryController()
+        referralMonetaryController.modalPresentationStyle = .fullScreen
+        referralMonetaryController.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.pushViewController(referralMonetaryController, animated: true)
     }
     
     func completeAndFinalizeCode(referralCode : String, user_uid : String, completion : @escaping (_ isComplete : Bool)->()) {

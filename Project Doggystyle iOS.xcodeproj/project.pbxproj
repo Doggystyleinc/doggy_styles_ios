@@ -217,6 +217,12 @@
 		E37D20D727188D5600BF859A /* glassesdog.png in Resources */ = {isa = PBXBuildFile; fileRef = E37D20D427188D5600BF859A /* glassesdog.png */; };
 		E37D20DA2718BA1800BF859A /* ReferralProgram.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D20D92718BA1800BF859A /* ReferralProgram.swift */; };
 		E37D20DC271A53CA00BF859A /* ReferralMonetaryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D20DB271A53CA00BF859A /* ReferralMonetaryController.swift */; };
+		E37D20E0271DDB8A00BF859A /* referral box dog@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E37D20DD271DDB8A00BF859A /* referral box dog@2x.png */; };
+		E37D20E1271DDB8A00BF859A /* referral box dog.png in Resources */ = {isa = PBXBuildFile; fileRef = E37D20DE271DDB8A00BF859A /* referral box dog.png */; };
+		E37D20E2271DDB8A00BF859A /* referral box dog@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E37D20DF271DDB8A00BF859A /* referral box dog@3x.png */; };
+		E37D20E5271DDD0B00BF859A /* NotificationManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D20E4271DDD0B00BF859A /* NotificationManagement.swift */; };
+		E37D20E7271DE3E000BF859A /* NotificationCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D20E6271DE3E000BF859A /* NotificationCollectionView.swift */; };
+		E37D20EA271DF4B500BF859A /* PaymentMethodsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D20E9271DF4B500BF859A /* PaymentMethodsController.swift */; };
 		E38B7FD526C453130013D72D /* BorderSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38B7FD426C453130013D72D /* BorderSingleton.swift */; };
 		E38B7FD926C457640013D72D /* invalidName.png in Resources */ = {isa = PBXBuildFile; fileRef = E38B7FD626C457640013D72D /* invalidName.png */; };
 		E38B7FDA26C457640013D72D /* invalidName@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E38B7FD726C457640013D72D /* invalidName@3x.png */; };
@@ -479,6 +485,12 @@
 		E37D20D427188D5600BF859A /* glassesdog.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glassesdog.png; sourceTree = "<group>"; };
 		E37D20D92718BA1800BF859A /* ReferralProgram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralProgram.swift; sourceTree = "<group>"; };
 		E37D20DB271A53CA00BF859A /* ReferralMonetaryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralMonetaryController.swift; sourceTree = "<group>"; };
+		E37D20DD271DDB8A00BF859A /* referral box dog@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "referral box dog@2x.png"; sourceTree = "<group>"; };
+		E37D20DE271DDB8A00BF859A /* referral box dog.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "referral box dog.png"; sourceTree = "<group>"; };
+		E37D20DF271DDB8A00BF859A /* referral box dog@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "referral box dog@3x.png"; sourceTree = "<group>"; };
+		E37D20E4271DDD0B00BF859A /* NotificationManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManagement.swift; sourceTree = "<group>"; };
+		E37D20E6271DE3E000BF859A /* NotificationCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCollectionView.swift; sourceTree = "<group>"; };
+		E37D20E9271DF4B500BF859A /* PaymentMethodsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsController.swift; sourceTree = "<group>"; };
 		E38B7FD426C453130013D72D /* BorderSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderSingleton.swift; sourceTree = "<group>"; };
 		E38B7FD626C457640013D72D /* invalidName.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = invalidName.png; sourceTree = "<group>"; };
 		E38B7FD726C457640013D72D /* invalidName@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invalidName@3x.png"; sourceTree = "<group>"; };
@@ -735,7 +747,6 @@
 				E3B11AB6268FB88100B5B6F8 /* Tabs */,
 				E361FBF826CEF4FE00026DE3 /* Booking */,
 				E357D2F026E2AAE500CDF90E /* PaymentControllers */,
-				E37D20D82718B9F400BF859A /* ReferralProgramControllers */,
 				E357D2E726E020C000CDF90E /* Enums */,
 				CDE8714D2652E65A0082551B /* View Controllers */,
 				E3B11AB3268FA8B500B5B6F8 /* Extensions */,
@@ -1167,6 +1178,9 @@
 		E37D20C227173B1700BF859A /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E37D20DE271DDB8A00BF859A /* referral box dog.png */,
+				E37D20DD271DDB8A00BF859A /* referral box dog@2x.png */,
+				E37D20DF271DDB8A00BF859A /* referral box dog@3x.png */,
 				E37D20D427188D5600BF859A /* glassesdog.png */,
 				E37D20D227188D5600BF859A /* glassesdog@2x.png */,
 				E37D20D327188D5600BF859A /* glassesdog@3x.png */,
@@ -1193,6 +1207,23 @@
 				E37D20DB271A53CA00BF859A /* ReferralMonetaryController.swift */,
 			);
 			path = ReferralProgramControllers;
+			sourceTree = "<group>";
+		};
+		E37D20E3271DDCF800BF859A /* NotificationManagement */ = {
+			isa = PBXGroup;
+			children = (
+				E37D20E4271DDD0B00BF859A /* NotificationManagement.swift */,
+				E37D20E6271DE3E000BF859A /* NotificationCollectionView.swift */,
+			);
+			path = NotificationManagement;
+			sourceTree = "<group>";
+		};
+		E37D20E8271DF48300BF859A /* PaymentMethodController */ = {
+			isa = PBXGroup;
+			children = (
+				E37D20E9271DF4B500BF859A /* PaymentMethodsController.swift */,
+			);
+			path = PaymentMethodController;
 			sourceTree = "<group>";
 		};
 		E38B7FDC26C45C530013D72D /* NewDogOneGroup */ = {
@@ -1376,9 +1407,12 @@
 		E3B11AB8268FC9C700B5B6F8 /* TabFour */ = {
 			isa = PBXGroup;
 			children = (
+				E37D20E8271DF48300BF859A /* PaymentMethodController */,
+				E37D20E3271DDCF800BF859A /* NotificationManagement */,
 				E37D20BE27166B0200BF859A /* MainProfileController */,
 				E37D20BF27166B1400BF859A /* MyDogsControllers */,
 				E37D20CD2717CF0100BF859A /* ContactUsController */,
+				E37D20D82718B9F400BF859A /* ReferralProgramControllers */,
 			);
 			path = TabFour;
 			sourceTree = "<group>";
@@ -1562,8 +1596,10 @@
 				E36EE57626B876500009A0EF /* profile_doggy.png in Resources */,
 				E39C665726A899F0004A0E93 /* Rubik-LightItalic.ttf in Resources */,
 				E39C665F26A8CEEF004A0E93 /* paw_animation.json in Resources */,
+				E37D20E0271DDB8A00BF859A /* referral box dog@2x.png in Resources */,
 				E39C665826A899F0004A0E93 /* Rubik-Medium.ttf in Resources */,
 				E334FBB2270F9E8C003F24D5 /* Dogm 1.png in Resources */,
+				E37D20E2271DDB8A00BF859A /* referral box dog@3x.png in Resources */,
 				E39C665926A899F0004A0E93 /* Rubik-MediumItalic.ttf in Resources */,
 				E39C665A26A899F0004A0E93 /* Rubik-Regular.ttf in Resources */,
 				E39C665B26A899F0004A0E93 /* Rubik-SemiBold.ttf in Resources */,
@@ -1587,6 +1623,7 @@
 				E326572226B1BEF9004A15F6 /* frame@3x.png in Resources */,
 				CDE871022652E2080082551B /* Roboto-Light.ttf in Resources */,
 				E36EE55326B77D9B0009A0EF /* hoverLight1@3x.png in Resources */,
+				E37D20E1271DDB8A00BF859A /* referral box dog.png in Resources */,
 				E352FF6B26A63373003BD59F /* group18323@3x.png in Resources */,
 				E396B92526FD33C50087F106 /* bone_nav_icon@3x.png in Resources */,
 				CD319F73267936AD00F48E3C /* Poppins-SemiBold.ttf in Resources */,
@@ -1786,6 +1823,7 @@
 				E3A0AD5426BDAA2000E813D5 /* NewDogFour.swift in Sources */,
 				CD6DCFFA267A8D7400BC376B /* DSSemiBoldLabel.swift in Sources */,
 				CD6DD01D26827E6A00BC376B /* LoginController.swift in Sources */,
+				E37D20E7271DE3E000BF859A /* NotificationCollectionView.swift in Sources */,
 				E37D20CA2717516A00BF859A /* MyDogsCollectionContainer.swift in Sources */,
 				CDCCD093265C2563007ABECF /* NotServicedNumberSubmittedViewController.swift in Sources */,
 				E3107F8626961A6B00CDBB37 /* MainLoadingScreen.swift in Sources */,
@@ -1824,8 +1862,10 @@
 				CDE8711C2652E3030082551B /* TextField+Ext.swift in Sources */,
 				E37D20DC271A53CA00BF859A /* ReferralMonetaryController.swift in Sources */,
 				E36EE55B26B781050009A0EF /* RegisteredPetCollection.swift in Sources */,
+				E37D20E5271DDD0B00BF859A /* NotificationManagement.swift in Sources */,
 				CD6DD001267AD81100BC376B /* AppointmentsViewController.swift in Sources */,
 				E3A0AD5B26C0446500E813D5 /* DogBreedHelper.swift in Sources */,
+				E37D20EA271DF4B500BF859A /* PaymentMethodsController.swift in Sources */,
 				E3B11ABC268FCBC900B5B6F8 /* ProfileCollectionView.swift in Sources */,
 				E357D2EB26E027F100CDF90E /* FullPackageContainer.swift in Sources */,
 				CD6868902656EF920064ADFE /* LocationNotServicedViewController.swift in Sources */,
@@ -2031,7 +2071,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Project Doggystyle iOS/Project Doggystyle iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.1;
+				CURRENT_PROJECT_VERSION = 1.1.2;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2053,7 +2093,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Project Doggystyle iOS/Project Doggystyle iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.1;
+				CURRENT_PROJECT_VERSION = 1.1.2;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";

@@ -98,7 +98,7 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         let thl = UILabel()
         thl.translatesAutoresizingMaskIntoConstraints = false
         thl.textAlignment = .center
-        thl.text = "$25"
+        thl.text = "$0"
         thl.font = UIFont(name: rubikMedium, size: 24)
         thl.numberOfLines = 1
         thl.adjustsFontSizeToFitWidth = true
@@ -126,7 +126,7 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         let thl = UILabel()
         thl.translatesAutoresizingMaskIntoConstraints = false
         thl.textAlignment = .center
-        thl.text = "$40"
+        thl.text = "$0"
         thl.font = UIFont(name: rubikMedium, size: 24)
         thl.numberOfLines = 1
         thl.adjustsFontSizeToFitWidth = true
@@ -194,8 +194,8 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         
         let thl = UILabel()
         thl.translatesAutoresizingMaskIntoConstraints = false
-        thl.textAlignment = .left
-        thl.text = "doggystyle.ca/maddielovesdogs"
+        thl.textAlignment = .center
+        thl.text = ""
         thl.font = UIFont(name: rubikMedium, size: 16)
         thl.numberOfLines = 1
         thl.adjustsFontSizeToFitWidth = true
@@ -225,7 +225,7 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         dcl.backgroundColor = .clear
         dcl.contentMode = .scaleAspectFit
         dcl.isUserInteractionEnabled = false
-        let image = UIImage(named: "dog_glasses_icon")?.withRenderingMode(.alwaysOriginal)
+        let image = UIImage(named: "referral_dog_image")?.withRenderingMode(.alwaysOriginal)
         dcl.image = image
         
         return dcl

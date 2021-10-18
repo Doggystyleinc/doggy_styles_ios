@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ServicesController: UIViewController {
+final class ServicesController: UIViewController, CustomAlertCallBackProtocol {
     
     var homeController: HomeViewController?
     
@@ -82,7 +82,7 @@ final class ServicesController: UIViewController {
                                    range: range2)
         
         cbf.setAttributedTitle(attributedStr, for: .normal)
-        cbf.addTarget(self, action: #selector(self.handleBookingController), for: .touchUpInside)
+        cbf.addTarget(self, action: #selector(self.presentAppointmentsController), for: .touchUpInside)
         
         return cbf
         
@@ -125,7 +125,34 @@ final class ServicesController: UIViewController {
         
     }
     
-    @objc func handleBookingController() {
-        self.homeController?.presentBookingController()
+    @objc func presentAppointmentsController() {
+        
+        self.handleCustomPopUpAlert(title: "🚧 CONSTRUCTION 🚧", message: "We'll be up and running shortly for 'booking' - thank you.", passedButtons: [Statics.GOT_IT])
+//        self.homeController?.presentBookingController()
+
+    }
+    
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        alert.passedIconName = .paw
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.GOT_IT: print("got it")
+            
+        default: print("Should not hit")
+            
+        }
     }
 }

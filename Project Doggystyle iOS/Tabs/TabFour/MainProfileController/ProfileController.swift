@@ -360,4 +360,25 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
             
         }
     }
+    
+    @objc func handleNotificationManagementController() {
+        
+        //MARK: - PRESENT IF THEIR ARE NO DOGS IN THEIR PROFILE
+        let notificationManagement = NotificationManagement()
+        let nav = UINavigationController(rootViewController: notificationManagement)
+        nav.modalPresentationStyle = .fullScreen
+        nav.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.present(nav, animated: true, completion: nil)
+        
+    }
+    
+    @objc func handlePaymentPreferencesController() {
+        
+        let paymentMethodsController = PaymentMethodsController()
+        let nav = UINavigationController(rootViewController: paymentMethodsController)
+        nav.modalPresentationStyle = .fullScreen
+        nav.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.present(nav, animated: true, completion: nil)
+        
+    }
 }

@@ -13,7 +13,7 @@ import GooglePlaces
 class HomeViewController: UITabBarController, CLLocationManagerDelegate, CustomAlertCallBackProtocol {
     
     private let dashboardController = DashboardViewController(),
-                appointmentController = AppointmentsViewController(),
+                //appointmentController = AppointmentsViewController(),
                 profileController = ProfileController(),
                 servicesController = ServicesController()
     
@@ -94,13 +94,13 @@ class HomeViewController: UITabBarController, CLLocationManagerDelegate, CustomA
         tabTwo.tabBarItem = UITabBarItem(title: nil, image: tabTwoIcon, selectedImage: tabTwoFillIcon)
         
         //MARK: - Third Tab
-        let tabThreeIcon = UIImage(named: "Appointments Icon")?.withTintColor(.deselectedTab).withRenderingMode(.alwaysOriginal)
-        let tabThreeFillIcon = UIImage(named: "Appointments Icon")?.withTintColor(.dsOrange).withRenderingMode(.alwaysOriginal)
+//        let tabThreeIcon = UIImage(named: "Appointments Icon")?.withTintColor(.deselectedTab).withRenderingMode(.alwaysOriginal)
+//        let tabThreeFillIcon = UIImage(named: "Appointments Icon")?.withTintColor(.dsOrange).withRenderingMode(.alwaysOriginal)
         
-        let tabThree = UINavigationController(rootViewController: appointmentController)
-        appointmentController.homeController = self
-        tabThree.navigationBar.isHidden = true
-        tabThree.tabBarItem = UITabBarItem(title: nil, image: tabThreeIcon, selectedImage: tabThreeFillIcon)
+//        let tabThree = UINavigationController(rootViewController: appointmentController)
+//        appointmentController.homeController = self
+//        tabThree.navigationBar.isHidden = true
+//        tabThree.tabBarItem = UITabBarItem(title: nil, image: tabThreeIcon, selectedImage: tabThreeFillIcon)
         
         //MARK: - Fourth Tab
         let tabFourIcon = UIImage(named: "Profile Icon")?.withTintColor(.deselectedTab).withRenderingMode(.alwaysOriginal)
@@ -111,7 +111,7 @@ class HomeViewController: UITabBarController, CLLocationManagerDelegate, CustomA
         tabFour.navigationBar.isHidden = true
         tabFour.tabBarItem = UITabBarItem(title: nil, image: tabFourIcon, selectedImage: tabFourFillIcon)
         
-        self.viewControllers = [tabOne, tabTwo, tabThree, tabFour]
+        self.viewControllers = [tabOne, tabTwo, tabFour]
         self.switchTabs(tabIndex: 0)
     }
     
