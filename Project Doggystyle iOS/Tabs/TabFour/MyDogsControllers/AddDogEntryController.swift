@@ -103,7 +103,7 @@ class AddDogEntryController : UIViewController {
         self.view.addSubview(self.descriptionLabel)
 
         self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true
         self.backButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
         self.backButton.widthAnchor.constraint(equalToConstant: 54).isActive = true
         

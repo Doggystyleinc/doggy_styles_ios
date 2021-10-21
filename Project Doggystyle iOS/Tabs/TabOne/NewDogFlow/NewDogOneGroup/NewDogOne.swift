@@ -671,6 +671,7 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
             let homeVC = HomeViewController()
             let navVC = UINavigationController(rootViewController: homeVC)
             navVC.modalPresentationStyle = .fullScreen
+            navVC.navigationBar.isHidden = true
             navigationController?.present(navVC, animated: true) 
         }
     }

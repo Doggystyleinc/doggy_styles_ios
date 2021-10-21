@@ -294,7 +294,7 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
     }
     
     @objc func handleRefurFriend() {
-   
+        
         //MARK: - LOCATIONAL DATA FOR HAS A GROOMING LOCATION
         let locational_data = userProfileStruct.user_grooming_locational_data ?? ["nil" : "nil"]
         let hasGroomingLocation = locational_data["found_grooming_location"] as? Bool ?? false
@@ -304,18 +304,20 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         if referralCodeGrab == "nil" {
         
         let referralProgram = ReferralProgram()
-        referralProgram.modalPresentationStyle = .fullScreen
-        referralProgram.navigationController?.navigationBar.isHidden = true
+        let nav = UINavigationController(rootViewController: referralProgram)
+        nav.modalPresentationStyle = .fullScreen
+        nav.navigationBar.isHidden = true
         referralProgram.clientHasGroomingLocation = hasGroomingLocation
-        self.navigationController?.present(referralProgram, animated: true, completion: nil)
+        self.navigationController?.present(nav, animated: true, completion: nil)
             
         } else {
-            
+
             let referralMonetaryController = ReferralMonetaryController()
-            referralMonetaryController.modalPresentationStyle = .fullScreen
-            referralMonetaryController.navigationController?.navigationBar.isHidden = true
-            self.navigationController?.present(referralMonetaryController, animated: true, completion: nil)
-            
+            let nav = UINavigationController(rootViewController: referralMonetaryController)
+            nav.modalPresentationStyle = .fullScreen
+            nav.navigationBar.isHidden = true
+            self.navigationController?.present(nav, animated: true, completion: nil)
+
         }
     }
     

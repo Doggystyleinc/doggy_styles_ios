@@ -275,6 +275,14 @@
 		E3B11AC2268FCC4600B5B6F8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B11AC1268FCC4600B5B6F8 /* Extensions.swift */; };
 		E3B582122698ACE900EC469B /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B582112698ACE900EC469B /* Notes.swift */; };
 		E3C5DC6526E6705B007C4A55 /* ConfirmBookingCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C5DC6426E6705B007C4A55 /* ConfirmBookingCollection.swift */; };
+		E3C766CD271F5EB900735655 /* ShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766CC271F5EB900735655 /* ShareExtension.swift */; };
+		E3C766CF271F608300735655 /* ReferralContactsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766CE271F608300735655 /* ReferralContactsContainer.swift */; };
+		E3C766D127207DF100735655 /* ReferralProgramCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766D027207DF100735655 /* ReferralProgramCollectionView.swift */; };
+		E3C766D42721C37C00735655 /* ReferralProgramModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766D32721C37C00735655 /* ReferralProgramModels.swift */; };
+		E3C766D62721C3A900735655 /* ReferralProgramEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766D52721C3A900735655 /* ReferralProgramEngine.swift */; };
+		E3C766DA2721D0FF00735655 /* Mini icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3C766D72721D0FE00735655 /* Mini icon@2x.png */; };
+		E3C766DB2721D0FF00735655 /* Mini icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E3C766D82721D0FF00735655 /* Mini icon.png */; };
+		E3C766DC2721D0FF00735655 /* Mini icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3C766D92721D0FF00735655 /* Mini icon@3x.png */; };
 		E3D53F3B26AA21D0003B4317 /* LocationFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D53F3A26AA21D0003B4317 /* LocationFinder.swift */; };
 		E3D53F3D26AA21EC003B4317 /* SearchLocationTableview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D53F3C26AA21EC003B4317 /* SearchLocationTableview.swift */; };
 		E3D53F3F26AA2200003B4317 /* SearchLocationFeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D53F3E26AA2200003B4317 /* SearchLocationFeeder.swift */; };
@@ -543,6 +551,14 @@
 		E3B11AC1268FCC4600B5B6F8 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		E3B582112698ACE900EC469B /* Notes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
 		E3C5DC6426E6705B007C4A55 /* ConfirmBookingCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBookingCollection.swift; sourceTree = "<group>"; };
+		E3C766CC271F5EB900735655 /* ShareExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtension.swift; sourceTree = "<group>"; };
+		E3C766CE271F608300735655 /* ReferralContactsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralContactsContainer.swift; sourceTree = "<group>"; };
+		E3C766D027207DF100735655 /* ReferralProgramCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralProgramCollectionView.swift; sourceTree = "<group>"; };
+		E3C766D32721C37C00735655 /* ReferralProgramModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralProgramModels.swift; sourceTree = "<group>"; };
+		E3C766D52721C3A900735655 /* ReferralProgramEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralProgramEngine.swift; sourceTree = "<group>"; };
+		E3C766D72721D0FE00735655 /* Mini icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Mini icon@2x.png"; sourceTree = "<group>"; };
+		E3C766D82721D0FF00735655 /* Mini icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Mini icon.png"; sourceTree = "<group>"; };
+		E3C766D92721D0FF00735655 /* Mini icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Mini icon@3x.png"; sourceTree = "<group>"; };
 		E3D53F3A26AA21D0003B4317 /* LocationFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationFinder.swift; sourceTree = "<group>"; };
 		E3D53F3C26AA21EC003B4317 /* SearchLocationTableview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocationTableview.swift; sourceTree = "<group>"; };
 		E3D53F3E26AA2200003B4317 /* SearchLocationFeeder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocationFeeder.swift; sourceTree = "<group>"; };
@@ -836,6 +852,7 @@
 				E38B7FE326C5A24A0013D72D /* DogFoodHelper.swift */,
 				E361FBF626CEEEBE00026DE3 /* BreedHelper.swift */,
 				E334FB97270B911E003F24D5 /* AlertController.swift */,
+				E3C766CC271F5EB900735655 /* ShareExtension.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1203,8 +1220,11 @@
 		E37D20D82718B9F400BF859A /* ReferralProgramControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E3C766D22721C36D00735655 /* ReferralModels */,
 				E37D20D92718BA1800BF859A /* ReferralProgram.swift */,
 				E37D20DB271A53CA00BF859A /* ReferralMonetaryController.swift */,
+				E3C766CE271F608300735655 /* ReferralContactsContainer.swift */,
+				E3C766D027207DF100735655 /* ReferralProgramCollectionView.swift */,
 			);
 			path = ReferralProgramControllers;
 			sourceTree = "<group>";
@@ -1271,6 +1291,9 @@
 		E39C662F26A88C37004A0E93 /* AppIcon */ = {
 			isa = PBXGroup;
 			children = (
+				E3C766D82721D0FF00735655 /* Mini icon.png */,
+				E3C766D72721D0FE00735655 /* Mini icon@2x.png */,
+				E3C766D92721D0FF00735655 /* Mini icon@3x.png */,
 				E376FDE426AB4E4100902C36 /* ios_doggystyle_icon.jpg */,
 				E376FDE926AB4E4300902C36 /* ios_doggystyle_icon40.jpg */,
 				E376FDE326AB4E4100902C36 /* ios_doggystyle_icon58.jpg */,
@@ -1415,6 +1438,15 @@
 				E37D20D82718B9F400BF859A /* ReferralProgramControllers */,
 			);
 			path = TabFour;
+			sourceTree = "<group>";
+		};
+		E3C766D22721C36D00735655 /* ReferralModels */ = {
+			isa = PBXGroup;
+			children = (
+				E3C766D32721C37C00735655 /* ReferralProgramModels.swift */,
+				E3C766D52721C3A900735655 /* ReferralProgramEngine.swift */,
+			);
+			path = ReferralModels;
 			sourceTree = "<group>";
 		};
 		E3D53F3826AA21A6003B4317 /* LoginRegistration */ = {
@@ -1639,6 +1671,7 @@
 				E376FDF326AB4F5800902C36 /* art_icon.jpg in Resources */,
 				E326572F26B2149D004A15F6 /* 65430TifDsVan1@2x.png in Resources */,
 				E304ED7726EBEF95002D625A /* tab_calendar_icon@2x.png in Resources */,
+				E3C766DC2721D0FF00735655 /* Mini icon@3x.png in Resources */,
 				E37D20D727188D5600BF859A /* glassesdog.png in Resources */,
 				E37D20C827173B2500BF859A /* addnew_dog 1.png in Resources */,
 				E334FBB4270F9E8C003F24D5 /* Dogm 1@3x.png in Resources */,
@@ -1658,6 +1691,7 @@
 				E326572326B1BEF9004A15F6 /* frame@2x.png in Resources */,
 				E304ED7926EBEF95002D625A /* tab_person_icon@3x.png in Resources */,
 				E352FF6526A63369003BD59F /* group18322.png in Resources */,
+				E3C766DA2721D0FF00735655 /* Mini icon@2x.png in Resources */,
 				E352FF6C26A63373003BD59F /* group18323@2x.png in Resources */,
 				E304ED7A26EBEF95002D625A /* tab_calendar_icon@3x.png in Resources */,
 				E326572126B1BEF9004A15F6 /* frame.png in Resources */,
@@ -1668,6 +1702,7 @@
 				E396B91F26FD33B90087F106 /* house_nav_icon@2x.png in Resources */,
 				E352FF6D26A63373003BD59F /* group18323.png in Resources */,
 				E3E9F7E626BC62CE00C3A57A /* Doggy_filler_photo.png in Resources */,
+				E3C766DB2721D0FF00735655 /* Mini icon.png in Resources */,
 				E304ED7B26EBEF95002D625A /* tab_person_icon@1x.png in Resources */,
 				E38B7FDA26C457640013D72D /* invalidName@3x.png in Resources */,
 				E304ED7826EBEF95002D625A /* tab_calendar_icon@1x.png in Resources */,
@@ -1788,6 +1823,7 @@
 				CDE8711E2652E3030082551B /* UIColor+Ext.swift in Sources */,
 				CDE871222652E3030082551B /* UIViewController+Ext.swift in Sources */,
 				E37D20CF2717CF1A00BF859A /* ContactUsProfileController.swift in Sources */,
+				E3C766D62721C3A900735655 /* ReferralProgramEngine.swift in Sources */,
 				E357D2EF26E296C300CDF90E /* CustomPackageContainer.swift in Sources */,
 				E3636FED26E6C1A600E5B76E /* AvailableAptCollection.swift in Sources */,
 				E38B7FEB26C5A4590013D72D /* NewDogTreatCollection.swift in Sources */,
@@ -1864,10 +1900,13 @@
 				E36EE55B26B781050009A0EF /* RegisteredPetCollection.swift in Sources */,
 				E37D20E5271DDD0B00BF859A /* NotificationManagement.swift in Sources */,
 				CD6DD001267AD81100BC376B /* AppointmentsViewController.swift in Sources */,
+				E3C766D42721C37C00735655 /* ReferralProgramModels.swift in Sources */,
 				E3A0AD5B26C0446500E813D5 /* DogBreedHelper.swift in Sources */,
 				E37D20EA271DF4B500BF859A /* PaymentMethodsController.swift in Sources */,
 				E3B11ABC268FCBC900B5B6F8 /* ProfileCollectionView.swift in Sources */,
 				E357D2EB26E027F100CDF90E /* FullPackageContainer.swift in Sources */,
+				E3C766CD271F5EB900735655 /* ShareExtension.swift in Sources */,
+				E3C766D127207DF100735655 /* ReferralProgramCollectionView.swift in Sources */,
 				CD6868902656EF920064ADFE /* LocationNotServicedViewController.swift in Sources */,
 				CD6DD00C267FC7DF00BC376B /* ContactUsController.swift in Sources */,
 				E397405F26D40F000084742F /* AppointmentTwoCollection.swift in Sources */,
@@ -1878,6 +1917,7 @@
 				E357D2E926E020D500CDF90E /* PublicEnums.swift in Sources */,
 				CD6868922656EFB20064ADFE /* RequestUserLocationViewController.swift in Sources */,
 				E3B11ABA268FCBB200B5B6F8 /* ProfileController.swift in Sources */,
+				E3C766CF271F608300735655 /* ReferralContactsContainer.swift in Sources */,
 				E3B11AC0268FCC0400B5B6F8 /* ProfilePhotoUploadExt.swift in Sources */,
 				CDE871112652E2DC0082551B /* DividerView.swift in Sources */,
 				E36EE54626B7036B0009A0EF /* NewDogEntry.swift in Sources */,
@@ -2071,7 +2111,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Project Doggystyle iOS/Project Doggystyle iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.2;
+				CURRENT_PROJECT_VERSION = 1.1.4;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2093,7 +2133,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Project Doggystyle iOS/Project Doggystyle iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.2;
+				CURRENT_PROJECT_VERSION = 1.1.4;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";

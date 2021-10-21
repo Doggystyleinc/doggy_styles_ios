@@ -60,6 +60,7 @@ var friends_array_phone_number = [String](),
     styledGray = UIColor(hex : 0x4D4D4D),
     dsDeepBlue = UIColor(hex: 0x020659),
     lightGrey = UIColor(hex: 0xD8D8D8),
+    selectionGrey = UIColor(hex: 0xF3F3F3),
 
     //FOR THE CHAT CONTROLLER, WHEN A USER SWIPES LEFT TO EXPOSE THE REPLY ARROW
     globalIsReplyExpanded : Bool = false,
@@ -266,7 +267,7 @@ class PhoneTextFieldWithPadding: PhoneNumberTextField {
 
 class CustomTextFieldMaps: TextFieldWithImage {
     
-    let padding = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 50);
+    let padding = UIEdgeInsets(top: 0, left: 65, bottom: 0, right: 50);
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: padding)
@@ -341,6 +342,7 @@ struct Statics {
     static let PHOTO : String = "Photo"
     static let CANCEL : String = "Cancel"
     static let SAVE : String = "Save"
+    static let ENABLE : String = "Enable"
 
     
     //MARK: - LISTENERS AND OBSERVERS
@@ -354,7 +356,10 @@ struct Statics {
     static let RUN_LOCATION_CHECKER : String = "RUN_LOCATION_CHECKER"
     static let RUN_DATA_ENGINE : String = "RUN_DATA_ENGINE"
     static let RELOAD_DOGGY_PROFILE_SETTINGS : String = "RELOAD_DOGGY_PROFILE_SETTINGS"
-    static let  SUPPORT_PHONE_NUMBER : String = "6475988823"
+    static let SUPPORT_PHONE_NUMBER : String = "6475988823"
+    
+    
+    
     
 }
 

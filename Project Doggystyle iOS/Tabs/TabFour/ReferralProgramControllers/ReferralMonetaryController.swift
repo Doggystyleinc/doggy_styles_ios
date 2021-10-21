@@ -7,9 +7,14 @@
 
 import Foundation
 import UIKit
+import Contacts
 
 class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol {
     
+    let store = CNContactStore()
+    
+    var userGaveContactPermissions : Bool = false
+
     lazy var backButton : UIButton = {
         
         let cbf = UIButton(type: .system)
@@ -178,7 +183,7 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
     
     lazy var shareButton : UIButton = {
         
-        let cbf = UIButton()
+        let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
         cbf.backgroundColor = coreOrangeColor
         cbf.contentMode = .scaleAspectFill
@@ -364,9 +369,64 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
     }
     
     @objc func handleShareCodeButton() {
-        print("share code button")
+        
+        UIDevice.vibrateLight()
+        self.checkForContactsPermissions()
     }
     
+    func checkForContactsPermissions() {
+        
+        let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
+        
+        switch authorizationStatus {
+        
+        case .authorized: self.contactsAuth(gavePermissions: true)
+        case .denied: self.contactsAuth(gavePermissions: false)
+        case .restricted, .notDetermined:
+            
+            self.store.requestAccess(for: .contacts, completionHandler: { (gaveAuth, error) in
+                
+                if error != nil {
+                    self.contactsAuth(gavePermissions: false)
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    
+                    print("Gave auth: ", gaveAuth)
+                    print("authorizationStatus: ", authorizationStatus)
+                    self.contactsAuth(gavePermissions: true)
+
+                }
+            })
+            
+        default:
+            print("Default for contacts permissions")
+        }
+    }
+    
+    func contactsAuth(gavePermissions : Bool) {
+        
+        self.userGaveContactPermissions = gavePermissions
+        let referralCode = userProfileStruct.referral_code_grab ?? "nil"
+        
+        if gavePermissions == true {
+            
+            print("send the user to the contacts selection page")
+            let referralContactsContainer = ReferralContactsContainer()
+            referralContactsContainer.navigationController?.navigationBar.isHidden = true
+            referralContactsContainer.modalPresentationStyle = .fullScreen
+            self.navigationController?.pushViewController(referralContactsContainer, animated: true)
+            
+        } else {
+            
+            if referralCode != "nil" {
+                ShareFunctionHelper.handleShareSheet(passedURLString: referralCode, passedView: self.view) { activityViewController in
+                    self.navigationController?.present(activityViewController, animated: true, completion: nil)
+                }
+            }
+        }
+    }
     
     @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
         
@@ -387,6 +447,23 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         
         case Statics.GOT_IT: self.handleBackButton()
         case Statics.OK: print(Statics.OK)
+        case Statics.ENABLE : print("enable")
+            
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+            
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                    
+                    if success {
+                        print("success from the devices settings")
+                    } else {
+                        print("error from the devices settings")
+                    }
+                    
+                })
+            }
             
         default: print("Should not hit")
             

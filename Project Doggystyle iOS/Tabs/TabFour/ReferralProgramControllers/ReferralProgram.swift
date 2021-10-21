@@ -503,8 +503,15 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         
        guard let code = self.referralTextField.text else {return}
         
-       self.handleCustomPopUpAlert(title: "Looks Good!", message: "Just so you know, this code can not be changed. Would you like to go with \(code)", passedButtons: [Statics.SAVE, Statics.CANCEL])
-        
+        if code.count <= 0 {
+            self.referralTextField.layer.borderColor = coreRedColor.cgColor
+            self.handleCustomPopUpAlert(title: "Empty", message: "Please enter a Referral Code of your choice. We recommend at least 10 characters long.", passedButtons: [Statics.OK])
+        } else if code.count < 5 {
+            self.referralTextField.layer.borderColor = coreRedColor.cgColor
+            self.handleCustomPopUpAlert(title: "Empty", message: "Please make sure your Referral Code is at least 5 characters.", passedButtons: [Statics.OK])
+        } else {
+            self.handleCustomPopUpAlert(title: "Looks Good!", message: "Just so you know, this code can not be changed. Would you like to go with \(code)", passedButtons: [Statics.SAVE, Statics.CANCEL])
+        }
     }
     
     @objc func handleSubmitButton() {
@@ -532,19 +539,19 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
                     if isCodeTaken == true {
                         
                         self.activityIndicator.stopAnimating()
-                        self.activityIndicator.stopAnimating()
                         self.referralTextField.layer.borderColor = coreRedColor.cgColor
+                        self.handleCustomPopUpAlert(title: "Taken", message: "This referral code has already been used. Please select another one.", passedButtons: [Statics.OK])
                         
                     } else {
                         
                         self.completeAndFinalizeCode(referralCode: text, user_uid: user_uid) { completion in
-                            self.nextRoute()
+                            self.nextRoute(passedReferralCode: text)
                         }
                     }
                 }
                 
             } else if codeState == .RandomlyGenerated {
-                self.nextRoute()
+                self.nextRoute(passedReferralCode: text)
             }
         }
         
@@ -554,8 +561,18 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         }
     }
     
-    func nextRoute() {
+    func nextRoute(passedReferralCode : String) {
         
+        //MARK: - UPDATE THE REFERRAL CODE HERE
+        userProfileStruct.referral_code_grab = passedReferralCode
+
+        let referralMonetaryController = ReferralMonetaryController()
+//        let nav = UINavigationController(rootViewController: referralMonetaryController)
+//
+        referralMonetaryController.modalPresentationStyle = .fullScreen
+        referralMonetaryController.navigationController?.navigationBar.isHidden = true
+
+        self.navigationController?.pushViewController(referralMonetaryController, animated: true)
         
     }
 }

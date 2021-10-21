@@ -14,7 +14,9 @@ import GoogleMaps
 import FBSDKCoreKit
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
+    
+    let locationManager = CLLocationManager()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -34,6 +36,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             didFinishLaunchingWithOptions:
             launchOptions
         )
+        
+        self.locationManager.delegate = self
+        self.locationManager.requestWhenInUseAuthorization()
         
         return true
     }

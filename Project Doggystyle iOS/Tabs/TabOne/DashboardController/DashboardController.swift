@@ -453,8 +453,20 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
     
     @objc func presentAppointmentsController() {
         
-        self.handleCustomPopUpAlert(title: "🚧 CONSTRUCTION 🚧", message: "We'll be up and running shortly for 'booking' - thank you.", passedButtons: [Statics.GOT_IT])
-        //self.homeController?.presentBookingController()
+        let locational_data = userProfileStruct.user_grooming_locational_data ?? ["nil" : "nil"]
+        let hasGroomingLocation = locational_data["found_grooming_location"] as? Bool ?? false
+        
+        let hasDogCount = doggyProfileDataSource.count
+        if hasDogCount > 0 {
+            if hasGroomingLocation == true {
+                self.homeController?.presentBookingController()
+            } else {
+                self.handleCustomPopUpAlert(title: "INFORMATION NEEDED", message: "Before booking an appointment, you will need a serviceable location as well as your puppy added.", passedButtons: [Statics.GOT_IT])
+           }
+            
+        } else {
+            self.handleCustomPopUpAlert(title: "INFORMATION NEEDED", message: "Before booking an appointment, you will need a serviceable location as well as your puppy added.", passedButtons: [Statics.GOT_IT])
+        }
     }
     
     @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
@@ -492,18 +504,20 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         if referralCodeGrab == "nil" {
         
         let referralProgram = ReferralProgram()
-        referralProgram.modalPresentationStyle = .fullScreen
-        referralProgram.navigationController?.navigationBar.isHidden = true
+        let nav = UINavigationController(rootViewController: referralProgram)
+        nav.modalPresentationStyle = .fullScreen
+        nav.navigationBar.isHidden = true
         referralProgram.clientHasGroomingLocation = hasGroomingLocation
-        self.navigationController?.present(referralProgram, animated: true, completion: nil)
+        self.navigationController?.present(nav, animated: true, completion: nil)
             
         } else {
-            
+
             let referralMonetaryController = ReferralMonetaryController()
-            referralMonetaryController.modalPresentationStyle = .fullScreen
-            referralMonetaryController.navigationController?.navigationBar.isHidden = true
-            self.navigationController?.present(referralMonetaryController, animated: true, completion: nil)
-            
+            let nav = UINavigationController(rootViewController: referralMonetaryController)
+            nav.modalPresentationStyle = .fullScreen
+            nav.navigationBar.isHidden = true
+            self.navigationController?.present(nav, animated: true, completion: nil)
+
         }
     }
     
@@ -513,7 +527,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
     }
     
     @objc func handleTourTruckButton() {
-        print("Handle tour")
+        self.handleCustomPopUpAlert(title: "TRUCK TOUR", message: "Truck tour is currently under development. This feature will be available shortly.", passedButtons: [Statics.OK])
     }
     
     @objc private func didTapViewAllAppointments() {
