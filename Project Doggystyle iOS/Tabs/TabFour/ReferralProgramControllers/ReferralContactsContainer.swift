@@ -197,6 +197,8 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.searchTextField.resignFirstResponder()
+        self.searchTextField.text = ""
+        self.filteredCount(searchText: "")
         return false
     }
     
@@ -286,8 +288,12 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         //MARK: - REMOVES ALL USERS THAT OWN THE APP ALREADY AND HAVE IT INSTALLED
         let filtered = passedInviteList.filter { $0.isCurrentDoggystyleUser != true }
         
+        for i in filtered {
+            print("FILTER: \(i)")
+        }
+        
         //MARK: - CHECK THE INVITATION LIST FOR ALREADY REQUESTED MEMBERS
-        let ref = self.databaseRef.child("pending_invites")
+        let ref = self.databaseRef.child("global_pending_invites")
         
         ref.observeSingleEvent(of: .value) { snapDataGrab in
             
@@ -295,14 +301,74 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
                 
                 guard let JSONdata = snapDataGrab.value as? [String : Any] else {return}
                 
+                
+                
+                
+                
+                
             } else {
                 
-                //does not exist, add to the node with the invitied user
+                var counter : Int = 0
                 
+                    for i in filtered {
+                        
+                        let familyName = i.familyName ?? "nil"
+                        let givenName = i.givenName ?? "nil"
+                        let phoneNumber = i.phoneNumber ?? "nil"
+                        let fullPhoneNumber = i.fullPhoneNumber ?? "nil"
+
+                        let inviters_firstName = userProfileStruct.user_first_name ?? "nil"
+                        let inviters_lastName = userProfileStruct.user_last_name ?? "nil"
+                        let inviters_fullName = userProfileStruct.users_full_name ?? "nil"
+                        let inviters_phoneNumber = userProfileStruct.users_phone_number ?? "nil"
+                        let inviters_fullPhoneNumber = userProfileStruct.users_full_phone_number ?? "nil"
+                        let inviters_UID = userProfileStruct.users_ref_key ?? "nil"
+                        let inviters_country_code = userProfileStruct.users_country_code ?? "nil"
+                        let inviters_email = userProfileStruct.users_email ?? "nil"
+
+                        guard let user_uid = Auth.auth().currentUser?.uid else {return}
+                        
+                        let refStamp = self.databaseRef.child("global_pending_invites").childByAutoId()
+                        let personalStamp = self.databaseRef.child("personal_pending_invites").child(user_uid).childByAutoId()
+
+                        //MARK: - INVITERS INFORMATION
+                        let values : [String : Any] = ["inviters_firstName" : inviters_firstName,
+                                                       "inviters_lastName" : inviters_lastName,
+                                                       "inviters_fullName" : inviters_fullName,
+                                                       "inviters_phoneNumber" : inviters_phoneNumber,
+                                                       "inviters_fullPhoneNumber" : inviters_fullPhoneNumber,
+                                                       "inviters_UID" : inviters_UID,
+                                                       "inviters_country_code" : inviters_country_code,
+                                                       "inviters_email" : inviters_email,
+                                                       "inviters_email_companion_success" : false,
+                                                       
+                                                       //MARK: - RECIPIENTS INFORMATION
+                                                       "recipient_family_name" : familyName,
+                                                       "recipient_given_name" : givenName,
+                                                       "recipient_phone_number" : phoneNumber,
+                                                       "recipient_full_phone_number" : fullPhoneNumber]
+                        
+                        refStamp.updateChildValues(values) { error, ref in
+                            personalStamp.updateChildValues(values) { error, ref in
+                                
+                                //MARK: - INCREASE THE COUNT AFTER THE DATABASE HAS BEEN UPDATED THEN COMPLETE OUT
+                                counter += 1
+
+                                //MARK: - FALL THROUGH ERROR
+                                if counter == filtered.count {
+                                    self.unlockAndComplete()
+                            }
+                        }
+                    }
+                }
             }
         }
     }
     
+    func unlockAndComplete() {
+        self.navigationController?.popViewController(animated: true)
+    }
+        
     //MARK: - ALERTS AND BACK BUTTON
     @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
         
