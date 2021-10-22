@@ -8,12 +8,16 @@
 import Foundation
 import UIKit
 import Contacts
+import Firebase
 
 class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol {
     
     let store = CNContactStore()
     
-    var userGaveContactPermissions : Bool = false
+    var userGaveContactPermissions : Bool = false,
+        pendingUsersMonetaryValueModel = [PendingUsersMonetaryValueModel]()
+    
+    let databaseRef = Database.database().reference()
 
     lazy var backButton : UIButton = {
         
@@ -103,7 +107,7 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         let thl = UILabel()
         thl.translatesAutoresizingMaskIntoConstraints = false
         thl.textAlignment = .center
-        thl.text = "$0"
+        thl.text = ""
         thl.font = UIFont(name: rubikMedium, size: 24)
         thl.numberOfLines = 1
         thl.adjustsFontSizeToFitWidth = true
@@ -131,7 +135,7 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         let thl = UILabel()
         thl.translatesAutoresizingMaskIntoConstraints = false
         thl.textAlignment = .center
-        thl.text = "$0"
+        thl.text = ""
         thl.font = UIFont(name: rubikMedium, size: 24)
         thl.numberOfLines = 1
         thl.adjustsFontSizeToFitWidth = true
@@ -236,12 +240,59 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         return dcl
     }()
     
+    let pendingActivity : UIActivityIndicatorView = {
+        
+        let pa = UIActivityIndicatorView(style: .medium)
+        pa.translatesAutoresizingMaskIntoConstraints = false
+        pa.backgroundColor = .clear
+        pa.hidesWhenStopped = true
+        pa.color = dsFlatBlack
+        pa.startAnimating()
+        
+       return pa
+    }()
+    
+    let doggyActivity : UIActivityIndicatorView = {
+        
+        let pa = UIActivityIndicatorView(style: .medium)
+        pa.translatesAutoresizingMaskIntoConstraints = false
+        pa.backgroundColor = .clear
+        pa.hidesWhenStopped = true
+        pa.color = dsFlatBlack
+        pa.startAnimating()
+
+       return pa
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = coreBackgroundWhite
+        
         self.addViews()
         self.fillValues()
+        self.observePendingAndDoggyDollarsAmount()
+    
+    }
+    
+    func observePendingAndDoggyDollarsAmount() {
+        
+        self.observeMonetaryPendingAndCompletedAmount { isComplete in
+            
+            let count = self.pendingUsersMonetaryValueModel.count
+            
+            self.pendingActivity.stopAnimating()
+            self.doggyActivity.stopAnimating()
+            
+            if count == 0 {
+                self.pendingCurrencyLabel.text = "$0"
+                self.doggyCurrencyLabel.text = "$0"
+            } else {
+                let total = count * 5
+                self.pendingCurrencyLabel.text = "$\(total)"
+                self.doggyCurrencyLabel.text = "$0"
+            }
+        }
     }
     
     func fillValues() {
@@ -277,6 +328,9 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         
         self.view.addSubview(self.rewardsLabel)
         self.view.addSubview(self.dogImage)
+        
+        self.view.addSubview(self.pendingActivity)
+        self.view.addSubview(self.doggyActivity)
 
         self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
         self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true
@@ -318,10 +372,18 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         self.doggyCurrencyLabel.rightAnchor.constraint(equalTo: self.greyDividerLine.leftAnchor, constant: -10).isActive = true
         self.doggyCurrencyLabel.sizeToFit()
         
+        self.doggyActivity.centerYAnchor.constraint(equalTo: self.doggyCurrencyLabel.centerYAnchor, constant: 0).isActive = true
+        self.doggyActivity.centerXAnchor.constraint(equalTo: self.doggyCurrencyLabel.centerXAnchor, constant: 0).isActive = true
+        self.doggyActivity.sizeToFit()
+        
         self.pendingCurrencyLabel.topAnchor.constraint(equalTo: self.pendingLabel.bottomAnchor, constant: 14).isActive = true
         self.pendingCurrencyLabel.rightAnchor.constraint(equalTo: self.bottomContainer.rightAnchor, constant: -10).isActive = true
         self.pendingCurrencyLabel.leftAnchor.constraint(equalTo: self.greyDividerLine.rightAnchor, constant: 10).isActive = true
         self.pendingCurrencyLabel.sizeToFit()
+        
+        self.pendingActivity.centerYAnchor.constraint(equalTo: self.pendingCurrencyLabel.centerYAnchor, constant: 0).isActive = true
+        self.pendingActivity.centerXAnchor.constraint(equalTo: self.pendingCurrencyLabel.centerXAnchor, constant: 0).isActive = true
+        self.pendingActivity.sizeToFit()
         
         self.upArrowButton.rightAnchor.constraint(equalTo: self.bottomContainer.rightAnchor, constant: -13).isActive = true
         self.upArrowButton.topAnchor.constraint(equalTo: self.bottomContainer.topAnchor, constant: 13).isActive = true
@@ -364,8 +426,43 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         self.dismiss(animated: true, completion: nil)
     }
     
+    func observeMonetaryPendingAndCompletedAmount(completion : @escaping (_ isComplete : Bool) -> ()) {
+        
+        guard let user_uid = Auth.auth().currentUser?.uid else {return}
+        
+        let personalStamp = self.databaseRef.child("personal_pending_invites").child(user_uid)
+      
+        personalStamp.observe(.value) { snapJSON in
+            
+            self.pendingUsersMonetaryValueModel.removeAll()
+            
+            self.pendingCurrencyLabel.text = ""
+            self.doggyCurrencyLabel.text = ""
+            
+            self.pendingActivity.startAnimating()
+            self.doggyActivity.startAnimating()
+
+            for child in snapJSON.children.allObjects as! [DataSnapshot] {
+                
+                let JSON = child.value as? [String : AnyObject] ?? [:]
+                
+                let model = PendingUsersMonetaryValueModel(JSON: JSON)
+                
+                self.pendingUsersMonetaryValueModel.append(model)
+                
+            }
+            
+            completion(true)
+        }
+    }
+    
     @objc func handleUpArrow() {
-        print("here we go")
+        
+        
+        
+        
+        
+        
     }
     
     @objc func handleShareCodeButton() {
@@ -392,11 +489,7 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
                 }
                 
                 DispatchQueue.main.async {
-                    
-                    print("Gave auth: ", gaveAuth)
-                    print("authorizationStatus: ", authorizationStatus)
                     self.contactsAuth(gavePermissions: true)
-
                 }
             })
             
@@ -468,5 +561,42 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         default: print("Should not hit")
             
         }
+    }
+}
+
+class PendingUsersMonetaryValueModel : NSObject {
+    
+    var recipient_family_name : String?
+    var recipient_full_phone_number : String?
+    var recipient_given_name : String?
+    var recipient_phone_number : String?
+
+    var inviters_fullPhoneNumber : String?
+    var inviters_email : String?
+    var inviters_phoneNumber : String?
+    var inviters_fullName : String?
+    var inviters_UID : String?
+   
+    var inviters_country_code : String?
+    var inviters_lastName : String?
+    var inviters_firstName : String?
+    var inviters_email_companion_success : Bool?
+    
+    init(JSON : [String : Any]) {
+        
+        self.recipient_family_name = JSON["recipient_family_name"] as? String ?? "nil"
+        self.recipient_full_phone_number = JSON["recipient_full_phone_number"] as? String ?? "nil"
+        self.recipient_given_name = JSON["recipient_given_name"] as? String ?? "nil"
+        self.recipient_phone_number = JSON["recipient_phone_number"] as? String ?? "nil"
+        self.inviters_fullPhoneNumber = JSON["inviters_fullPhoneNumber"] as? String ?? "nil"
+        self.inviters_email = JSON["inviters_email"] as? String ?? "nil"
+        self.inviters_phoneNumber = JSON["inviters_phoneNumber"] as? String ?? "nil"
+        self.inviters_fullName = JSON["inviters_fullName"] as? String ?? "nil"
+        self.inviters_UID = JSON["inviters_UID"] as? String ?? "nil"
+        self.inviters_country_code = JSON["inviters_country_code"] as? String ?? "nil"
+        self.inviters_lastName = JSON["inviters_lastName"] as? String ?? "nil"
+        self.inviters_firstName = JSON["inviters_firstName"] as? String ?? "nil"
+        self.inviters_email_companion_success = JSON["inviters_email_companion_success"] as? Bool ?? false
+
     }
 }
