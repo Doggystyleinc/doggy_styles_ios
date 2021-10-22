@@ -153,7 +153,7 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 17, style: .solid)
         cbf.setTitle(String.fontAwesomeIcon(name: .paperPlane), for: .normal)
         cbf.setTitleColor(coreOrangeColor, for: .normal)
-        cbf.addTarget(self, action: #selector(self.handleUpArrow), for: UIControl.Event.touchUpInside)
+        cbf.addTarget(self, action: #selector(self.handleYourReferralsController), for: UIControl.Event.touchUpInside)
         return cbf
         
     }()
@@ -456,12 +456,12 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         }
     }
     
-    @objc func handleUpArrow() {
-        
-        
-        
-        
-        
+    @objc func handleYourReferralsController() {
+
+        let yourReferralContainer = YourReferralContainer()
+        yourReferralContainer.modalPresentationStyle = .fullScreen
+        yourReferralContainer.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.pushViewController(yourReferralContainer, animated: true)
         
     }
     

@@ -59,7 +59,7 @@ final class DecisionController: UIViewController {
     }
     
     func authenticationCheck() {
-        
+       
         let auth = Auth.auth().currentUser?.uid ?? nil
         
         //USER IS NOT AUTHENTICATED

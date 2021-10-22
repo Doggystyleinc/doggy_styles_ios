@@ -283,6 +283,10 @@
 		E3C766DA2721D0FF00735655 /* Mini icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3C766D72721D0FE00735655 /* Mini icon@2x.png */; };
 		E3C766DB2721D0FF00735655 /* Mini icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E3C766D82721D0FF00735655 /* Mini icon.png */; };
 		E3C766DC2721D0FF00735655 /* Mini icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3C766D92721D0FF00735655 /* Mini icon@3x.png */; };
+		E3C766E1272333E300735655 /* YourReferralCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766E0272333E300735655 /* YourReferralCollectionView.swift */; };
+		E3C766E3272335C100735655 /* YourReferralContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766E2272335C100735655 /* YourReferralContainer.swift */; };
+		E3C766E5272336DB00735655 /* YourReferralSelectorSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766E4272336DB00735655 /* YourReferralSelectorSwitch.swift */; };
+		E3C766E72723547C00735655 /* TwilioTextMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766E62723547C00735655 /* TwilioTextMessage.swift */; };
 		E3D53F3B26AA21D0003B4317 /* LocationFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D53F3A26AA21D0003B4317 /* LocationFinder.swift */; };
 		E3D53F3D26AA21EC003B4317 /* SearchLocationTableview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D53F3C26AA21EC003B4317 /* SearchLocationTableview.swift */; };
 		E3D53F3F26AA2200003B4317 /* SearchLocationFeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D53F3E26AA2200003B4317 /* SearchLocationFeeder.swift */; };
@@ -559,6 +563,10 @@
 		E3C766D72721D0FE00735655 /* Mini icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Mini icon@2x.png"; sourceTree = "<group>"; };
 		E3C766D82721D0FF00735655 /* Mini icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Mini icon.png"; sourceTree = "<group>"; };
 		E3C766D92721D0FF00735655 /* Mini icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Mini icon@3x.png"; sourceTree = "<group>"; };
+		E3C766E0272333E300735655 /* YourReferralCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourReferralCollectionView.swift; sourceTree = "<group>"; };
+		E3C766E2272335C100735655 /* YourReferralContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourReferralContainer.swift; sourceTree = "<group>"; };
+		E3C766E4272336DB00735655 /* YourReferralSelectorSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourReferralSelectorSwitch.swift; sourceTree = "<group>"; };
+		E3C766E62723547C00735655 /* TwilioTextMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwilioTextMessage.swift; sourceTree = "<group>"; };
 		E3D53F3A26AA21D0003B4317 /* LocationFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationFinder.swift; sourceTree = "<group>"; };
 		E3D53F3C26AA21EC003B4317 /* SearchLocationTableview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocationTableview.swift; sourceTree = "<group>"; };
 		E3D53F3E26AA2200003B4317 /* SearchLocationFeeder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocationFeeder.swift; sourceTree = "<group>"; };
@@ -853,6 +861,7 @@
 				E361FBF626CEEEBE00026DE3 /* BreedHelper.swift */,
 				E334FB97270B911E003F24D5 /* AlertController.swift */,
 				E3C766CC271F5EB900735655 /* ShareExtension.swift */,
+				E3C766E62723547C00735655 /* TwilioTextMessage.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1221,10 +1230,9 @@
 			isa = PBXGroup;
 			children = (
 				E3C766D22721C36D00735655 /* ReferralModels */,
-				E37D20D92718BA1800BF859A /* ReferralProgram.swift */,
-				E37D20DB271A53CA00BF859A /* ReferralMonetaryController.swift */,
-				E3C766CE271F608300735655 /* ReferralContactsContainer.swift */,
-				E3C766D027207DF100735655 /* ReferralProgramCollectionView.swift */,
+				E3C766DE272333B000735655 /* ReferralProgram */,
+				E3C766DF272333BC00735655 /* ReferralContactsControllers */,
+				E3C766DD272333A400735655 /* YourReferralController */,
 			);
 			path = ReferralProgramControllers;
 			sourceTree = "<group>";
@@ -1447,6 +1455,34 @@
 				E3C766D52721C3A900735655 /* ReferralProgramEngine.swift */,
 			);
 			path = ReferralModels;
+			sourceTree = "<group>";
+		};
+		E3C766DD272333A400735655 /* YourReferralController */ = {
+			isa = PBXGroup;
+			children = (
+				E3C766E2272335C100735655 /* YourReferralContainer.swift */,
+				E3C766E0272333E300735655 /* YourReferralCollectionView.swift */,
+				E3C766E4272336DB00735655 /* YourReferralSelectorSwitch.swift */,
+			);
+			path = YourReferralController;
+			sourceTree = "<group>";
+		};
+		E3C766DE272333B000735655 /* ReferralProgram */ = {
+			isa = PBXGroup;
+			children = (
+				E37D20D92718BA1800BF859A /* ReferralProgram.swift */,
+				E37D20DB271A53CA00BF859A /* ReferralMonetaryController.swift */,
+			);
+			path = ReferralProgram;
+			sourceTree = "<group>";
+		};
+		E3C766DF272333BC00735655 /* ReferralContactsControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E3C766CE271F608300735655 /* ReferralContactsContainer.swift */,
+				E3C766D027207DF100735655 /* ReferralProgramCollectionView.swift */,
+			);
+			path = ReferralContactsControllers;
 			sourceTree = "<group>";
 		};
 		E3D53F3826AA21A6003B4317 /* LoginRegistration */ = {
@@ -1836,6 +1872,7 @@
 				E39FDE2126C1F7CF004C089D /* DashboardDatasource.swift in Sources */,
 				CD203BF72667D3B900335D93 /* PDFViewController.swift in Sources */,
 				CDCCD0B8265EB884007ABECF /* User.swift in Sources */,
+				E3C766E72723547C00735655 /* TwilioTextMessage.swift in Sources */,
 				CD6DD0182680DE2E00BC376B /* WelcomeController.swift in Sources */,
 				CD6DD0142680DDC900BC376B /* SlideOne.swift in Sources */,
 				E326571D26B1B7FD004A15F6 /* MapViewSubclass.swift in Sources */,
@@ -1899,6 +1936,7 @@
 				E37D20DC271A53CA00BF859A /* ReferralMonetaryController.swift in Sources */,
 				E36EE55B26B781050009A0EF /* RegisteredPetCollection.swift in Sources */,
 				E37D20E5271DDD0B00BF859A /* NotificationManagement.swift in Sources */,
+				E3C766E3272335C100735655 /* YourReferralContainer.swift in Sources */,
 				CD6DD001267AD81100BC376B /* AppointmentsViewController.swift in Sources */,
 				E3C766D42721C37C00735655 /* ReferralProgramModels.swift in Sources */,
 				E3A0AD5B26C0446500E813D5 /* DogBreedHelper.swift in Sources */,
@@ -1922,6 +1960,7 @@
 				CDE871112652E2DC0082551B /* DividerView.swift in Sources */,
 				E36EE54626B7036B0009A0EF /* NewDogEntry.swift in Sources */,
 				E334FBAB270E461A003F24D5 /* LocationBroadcaster.swift in Sources */,
+				E3C766E5272336DB00735655 /* YourReferralSelectorSwitch.swift in Sources */,
 				CDE871502652E66A0082551B /* DecisionController.swift in Sources */,
 				CD203C002667FACC00335D93 /* ProfileViewController.swift in Sources */,
 				E3C5DC6526E6705B007C4A55 /* ConfirmBookingCollection.swift in Sources */,
@@ -1942,6 +1981,7 @@
 				E37D20CC2717643B00BF859A /* MyDogsCollectionView.swift in Sources */,
 				E3B11AC2268FCC4600B5B6F8 /* Extensions.swift in Sources */,
 				E38B7FE026C469600013D72D /* NewDogSearchSubView.swift in Sources */,
+				E3C766E1272333E300735655 /* YourReferralCollectionView.swift in Sources */,
 				CD6DD051268B9E8400BC376B /* ServiceSingleton.swift in Sources */,
 				E326573826B21898004A15F6 /* NewDogTwo.swift in Sources */,
 				CD6DCFF4267A648400BC376B /* ServiceOfTheWeekView.swift in Sources */,

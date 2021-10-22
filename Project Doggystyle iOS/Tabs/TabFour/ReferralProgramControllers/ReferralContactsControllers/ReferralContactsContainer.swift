@@ -24,7 +24,7 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         selectedContactsArray = [ContactsList](),
         searchCategories : String?,
         currentKeyboardHeight : CGFloat = 0.0
-
+    
     let databaseRef = Database.database().reference()
     
     lazy var backButton : UIButton = {
@@ -101,7 +101,7 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         let rpcv = ReferralProgramCollectionView(frame: .zero, collectionViewLayout: layout)
         rpcv.referralContactsContainer = self
         
-       return rpcv
+        return rpcv
     }()
     
     let activityIndicator : UIActivityIndicatorView = {
@@ -112,7 +112,7 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         ai.backgroundColor = .clear
         ai.hidesWhenStopped = true
         
-       return ai
+        return ai
     }()
     
     lazy var referButton : UIButton = {
@@ -129,24 +129,25 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         cbf.layer.cornerRadius = 15
         cbf.layer.masksToBounds = true
         cbf.tintColor = coreWhiteColor
+        cbf.alpha = 0
         cbf.addTarget(self, action: #selector(self.handleRefurButton), for: .touchUpInside)
         
         return cbf
         
     }()
-  
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
-        self.runDataEngine()
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardFrame), name: UIResponder.keyboardDidChangeFrameNotification, object: nil)
-
-    
+        
+        self.perform(#selector(self.runDataEngine), with: nil, afterDelay: 0.01)
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -162,12 +163,12 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         self.view.addSubview(self.referralProgramCollectionView)
         self.view.addSubview(self.activityIndicator)
         self.view.addSubview(self.referButton)
-
+        
         self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
         self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true
         self.backButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
         self.backButton.widthAnchor.constraint(equalToConstant: 54).isActive = true
-       
+        
         self.earnLabel.topAnchor.constraint(equalTo: self.backButton.bottomAnchor, constant: 23).isActive = true
         self.earnLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.earnLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
@@ -192,7 +193,7 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         self.referButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.referButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -57).isActive = true
         self.referButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -212,7 +213,7 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         self.referralProgramCollectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: self.currentKeyboardHeight, right: 0)
         self.view.layoutIfNeeded()
         self.referralProgramCollectionView.layoutIfNeeded()
-     
+        
     }
     
     @objc func handleKeyboardHide(notification : Notification) {
@@ -221,7 +222,7 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         self.referralProgramCollectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: self.currentKeyboardHeight + 150, right: 0)
         self.view.layoutIfNeeded()
         self.referralProgramCollectionView.layoutIfNeeded()
-     
+        
     }
     
     @objc func handleKeyboardFrame(notification : Notification) {
@@ -233,7 +234,7 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         self.view.layoutIfNeeded()
         self.referralProgramCollectionView.layoutIfNeeded()
     }
-
+    
     @objc func handleSearchTextFieldChange(textField : UITextField) {
         
         guard let typedText = textField.text else {return}
@@ -274,23 +275,19 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
     
     func runReferralEngine(passedInviteList : [ContactsList]) {
         
-        print(passedInviteList.count)
-        
         UIView.animate(withDuration: 0.25) {
+            
             self.referralProgramCollectionView.alpha = 0
             self.referButton.alpha = 0
             self.activityIndicator.startAnimating()
             self.view.isUserInteractionEnabled = false
             let placeholder = NSAttributedString(string: "Inviting...", attributes: [NSAttributedString.Key.foregroundColor: dsFlatBlack.withAlphaComponent(0.4)])
             self.searchTextField.attributedPlaceholder = placeholder
+            
         }
         
         //MARK: - REMOVES ALL USERS THAT OWN THE APP ALREADY AND HAVE IT INSTALLED
         let filtered = passedInviteList.filter { $0.isCurrentDoggystyleUser != true }
-        
-        for i in filtered {
-            print("FILTER: \(i)")
-        }
         
         //MARK: - CHECK THE INVITATION LIST FOR ALREADY REQUESTED MEMBERS
         let ref = self.databaseRef.child("global_pending_invites")
@@ -299,68 +296,125 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
             
             if snapDataGrab.exists() {
                 
-                guard let JSONdata = snapDataGrab.value as? [String : Any] else {return}
+                for i in filtered {
+                   
+                    let selectedPhoneNumber = i.phoneNumber ?? "nil"
+                    
+                    //MARK: - CHECK FOR PAST INVITES TO MAKE SURE SOMEONE ELSE HAS NOT INVITED THIS USER
+                    self.checkifInviteeHasAlreadyBeenInvited(JSONdata: snapDataGrab, selectedusersPhoneNumber: selectedPhoneNumber) { hasAlreadyBeenInvited in
+                        
+                        if hasAlreadyBeenInvited == false {
+                            
+                            let timeStamp : Double = Date().timeIntervalSince1970
+                            
+                            let familyName = i.familyName ?? "nil"
+                            let givenName = i.givenName ?? "nil"
+                            let phoneNumber = i.phoneNumber ?? "nil"
+                            let fullPhoneNumber = i.fullPhoneNumber ?? "nil"
+                            
+                            let inviters_firstName = userProfileStruct.user_first_name ?? "nil"
+                            let inviters_lastName = userProfileStruct.user_last_name ?? "nil"
+                            let inviters_fullName = userProfileStruct.users_full_name ?? "nil"
+                            let inviters_phoneNumber = userProfileStruct.users_phone_number ?? "nil"
+                            let inviters_fullPhoneNumber = userProfileStruct.users_full_phone_number ?? "nil"
+                            let inviters_UID = userProfileStruct.users_ref_key ?? "nil"
+                            let inviters_country_code = userProfileStruct.users_country_code ?? "nil"
+                            let inviters_email = userProfileStruct.users_email ?? "nil"
+                            let referral_code = userProfileStruct.referral_code_grab ?? "nil"
+
+                            guard let user_uid = Auth.auth().currentUser?.uid else {return}
+                            
+                            let refStamp = self.databaseRef.child("global_pending_invites").childByAutoId()
+                            let personalStamp = self.databaseRef.child("personal_pending_invites").child(user_uid).childByAutoId()
+                            
+                                                           //MARK: - INVITERS INFORMATION
+                            let values : [String : Any] = ["inviters_firstName" : inviters_firstName,
+                                                           "inviters_lastName" : inviters_lastName,
+                                                           "inviters_fullName" : inviters_fullName,
+                                                           "inviters_phoneNumber" : inviters_phoneNumber,
+                                                           "inviters_fullPhoneNumber" : inviters_fullPhoneNumber,
+                                                           "inviters_UID" : inviters_UID,
+                                                           "inviters_country_code" : inviters_country_code,
+                                                           "inviters_email" : inviters_email,
+                                                           "inviters_email_companion_success" : false,
+                                                           
+                                                           //MARK: - RECIPIENTS INFORMATION
+                                                           "recipient_family_name" : familyName,
+                                                           "recipient_given_name" : givenName,
+                                                           "recipient_phone_number" : phoneNumber,
+                                                           "recipient_full_phone_number" : fullPhoneNumber,
+                                                           "time_stamp" : timeStamp]
+                            
+                            refStamp.updateChildValues(values) { error, ref in
+                                personalStamp.updateChildValues(values) { error, ref in
+                                    self.sendTextMessage(passedCountryCode: "1", passedPhoneNumber: "8455581855", passedReferralCode: referral_code, inviteesName: "\(inviters_firstName) \(inviters_lastName)")
+                                }
+                            }
+                        } //MARK: - THESE USERS HAVE ALREADY BEEN INVITED FOR THE ELSE AT THIS BRACKET
+                    }
+                }
                 
-                
-                
-                
-                
-                
-                
-                
-                
+                //after loop - continue logic
+                //MARK: - COMPLETED THE INVITE FUNCTION, BAIL OUT AND GO BACK
+                self.unlockAndComplete()
                 
             } else {
                 
                 var counter : Int = 0
                 
-                    for i in filtered {
-                        
-                        let familyName = i.familyName ?? "nil"
-                        let givenName = i.givenName ?? "nil"
-                        let phoneNumber = i.phoneNumber ?? "nil"
-                        let fullPhoneNumber = i.fullPhoneNumber ?? "nil"
+                for i in filtered {
+                    
+                    let timeStamp : Double = Date().timeIntervalSince1970
+                    
+                    let familyName = i.familyName ?? "nil"
+                    let givenName = i.givenName ?? "nil"
+                    let phoneNumber = i.phoneNumber ?? "nil"
+                    let fullPhoneNumber = i.fullPhoneNumber ?? "nil"
+                    
+                    let inviters_firstName = userProfileStruct.user_first_name ?? "nil"
+                    let inviters_lastName = userProfileStruct.user_last_name ?? "nil"
+                    let inviters_fullName = userProfileStruct.users_full_name ?? "nil"
+                    let inviters_phoneNumber = userProfileStruct.users_phone_number ?? "nil"
+                    let inviters_fullPhoneNumber = userProfileStruct.users_full_phone_number ?? "nil"
+                    let inviters_UID = userProfileStruct.users_ref_key ?? "nil"
+                    let inviters_country_code = userProfileStruct.users_country_code ?? "nil"
+                    let inviters_email = userProfileStruct.users_email ?? "nil"
+                    let referral_code = userProfileStruct.referral_code_grab ?? "nil"
 
-                        let inviters_firstName = userProfileStruct.user_first_name ?? "nil"
-                        let inviters_lastName = userProfileStruct.user_last_name ?? "nil"
-                        let inviters_fullName = userProfileStruct.users_full_name ?? "nil"
-                        let inviters_phoneNumber = userProfileStruct.users_phone_number ?? "nil"
-                        let inviters_fullPhoneNumber = userProfileStruct.users_full_phone_number ?? "nil"
-                        let inviters_UID = userProfileStruct.users_ref_key ?? "nil"
-                        let inviters_country_code = userProfileStruct.users_country_code ?? "nil"
-                        let inviters_email = userProfileStruct.users_email ?? "nil"
-
-                        guard let user_uid = Auth.auth().currentUser?.uid else {return}
-                        
-                        let refStamp = self.databaseRef.child("global_pending_invites").childByAutoId()
-                        let personalStamp = self.databaseRef.child("personal_pending_invites").child(user_uid).childByAutoId()
-
-                        //MARK: - INVITERS INFORMATION
-                        let values : [String : Any] = ["inviters_firstName" : inviters_firstName,
-                                                       "inviters_lastName" : inviters_lastName,
-                                                       "inviters_fullName" : inviters_fullName,
-                                                       "inviters_phoneNumber" : inviters_phoneNumber,
-                                                       "inviters_fullPhoneNumber" : inviters_fullPhoneNumber,
-                                                       "inviters_UID" : inviters_UID,
-                                                       "inviters_country_code" : inviters_country_code,
-                                                       "inviters_email" : inviters_email,
-                                                       "inviters_email_companion_success" : false,
-                                                       
-                                                       //MARK: - RECIPIENTS INFORMATION
-                                                       "recipient_family_name" : familyName,
-                                                       "recipient_given_name" : givenName,
-                                                       "recipient_phone_number" : phoneNumber,
-                                                       "recipient_full_phone_number" : fullPhoneNumber]
-                        
-                        refStamp.updateChildValues(values) { error, ref in
-                            personalStamp.updateChildValues(values) { error, ref in
-                                
-                                //MARK: - INCREASE THE COUNT AFTER THE DATABASE HAS BEEN UPDATED THEN COMPLETE OUT
-                                counter += 1
-
-                                //MARK: - FALL THROUGH ERROR
-                                if counter == filtered.count {
-                                    self.unlockAndComplete()
+                    guard let user_uid = Auth.auth().currentUser?.uid else {return}
+                    
+                    let refStamp = self.databaseRef.child("global_pending_invites").childByAutoId()
+                    let personalStamp = self.databaseRef.child("personal_pending_invites").child(user_uid).childByAutoId()
+                    
+                    //MARK: - INVITERS INFORMATION
+                    let values : [String : Any] = ["inviters_firstName" : inviters_firstName,
+                                                   "inviters_lastName" : inviters_lastName,
+                                                   "inviters_fullName" : inviters_fullName,
+                                                   "inviters_phoneNumber" : inviters_phoneNumber,
+                                                   "inviters_fullPhoneNumber" : inviters_fullPhoneNumber,
+                                                   "inviters_UID" : inviters_UID,
+                                                   "inviters_country_code" : inviters_country_code,
+                                                   "inviters_email" : inviters_email,
+                                                   "inviters_email_companion_success" : false,
+                                                   
+                                                   //MARK: - RECIPIENTS INFORMATION
+                                                   "recipient_family_name" : familyName,
+                                                   "recipient_given_name" : givenName,
+                                                   "recipient_phone_number" : phoneNumber,
+                                                   "recipient_full_phone_number" : fullPhoneNumber,
+                                                   "time_stamp" : timeStamp]
+                    
+                    refStamp.updateChildValues(values) { error, ref in
+                        personalStamp.updateChildValues(values) { error, ref in
+                            
+                            //MARK: - INCREASE THE COUNT AFTER THE DATABASE HAS BEEN UPDATED THEN COMPLETE OUT
+                            counter += 1
+                            
+                            self.sendTextMessage(passedCountryCode: "1", passedPhoneNumber: phoneNumber, passedReferralCode: referral_code, inviteesName: "\(inviters_firstName) \(inviters_lastName)")
+                            
+                            //MARK: - FALL THROUGH ERROR
+                            if counter == filtered.count {
+                                self.unlockAndComplete()
                             }
                         }
                     }
@@ -369,10 +423,37 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         }
     }
     
+    func checkifInviteeHasAlreadyBeenInvited(JSONdata : DataSnapshot, selectedusersPhoneNumber : String, completion : @escaping (_ hasBeenInvited : Bool) -> ()) {
+        
+        var alreadyTaken : Bool = false
+        
+        for child in JSONdata.children.allObjects as! [DataSnapshot] {
+            
+            let JSON = child.value as? [String : AnyObject] ?? [:]
+            
+            let databasePhoneNumber = JSON["recipient_full_phone_number"] as? String ?? "nill"
+            
+            //MARK: - SELECTED RECIPIENTS - CHECK AGAINST THE DATABASE FOR PRIOIR INVITES
+            let selectedUserPhoneNumber = selectedusersPhoneNumber
+            
+            if selectedUserPhoneNumber == databasePhoneNumber {
+                alreadyTaken = true
+                print("User already received an Referral Code")
+            }
+        }
+        
+        if alreadyTaken == true {
+            completion(true)
+        } else {
+            completion(false)
+        }
+        
+    }
+    
     func unlockAndComplete() {
         self.navigationController?.popViewController(animated: true)
     }
-        
+    
     //MARK: - ALERTS AND BACK BUTTON
     @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
         
@@ -385,6 +466,15 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         alert.modalPresentationStyle = .overCurrentContext
         self.navigationController?.present(alert, animated: true, completion: nil)
         
+    }
+    
+    func sendTextMessage(passedCountryCode : String, passedPhoneNumber : String, passedReferralCode : String, inviteesName : String) {
+        
+        let stringMessage = "Woof! Woof! \(inviteesName) has invited you to the Doggy Style iOS application (Groomers for Dirty Dogs) - Please use the following referral code during registration: \(passedReferralCode). Get it now: \(Statics.DOGGYSTYLE_CONSUMER_APP_URL)"
+        
+        TextMessageHTTP.shared.twilioSendTextMessage(users_country_code: passedCountryCode, users_phone_number: passedPhoneNumber, stringMessage: stringMessage) { response, error in
+            print("Text message response: ", response)
+        }
     }
     
     func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {

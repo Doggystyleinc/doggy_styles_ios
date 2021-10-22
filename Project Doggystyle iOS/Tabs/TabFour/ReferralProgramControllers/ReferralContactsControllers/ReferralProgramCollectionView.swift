@@ -37,6 +37,7 @@ class ReferralProgramCollectionView : UICollectionView, UICollectionViewDelegate
         self.delaysContentTouches = true
         self.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 150, right: 0)
         self.automaticallyAdjustsScrollIndicatorInsets = true
+        self.alpha = 0
         
         self.register(ReferralCollectionFeeder.self, forCellWithReuseIdentifier: self.referralCollectionID)
         

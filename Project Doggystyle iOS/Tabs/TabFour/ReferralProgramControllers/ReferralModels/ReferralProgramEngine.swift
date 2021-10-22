@@ -11,7 +11,7 @@ import UIKit
 
 extension ReferralContactsContainer {
     
-    func runDataEngine() {
+    @objc func runDataEngine() {
         
         self.activityIndicator.startAnimating()
         self.referralProgramCollectionView.alpha = 0
@@ -34,7 +34,7 @@ extension ReferralContactsContainer {
                     self.activityIndicator.stopAnimating()
                     self.view.isUserInteractionEnabled = true
                     
-                    UIView.animate(withDuration: 0.35) {
+                    UIView.animate(withDuration: 0.3) {
                         self.referralProgramCollectionView.alpha = 1
                         self.referButton.alpha = 1
                     }
@@ -70,7 +70,6 @@ extension ReferralContactsContainer {
                         
                         for i in 0..<arrayReplica.count {
                             
-                            print("hits here")
                             let fetchedPhoneNumber = arrayReplica[i].phoneNumber
                             
                             if fetchedPhoneNumber == users_phone_number {
@@ -129,9 +128,9 @@ extension ReferralContactsContainer {
                             
                             guard let cleanNumbers = cleanChars else {return}
                             
-                            if cleanNumbers.count < 8 {return}
+                            if cleanNumbers.count < 10 {return}
                             
-                            let last8 = String(cleanNumbers.suffix(8))
+                            let last8 = String(cleanNumbers.suffix(10))
                             
                             let dic : [String : Any] = ["givenName" : contact.givenName, "familyName" : contact.familyName, "phoneNumber" : last8, "fullPhoneNumber" : cleanNumbers]
                             

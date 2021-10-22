@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (5.4.3)
   - AppAuth (1.4.0):
     - AppAuth/Core (= 1.4.0)
     - AppAuth/ExternalUserAgent (= 1.4.0)
@@ -35,6 +36,7 @@ PODS:
     - GTMSessionFetcher/Core (= 1.5.0)
 
 DEPENDENCIES:
+  - Alamofire (~> 5.4)
   - FBSDKLoginKit
   - FontAwesome.swift
   - GoogleMaps
@@ -43,6 +45,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Alamofire
     - AppAuth
     - FBSDKCoreKit
     - FBSDKLoginKit
@@ -54,6 +57,7 @@ SPEC REPOS:
     - GTMSessionFetcher
 
 SPEC CHECKSUMS:
+  Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   FBSDKCoreKit: 0d1ae58388a458b8222f72025804cdc84eb5d0c3
   FBSDKLoginKit: aea68df6121c5e165ccae2fabfdc83c4644ee40f
@@ -64,6 +68,6 @@ SPEC CHECKSUMS:
   GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
 
-PODFILE CHECKSUM: e3a93e1e17d97932c3c666f7e9cd650132d56c64
+PODFILE CHECKSUM: dba83836c1dd30cb023d85bcb96069f47421ddd3
 
 COCOAPODS: 1.10.1

@@ -142,7 +142,7 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         
         self.addViews()
         self.fetchJSON()
-        
+       
     }
     
     override func viewWillAppear(_ animated: Bool) {
