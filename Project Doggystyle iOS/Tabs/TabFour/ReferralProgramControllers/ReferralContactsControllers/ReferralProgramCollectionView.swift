@@ -56,6 +56,7 @@ class ReferralProgramCollectionView : UICollectionView, UICollectionViewDelegate
         return CGSize(width: UIScreen.main.bounds.width, height: 93)
     }
     
+    //MARK: - TODO - EDGE CASE SORTING AND NON EXISTING USERS INSERT AT SUBSET 0 AND ALL REMAINING USERS SUBSET AFTER THE INITIAL USE CASE.
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = self.dequeueReusableCell(withReuseIdentifier: self.referralCollectionID, for: indexPath) as! ReferralCollectionFeeder
@@ -101,8 +102,11 @@ class ReferralProgramCollectionView : UICollectionView, UICollectionViewDelegate
                 
                 if isCurrentDoggystyleUser == true {
                     cell.appLogoIcon.isHidden = false
+                    cell.selectionButton.isHidden = true
                 } else {
                     cell.appLogoIcon.isHidden = true
+                    cell.selectionButton.isHidden = false
+
                 }
             }
         }

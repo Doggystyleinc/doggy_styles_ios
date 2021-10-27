@@ -178,6 +178,10 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleNewDogFlow), name: NSNotification.Name(Statics.CALL_ADD_NEW_PUP), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.presentAppointmentsController), name: NSNotification.Name(Statics.CALL_BOOK_NOW), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.callDataEngine), name: NSNotification.Name(Statics.RUN_DATA_ENGINE), object: nil)
+//
+//        TextMessageHTTP.shared.twilioSendTextMessage(users_country_code: "1", users_phone_number: "8455581855", stringMessage: "Hello and welcome to the Doggystyle application!") { success, error in
+//            print("code sent")
+//        }
 
     }
     
@@ -186,7 +190,6 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         
         self.navigationController?.navigationBar.isHidden = true
         self.fillValues()
-        
         
     }
     
@@ -499,7 +502,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         let locational_data = userProfileStruct.user_grooming_locational_data ?? ["nil" : "nil"]
         let hasGroomingLocation = locational_data["found_grooming_location"] as? Bool ?? false
         
-        let referralCodeGrab = userProfileStruct.referral_code_grab ?? "nil"
+        let referralCodeGrab = userProfileStruct.user_created_referral_code_grab ?? "nil"
         
         if referralCodeGrab == "nil" {
         

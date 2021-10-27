@@ -297,7 +297,7 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
     
     func fillValues() {
         
-        let referralCode = userProfileStruct.referral_code_grab ?? "nil"
+        let referralCode = userProfileStruct.user_created_referral_code_grab ?? "nil"
         
         if referralCode == "nil" {
             self.handleCustomPopUpAlert(title: "Error", message: "Well this is weird – your custom referral code has vanished. We were just alerted, we’ll have a fix out shortly. Thank you.", passedButtons: [Statics.GOT_IT])
@@ -372,7 +372,7 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         self.doggyCurrencyLabel.rightAnchor.constraint(equalTo: self.greyDividerLine.leftAnchor, constant: -10).isActive = true
         self.doggyCurrencyLabel.sizeToFit()
         
-        self.doggyActivity.centerYAnchor.constraint(equalTo: self.doggyCurrencyLabel.centerYAnchor, constant: 0).isActive = true
+        self.doggyActivity.centerYAnchor.constraint(equalTo: self.doggyCurrencyLabel.centerYAnchor, constant: 8).isActive = true
         self.doggyActivity.centerXAnchor.constraint(equalTo: self.doggyCurrencyLabel.centerXAnchor, constant: 0).isActive = true
         self.doggyActivity.sizeToFit()
         
@@ -381,7 +381,7 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         self.pendingCurrencyLabel.leftAnchor.constraint(equalTo: self.greyDividerLine.rightAnchor, constant: 10).isActive = true
         self.pendingCurrencyLabel.sizeToFit()
         
-        self.pendingActivity.centerYAnchor.constraint(equalTo: self.pendingCurrencyLabel.centerYAnchor, constant: 0).isActive = true
+        self.pendingActivity.centerYAnchor.constraint(equalTo: self.pendingCurrencyLabel.centerYAnchor, constant: 8).isActive = true
         self.pendingActivity.centerXAnchor.constraint(equalTo: self.pendingCurrencyLabel.centerXAnchor, constant: 0).isActive = true
         self.pendingActivity.sizeToFit()
         
@@ -501,7 +501,7 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
     func contactsAuth(gavePermissions : Bool) {
         
         self.userGaveContactPermissions = gavePermissions
-        let referralCode = userProfileStruct.referral_code_grab ?? "nil"
+        let referralCode = userProfileStruct.user_created_referral_code_grab ?? "nil"
         
         if gavePermissions == true {
             

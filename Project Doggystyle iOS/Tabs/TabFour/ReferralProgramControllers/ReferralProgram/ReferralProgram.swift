@@ -330,9 +330,9 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         ref.removeValue()
         
         let refUsers = self.databaseRef.child("all_users").child(user_uid)
-        let values : [String : Any] = ["referral_code_grab" : "nil"]
+        let values : [String : Any] = ["user_created_referral_code_grab" : "nil"]
         refUsers.updateChildValues(values)
-
+        
     }
     
     @objc func fetchAndLoop(passedReferralCode : String, completion : @escaping (_ isCodeTaken : Bool)->()) {
@@ -456,7 +456,7 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
             } else {
                 
                 let refUsers = self.databaseRef.child("all_users").child(firebase_uid)
-                let values : [String : Any] = ["referral_code_grab" : referralCode]
+                let values : [String : Any] = ["user_created_referral_code_grab" : referralCode]
                 
                 self.referralTextField.text = referralCode
                 self.activityIndicator.stopAnimating()
@@ -564,7 +564,7 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
     func nextRoute(passedReferralCode : String) {
         
         //MARK: - UPDATE THE REFERRAL CODE HERE
-        userProfileStruct.referral_code_grab = passedReferralCode
+        userProfileStruct.user_created_referral_code_grab = passedReferralCode
 
         let referralMonetaryController = ReferralMonetaryController()
 //        let nav = UINavigationController(rootViewController: referralMonetaryController)

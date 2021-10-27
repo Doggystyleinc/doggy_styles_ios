@@ -146,7 +146,7 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardFrame), name: UIResponder.keyboardDidChangeFrameNotification, object: nil)
         
-        self.perform(#selector(self.runDataEngine), with: nil, afterDelay: 0.01)
+        self.perform(#selector(self.runDataEngine), with: nil, afterDelay: 0.001)
         
     }
     
@@ -238,7 +238,6 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
     @objc func handleSearchTextFieldChange(textField : UITextField) {
         
         guard let typedText = textField.text else {return}
-        
         self.filteredCount(searchText: typedText)
         
     }
@@ -320,7 +319,7 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
                             let inviters_UID = userProfileStruct.users_ref_key ?? "nil"
                             let inviters_country_code = userProfileStruct.users_country_code ?? "nil"
                             let inviters_email = userProfileStruct.users_email ?? "nil"
-                            let referral_code = userProfileStruct.referral_code_grab ?? "nil"
+                            let referral_code = userProfileStruct.user_created_referral_code_grab ?? "nil"
 
                             guard let user_uid = Auth.auth().currentUser?.uid else {return}
                             
@@ -348,13 +347,14 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
                             refStamp.updateChildValues(values) { error, ref in
                                 personalStamp.updateChildValues(values) { error, ref in
                                     self.sendTextMessage(passedCountryCode: "1", passedPhoneNumber: "8455581855", passedReferralCode: referral_code, inviteesName: "\(inviters_firstName) \(inviters_lastName)")
+                                    print("Referral engine engaged 4")
+
                                 }
                             }
                         } //MARK: - THESE USERS HAVE ALREADY BEEN INVITED FOR THE ELSE AT THIS BRACKET
                     }
                 }
                 
-                //after loop - continue logic
                 //MARK: - COMPLETED THE INVITE FUNCTION, BAIL OUT AND GO BACK
                 self.unlockAndComplete()
                 
@@ -379,7 +379,7 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
                     let inviters_UID = userProfileStruct.users_ref_key ?? "nil"
                     let inviters_country_code = userProfileStruct.users_country_code ?? "nil"
                     let inviters_email = userProfileStruct.users_email ?? "nil"
-                    let referral_code = userProfileStruct.referral_code_grab ?? "nil"
+                    let referral_code = userProfileStruct.user_created_referral_code_grab ?? "nil"
 
                     guard let user_uid = Auth.auth().currentUser?.uid else {return}
                     
@@ -402,7 +402,8 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
                                                    "recipient_given_name" : givenName,
                                                    "recipient_phone_number" : phoneNumber,
                                                    "recipient_full_phone_number" : fullPhoneNumber,
-                                                   "time_stamp" : timeStamp]
+                                                   "time_stamp" : timeStamp,
+                                                   "from_code_search" : false]
                     
                     refStamp.updateChildValues(values) { error, ref in
                         personalStamp.updateChildValues(values) { error, ref in
@@ -447,10 +448,18 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         } else {
             completion(false)
         }
-        
     }
     
+    //MARK: - ADD AN EXTRA SECOND ON, GENERALLY COMPLETES INSTANTLY.
     func unlockAndComplete() {
+        
+        let placeholder = NSAttributedString(string: "Referrals sent", attributes: [NSAttributedString.Key.foregroundColor: dsFlatBlack.withAlphaComponent(0.4)])
+        self.searchTextField.attributedPlaceholder = placeholder
+        self.searchTextField.tintColor = coreBlackColor
+        self.perform(#selector(self.handleCompletion), with: nil, afterDelay: 1.0)
+    }
+    
+    @objc func handleCompletion() {
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -470,7 +479,7 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
     
     func sendTextMessage(passedCountryCode : String, passedPhoneNumber : String, passedReferralCode : String, inviteesName : String) {
         
-        let stringMessage = "Woof! Woof! \(inviteesName) has invited you to the Doggy Style iOS application (Groomers for Dirty Dogs) - Please use the following referral code during registration: \(passedReferralCode). Get it now: \(Statics.DOGGYSTYLE_CONSUMER_APP_URL)"
+        let stringMessage = "Woof! Woof! \(inviteesName) has invited you to the Doggystyle iOS application (Groomers for Dirty Dogs) - Please use the following referral code during registration: \(passedReferralCode). Get it now: \(Statics.DOGGYSTYLE_CONSUMER_APP_URL)"
         
         TextMessageHTTP.shared.twilioSendTextMessage(users_country_code: passedCountryCode, users_phone_number: passedPhoneNumber, stringMessage: stringMessage) { response, error in
             print("Text message response: ", response)

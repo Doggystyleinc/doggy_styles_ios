@@ -34,7 +34,7 @@ extension ReferralContactsContainer {
                     self.activityIndicator.stopAnimating()
                     self.view.isUserInteractionEnabled = true
                     
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: 0.1) {
                         self.referralProgramCollectionView.alpha = 1
                         self.referButton.alpha = 1
                     }

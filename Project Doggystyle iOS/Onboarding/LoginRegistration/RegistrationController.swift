@@ -934,6 +934,8 @@ class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollVie
                                 
                                 self.mainLoadingScreen.cancelMainLoadingScreen()
                                 
+                                print("users first name: \(firstName)")
+                                
                                 let navVC = UINavigationController(rootViewController: pinNumberVC)
                                 navVC.modalPresentationStyle = .fullScreen
                                 self.navigationController?.present(navVC, animated: true)

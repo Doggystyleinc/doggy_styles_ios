@@ -59,6 +59,7 @@ struct UserProfileStruct {
         uploaded_document_url : String?,
         users_ref_key : String?,
         user_grooming_locational_data : [String : Any]?,
-        user_has_doggy_profile : Bool?
+        user_has_doggy_profile : Bool?,
+        user_created_referral_code_grab : String?
 
 }

@@ -299,7 +299,7 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         let locational_data = userProfileStruct.user_grooming_locational_data ?? ["nil" : "nil"]
         let hasGroomingLocation = locational_data["found_grooming_location"] as? Bool ?? false
         
-        let referralCodeGrab = userProfileStruct.referral_code_grab ?? "nil"
+        let referralCodeGrab = userProfileStruct.user_created_referral_code_grab ?? "nil"
         
         if referralCodeGrab == "nil" {
         
