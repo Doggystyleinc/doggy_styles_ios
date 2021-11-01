@@ -275,6 +275,7 @@
 		E3B582122698ACE900EC469B /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B582112698ACE900EC469B /* Notes.swift */; };
 		E3B87A292729F064009139C5 /* WifiAddressHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B87A282729F064009139C5 /* WifiAddressHelper.swift */; };
 		E3B87A2B273066BD009139C5 /* NotificationCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B87A2A273066BD009139C5 /* NotificationCollectionView.swift */; };
+		E3B87A3027307DBF009139C5 /* EditProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B87A2F27307DBF009139C5 /* EditProfileController.swift */; };
 		E3C5DC6526E6705B007C4A55 /* ConfirmBookingCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C5DC6426E6705B007C4A55 /* ConfirmBookingCollection.swift */; };
 		E3C766CD271F5EB900735655 /* ShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766CC271F5EB900735655 /* ShareExtension.swift */; };
 		E3C766CF271F608300735655 /* ReferralContactsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766CE271F608300735655 /* ReferralContactsContainer.swift */; };
@@ -556,6 +557,7 @@
 		E3B582112698ACE900EC469B /* Notes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
 		E3B87A282729F064009139C5 /* WifiAddressHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiAddressHelper.swift; sourceTree = "<group>"; };
 		E3B87A2A273066BD009139C5 /* NotificationCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCollectionView.swift; sourceTree = "<group>"; };
+		E3B87A2F27307DBF009139C5 /* EditProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileController.swift; sourceTree = "<group>"; };
 		E3C5DC6426E6705B007C4A55 /* ConfirmBookingCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBookingCollection.swift; sourceTree = "<group>"; };
 		E3C766CC271F5EB900735655 /* ShareExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtension.swift; sourceTree = "<group>"; };
 		E3C766CE271F608300735655 /* ReferralContactsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralContactsContainer.swift; sourceTree = "<group>"; };
@@ -1185,6 +1187,7 @@
 		E37D20BE27166B0200BF859A /* MainProfileController */ = {
 			isa = PBXGroup;
 			children = (
+				E3B87A2E27307DB0009139C5 /* EditProfileController */,
 				E3B11AB9268FCBB200B5B6F8 /* ProfileController.swift */,
 				E3B11ABB268FCBC900B5B6F8 /* ProfileCollectionView.swift */,
 				E3B11ABD268FCBE300B5B6F8 /* ProfileCollectionFeeder.swift */,
@@ -1449,6 +1452,14 @@
 				E37D20D82718B9F400BF859A /* ReferralProgramControllers */,
 			);
 			path = TabFour;
+			sourceTree = "<group>";
+		};
+		E3B87A2E27307DB0009139C5 /* EditProfileController */ = {
+			isa = PBXGroup;
+			children = (
+				E3B87A2F27307DBF009139C5 /* EditProfileController.swift */,
+			);
+			path = EditProfileController;
 			sourceTree = "<group>";
 		};
 		E3C766D22721C36D00735655 /* ReferralModels */ = {
@@ -1960,6 +1971,7 @@
 				E3B11ABA268FCBB200B5B6F8 /* ProfileController.swift in Sources */,
 				E3C766CF271F608300735655 /* ReferralContactsContainer.swift in Sources */,
 				E3B11AC0268FCC0400B5B6F8 /* ProfilePhotoUploadExt.swift in Sources */,
+				E3B87A3027307DBF009139C5 /* EditProfileController.swift in Sources */,
 				CDE871112652E2DC0082551B /* DividerView.swift in Sources */,
 				E36EE54626B7036B0009A0EF /* NewDogEntry.swift in Sources */,
 				E334FBAB270E461A003F24D5 /* LocationBroadcaster.swift in Sources */,

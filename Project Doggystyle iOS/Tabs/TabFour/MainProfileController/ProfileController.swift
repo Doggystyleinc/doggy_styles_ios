@@ -243,7 +243,7 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
     }
     
     @objc func handleEditProfilePencil() {
-        print("pencil here")
+        self.handleEditProfileController()
     }
     
     @objc func handleProfileSelection(sender : UIImageView) {
@@ -378,6 +378,17 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         
         let paymentMethodsController = PaymentMethodsController()
         let nav = UINavigationController(rootViewController: paymentMethodsController)
+        nav.modalPresentationStyle = .fullScreen
+        nav.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.present(nav, animated: true, completion: nil)
+        
+    }
+    
+    
+    @objc func handleEditProfileController() {
+        
+        let editProfileController = EditProfileController()
+        let nav = UINavigationController(rootViewController: editProfileController)
         nav.modalPresentationStyle = .fullScreen
         nav.navigationController?.navigationBar.isHidden = true
         self.navigationController?.present(nav, animated: true, completion: nil)
