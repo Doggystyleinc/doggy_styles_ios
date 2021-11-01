@@ -272,157 +272,180 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         
     }
     
+    
     func runReferralEngine(passedInviteList : [ContactsList]) {
-        
+
         UIView.animate(withDuration: 0.25) {
-            
+
             self.referralProgramCollectionView.alpha = 0
             self.referButton.alpha = 0
             self.activityIndicator.startAnimating()
             self.view.isUserInteractionEnabled = false
             let placeholder = NSAttributedString(string: "Inviting...", attributes: [NSAttributedString.Key.foregroundColor: dsFlatBlack.withAlphaComponent(0.4)])
             self.searchTextField.attributedPlaceholder = placeholder
-            
+
         }
-        
+
         //MARK: - REMOVES ALL USERS THAT OWN THE APP ALREADY AND HAVE IT INSTALLED
         let filtered = passedInviteList.filter { $0.isCurrentDoggystyleUser != true }
         
-        //MARK: - CHECK THE INVITATION LIST FOR ALREADY REQUESTED MEMBERS
-        let ref = self.databaseRef.child("global_pending_invites")
         
-        ref.observeSingleEvent(of: .value) { snapDataGrab in
-            
-            if snapDataGrab.exists() {
-                
-                for i in filtered {
-                   
-                    let selectedPhoneNumber = i.phoneNumber ?? "nil"
-                    
-                    //MARK: - CHECK FOR PAST INVITES TO MAKE SURE SOMEONE ELSE HAS NOT INVITED THIS USER
-                    self.checkifInviteeHasAlreadyBeenInvited(JSONdata: snapDataGrab, selectedusersPhoneNumber: selectedPhoneNumber) { hasAlreadyBeenInvited in
-                        
-                        if hasAlreadyBeenInvited == false {
-                            
-                            let timeStamp : Double = Date().timeIntervalSince1970
-                            
-                            let familyName = i.familyName ?? "nil"
-                            let givenName = i.givenName ?? "nil"
-                            let phoneNumber = i.phoneNumber ?? "nil"
-                            let fullPhoneNumber = i.fullPhoneNumber ?? "nil"
-                            
-                            let inviters_firstName = userProfileStruct.user_first_name ?? "nil"
-                            let inviters_lastName = userProfileStruct.user_last_name ?? "nil"
-                            let inviters_fullName = userProfileStruct.users_full_name ?? "nil"
-                            let inviters_phoneNumber = userProfileStruct.users_phone_number ?? "nil"
-                            let inviters_fullPhoneNumber = userProfileStruct.users_full_phone_number ?? "nil"
-                            let inviters_UID = userProfileStruct.users_ref_key ?? "nil"
-                            let inviters_country_code = userProfileStruct.users_country_code ?? "nil"
-                            let inviters_email = userProfileStruct.users_email ?? "nil"
-                            let referral_code = userProfileStruct.user_created_referral_code_grab ?? "nil"
-
-                            guard let user_uid = Auth.auth().currentUser?.uid else {return}
-                            
-                            let refStamp = self.databaseRef.child("global_pending_invites").childByAutoId()
-                            let personalStamp = self.databaseRef.child("personal_pending_invites").child(user_uid).childByAutoId()
-                            
-                                                           //MARK: - INVITERS INFORMATION
-                            let values : [String : Any] = ["inviters_firstName" : inviters_firstName,
-                                                           "inviters_lastName" : inviters_lastName,
-                                                           "inviters_fullName" : inviters_fullName,
-                                                           "inviters_phoneNumber" : inviters_phoneNumber,
-                                                           "inviters_fullPhoneNumber" : inviters_fullPhoneNumber,
-                                                           "inviters_UID" : inviters_UID,
-                                                           "inviters_country_code" : inviters_country_code,
-                                                           "inviters_email" : inviters_email,
-                                                           "inviters_email_companion_success" : false,
-                                                           
-                                                           //MARK: - RECIPIENTS INFORMATION
-                                                           "recipient_family_name" : familyName,
-                                                           "recipient_given_name" : givenName,
-                                                           "recipient_phone_number" : phoneNumber,
-                                                           "recipient_full_phone_number" : fullPhoneNumber,
-                                                           "time_stamp" : timeStamp]
-                            
-                            refStamp.updateChildValues(values) { error, ref in
-                                personalStamp.updateChildValues(values) { error, ref in
-                                    self.sendTextMessage(passedCountryCode: "1", passedPhoneNumber: "8455581855", passedReferralCode: referral_code, inviteesName: "\(inviters_firstName) \(inviters_lastName)")
-                                    print("Referral engine engaged 4")
-
-                                }
-                            }
-                        } //MARK: - THESE USERS HAVE ALREADY BEEN INVITED FOR THE ELSE AT THIS BRACKET
-                    }
-                }
-                
-                //MARK: - COMPLETED THE INVITE FUNCTION, BAIL OUT AND GO BACK
-                self.unlockAndComplete()
-                
-            } else {
-                
-                var counter : Int = 0
-                
-                for i in filtered {
-                    
-                    let timeStamp : Double = Date().timeIntervalSince1970
-                    
-                    let familyName = i.familyName ?? "nil"
-                    let givenName = i.givenName ?? "nil"
-                    let phoneNumber = i.phoneNumber ?? "nil"
-                    let fullPhoneNumber = i.fullPhoneNumber ?? "nil"
-                    
-                    let inviters_firstName = userProfileStruct.user_first_name ?? "nil"
-                    let inviters_lastName = userProfileStruct.user_last_name ?? "nil"
-                    let inviters_fullName = userProfileStruct.users_full_name ?? "nil"
-                    let inviters_phoneNumber = userProfileStruct.users_phone_number ?? "nil"
-                    let inviters_fullPhoneNumber = userProfileStruct.users_full_phone_number ?? "nil"
-                    let inviters_UID = userProfileStruct.users_ref_key ?? "nil"
-                    let inviters_country_code = userProfileStruct.users_country_code ?? "nil"
-                    let inviters_email = userProfileStruct.users_email ?? "nil"
-                    let referral_code = userProfileStruct.user_created_referral_code_grab ?? "nil"
-
-                    guard let user_uid = Auth.auth().currentUser?.uid else {return}
-                    
-                    let refStamp = self.databaseRef.child("global_pending_invites").childByAutoId()
-                    let personalStamp = self.databaseRef.child("personal_pending_invites").child(user_uid).childByAutoId()
-                    
-                    //MARK: - INVITERS INFORMATION
-                    let values : [String : Any] = ["inviters_firstName" : inviters_firstName,
-                                                   "inviters_lastName" : inviters_lastName,
-                                                   "inviters_fullName" : inviters_fullName,
-                                                   "inviters_phoneNumber" : inviters_phoneNumber,
-                                                   "inviters_fullPhoneNumber" : inviters_fullPhoneNumber,
-                                                   "inviters_UID" : inviters_UID,
-                                                   "inviters_country_code" : inviters_country_code,
-                                                   "inviters_email" : inviters_email,
-                                                   "inviters_email_companion_success" : false,
-                                                   
-                                                   //MARK: - RECIPIENTS INFORMATION
-                                                   "recipient_family_name" : familyName,
-                                                   "recipient_given_name" : givenName,
-                                                   "recipient_phone_number" : phoneNumber,
-                                                   "recipient_full_phone_number" : fullPhoneNumber,
-                                                   "time_stamp" : timeStamp,
-                                                   "from_code_search" : false]
-                    
-                    refStamp.updateChildValues(values) { error, ref in
-                        personalStamp.updateChildValues(values) { error, ref in
-                            
-                            //MARK: - INCREASE THE COUNT AFTER THE DATABASE HAS BEEN UPDATED THEN COMPLETE OUT
-                            counter += 1
-                            
-                            self.sendTextMessage(passedCountryCode: "1", passedPhoneNumber: phoneNumber, passedReferralCode: referral_code, inviteesName: "\(inviters_firstName) \(inviters_lastName)")
-                            
-                            //MARK: - FALL THROUGH ERROR
-                            if counter == filtered.count {
-                                self.unlockAndComplete()
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        
+        
     }
+  
+    
+//    func runReferralEngine(passedInviteList : [ContactsList]) {
+//
+//        UIView.animate(withDuration: 0.25) {
+//
+//            self.referralProgramCollectionView.alpha = 0
+//            self.referButton.alpha = 0
+//            self.activityIndicator.startAnimating()
+//            self.view.isUserInteractionEnabled = false
+//            let placeholder = NSAttributedString(string: "Inviting...", attributes: [NSAttributedString.Key.foregroundColor: dsFlatBlack.withAlphaComponent(0.4)])
+//            self.searchTextField.attributedPlaceholder = placeholder
+//
+//        }
+//
+//        //MARK: - REMOVES ALL USERS THAT OWN THE APP ALREADY AND HAVE IT INSTALLED
+//        let filtered = passedInviteList.filter { $0.isCurrentDoggystyleUser != true }
+//
+//        //MARK: - CHECK THE INVITATION LIST FOR ALREADY REQUESTED MEMBERS
+//        let ref = self.databaseRef.child("global_pending_invites")
+//
+//        ref.observeSingleEvent(of: .value) { snapDataGrab in
+//
+//            if snapDataGrab.exists() {
+//
+//                for i in filtered {
+//
+//                    let selectedPhoneNumber = i.phoneNumber ?? "nil"
+//
+//                    //MARK: - CHECK FOR PAST INVITES TO MAKE SURE SOMEONE ELSE HAS NOT INVITED THIS USER
+//                    self.checkifInviteeHasAlreadyBeenInvited(JSONdata: snapDataGrab, selectedusersPhoneNumber: selectedPhoneNumber) { hasAlreadyBeenInvited in
+//
+//                        if hasAlreadyBeenInvited == false {
+//
+//                            let timeStamp : Double = Date().timeIntervalSince1970
+//
+//                            let familyName = i.familyName ?? "nil"
+//                            let givenName = i.givenName ?? "nil"
+//                            let phoneNumber = i.phoneNumber ?? "nil"
+//                            let fullPhoneNumber = i.fullPhoneNumber ?? "nil"
+//
+//                            let inviters_firstName = userProfileStruct.user_first_name ?? "nil"
+//                            let inviters_lastName = userProfileStruct.user_last_name ?? "nil"
+//                            let inviters_fullName = userProfileStruct.users_full_name ?? "nil"
+//                            let inviters_phoneNumber = userProfileStruct.users_phone_number ?? "nil"
+//                            let inviters_fullPhoneNumber = userProfileStruct.users_full_phone_number ?? "nil"
+//                            let inviters_UID = userProfileStruct.users_ref_key ?? "nil"
+//                            let inviters_country_code = userProfileStruct.users_country_code ?? "nil"
+//                            let inviters_email = userProfileStruct.users_email ?? "nil"
+//                            let referral_code = userProfileStruct.user_created_referral_code_grab ?? "nil"
+//
+//                            guard let user_uid = Auth.auth().currentUser?.uid else {return}
+//
+//                            let refStamp = self.databaseRef.child("global_pending_invites").childByAutoId()
+//                            let personalStamp = self.databaseRef.child("personal_pending_invites").child(user_uid).childByAutoId()
+//
+//                                                           //MARK: - INVITERS INFORMATION
+//                            let values : [String : Any] = ["inviters_firstName" : inviters_firstName,
+//                                                           "inviters_lastName" : inviters_lastName,
+//                                                           "inviters_fullName" : inviters_fullName,
+//                                                           "inviters_phoneNumber" : inviters_phoneNumber,
+//                                                           "inviters_fullPhoneNumber" : inviters_fullPhoneNumber,
+//                                                           "inviters_UID" : inviters_UID,
+//                                                           "inviters_country_code" : inviters_country_code,
+//                                                           "inviters_email" : inviters_email,
+//                                                           "inviters_email_companion_success" : false,
+//
+//                                                           //MARK: - RECIPIENTS INFORMATION
+//                                                           "recipient_family_name" : familyName,
+//                                                           "recipient_given_name" : givenName,
+//                                                           "recipient_phone_number" : phoneNumber,
+//                                                           "recipient_full_phone_number" : fullPhoneNumber,
+//                                                           "time_stamp" : timeStamp]
+//
+//                            refStamp.updateChildValues(values) { error, ref in
+//                                personalStamp.updateChildValues(values) { error, ref in
+//                                    self.sendTextMessage(passedCountryCode: "1", passedPhoneNumber: "8455581855", passedReferralCode: referral_code, inviteesName: "\(inviters_firstName) \(inviters_lastName)")
+//                                    print("Referral engine engaged 4")
+//
+//                                }
+//                            }
+//                        } //MARK: - THESE USERS HAVE ALREADY BEEN INVITED FOR THE ELSE AT THIS BRACKET
+//                    }
+//                }
+//
+//                //MARK: - COMPLETED THE INVITE FUNCTION, BAIL OUT AND GO BACK
+//                self.unlockAndComplete()
+//
+//            } else {
+//
+//                var counter : Int = 0
+//
+//                for i in filtered {
+//
+//                    let timeStamp : Double = Date().timeIntervalSince1970
+//
+//                    let familyName = i.familyName ?? "nil"
+//                    let givenName = i.givenName ?? "nil"
+//                    let phoneNumber = i.phoneNumber ?? "nil"
+//                    let fullPhoneNumber = i.fullPhoneNumber ?? "nil"
+//
+//                    let inviters_firstName = userProfileStruct.user_first_name ?? "nil"
+//                    let inviters_lastName = userProfileStruct.user_last_name ?? "nil"
+//                    let inviters_fullName = userProfileStruct.users_full_name ?? "nil"
+//                    let inviters_phoneNumber = userProfileStruct.users_phone_number ?? "nil"
+//                    let inviters_fullPhoneNumber = userProfileStruct.users_full_phone_number ?? "nil"
+//                    let inviters_UID = userProfileStruct.users_ref_key ?? "nil"
+//                    let inviters_country_code = userProfileStruct.users_country_code ?? "nil"
+//                    let inviters_email = userProfileStruct.users_email ?? "nil"
+//                    let referral_code = userProfileStruct.user_created_referral_code_grab ?? "nil"
+//
+//                    guard let user_uid = Auth.auth().currentUser?.uid else {return}
+//
+//                    let refStamp = self.databaseRef.child("global_pending_invites").childByAutoId()
+//                    let personalStamp = self.databaseRef.child("personal_pending_invites").child(user_uid).childByAutoId()
+//
+//                    //MARK: - INVITERS INFORMATION
+//                    let values : [String : Any] = ["inviters_firstName" : inviters_firstName,
+//                                                   "inviters_lastName" : inviters_lastName,
+//                                                   "inviters_fullName" : inviters_fullName,
+//                                                   "inviters_phoneNumber" : inviters_phoneNumber,
+//                                                   "inviters_fullPhoneNumber" : inviters_fullPhoneNumber,
+//                                                   "inviters_UID" : inviters_UID,
+//                                                   "inviters_country_code" : inviters_country_code,
+//                                                   "inviters_email" : inviters_email,
+//                                                   "inviters_email_companion_success" : false,
+//
+//                                                   //MARK: - RECIPIENTS INFORMATION
+//                                                   "recipient_family_name" : familyName,
+//                                                   "recipient_given_name" : givenName,
+//                                                   "recipient_phone_number" : phoneNumber,
+//                                                   "recipient_full_phone_number" : fullPhoneNumber,
+//                                                   "time_stamp" : timeStamp,
+//                                                   "from_code_search" : false]
+//
+//                    refStamp.updateChildValues(values) { error, ref in
+//                        personalStamp.updateChildValues(values) { error, ref in
+//
+//                            //MARK: - INCREASE THE COUNT AFTER THE DATABASE HAS BEEN UPDATED THEN COMPLETE OUT
+//                            counter += 1
+//
+//                            self.sendTextMessage(passedCountryCode: "1", passedPhoneNumber: phoneNumber, passedReferralCode: referral_code, inviteesName: "\(inviters_firstName) \(inviters_lastName)")
+//
+//                            //MARK: - FALL THROUGH ERROR
+//                            if counter == filtered.count {
+//                                self.unlockAndComplete()
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     func checkifInviteeHasAlreadyBeenInvited(JSONdata : DataSnapshot, selectedusersPhoneNumber : String, completion : @escaping (_ hasBeenInvited : Bool) -> ()) {
         

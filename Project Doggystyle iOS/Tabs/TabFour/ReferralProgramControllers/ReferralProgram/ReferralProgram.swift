@@ -12,10 +12,8 @@ import Firebase
 class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBackProtocol {
     
     enum CodeState {
-        
         case RandomlyGenerated
         case CustomCode
-        
     }
     
     var clientHasGroomingLocation : Bool?,
@@ -179,7 +177,7 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         aiv.hidesWhenStopped = true
         aiv.backgroundColor = .clear
         
-       return aiv
+        return aiv
     }()
     
     override func viewDidLoad() {
@@ -197,7 +195,7 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         super.viewWillDisappear(true)
         
         NotificationCenter.default.removeObserver(self)
-
+        
     }
     
     func fillValues() {
@@ -214,7 +212,7 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
             
         }
     }
-  
+    
     func addViews() {
         
         self.view.addSubview(self.backButton)
@@ -226,7 +224,7 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         self.view.addSubview(self.createButton)
         self.view.addSubview(self.submitButton)
         self.view.addSubview(self.activityIndicator)
-
+        
         self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
         self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true
         self.backButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
@@ -265,18 +263,18 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         self.activityIndicator.centerYAnchor.constraint(equalTo: self.referralTextField.centerYAnchor, constant: 0).isActive = true
         self.activityIndicator.rightAnchor.constraint(equalTo: self.referralTextField.rightAnchor, constant: -30).isActive = true
         self.activityIndicator.sizeToFit()
-      
+        
     }
     
     @objc func handleKeyboardShow(notification : Notification) {
         
         if self.isKeyboardPresented == true {return}
-      
+        
         self.hasRandomCodeBeenGenerated = false
         self.referralTextField.text = ""
         self.handleCodeRemoval()
         self.codeState = .CustomCode
-
+        
         UIView.animate(withDuration: 0.25) {
             self.createButton.alpha = 0
             self.submitButton.alpha = 0
@@ -295,7 +293,7 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         }
         
         self.isKeyboardPresented = false
-
+        
     }
     
     func resignation() {
@@ -308,13 +306,14 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
     }
     
     @objc func handleBackButton() {
+        self.handleCodeRemoval()
         self.dismiss(animated: true, completion: nil)
     }
     
     func random(digits:Int) -> String {
         var number = String()
         for _ in 1...digits {
-           number += "\(Int.random(in: 1...9))"
+            number += "\(Int.random(in: 1...9))"
         }
         return number
     }
@@ -328,10 +327,8 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         guard let user_uid = Auth.auth().currentUser?.uid else {return}
         let ref = self.databaseRef.child("referral_codes").child(user_uid)
         ref.removeValue()
-        
-        let refUsers = self.databaseRef.child("all_users").child(user_uid)
-        let values : [String : Any] = ["user_created_referral_code_grab" : "nil"]
-        refUsers.updateChildValues(values)
+        userProfileStruct.user_created_referral_code_grab = "nil"
+        self.referralTextField.text = ""
         
     }
     
@@ -345,7 +342,7 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
             
             //MARK: - FIRE THE LOOP UP
             for child in snapshot.children.allObjects as! [DataSnapshot] {
-
+                
                 if let dict = child.value as? [String : AnyObject] {
                     
                     let referralCode = dict["users_referral_code"] as? String
@@ -356,25 +353,26 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
                     }
                 }
             }
-              completion(isCodeTaken)
+            print("here and: \(isCodeTaken)")
+            completion(isCodeTaken)
         }
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         self.codeState = .CustomCode
-         
+        
         let numbers = ["!","~","@", "#", "$","%","^", "&", "*","(",")", "-", "+","=",".", "?","<",">"]
-              for number in numbers{
-                  if string == number{
-                      return false
-                  }
-              }
+        for number in numbers{
+            if string == number{
+                return false
+            }
+        }
         
         return true
         
-      }
-  
+    }
+    
     @objc func handleRandomCodeGenerator() {
         
         self.codeState = .RandomlyGenerated
@@ -389,14 +387,12 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         self.activityIndicator.startAnimating()
         
         let randomArray : [String] = ["LOVESDOGS", "HEARTSDOGS", "LIKESDOGS", "DOGOBSESSION"]
-    
+        
         let usersFirstName = userProfileStruct.user_first_name?.uppercased().prefix(7) ?? "NIL"
         
         let stringRandomArrayPicker = randomInt(min: 0, max: randomArray.count - 1),
             randomDigitCreator = random(digits: 3)
         
-        print(randomArray[stringRandomArrayPicker])
-      
         let stringIteration = "\(usersFirstName)\(randomArray[stringRandomArrayPicker])\(randomDigitCreator)"
         
         let ref = self.databaseRef.child("referral_codes")
@@ -408,14 +404,17 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
                 self.fetchAndLoop(passedReferralCode: stringIteration) { isCodeTaken in
                     
                     if isCodeTaken {
-                        
                         self.activityIndicator.stopAnimating()
                         self.referralTextField.layer.borderColor = coreRedColor.cgColor
                         
                     } else {
-                       
+                        
                         self.completeAndFinalizeCode(referralCode: stringIteration, user_uid: user_uid) { completion in
-                            self.pushOverReferralMonetaryController()
+                          
+                            self.referralTextField.text = stringIteration
+                            self.activityIndicator.stopAnimating()
+                            self.referralTextField.layer.borderColor = coreOrangeColor.cgColor
+                            
                         }
                     }
                 }
@@ -423,7 +422,11 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
             } else {
                 
                 self.completeAndFinalizeCode(referralCode: stringIteration, user_uid: user_uid) { completion in
-                    self.pushOverReferralMonetaryController()
+
+                    self.referralTextField.layer.borderColor = coreOrangeColor.cgColor
+                    self.referralTextField.text = stringIteration
+                    self.activityIndicator.stopAnimating()
+
                 }
             }
         }
@@ -438,38 +441,34 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
     }
     
     func completeAndFinalizeCode(referralCode : String, user_uid : String, completion : @escaping (_ isComplete : Bool)->()) {
-        
-        let first_name = userProfileStruct.user_first_name ?? "nil"
-        let last_name = userProfileStruct.user_last_name ?? "nil"
-        let firebase_uid = userProfileStruct.users_firebase_uid ?? "nil"
-        let referralCode = referralCode
 
+        let first_name = userProfileStruct.user_first_name ?? "nil",
+            last_name = userProfileStruct.user_last_name ?? "nil",
+            firebase_uid = userProfileStruct.users_firebase_uid ?? "nil",
+            referralCode = referralCode,
+            timeStamp : Double = Date().timeIntervalSince1970
+        
         let ref = self.databaseRef.child("referral_codes").child(user_uid)
-        let values : [String : Any] = ["users_first_name" : first_name, "users_last_name" : last_name, "users_firebase_uid" : firebase_uid, "users_referral_code" : referralCode]
+        
+        let values : [String : Any] = ["users_first_name" : first_name, "users_last_name" : last_name, "users_firebase_uid" : firebase_uid, "users_referral_code" : referralCode, "time_stamp" : timeStamp]
+        
         ref.updateChildValues(values) { error, ref in
-           
+            
             if error != nil {
+                
                 self.referralTextField.layer.borderColor = coreRedColor.cgColor
                 self.activityIndicator.stopAnimating()
                 self.handleCustomPopUpAlert(title: "ERROR", message: "Something wen't wrong. Please try again.", passedButtons: [Statics.OK])
+                completion(false)
                 return
+                
             } else {
+                self.observingRefTwo.removeObserver(withHandle: self.handleOne)
+                completion(false)
+                return
                 
-                let refUsers = self.databaseRef.child("all_users").child(firebase_uid)
-                let values : [String : Any] = ["user_created_referral_code_grab" : referralCode]
-                
-                self.referralTextField.text = referralCode
-                self.activityIndicator.stopAnimating()
-                self.referralTextField.layer.borderColor = coreOrangeColor.cgColor
-                self.referralTextField.text = referralCode
-                refUsers.updateChildValues(values)
-
             }
         }
-        
-        self.observingRefTwo.removeObserver(withHandle: self.handleOne)
-        return
-        
     }
     
     @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
@@ -482,7 +481,7 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         alert.passedIconName = .infoCircle
         alert.modalPresentationStyle = .overCurrentContext
         self.present(alert, animated: true, completion: nil)
-
+        
     }
     
     func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
@@ -492,8 +491,8 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         case Statics.GOT_IT: self.handleBackButton()
         case Statics.OK: print(Statics.OK)
         case Statics.SAVE: self.handleSubmitButton()
-        case Statics.CANCEL: print(Statics.CANCEL)
-
+        case Statics.CANCEL: self.handleCodeRemoval()
+            
         default: print("Should not hit")
             
         }
@@ -501,7 +500,7 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
     
     @objc func doubleCheck() {
         
-       guard let code = self.referralTextField.text else {return}
+        guard let code = self.referralTextField.text else {return}
         
         if code.count <= 0 {
             self.referralTextField.layer.borderColor = coreRedColor.cgColor
@@ -519,42 +518,42 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         guard let user_uid = Auth.auth().currentUser?.uid else {return}
         
         if let text = self.referralTextField.text {
-        
-        if text.count <= 0 {
-            self.referralTextField.layer.borderColor = coreRedColor.cgColor
-            self.handleCustomPopUpAlert(title: "Empty", message: "Please enter a Referral Code of your choice. We recommend at least 10 characters long.", passedButtons: [Statics.OK])
-        } else if text.count < 5 {
-            self.referralTextField.layer.borderColor = coreRedColor.cgColor
-            self.handleCustomPopUpAlert(title: "Empty", message: "Please make sure your Referral Code is at least 5 characters.", passedButtons: [Statics.OK])
-        } else {
-
-            self.referralTextField.layer.borderColor = coreOrangeColor.cgColor
             
-            if self.codeState == .CustomCode {
+            if text.count <= 0 {
+                self.referralTextField.layer.borderColor = coreRedColor.cgColor
+                self.handleCustomPopUpAlert(title: "Empty", message: "Please enter a Referral Code of your choice. We recommend at least 10 characters long.", passedButtons: [Statics.OK])
+            } else if text.count < 5 {
+                self.referralTextField.layer.borderColor = coreRedColor.cgColor
+                self.handleCustomPopUpAlert(title: "Empty", message: "Please make sure your Referral Code is at least 5 characters.", passedButtons: [Statics.OK])
+            } else {
                 
-                self.activityIndicator.startAnimating()
+                self.referralTextField.layer.borderColor = coreOrangeColor.cgColor
                 
-                self.fetchAndLoop(passedReferralCode: text) { isCodeTaken in
+                if self.codeState == .CustomCode {
                     
-                    if isCodeTaken == true {
+                    self.activityIndicator.startAnimating()
+                    
+                    self.fetchAndLoop(passedReferralCode: text) { isCodeTaken in
                         
-                        self.activityIndicator.stopAnimating()
-                        self.referralTextField.layer.borderColor = coreRedColor.cgColor
-                        self.handleCustomPopUpAlert(title: "Taken", message: "This referral code has already been used. Please select another one.", passedButtons: [Statics.OK])
-                        
-                    } else {
-                        
-                        self.completeAndFinalizeCode(referralCode: text, user_uid: user_uid) { completion in
-                            self.nextRoute(passedReferralCode: text)
+                        if isCodeTaken == true {
+                            
+                            self.activityIndicator.stopAnimating()
+                            self.referralTextField.layer.borderColor = coreRedColor.cgColor
+                            self.handleCustomPopUpAlert(title: "Taken", message: "This referral code has already been used. Please select another one.", passedButtons: [Statics.OK])
+                            
+                        } else {
+                            
+                            self.completeAndFinalizeCode(referralCode: text, user_uid: user_uid) { completion in
+                                self.nextRoute(passedReferralCode: text)
+                            }
                         }
                     }
+                    
+                } else if codeState == .RandomlyGenerated {
+                    self.nextRoute(passedReferralCode: text)
                 }
-                
-            } else if codeState == .RandomlyGenerated {
-                self.nextRoute(passedReferralCode: text)
             }
-        }
-        
+            
         } else {
             self.referralTextField.layer.borderColor = coreRedColor.cgColor
             self.handleCustomPopUpAlert(title: "Empty", message: "Please enter in an awesome referral code!", passedButtons: [Statics.OK])
@@ -565,13 +564,11 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         
         //MARK: - UPDATE THE REFERRAL CODE HERE
         userProfileStruct.user_created_referral_code_grab = passedReferralCode
-
+        
         let referralMonetaryController = ReferralMonetaryController()
-//        let nav = UINavigationController(rootViewController: referralMonetaryController)
-//
         referralMonetaryController.modalPresentationStyle = .fullScreen
         referralMonetaryController.navigationController?.navigationBar.isHidden = true
-
+        
         self.navigationController?.pushViewController(referralMonetaryController, animated: true)
         
     }

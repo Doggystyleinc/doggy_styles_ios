@@ -13,9 +13,8 @@ import Firebase
 class YourReferralContainer : UIViewController {
     
     var referralMonetaryController : ReferralMonetaryController?,
-        pendingUsersMonetaryValueModel = [PendingUsersMonetaryValueModel]()
-    
-    var isPendingSelected : Bool = true
+        pendingUsersMonetaryValueModel = [PendingUsersMonetaryValueModel](),
+        isPendingSelected : Bool = true
     
     let databaseRef = Database.database().reference()
     

@@ -12,7 +12,7 @@ import PhoneNumberKit
 class ReferralProgramCollectionView : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
     private let referralCollectionID = "referralCollectionID"
-   
+    
     var referralContactsContainer : ReferralContactsContainer?
     
     var selectionArray = [Int]()
@@ -44,7 +44,7 @@ class ReferralProgramCollectionView : UICollectionView, UICollectionViewDelegate
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    
+        
         if self.referralContactsContainer?.searchTextField.text != "" {
             return self.referralContactsContainer?.filteredContactsArray.count ?? 0
         } else {
@@ -67,49 +67,53 @@ class ReferralProgramCollectionView : UICollectionView, UICollectionViewDelegate
             
             if safeDataSource.count > 0 {
                 
-                cell.contentView.isUserInteractionEnabled = false
-                
-                //RESET DATASOURCE ACCORDING TO THE SEARCH RESULTS
-                var feeder = safeDataSource[indexPath.item]
-                if self.referralContactsContainer?.searchTextField.text != "" {
-                    feeder = safeFilteredDataSource[indexPath.item]
-                } else {
-                    feeder = safeDataSource[indexPath.item]
-                }
-                
-                //MARK: - SET THE VALUES
-                let user_first_name = feeder.familyName ?? "nil"
-                let user_last_name = feeder.givenName ?? "nil"
-                let _ = feeder.phoneNumber ?? "nil"
-                let users_full_phone_number = feeder.fullPhoneNumber ?? "nil"
-                let isCurrentDoggystyleUser = feeder.isCurrentDoggystyleUser ?? false
-                
-                let formattedPhoneNumber = PartialFormatter().formatPartial(users_full_phone_number)
+                    cell.contentView.isUserInteractionEnabled = false
 
-                cell.nameLabel.text = "\(user_first_name) \(user_last_name)"
-                cell.phoneNumberLabel.text = "\(formattedPhoneNumber)"
-                
-                //MARK: - RESETS THE USERS TAP DECISION
-                if !self.selectionArray.contains(indexPath.item) {
-                    cell.selectionButton.backgroundColor = .clear
-                    cell.selectionButton.setTitle("", for: .normal)
-                } else if self.selectionArray.contains(indexPath.item) {
-                    cell.selectionButton.backgroundColor = coreOrangeColor
-                    cell.selectionButton.setTitle(String.fontAwesomeIcon(name: .check), for: .normal)
-                    cell.selectionButton.setTitleColor(coreWhiteColor, for: .normal)
-                    cell.selectionButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 12, style: .solid)
-                }
-                
-                if isCurrentDoggystyleUser == true {
-                    cell.appLogoIcon.isHidden = false
-                    cell.selectionButton.isHidden = true
-                } else {
-                    cell.appLogoIcon.isHidden = true
-                    cell.selectionButton.isHidden = false
+                    //RESET DATASOURCE ACCORDING TO THE SEARCH RESULTS
+                    var feeder = safeDataSource[indexPath.item]
+                    if self.referralContactsContainer?.searchTextField.text != "" {
+                        feeder = safeFilteredDataSource[indexPath.item]
+                    } else {
+                        feeder = safeDataSource[indexPath.item]
+                    }
 
+                    //MARK: - SET THE VALUES
+                    let user_first_name = feeder.familyName ?? "nil"
+                    let user_last_name = feeder.givenName ?? "nil"
+                    let phoneNumber = feeder.phoneNumber ?? "nil"
+                    let _ = feeder.fullPhoneNumber ?? "nil"
+                    let isCurrentDoggystyleUser = feeder.isCurrentDoggystyleUser ?? false
+
+                    cell.nameLabel.text = "\(user_first_name) \(user_last_name)"
+                    let phoneTrim = phoneNumber.suffix(4)
+                    cell.phoneNumberLabel.text = "XXX-XXX-\(phoneTrim)"
+
+                    //MARK: - RESETS THE USERS TAP DECISION
+                    if !self.selectionArray.contains(indexPath.item) {
+                        
+                        cell.selectionButton.backgroundColor = .clear
+                        cell.selectionButton.setTitle("", for: .normal)
+                        
+                    } else if self.selectionArray.contains(indexPath.item) {
+                        
+                        cell.selectionButton.backgroundColor = coreOrangeColor
+                        cell.selectionButton.setTitle(String.fontAwesomeIcon(name: .check), for: .normal)
+                        cell.selectionButton.setTitleColor(coreWhiteColor, for: .normal)
+                        cell.selectionButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 12, style: .solid)
+                        
+                    }
+
+                    if isCurrentDoggystyleUser == true {
+                        cell.appLogoIcon.isHidden = false
+                        cell.selectionButton.isHidden = true
+                    } else {
+                        cell.appLogoIcon.isHidden = true
+                        cell.selectionButton.isHidden = false
+                
                 }
             }
         }
+        
         return cell
     }
     
@@ -134,6 +138,7 @@ class ReferralProgramCollectionView : UICollectionView, UICollectionViewDelegate
             UIDevice.vibrateLight()
             
             if let safeDataSource = self.referralContactsContainer?.contactsArray, let safeFilteredDataSource = self.referralContactsContainer?.filteredContactsArray {
+                
                 //RESET DATASOURCE ACCORDING TO THE SEARCH RESULTS
                 var feeder = safeDataSource[indexPath.item]
                 if self.referralContactsContainer?.searchTextField.text != "" {
@@ -142,11 +147,11 @@ class ReferralProgramCollectionView : UICollectionView, UICollectionViewDelegate
                     feeder = safeDataSource[indexPath.item]
                 }
                 
-                let givenName = feeder.givenName ?? "nil"
-                let familyName = feeder.familyName ?? "nil"
-                let phoneNumber = feeder.phoneNumber ?? "nil"
-                let fullPhoneNumber = feeder.fullPhoneNumber ?? "nil"
-                let isCurrentDoggystyleUser = feeder.isCurrentDoggystyleUser ?? false
+                let givenName = feeder.givenName ?? "nil",
+                    familyName = feeder.familyName ?? "nil",
+                    phoneNumber = feeder.phoneNumber ?? "nil",
+                    fullPhoneNumber = feeder.fullPhoneNumber ?? "nil",
+                    isCurrentDoggystyleUser = feeder.isCurrentDoggystyleUser ?? false
                 
                 let dic : [String : Any] = ["givenName" : givenName, "familyName" : familyName, "phoneNumber" : phoneNumber, "fullPhoneNumber" : fullPhoneNumber, "isCurrentDoggystyleUser" : isCurrentDoggystyleUser]
                 let contact = ContactsList(json: dic)
@@ -194,13 +199,13 @@ class ReferralCollectionFeeder : UICollectionViewCell {
         cv.layer.shadowRadius = 9
         cv.layer.shouldRasterize = false
         cv.addTarget(self, action: #selector(self.handleSelectionButton(sender:)), for: .touchUpInside)
-
-      return cv
+        
+        return cv
         
     }()
     
     lazy var selectionButton : UIButton = {
-
+        
         let cbf = UIButton()
         cbf.translatesAutoresizingMaskIntoConstraints = false
         cbf.backgroundColor = .clear
@@ -213,21 +218,21 @@ class ReferralCollectionFeeder : UICollectionViewCell {
         cbf.backgroundColor = coreOrangeColor
         cbf.setTitle(String.fontAwesomeIcon(name: .check), for: .normal)
         return cbf
-
+        
     }()
- 
+    
     let nameLabel : UILabel = {
         
         let thl = UILabel()
         thl.translatesAutoresizingMaskIntoConstraints = false
         thl.textAlignment = .left
-        thl.text = "Cristina Arcodia"
+        thl.text = "Loading..."
         thl.font = UIFont(name: rubikMedium, size: 16)
         thl.numberOfLines = 1
         thl.adjustsFontSizeToFitWidth = false
         thl.textColor = coreBlackColor
         thl.isUserInteractionEnabled = false
-
+        
         return thl
         
     }()
@@ -237,13 +242,13 @@ class ReferralCollectionFeeder : UICollectionViewCell {
         let thl = UILabel()
         thl.translatesAutoresizingMaskIntoConstraints = false
         thl.textAlignment = .left
-        thl.text = "845-558-1855"
+        thl.text = "(XXX) XXX-XXXX)"
         thl.font = UIFont(name: rubikRegular, size: 13)
         thl.numberOfLines = 1
         thl.adjustsFontSizeToFitWidth = false
         thl.textColor = coreBlackColor
         thl.isUserInteractionEnabled = false
-
+        
         return thl
         
     }()
@@ -280,7 +285,7 @@ class ReferralCollectionFeeder : UICollectionViewCell {
         self.containerView.addSubview(self.nameLabel)
         self.containerView.addSubview(self.phoneNumberLabel)
         self.addSubview(self.appLogoIcon)
-
+        
         self.containerView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.containerView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
         self.containerView.heightAnchor.constraint(equalToConstant: 73).isActive = true
@@ -305,7 +310,7 @@ class ReferralCollectionFeeder : UICollectionViewCell {
         self.phoneNumberLabel.leftAnchor.constraint(equalTo: self.selectionButton.rightAnchor, constant: 16).isActive = true
         self.phoneNumberLabel.rightAnchor.constraint(equalTo: self.appLogoIcon.leftAnchor, constant: -15).isActive = true
         self.phoneNumberLabel.sizeToFit()
-
+        
     }
     
     @objc func handleSelectionButton(sender : UIButton) {
@@ -321,5 +326,20 @@ class ReferralCollectionFeeder : UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+
+extension DispatchQueue {
+
+    static func background(delay: Double = 0.0, background: (()->Void)? = nil, completion: (() -> Void)? = nil) {
+        DispatchQueue.global(qos: .background).async {
+            background?()
+            if let completion = completion {
+                DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: {
+                    completion()
+                })
+            }
+        }
     }
 }

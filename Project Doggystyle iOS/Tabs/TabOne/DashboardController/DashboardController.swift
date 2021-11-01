@@ -178,10 +178,6 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleNewDogFlow), name: NSNotification.Name(Statics.CALL_ADD_NEW_PUP), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.presentAppointmentsController), name: NSNotification.Name(Statics.CALL_BOOK_NOW), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.callDataEngine), name: NSNotification.Name(Statics.RUN_DATA_ENGINE), object: nil)
-//
-//        TextMessageHTTP.shared.twilioSendTextMessage(users_country_code: "1", users_phone_number: "8455581855", stringMessage: "Hello and welcome to the Doggystyle application!") { success, error in
-//            print("code sent")
-//        }
 
     }
     

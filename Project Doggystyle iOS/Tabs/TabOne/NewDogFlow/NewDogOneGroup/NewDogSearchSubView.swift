@@ -145,7 +145,6 @@ class NewDogSearchBreedSubview : UIView, UITextFieldDelegate {
         }
     }
     
-    
     func listBreeds(passedText : String) {
         
         let matchingTerms = self.dogBreedJson.filter({

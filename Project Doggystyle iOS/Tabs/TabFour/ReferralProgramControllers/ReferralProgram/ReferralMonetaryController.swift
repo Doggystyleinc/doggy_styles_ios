@@ -581,6 +581,7 @@ class PendingUsersMonetaryValueModel : NSObject {
     var inviters_lastName : String?
     var inviters_firstName : String?
     var inviters_email_companion_success : Bool?
+    var time_stamp : Double?
     
     init(JSON : [String : Any]) {
         
@@ -597,6 +598,7 @@ class PendingUsersMonetaryValueModel : NSObject {
         self.inviters_lastName = JSON["inviters_lastName"] as? String ?? "nil"
         self.inviters_firstName = JSON["inviters_firstName"] as? String ?? "nil"
         self.inviters_email_companion_success = JSON["inviters_email_companion_success"] as? Bool ?? false
+        self.time_stamp = JSON["time_stamp"] as? Double ?? 0.0
 
     }
 }

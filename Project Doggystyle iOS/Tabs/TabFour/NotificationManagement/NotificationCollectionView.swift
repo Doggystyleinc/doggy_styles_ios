@@ -2,23 +2,24 @@
 //  NotificationCollectionView.swift
 //  Project Doggystyle iOS
 //
-//  Created by Charlie Arcodia on 10/18/21.
+//  Created by Charlie Arcodia on 11/1/21.
 //
-
 
 import Foundation
 import UIKit
 
-class NotificationCollectionView : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
+class NotificationAlertsCollectionView : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
-    private let notificationID = "servicesID"
+    private let notificationAlertsID = "notificationAlertsID"
+    
+    let labelArrayDatasource : [String] = ["Available appointments", "Grooming updates", "Direct messages", "Appointment reminders", "Doggystyle updates"]
     
     var notificationManagement : NotificationManagement?
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         
-        self.backgroundColor = coreBackgroundWhite
+        self.backgroundColor = coreWhiteColor
         self.translatesAutoresizingMaskIntoConstraints = false
         self.dataSource = self
         self.delegate = self
@@ -34,41 +35,39 @@ class NotificationCollectionView : UICollectionView, UICollectionViewDelegateFlo
         self.contentInsetAdjustmentBehavior = .never
         self.delaysContentTouches = true
         
-        self.register(NotificationFeeder.self, forCellWithReuseIdentifier: self.notificationID)
+        self.register(NotificationAlertController.self, forCellWithReuseIdentifier: self.notificationAlertsID)
         
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return 3
+        return self.labelArrayDatasource.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if indexPath.item == 0 {
-            return CGSize(width: UIScreen.main.bounds.width, height: 88)
-        } else if indexPath.item == 1 {
-            return CGSize(width: UIScreen.main.bounds.width, height: 310)
-        } else {
-            return CGSize(width: UIScreen.main.bounds.width, height: 185)
-        }
+        return CGSize(width: UIScreen.main.bounds.width - 60, height: 42)
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = self.dequeueReusableCell(withReuseIdentifier: self.notificationID, for: indexPath) as! NotificationFeeder
+        let cell = self.dequeueReusableCell(withReuseIdentifier: self.notificationAlertsID, for: indexPath) as! NotificationAlertController
         
-        cell.notificationCollectionView = self
+        cell.notificationAlertsCollectionView = self
+        
+        let feeder = self.labelArrayDatasource[indexPath.item]
+        cell.labelType.text = feeder
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 2
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 2
+        return 10
     }
     
     required init?(coder: NSCoder) {
@@ -76,47 +75,68 @@ class NotificationCollectionView : UICollectionView, UICollectionViewDelegateFlo
     }
 }
 
-class NotificationFeeder : UICollectionViewCell {
+class NotificationAlertController : UICollectionViewCell {
     
-    var notificationCollectionView : NotificationCollectionView?
+    var notificationAlertsCollectionView : NotificationAlertsCollectionView?
     
-    var containerView : UIView = {
+    let labelType : UILabel = {
         
-        let cv = UIView()
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.backgroundColor = coreWhiteColor
-        cv.clipsToBounds = false
-        cv.layer.masksToBounds = false
-        cv.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
-        cv.layer.shadowOpacity = 0.05
-        cv.layer.shadowOffset = CGSize(width: 2, height: 3)
-        cv.layer.shadowRadius = 9
-        cv.layer.shouldRasterize = false
-        cv.layer.cornerRadius = 15
+        let thl = UILabel()
+        thl.translatesAutoresizingMaskIntoConstraints = false
+        thl.textAlignment = .left
+        thl.text = ""
+        thl.font = UIFont(name: rubikRegular, size: 16)
+        thl.numberOfLines = 1
+        thl.adjustsFontSizeToFitWidth = false
+        thl.textColor = coreBlackColor
+        return thl
         
-        return cv
+    }()
+    
+    lazy var allowNotificationsSwitch : UISwitch = {
+        
+        let bs = UISwitch()
+        bs.translatesAutoresizingMaskIntoConstraints = false
+        bs.tintColor = UIColor .lightGray
+        bs.thumbTintColor = UIColor .white
+        bs.setOn(true, animated: false)
+        bs.isUserInteractionEnabled = true
+        bs.addTarget(self, action: #selector(self.handleToggle(sender:)), for: .touchUpInside)
+        return bs
+        
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = .clear
+        self.backgroundColor = coreWhiteColor
         self.addViews()
+        
+        self.allowNotificationsSwitch.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
         
     }
     
     func addViews() {
         
-        self.addSubview(self.containerView)
+        self.addSubview(self.allowNotificationsSwitch)
+        self.addSubview(self.labelType)
         
-        self.containerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
-        self.containerView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
-        self.containerView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
-        self.containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
-
+        self.allowNotificationsSwitch.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
+        self.allowNotificationsSwitch.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20).isActive = true
+        
+        self.labelType.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
+        self.labelType.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
+        self.labelType.rightAnchor.constraint(equalTo: self.allowNotificationsSwitch.leftAnchor, constant: -20).isActive = true
+        self.labelType.sizeToFit()
+        
+    }
+    
+    @objc func handleToggle(sender : UISwitch) {
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
+

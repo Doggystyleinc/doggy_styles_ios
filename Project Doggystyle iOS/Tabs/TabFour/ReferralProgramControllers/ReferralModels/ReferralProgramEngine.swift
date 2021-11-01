@@ -8,6 +8,7 @@
 import Foundation
 import Contacts
 import UIKit
+import PhoneNumberKit
 
 extension ReferralContactsContainer {
     
@@ -160,6 +161,7 @@ extension ReferralContactsContainer {
                                     
                                     let trimmed = number.numbers
                                     self.arrayOfPhoneNumbers.append(trimmed)
+                                    
                                 }
                             }
                         }

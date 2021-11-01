@@ -26,7 +26,6 @@ struct UserOnboardingStruct {
         chosen_grooming_location_latitude : Double?,
         chosen_grooming_location_longitude : Double?,
         
-        referral_code_grab : String?,
         user_enabled_notifications : Bool?,
         user_grooming_locational_data : [String : Any]?
 
@@ -52,7 +51,6 @@ struct UserProfileStruct {
         chosen_grooming_location_name : String?,
         chosen_grooming_location_latitude : Double?,
         chosen_grooming_location_longitude : Double?,
-        referral_code_grab : String?,
         user_enabled_notifications : Bool?,
         users_firebase_uid : String?,
         users_sign_up_date : String?,

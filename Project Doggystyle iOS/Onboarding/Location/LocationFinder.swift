@@ -94,35 +94,42 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
     }()
     
     lazy var searchTextField : CustomTextFieldMaps = {
-        
+
         let etfc = CustomTextFieldMaps()
         etfc.translatesAutoresizingMaskIntoConstraints = false
         let placeholder = NSAttributedString(string: "Enter address", attributes: [NSAttributedString.Key.foregroundColor: dsFlatBlack.withAlphaComponent(0.4)])
         etfc.attributedPlaceholder = placeholder
         etfc.textAlignment = .left
-        etfc.backgroundColor = UIColor .white
+        etfc.backgroundColor = coreWhiteColor
         etfc.textColor = coreBlackColor
         etfc.font = UIFont(name: rubikRegular, size: 16)
         etfc.allowsEditingTextAttributes = false
         etfc.autocorrectionType = .no
         etfc.delegate = self
-        etfc.layer.cornerRadius = 10
-        etfc.layer.masksToBounds = false
+        etfc.layer.masksToBounds = true
         etfc.keyboardAppearance = UIKeyboardAppearance.light
         etfc.returnKeyType = UIReturnKeyType.done
+        etfc.leftViewMode = .always
+
+        let image = UIImage(named: "magnifyingGlass")?.withRenderingMode(.alwaysOriginal)
+        let imageView = UIImageView()
+        imageView.contentMode = .center
+        etfc.contentMode = .center
+        imageView.image = image
+        etfc.leftView = imageView
+
         etfc.clipsToBounds = false
         etfc.layer.masksToBounds = false
-        
         etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
         etfc.layer.shadowOpacity = 0.05
         etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
         etfc.layer.shadowRadius = 9
         etfc.layer.shouldRasterize = false
-        
+        etfc.layer.cornerRadius = 10
         etfc.addTarget(self, action: #selector(handleSearchTextFieldChange(textField:)), for: .editingChanged)
-        
+
         return etfc
-        
+
     }()
     
     lazy var errorLabel : UILabel = {
