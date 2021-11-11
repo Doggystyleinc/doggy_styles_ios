@@ -127,7 +127,7 @@ class YourReferralContainer : UIViewController {
         
         guard let user_uid = Auth.auth().currentUser?.uid else {return}
         
-        let personalStamp = self.databaseRef.child("personal_pending_invites").child(user_uid)
+        let personalStamp = self.databaseRef.child("global_pending_invites")
         
         personalStamp.observe(.value) { snapJSON in
             
@@ -137,18 +137,23 @@ class YourReferralContainer : UIViewController {
                 
                 let JSON = child.value as? [String : AnyObject] ?? [:]
                 
-                let model = PendingUsersMonetaryValueModel(JSON: JSON)
+                let inviters_UID = JSON["inviters_UID"] as? String ?? "nil"
                 
-                let isCompanionSatisfied = JSON["inviters_email_companion_success"] as? Bool ?? false
-                
-                if self.isPendingSelected == true {
-                    if isCompanionSatisfied == false {
-                        self.pendingUsersMonetaryValueModel.append(model)
-                    }
+                if inviters_UID == user_uid {
                     
-                } else {
-                    if isCompanionSatisfied == true {
-                        self.pendingUsersMonetaryValueModel.append(model)
+                    let model = PendingUsersMonetaryValueModel(JSON: JSON)
+                    
+                    let isCompanionSatisfied = JSON["inviters_email_companion_success"] as? Bool ?? false
+                    
+                    if self.isPendingSelected == true {
+                        if isCompanionSatisfied == false {
+                            self.pendingUsersMonetaryValueModel.append(model)
+                        }
+                        
+                    } else {
+                        if isCompanionSatisfied == true {
+                            self.pendingUsersMonetaryValueModel.append(model)
+                        }
                     }
                 }
             }

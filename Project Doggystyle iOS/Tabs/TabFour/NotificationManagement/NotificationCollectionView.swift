@@ -13,6 +13,7 @@ class NotificationAlertsCollectionView : UICollectionView, UICollectionViewDeleg
     private let notificationAlertsID = "notificationAlertsID"
     
     let labelArrayDatasource : [String] = ["Available appointments", "Grooming updates", "Direct messages", "Appointment reminders", "Doggystyle updates"]
+    var toggledArray : [Bool] = [false, false, false, false, false]
     
     var notificationManagement : NotificationManagement?
     
@@ -59,6 +60,9 @@ class NotificationAlertsCollectionView : UICollectionView, UICollectionViewDeleg
         let feeder = self.labelArrayDatasource[indexPath.item]
         cell.labelType.text = feeder
         
+        let toggled = self.toggledArray[indexPath.item]
+        cell.allowNotificationsSwitch.isOn = toggled
+        
         return cell
     }
     
@@ -70,6 +74,36 @@ class NotificationAlertsCollectionView : UICollectionView, UICollectionViewDeleg
         return 10
     }
     
+    @objc func handleToggle(sender : UISwitch) {
+        
+        let selectedButtonCell = sender.superview as! UICollectionViewCell
+        guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
+        
+        let labelSelected = self.labelArrayDatasource[indexPath.item]
+        let selectedState : Bool = sender.isOn
+
+        switch labelSelected {
+        
+        case "Available appointments" : self.notificationManagement?.updateNotifications(selectedLabel: "available_appointments", isOn: selectedState)
+            userProfileStruct.user_notification_settings?["available_appointments"] = selectedState
+                
+        case "Grooming updates" : self.notificationManagement?.updateNotifications(selectedLabel: "grooming_updates", isOn: selectedState)
+            userProfileStruct.user_notification_settings?["grooming_updates"] = selectedState
+
+        case "Direct messages" : self.notificationManagement?.updateNotifications(selectedLabel: "direct_messages", isOn: selectedState)
+            userProfileStruct.user_notification_settings?["direct_messages"] = selectedState
+
+        case "Appointment reminders" : self.notificationManagement?.updateNotifications(selectedLabel: "appointment_reminders", isOn: selectedState)
+            userProfileStruct.user_notification_settings?["appointment_reminders"] = selectedState
+
+        case "Doggystyle updates" : self.notificationManagement?.updateNotifications(selectedLabel: "doggystyle_updates", isOn: selectedState)
+            userProfileStruct.user_notification_settings?["doggystyle_updates"] = selectedState
+
+        default : print("default")
+        
+        }
+    }
+  
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -132,6 +166,8 @@ class NotificationAlertController : UICollectionViewCell {
     }
     
     @objc func handleToggle(sender : UISwitch) {
+        
+        self.notificationAlertsCollectionView?.handleToggle(sender : sender)
         
     }
     

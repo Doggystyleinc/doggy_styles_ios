@@ -10,7 +10,7 @@ import UIKit
 
 class ProfileCollectionSubview : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
-    private let profileID = "profileID", arrayOfStaticLabels = ["My dogs","Payment Methods", "Notifications", "Contact Us", "Re-fur a Doggy"]
+    private let profileID = "profileID", arrayOfStaticLabels = ["My dogs", "Change my Location", "Payment Methods", "Notifications", "Contact Us", "Re-fur a Doggy"]
     
     var profileController : ProfileController?
     
@@ -53,6 +53,10 @@ class ProfileCollectionSubview : UICollectionView, UICollectionViewDelegateFlowL
             cell.feederIcon.font = UIFont.fontAwesome(ofSize: 22, style: .solid)
             cell.feederIcon.text = String.fontAwesomeIcon(name: .dog)
             cell.feederIcon.textColor = coreOrangeColor
+        case "Change my Location" :
+            cell.feederIcon.font = UIFont.fontAwesome(ofSize: 22, style: .solid)
+            cell.feederIcon.text = String.fontAwesomeIcon(name: .mapPin)
+            cell.feederIcon.textColor = coreOrangeColor
         case "Payment Methods" :
             cell.feederIcon.font = UIFont.fontAwesome(ofSize: 22, style: .solid)
             cell.feederIcon.text = String.fontAwesomeIcon(name: .dollarSign)
@@ -89,6 +93,7 @@ class ProfileCollectionSubview : UICollectionView, UICollectionViewDelegateFlowL
         switch feederLabels {
         
         case "My dogs" : self.profileController?.handleAddDogController()
+        case "Change my Location" : self.profileController?.handleLocationChange()
         case "Payment Methods" : self.profileController?.handlePaymentPreferencesController()
         case "Notifications" : self.profileController?.handleNotificationManagementController()
         case "Contact Us" : self.profileController?.handleContactUs()

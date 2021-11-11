@@ -215,6 +215,7 @@ class NotificationsController : UIViewController, UNUserNotificationCenterDelega
         let locationFinder = LocationFinder()
         let nav = UINavigationController(rootViewController: locationFinder)
         nav.modalPresentationStyle = .fullScreen
+        globalLocationTrajectory = .fromOnboarding
         navigationController?.present(nav, animated: true)
         
     }

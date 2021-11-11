@@ -98,6 +98,15 @@ var friends_array_phone_number = [String](),
 
 var globalPetDataSource = [DoggyProfileDataSource]()
 
+public enum LocationTrajectory {
+    
+    case fromOnboarding
+    case fromSettings
+    
+}
+
+var globalLocationTrajectory = LocationTrajectory.fromOnboarding
+
 extension UIScrollView {
     
     func scrollToTop() {

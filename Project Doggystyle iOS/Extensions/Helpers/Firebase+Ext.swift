@@ -244,138 +244,7 @@ class Service : NSObject {
                             
                             let values : [String : Any] = ["client_location_request" : user_grooming_locational_data]
                             requestRef.updateChildValues(values) { error, ref in
-                                
-                                //MARK: - REFERRAL CODE GRAB IS NIL, CHECK THE PHONE NUMBER
-                                //                                if referral_code_grab == "nil" {
-                                
-                                //MARK: - SINCE THERE IS NO REFERRAL CODE, CHECK THE PHONE NUMBER OUT OF GOOD FAITH
-                                self.checkForPhoneNumberBackupReferral(selectedusersPhoneNumber: users_phone_number, completion: { userWasInvited, invitersData, parentKey  in
-                                    
-                                    //MARK: - USER WAS NOT INVITED THROUGH REFERRAL OR PHONE, SEND THEM ON IN.
-                                    if userWasInvited == false {
-                                        completion(true, "Success", 200)
-                                    } else {
-                                        
-                                        //MARK: - USER DOES HAVE A REFERRAL CODE, CHECK WHO OWNS IT AND THROW THEM THE CASH THROUGH THE NODE 'inviters_email_companion_success'
-                                        if invitersData != nil {
-                                            
-                                            guard let data = invitersData else {return}
-                                            
-                                            let invitersUID = data["inviters_UID"] as? String ?? "nil"
-                                            
-                                            let values : [String : Any] = ["inviters_email_companion_success" : true]
-                                            
-                                            let refOne = databaseRef.child("global_pending_invites").child(parentKey)
-                                            
-                                            refOne.updateChildValues(values) { error, ref in
-                                                
-                                                //MARK: - NOW UPDATE THE NODE 'personal_pending_invites'
-                                                self.updatePersonalReferralNode(invitersUID: invitersUID, passedRecipientPhoneNumber: users_phone_number) { complete in
-                                                    completion(true, "Success", 200)
-                                                }
-                                            }
-                                        }
-                                    }
-                                })
-                                
-                                //MARK: - USER HAS A REFERRAL CODE, CHECK IF THEY ARE INVITED OR MOOCHING
-                                //                                } else {
-                                //
-                                //                                    //CHECK IF THE CLIENT WAS PERSONALLY INVITED OR IF SOMEONE VERBALLY GAVE THEM THE CODE
-                                //                                    self.checkForPhoneNumberBackupReferral(selectedusersPhoneNumber: users_phone_number) { userWasInvited, invitersData, parentKey in
-                                //
-                                //                                        //USER WAS INVITED AND THE USER IS USING THE CODE
-                                //                                        if userWasInvited == true {
-                                //
-                                //                                            //MARK: - USER DOES HAVE A REFERRAL CODE, CHECK WHO OWNS IT AND THROW THEM THE CASH THROUGH THE NODE 'inviters_email_companion_success'
-                                //                                            if invitersData != nil {
-                                //
-                                //                                                guard let data = invitersData else {return}
-                                //
-                                //                                                let invitersUID = data["inviters_UID"] as? String ?? "nil"
-                                //
-                                //                                                let values : [String : Any] = ["inviters_email_companion_success" : true]
-                                //
-                                //                                                let refOne = databaseRef.child("global_pending_invites").child(parentKey)
-                                //
-                                //                                                refOne.updateChildValues(values) { error, ref in
-                                //
-                                //                                                    //MARK: - NOW UPDATE THE NODE 'personal_pending_invites'
-                                //                                                    self.updatePersonalReferralNode(invitersUID: invitersUID, passedRecipientPhoneNumber: users_phone_number) { complete in
-                                //                                                        completion(true, "Success", 200)
-                                //                                                    }
-                                //                                                }
-                                //                                            }
-                                //
-                                //                                            //MARK: USER HAS NO FORMAL INVITE BUT THEY HAVE A CODE
-                                //                                        } else {
-                                //
-                                //                                            self.checkForValidReferralCodeAndReturnOwnerData(passedReferralCode: referral_code_grab) { foundCode, parentKey, ownerData in
-                                //
-                                //                                                if foundCode == true {
-                                //
-                                //                                                    if ownerData != nil {
-                                //
-                                //                                                        guard let safeData = ownerData else {return}
-                                //
-                                //                                                        let inviters_UID = safeData["users_firebase_uid"] as? String ?? "nil"
-                                //                                                        let inviters_firstName = safeData["user_first_name"] as? String ?? "nil"
-                                //                                                        let inviters_lastName = safeData["user_last_name"] as? String ?? "nil"
-                                //                                                        let inviters_phoneNumber = safeData["users_phone_number"] as? String ?? "nil"
-                                //                                                        let inviters_fullPhoneNumber = safeData["users_full_phone_number"] as? String ?? "nil"
-                                //                                                        let inviters_fullName = safeData["users_full_name"] as? String ?? "nil"
-                                //                                                        let inviters_country_code = safeData["users_country_code"] as? String ?? "nil"
-                                //                                                        let inviters_email = safeData["users_email"] as? String ?? "nil"
-                                //
-                                //                                                        let recipient_family_name = userOnboardingStruct.user_last_name ?? "nil"
-                                //                                                        let recipient_given_name = userOnboardingStruct.user_first_name ?? "nil"
-                                //                                                        let recipient_phone_number = userOnboardingStruct.users_phone_number ?? "nil"
-                                //                                                        let recipient_full_phone_number = userOnboardingStruct.users_full_phone_number ?? "nil"
-                                //
-                                //                                                        let timeStamp : Double = Date().timeIntervalSince1970
-                                //
-                                //                                                        //MARK: - INVITERS INFORMATION
-                                //                                                        let values : [String : Any] = ["inviters_firstName" : inviters_firstName,
-                                //                                                                                       "inviters_lastName" : inviters_lastName,
-                                //                                                                                       "inviters_fullName" : inviters_fullName,
-                                //                                                                                       "inviters_phoneNumber" : inviters_phoneNumber,
-                                //                                                                                       "inviters_fullPhoneNumber" : inviters_fullPhoneNumber,
-                                //                                                                                       "inviters_UID" : inviters_UID,
-                                //                                                                                       "inviters_country_code" : inviters_country_code,
-                                //                                                                                       "inviters_email" : inviters_email,
-                                //                                                                                       "inviters_email_companion_success" : true,
-                                //
-                                //                                                                                       //MARK: - RECIPIENTS INFORMATION
-                                //                                                                                       "recipient_family_name" : recipient_family_name,
-                                //                                                                                       "recipient_given_name" : recipient_given_name,
-                                //                                                                                       "recipient_phone_number" : recipient_phone_number,
-                                //                                                                                       "recipient_full_phone_number" : recipient_full_phone_number,
-                                //                                                                                       "time_stamp" : timeStamp,
-                                //                                                                                       "from_code_search" : true]
-                                //
-                                //                                                        let refPersonal = databaseRef.child("personal_pending_invites").child(inviters_UID).childByAutoId()
-                                //                                                        refPersonal.updateChildValues(values) { error, ref in
-                                //                                                            let refGlobal = databaseRef.child("global_pending_invites").child(inviters_UID).childByAutoId()
-                                //                                                            refGlobal.updateChildValues(values) { error, ref in
-                                //                                                                completion(true, "Success", 200)
-                                //                                                            }
-                                //                                                        }
-                                //
-                                //                                                    } else {
-                                //                                                        completion(true, "Success", 200)
-                                //                                                    }
-                                //
-                                //                                                } else {
-                                //                                                    //IF NOONE, LET THEM KNOW AND COMPLETE
-                                //                                                    completion(true, "Success", 200)
-                                //                                                }
-                                //                                            }
-                                //                                        }
-                                //                                    }
-                                //
-                                //                                    completion(true, "Success", 200)
-                                //
-                                //                                }
+                                completion(true, "Success", 200)
                             }
                         }
                     }
@@ -668,7 +537,6 @@ extension Service {
                 
                 let users_sign_up_date = JSON["users_sign_up_date"] as? String ?? "nil"
                 let is_groomer = JSON["is_groomer"] as? Bool ?? false
-                
                 let users_ref_key = JSON["users_ref_key"] as? String ?? "nil"
                 
                 let chosen_grooming_location_name = JSON["chosen_grooming_location_name"] as? String ?? "nil"
@@ -679,7 +547,8 @@ extension Service {
                 let users_profile_image_url = JSON["users_profile_image_url"] as? String ?? "nil"
                 let uploaded_document_url = JSON["uploaded_document_url"] as? String ?? "nil"
                 let user_grooming_locational_data = JSON["user_grooming_locational_data"] as? [String : Any] ?? ["nil":"nil"]
-                
+                let user_notification_settings = JSON["user_notification_settings"] as? [String : Any] ?? ["nil":"nil"]
+
                 userProfileStruct.users_firebase_uid = users_firebase_uid
                 userProfileStruct.user_first_name = user_first_name
                 
@@ -703,7 +572,8 @@ extension Service {
                 userProfileStruct.users_profile_image_url = users_profile_image_url
                 userProfileStruct.uploaded_document_url = uploaded_document_url
                 userProfileStruct.user_grooming_locational_data = user_grooming_locational_data
-                
+                userProfileStruct.user_notification_settings = user_notification_settings
+
                 let referralGrab = databaseRef.child("referral_codes").child(userUID).child("users_referral_code")
                 
                 referralGrab.observeSingleEvent(of: .value) { snap in

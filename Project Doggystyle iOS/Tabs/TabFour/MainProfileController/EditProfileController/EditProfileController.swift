@@ -819,6 +819,8 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
     
     @objc func handleConfirmButton() {
         
+        self.handleCustomPopUpAlert(title: "PROFILE", message: "Updating your profile is currently in BETA.", passedButtons: [Statics.OK])
+        
         self.resignation()
         UIDevice.vibrateLight()
         
@@ -843,13 +845,9 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         self.checkForEmailValidation(emailAddress: safeEmail) { doesUserAlreadyExist in
             
             if doesUserAlreadyExist == true {
-                
                 self.handleCustomPopUpAlert(title: "EMAIL EXISTS", message: "Doggystyle already has a registered email address under \(safeEmail).", passedButtons: [Statics.OK])
-                
             } else {
-
                 self.handleCustomPopUpAlert(title: "CHECK", message: "Email cannot be saved without verification", passedButtons: [Statics.OK])
-                
             }
         }
     }

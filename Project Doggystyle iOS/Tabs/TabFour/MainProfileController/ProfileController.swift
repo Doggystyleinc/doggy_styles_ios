@@ -394,4 +394,13 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         self.navigationController?.present(nav, animated: true, completion: nil)
         
     }
+    
+    @objc func handleLocationChange() {
+        
+        let locationFinder = LocationFinder()
+        let nav = UINavigationController(rootViewController: locationFinder)
+        nav.modalPresentationStyle = .fullScreen
+        globalLocationTrajectory = .fromSettings
+        navigationController?.present(nav, animated: true)
+    }
 }

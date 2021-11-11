@@ -7,8 +7,11 @@
 
 import Foundation
 import UIKit
+import Firebase
 
 class NotificationManagement : UIViewController {
+    
+    let databaseRef = Database.database().reference()
     
     lazy var backButton : UIButton = {
         
@@ -190,8 +193,15 @@ class NotificationManagement : UIViewController {
         
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
-        
+        self.loadToggles()
         self.allowNotificationsSwitch.transform = CGAffineTransform(scaleX: 0.75, y: 0.75)
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        self.checkForNotifications()
         
     }
     
@@ -271,12 +281,86 @@ class NotificationManagement : UIViewController {
 
     }
     
+    func loadToggles() {
+
+        let notificationData = userProfileStruct.user_notification_settings ?? ["nil" : "nil"]
+        
+        let appointment_reminders = notificationData["appointment_reminders"] as? Bool ?? false
+        let available_appointments = notificationData["available_appointments"] as? Bool ?? false
+        let direct_messages = notificationData["direct_messages"] as? Bool ?? false
+        let grooming_updates = notificationData["grooming_updates"] as? Bool ?? false
+        let doggystyle_updates = notificationData["doggystyle_updates"] as? Bool ?? false
+        
+        let toggledArray : [Bool] = [available_appointments, grooming_updates, direct_messages, appointment_reminders, doggystyle_updates]
+        self.notificationAlertsCollectionView.toggledArray = toggledArray
+        
+        DispatchQueue.main.async {
+            self.notificationAlertsCollectionView.reloadData()
+        }
+    }
+    
+    @objc func checkForNotifications() {
+        
+        let center = UNUserNotificationCenter.current()
+        
+        center.getNotificationSettings { (settings) in
+
+            DispatchQueue.main.async {
+            
+            if (settings.authorizationStatus == .authorized) {
+                self.allowNotificationsSwitch.setOn(true, animated: true)
+            } else {
+                self.allowNotificationsSwitch.setOn(false, animated: true)
+            }
+                
+            }
+        }
+    }
+    
     @objc func handleToggle(sender : UISwitch) {
+        
+        if sender == self.allowNotificationsSwitch {
+            
+            if sender.isOn {
+                self.shouldEnableNotifications(shouldEnable: true)
+            } else {
+                self.shouldEnableNotifications(shouldEnable: false)
+            }
+        }
+    }
+    
+    func shouldEnableNotifications(shouldEnable : Bool) {
+        
+        if shouldEnable {
+            
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+            
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                })
+            }
+                        
+        } else {
+            
+            UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        }
+    }
+
+    func updateNotifications(selectedLabel : String, isOn : Bool) {
+        
+        guard let user_uid = Auth.auth().currentUser?.uid else {return}
+        let ref = self.databaseRef.child("all_users").child(user_uid).child("user_notification_settings")
+        
+        let values : [String : Any] = [selectedLabel : isOn]
+        ref.updateChildValues(values)
         
     }
     
     @objc func handleSMSAlerts() {
-        
+        print("sidelined for now")
     }
     
     @objc func handleBackButton() {

@@ -196,7 +196,7 @@ class YourReferralFeeder : UICollectionViewCell {
                 
                 let safeHours = abs(hours)
                 
-                if safeHours > 1 {
+                if safeHours > 30 {
                     
                     self.containerView.backgroundColor = coreBackgroundWhite
                     self.costLabel.text = "Expired"

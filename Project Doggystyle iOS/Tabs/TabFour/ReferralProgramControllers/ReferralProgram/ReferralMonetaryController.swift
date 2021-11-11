@@ -430,7 +430,7 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         
         guard let user_uid = Auth.auth().currentUser?.uid else {return}
         
-        let personalStamp = self.databaseRef.child("personal_pending_invites").child(user_uid)
+        let personalStamp = self.databaseRef.child("global_pending_invites")
       
         personalStamp.observe(.value) { snapJSON in
             
@@ -446,10 +446,17 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
                 
                 let JSON = child.value as? [String : AnyObject] ?? [:]
                 
-                let model = PendingUsersMonetaryValueModel(JSON: JSON)
+                let inviters_UID = JSON["inviters_UID"] as? String ?? "nil"
                 
-                self.pendingUsersMonetaryValueModel.append(model)
+                print("I: ", inviters_UID)
+                print("U: ", user_uid)
                 
+                if inviters_UID == user_uid {
+                    
+                    let model = PendingUsersMonetaryValueModel(JSON: JSON)
+                    
+                    self.pendingUsersMonetaryValueModel.append(model)
+                }
             }
             
             completion(true)

@@ -109,7 +109,6 @@ class ReferralProgramCollectionView : UICollectionView, UICollectionViewDelegate
                     } else {
                         cell.appLogoIcon.isHidden = true
                         cell.selectionButton.isHidden = false
-                
                 }
             }
         }
@@ -147,6 +146,13 @@ class ReferralProgramCollectionView : UICollectionView, UICollectionViewDelegate
                     feeder = safeDataSource[indexPath.item]
                 }
                 
+                let isDoggystyleUser = feeder.isCurrentDoggystyleUser ?? false
+
+                if isDoggystyleUser == true {
+                    UIDevice.vibrateHeavy()
+                    return
+                }
+                
                 let givenName = feeder.givenName ?? "nil",
                     familyName = feeder.familyName ?? "nil",
                     phoneNumber = feeder.phoneNumber ?? "nil",
@@ -171,8 +177,8 @@ class ReferralProgramCollectionView : UICollectionView, UICollectionViewDelegate
         }
     }
     
-    @objc func handleInfoLogoPopup() {
-        self.referralContactsContainer?.handleCustomPopUpAlert(title: "CURRENT USER", message: "If you see the logo, that means your contact is already a Doggystyle customer!", passedButtons: [Statics.OK])
+    @objc func handleInfoLogoPopup(sender : UIButton) {
+        self.referralContactsContainer?.handleCustomPopUpAlert(title: "CURRENT USER", message: "If you see the Doggystyle logo, that means your contact is already a Doggystyle customer!", passedButtons: [Statics.OK])
     }
     
     required init?(coder: NSCoder) {
@@ -253,19 +259,19 @@ class ReferralCollectionFeeder : UICollectionViewCell {
         
     }()
     
-    lazy var appLogoIcon : UIImageView = {
+    lazy var appLogoIcon : UIButton = {
         
-        let dcl = UIImageView()
+        let dcl = UIButton(type : .system)
         dcl.translatesAutoresizingMaskIntoConstraints = false
         dcl.backgroundColor = .clear
         dcl.contentMode = .scaleAspectFit
-        dcl.isUserInteractionEnabled = false
+        dcl.isUserInteractionEnabled = true
         let image = UIImage(named: "mini_app_logo")?.withRenderingMode(.alwaysOriginal)
-        dcl.image = image
+        dcl.setImage(image, for: .normal)
         dcl.layer.masksToBounds = true
         dcl.layer.cornerRadius = 8
         dcl.isHidden = true
-        dcl.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleInfoLogoButton)))
+        dcl.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleInfoLogoButton(sender:))))
         return dcl
     }()
     
@@ -284,7 +290,7 @@ class ReferralCollectionFeeder : UICollectionViewCell {
         
         self.containerView.addSubview(self.nameLabel)
         self.containerView.addSubview(self.phoneNumberLabel)
-        self.addSubview(self.appLogoIcon)
+        self.containerView.addSubview(self.appLogoIcon)
         
         self.containerView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
         self.containerView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
@@ -314,21 +320,17 @@ class ReferralCollectionFeeder : UICollectionViewCell {
     }
     
     @objc func handleSelectionButton(sender : UIButton) {
-        
         self.referralProgramCollectionView?.handleSelection(sender: sender)
-        
     }
     
-    @objc func handleInfoLogoButton() {
-        
-        self.referralProgramCollectionView?.handleInfoLogoPopup()
+    @objc func handleInfoLogoButton(sender : UIButton) {
+        self.referralProgramCollectionView?.handleInfoLogoPopup(sender : sender)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
 
 extension DispatchQueue {
 

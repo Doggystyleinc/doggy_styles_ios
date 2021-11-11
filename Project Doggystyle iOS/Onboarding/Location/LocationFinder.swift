@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import GooglePlaces
 import GoogleMaps
+import Firebase
 
 class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerDelegate, CustomAlertCallBackProtocol  {
     
@@ -26,7 +27,22 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         searchStates = SearchStates.idle
     
     let locationManager = CLLocationManager(),
-        mainLoadingScreen = MainLoadingScreen()
+        mainLoadingScreen = MainLoadingScreen(),
+        databaseRef = Database.database().reference()
+    
+    lazy var backButton : UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.backgroundColor = .clear
+        cbf.tintColor = UIColor.dsOrange
+        cbf.contentMode = .scaleAspectFill
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 24, style: .solid)
+        cbf.setTitle(String.fontAwesomeIcon(name: .chevronLeft), for: .normal)
+        cbf.addTarget(self, action: #selector(self.handleBackButton), for: UIControl.Event.touchUpInside)
+        return cbf
+        
+    }()
     
     lazy var userCurrentLocationIcon: UIButton = {
         
@@ -270,7 +286,11 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
+        if globalLocationTrajectory == .fromOnboarding {
         cbf.setTitle("Create doggy profile", for: UIControl.State.normal)
+        } else {
+        cbf.setTitle("Save changes", for: UIControl.State.normal)
+        }
         cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
         cbf.titleLabel?.adjustsFontSizeToFitWidth = true
         cbf.titleLabel?.numberOfLines = 1
@@ -409,6 +429,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
+        self.fillValues()
         
         self.placesClient = GMSPlacesClient.shared()
         self.searchStates = .idle
@@ -423,6 +444,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
     
     func addViews() {
         
+        self.view.addSubview(self.backButton)
         self.view.addSubview(self.headerLabel)
         self.view.addSubview(self.subHeaderLabel)
         self.view.addSubview(self.searchTextField)
@@ -450,7 +472,12 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.successContainer.addSubview(self.confirmButton)
         self.successContainer.addSubview(self.getStyledLabel)
         
-        self.headerLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 35).isActive = true
+        self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
+        self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 15).isActive = true
+        self.backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        self.backButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        self.headerLabel.topAnchor.constraint(equalTo: self.backButton.bottomAnchor, constant: 25).isActive = true
         self.headerLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 25).isActive = true
         self.headerLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
         self.headerLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
@@ -537,7 +564,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.userCurrentLocationIcon.widthAnchor.constraint(equalToConstant: 30).isActive = true
         
         self.userCurrentLocationButton.leftAnchor.constraint(equalTo: self.userCurrentLocationIcon.rightAnchor, constant: 10).isActive = true
-        self.userCurrentLocationButton.centerYAnchor.constraint(equalTo: self.currentUserContainerButton.centerYAnchor, constant: 0).isActive = true
+        self.userCurrentLocationButton.centerYAnchor.constraint(equalTo: self.userCurrentLocationIcon.centerYAnchor, constant: 0).isActive = true
         self.userCurrentLocationButton.rightAnchor.constraint(equalTo: self.currentUserContainerButton.rightAnchor, constant: -10).isActive = true
         self.userCurrentLocationButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
@@ -558,6 +585,15 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.confirmLocationButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.confirmLocationButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
+    }
+    
+    func fillValues() {
+        
+        if globalLocationTrajectory == .fromOnboarding {
+            self.backButton.isHidden = true
+        } else {
+            self.backButton.isHidden = false
+        }
     }
     
     @objc func handleLocationServicesAuthorization() {
@@ -645,6 +681,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         case Statics.OK: print(Statics.OK)
             
         case Statics.GOT_IT:
+            
             guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
                 return
             }
@@ -961,6 +998,59 @@ extension LocationFinder {
     }
     
     @objc func loadAllTheLogic() {
+       
+        if globalLocationTrajectory == .fromSettings {
+            self.handleLocationUpdater { isComplete in
+                if isComplete {
+                    
+                    //MARK: - UPDATE THE MAIN DASHBOARD TO REFLECT LOCATION FOUND HERE
+                    NotificationCenter.default.post(name: NSNotification.Name(Statics.RUN_DATA_ENGINE), object: nil)
+                    self.dismiss(animated: true, completion: nil)
+                    
+                } else {
+                    self.handleCustomPopUpAlert(title: "Error", message: "Something is wrong on our end. Please try again.", passedButtons: [Statics.OK])
+                }
+            }
+        } else if globalLocationTrajectory == .fromOnboarding {
+            self.handleLogic()
+        } else {
+            self.handleLogic()
+        }
+    }
+    
+    func handleLocationUpdater(completion : @escaping (_ isComplete : Bool)->()) {
+
+        guard let user_uid = Auth.auth().currentUser?.uid else {return}
+        let path = self.databaseRef.child("all_users").child(user_uid)
+        
+        guard let chosen_grooming_location_name = userOnboardingStruct.chosen_grooming_location_name else {return}
+        guard let chosen_grooming_location_latitude = userOnboardingStruct.chosen_grooming_location_latitude else {return}
+        guard let chosen_grooming_location_longitude = userOnboardingStruct.chosen_grooming_location_longitude else {return}
+        guard let user_grooming_locational_data = userOnboardingStruct.user_grooming_locational_data else {return}
+        
+        let values : [String : Any] = [
+                                        "chosen_grooming_location_name" : chosen_grooming_location_name,
+                                        "chosen_grooming_location_latitude" : chosen_grooming_location_latitude,
+                                        "chosen_grooming_location_longitude" : chosen_grooming_location_longitude,
+                                        "user_grooming_locational_data" : user_grooming_locational_data
+                                        ]
+        
+        userProfileStruct.chosen_grooming_location_name = chosen_grooming_location_name
+        userProfileStruct.chosen_grooming_location_latitude = chosen_grooming_location_latitude
+        userProfileStruct.chosen_grooming_location_longitude = chosen_grooming_location_longitude
+        userProfileStruct.user_grooming_locational_data = user_grooming_locational_data
+        
+        path.updateChildValues(values) { error, ref in
+            
+            if error != nil {
+                completion(false)
+                return
+            }
+            completion(true)
+        }
+    }
+    
+    func handleLogic() {
         
         if self.searchStates == .idle {return}
         
@@ -996,15 +1086,21 @@ extension LocationFinder {
         self.navigationController?.present(nav, animated: true, completion: nil)
         
     }
+    
+    @objc func handleBackButton() {
+        
+        self.dismiss(animated: true, completion: nil)
+        
+    }
 }
 
 //MARK: - HERE WE CAN TELL IF THE DOGGY PROFILE SHOULD DISMISS OR PRESENT THE HOME CONTROLLER
 public enum GroomLocationFollowOnRoute {
-    
+
     case fromRegistration
     case fromApplication
     case fromSettings
-    
+
 }
 
 var groomLocationFollowOnRoute = GroomLocationFollowOnRoute.fromApplication

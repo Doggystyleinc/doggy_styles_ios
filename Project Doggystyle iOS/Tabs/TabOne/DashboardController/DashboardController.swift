@@ -231,6 +231,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         self.broadcastingColorCircle.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 100).isActive = true
         self.broadcastingColorCircle.heightAnchor.constraint(equalToConstant: 5).isActive = true
         self.broadcastingColorCircle.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 45).isActive = true
+        self.broadcastingColorCircle.isHidden = true
         self.broadcastingColorCircle.layer.cornerRadius = 2.5
         
         self.headerLabel.topAnchor.constraint(equalTo: self.dsCompanyLogoImage.bottomAnchor, constant: 50).isActive = true
