@@ -21,6 +21,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: sceneWindow)
         window.makeKeyAndVisible()
         
+//        DecisionController
+//        GroomerConfirmation
+//        GroomerTimeLineController
+//        ApointmentReportController
+//        CancelAptController
+        
         let decisionController = DecisionController()
         let navigationController = UINavigationController(rootViewController: decisionController)
         

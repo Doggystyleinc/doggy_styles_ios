@@ -13,7 +13,8 @@ import Firebase
 class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol {
     
     let store = CNContactStore()
-    
+    var isActivePopupPresented : Bool = false
+
     var userGaveContactPermissions : Bool = false,
         pendingUsersMonetaryValueModel = [PendingUsersMonetaryValueModel]()
     
@@ -264,6 +265,14 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
        return pa
     }()
     
+    lazy var yourReferralPopup : YourReferralPopup = {
+         
+         let adpu = YourReferralPopup(frame: .zero)
+         adpu.referralMonetaryController = self
+             
+        return adpu
+     }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -272,6 +281,8 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         self.addViews()
         self.fillValues()
         self.observePendingAndDoggyDollarsAmount()
+        
+        self.perform(#selector(self.handleReferralPopup), with: nil, afterDelay: 1.0)
     
     }
     
@@ -331,6 +342,7 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         
         self.view.addSubview(self.pendingActivity)
         self.view.addSubview(self.doggyActivity)
+        self.view.addSubview(self.yourReferralPopup)
 
         self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
         self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true
@@ -567,6 +579,27 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
             
         default: print("Should not hit")
             
+        }
+    }
+    
+    @objc func handleReferralPopup() {
+        print("called the new popup")
+        if self.isActivePopupPresented {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.8, options: .curveEaseInOut) {
+                self.yourReferralPopup.frame = CGRect(x: 0, y: UIScreen.main.bounds.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 1.35)
+                self.view.layoutIfNeeded()
+                self.yourReferralPopup.layoutIfNeeded()
+            } completion: { complete in
+                self.isActivePopupPresented = false
+            }
+        } else {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.8, options: .curveEaseInOut) {
+                self.yourReferralPopup.frame = CGRect(x: 0, y: (UIScreen.main.bounds.height - (UIScreen.main.bounds.height / 1.35)), width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 1.35)
+                self.view.layoutIfNeeded()
+                self.yourReferralPopup.layoutIfNeeded()
+            } completion: { complete in
+                self.isActivePopupPresented = true
+            }
         }
     }
 }
