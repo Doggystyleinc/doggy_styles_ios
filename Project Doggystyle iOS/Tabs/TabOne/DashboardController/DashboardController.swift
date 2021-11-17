@@ -81,8 +81,9 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         nb.textAlignment = .center
         nb.layer.borderColor = coreWhiteColor.cgColor
         nb.layer.borderWidth = 1.5
-        nb.text = "1"
+        nb.text = ""
         nb.textColor = coreWhiteColor
+        nb.isHidden = true
         
         return nb
     }()
@@ -174,6 +175,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         self.todaysDashView.isHidden = true
         
         self.callDataEngine()
+        self.loadNotificationListener()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleNewDogFlow), name: NSNotification.Name(Statics.CALL_ADD_NEW_PUP), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.presentAppointmentsController), name: NSNotification.Name(Statics.CALL_BOOK_NOW), object: nil)
@@ -259,6 +261,44 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         self.todaysDashView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.todaysDashView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
         
+    }
+    
+    func loadNotificationListener() {
+        
+        let usersFullPhoneNumber = userProfileStruct.users_full_phone_number ?? "nil"
+        let replacementNumber = usersFullPhoneNumber.replacingOccurrences(of: " ", with: "")
+
+        let ref = self.databaseRef.child("notifications").child(replacementNumber)
+        
+        var counter : Int = 0
+        
+        ref.observe(.value) { snapJSON in
+            
+            if snapJSON.exists() {
+                
+                for child in snapJSON.children.allObjects as! [DataSnapshot] {
+                    
+                    let JSON = child.value as? [String : AnyObject] ?? [:]
+                    
+                    let has_seen = JSON["notification_has_read"] as? Bool ?? false
+                    
+                    if has_seen == false {
+                        counter += 1
+                    }
+                }
+                
+                self.notificationBubble.isHidden = false
+                self.notificationBubble.text = "\(counter)"
+                counter = 0
+                print("here 1")
+                
+                //MARK: - NO DATA HERE EXISTS YET
+            } else if !snapJSON.exists() {
+                self.notificationBubble.isHidden = true
+                counter = 0
+                print("here 2?")
+            }
+        }
     }
     
     @objc func callDataEngine() {
@@ -361,7 +401,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         
         switch self.stateListener {
         
-        case .NoGroomerLocationNoDoggyProfile: print("NoGroomerLocationNoDoggyProfile")
+        case .NoGroomerLocationNoDoggyProfile:
             
             self.emptyStateOne.isHidden = false
             self.emptyStateTwo.isHidden = true
@@ -370,7 +410,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
             
             self.handleDatasourceFailure()
             
-        case .YesGroomerLocationNoDoggyProfile: print("YesGroomerLocationNoDoggyProfile")
+        case .YesGroomerLocationNoDoggyProfile:
             
             self.emptyStateOne.isHidden = true
             self.emptyStateTwo.isHidden = false
@@ -379,7 +419,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
             
             self.handleDatasourceFailure()
             
-        case .YesGroomerLocationYesDoggyProfile: print("YesGroomerLocationYesDoggyProfile")
+        case .YesGroomerLocationYesDoggyProfile:
             
             self.emptyStateOne.isHidden = true
             self.emptyStateTwo.isHidden = true
@@ -390,7 +430,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         
             self.handleDatasourceSuccess()
             
-        case .NoGroomerLocationYesDoggyProfile: print("NoGroomerLocationYesDoggyProfile")
+        case .NoGroomerLocationYesDoggyProfile:
 
             self.emptyStateOne.isHidden = true
             self.emptyStateTwo.isHidden = true

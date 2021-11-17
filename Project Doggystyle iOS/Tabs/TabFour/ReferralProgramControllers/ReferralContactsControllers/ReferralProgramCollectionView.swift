@@ -15,7 +15,7 @@ class ReferralProgramCollectionView : UICollectionView, UICollectionViewDelegate
     
     var referralContactsContainer : ReferralContactsContainer?
     
-    var selectionArray = [Int]()
+    var selectionArray = [String]()
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -81,7 +81,7 @@ class ReferralProgramCollectionView : UICollectionView, UICollectionViewDelegate
                     let user_first_name = feeder.familyName ?? "nil"
                     let user_last_name = feeder.givenName ?? "nil"
                     let phoneNumber = feeder.phoneNumber ?? "nil"
-                    let _ = feeder.fullPhoneNumber ?? "nil"
+                    let full_phone_number = feeder.fullPhoneNumber ?? "nil"
                     let isCurrentDoggystyleUser = feeder.isCurrentDoggystyleUser ?? false
 
                     cell.nameLabel.text = "\(user_first_name) \(user_last_name)"
@@ -89,12 +89,12 @@ class ReferralProgramCollectionView : UICollectionView, UICollectionViewDelegate
                     cell.phoneNumberLabel.text = "XXX-XXX-\(phoneTrim)"
 
                     //MARK: - RESETS THE USERS TAP DECISION
-                    if !self.selectionArray.contains(indexPath.item) {
+                    if !self.selectionArray.contains(full_phone_number) {
                         
                         cell.selectionButton.backgroundColor = .clear
                         cell.selectionButton.setTitle("", for: .normal)
                         
-                    } else if self.selectionArray.contains(indexPath.item) {
+                    } else if self.selectionArray.contains(full_phone_number) {
                         
                         cell.selectionButton.backgroundColor = coreOrangeColor
                         cell.selectionButton.setTitle(String.fontAwesomeIcon(name: .check), for: .normal)
@@ -129,51 +129,67 @@ class ReferralProgramCollectionView : UICollectionView, UICollectionViewDelegate
         let selectedButtonCell = sender.superview as! UICollectionViewCell
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
         
-        if !self.selectionArray.contains(indexPath.item) {
+        if let safeDataSource = self.referralContactsContainer?.contactsArray, let safeFilteredDataSource = self.referralContactsContainer?.filteredContactsArray {
             
-            if self.selectionArray.count >= 10  {return}
-            
-            self.selectionArray.append(indexPath.item)
-            UIDevice.vibrateLight()
-            
-            if let safeDataSource = self.referralContactsContainer?.contactsArray, let safeFilteredDataSource = self.referralContactsContainer?.filteredContactsArray {
+            if safeDataSource.count > 0 {
                 
-                //RESET DATASOURCE ACCORDING TO THE SEARCH RESULTS
                 var feeder = safeDataSource[indexPath.item]
+                
                 if self.referralContactsContainer?.searchTextField.text != "" {
                     feeder = safeFilteredDataSource[indexPath.item]
                 } else {
                     feeder = safeDataSource[indexPath.item]
                 }
+        
+                let full_phone_number = feeder.fullPhoneNumber ?? "nil"
                 
-                let isDoggystyleUser = feeder.isCurrentDoggystyleUser ?? false
+                if !self.selectionArray.contains(full_phone_number) {
+                    
+                    if self.selectionArray.count >= 10  {return}
+                    
+                    self.selectionArray.append(full_phone_number)
+                    UIDevice.vibrateLight()
+                    
+                    if let safeDataSource = self.referralContactsContainer?.contactsArray, let safeFilteredDataSource = self.referralContactsContainer?.filteredContactsArray {
+                        
+                        //RESET DATASOURCE ACCORDING TO THE SEARCH RESULTS
+                        var feeder = safeDataSource[indexPath.item]
+                        if self.referralContactsContainer?.searchTextField.text != "" {
+                            feeder = safeFilteredDataSource[indexPath.item]
+                        } else {
+                            feeder = safeDataSource[indexPath.item]
+                        }
+                        
+                        let isDoggystyleUser = feeder.isCurrentDoggystyleUser ?? false
 
-                if isDoggystyleUser == true {
-                    UIDevice.vibrateHeavy()
-                    return
+                        if isDoggystyleUser == true {
+                            UIDevice.vibrateHeavy()
+                            return
+                        }
+                        
+                        let givenName = feeder.givenName ?? "nil",
+                            familyName = feeder.familyName ?? "nil",
+                            phoneNumber = feeder.phoneNumber ?? "nil",
+                            fullPhoneNumber = feeder.fullPhoneNumber ?? "nil",
+                            isCurrentDoggystyleUser = feeder.isCurrentDoggystyleUser ?? false
+                        
+                        let dic : [String : Any] = ["givenName" : givenName, "familyName" : familyName, "phoneNumber" : phoneNumber, "fullPhoneNumber" : fullPhoneNumber, "isCurrentDoggystyleUser" : isCurrentDoggystyleUser]
+                        let contact = ContactsList(json: dic)
+                        self.referralContactsContainer?.selectedContactsArray.append(contact)
+                    }
+                    
+                } else if self.selectionArray.contains(full_phone_number) {
+                    if let index = self.selectionArray.firstIndex(of: full_phone_number) {
+                        self.selectionArray.remove(at: index)
+                        self.referralContactsContainer?.selectedContactsArray.remove(at: index)
+                    }
                 }
                 
-                let givenName = feeder.givenName ?? "nil",
-                    familyName = feeder.familyName ?? "nil",
-                    phoneNumber = feeder.phoneNumber ?? "nil",
-                    fullPhoneNumber = feeder.fullPhoneNumber ?? "nil",
-                    isCurrentDoggystyleUser = feeder.isCurrentDoggystyleUser ?? false
-                
-                let dic : [String : Any] = ["givenName" : givenName, "familyName" : familyName, "phoneNumber" : phoneNumber, "fullPhoneNumber" : fullPhoneNumber, "isCurrentDoggystyleUser" : isCurrentDoggystyleUser]
-                let contact = ContactsList(json: dic)
-                self.referralContactsContainer?.selectedContactsArray.append(contact)
+                DispatchQueue.main.async {
+                    self.referralContactsContainer?.referButton.setTitle("Refer \(self.selectionArray.count) lucky dog owners", for: .normal)
+                    self.reloadItems(at: [indexPath])
+                }
             }
-            
-        } else if self.selectionArray.contains(indexPath.item) {
-            if let index = self.selectionArray.firstIndex(of: indexPath.item) {
-                self.selectionArray.remove(at: index)
-                self.referralContactsContainer?.selectedContactsArray.remove(at: index)
-            }
-        }
-        
-        DispatchQueue.main.async {
-            self.referralContactsContainer?.referButton.setTitle("Refer \(self.selectionArray.count) lucky dog owners", for: .normal)
-            self.reloadItems(at: [indexPath])
         }
     }
     

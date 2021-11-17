@@ -14,6 +14,8 @@ class YourNotificationsCollectionView : UICollectionView, UICollectionViewDelega
     
     var yourNotificationsController : YourNotificationController?
     
+    var notificationsArray = [NotificationModel]()
+    
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         
@@ -39,7 +41,7 @@ class YourNotificationsCollectionView : UICollectionView, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return self.notificationsArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -50,6 +52,29 @@ class YourNotificationsCollectionView : UICollectionView, UICollectionViewDelega
         
         let cell = self.dequeueReusableCell(withReuseIdentifier: self.yourNotifications, for: indexPath) as! YourNotificationsFeeder
         cell.yourNotificationsCollectionView = self
+        
+        let feeder = self.notificationsArray[indexPath.item]
+        
+        let notification_type = feeder.notification_type
+        let notification_first_name = feeder.notification_first_name
+        let notification_last_name = feeder.notification_last_name
+        let notification_time_stamp = feeder.notification_time_stamp
+        let notification_UID = feeder.notification_UID
+        let notification_email = feeder.notification_email
+        let notification_has_read = feeder.notification_has_read
+        let notification_profile_image = feeder.notification_profile_image
+        let notification_parent_key = feeder.notification_parent_key
+        
+        print(notification_type)
+        print(notification_first_name)
+        print(notification_last_name)
+        print(notification_time_stamp)
+        print(notification_UID)
+        print(notification_email)
+        print(notification_has_read)
+        print(notification_profile_image)
+        print(notification_parent_key)
+        
         return cell
         
     }

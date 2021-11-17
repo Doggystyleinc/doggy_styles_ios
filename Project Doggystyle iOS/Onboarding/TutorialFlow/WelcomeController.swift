@@ -180,6 +180,7 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
         self.view.backgroundColor = coreWhiteColor
         self.dataSource = self
         self.delegate = self
+        self.pageControl.isEnabled = false
         
         self.addViews()
       
@@ -225,6 +226,7 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
         self.pageControl.numberOfPages = self.pages.count
         self.pageControl.currentPage = initialPage
         self.pageControl.translatesAutoresizingMaskIntoConstraints = false
+        self.pageControl.isHidden = true
         
         self.page3.tutorialClass = self
         self.page2.tutorialClass = self

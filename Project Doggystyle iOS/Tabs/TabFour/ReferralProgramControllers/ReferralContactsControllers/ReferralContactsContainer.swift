@@ -320,6 +320,8 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
                             let inviters_country_code = userProfileStruct.users_country_code ?? "nil"
                             let inviters_email = userProfileStruct.users_email ?? "nil"
                             let referral_code = userProfileStruct.user_created_referral_code_grab ?? "nil"
+                            
+                            let sendersProfileImage = userProfileStruct.users_profile_image_url ?? "nil"
 
                             let refStamp = self.databaseRef.child("global_pending_invites").childByAutoId()
 
@@ -342,8 +344,35 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
                                                            "time_stamp" : timeStamp]
 
                             refStamp.updateChildValues(values) { error, ref in
-                                self.sendTextMessage(passedCountryCode: "1", passedPhoneNumber: phoneNumber, passedReferralCode: referral_code, inviteesName: "\(inviters_firstName) \(inviters_lastName)")
+                                
+                                //MARK: - UPDATE THE USERS NOTIFICATOINS VALUES
+                                let notificationRef = self.databaseRef.child("notifications").child(fullPhoneNumber).childByAutoId()
+                                
+                                let notificationType = "referral_invite"
+                                let notificationSenderFirstName = inviters_firstName
+                                let notificationSenderLastName = inviters_lastName
+                                let notificationSenderInviteDate = timeStamp
+                                let notificationSenderInviteUUID = inviters_UID
+                                let notificationSenderEmail = inviters_email
+                                let hasSeen = false
+                                let childKey = notificationRef.key ?? "nil"
+                                
+                                let notificationValues : [String : Any] = ["notification_type" : notificationType,
+                                                                           "notification_first_name" : notificationSenderFirstName,
+                                                                           "notification_last_name" : notificationSenderLastName,
+                                                                           "notification_time_stamp" : notificationSenderInviteDate,
+                                                                           "notification_UID" : notificationSenderInviteUUID,
+                                                                           "notification_email" : notificationSenderEmail,
+                                                                           "notification_has_read" : hasSeen,
+                                                                           "notification_profile_image" : sendersProfileImage,
+                                                                           "child_key" : childKey
 
+                                ]
+                                
+                                notificationRef.updateChildValues(notificationValues, withCompletionBlock: { error, ref in
+                                    //MARK: - FALL THROUGH ERROR
+                                    self.sendTextMessage(passedCountryCode: "1", passedPhoneNumber: phoneNumber, passedReferralCode: referral_code, inviteesName: "\(inviters_firstName) \(inviters_lastName)")
+                                })
                             }
                         } //MARK: - THESE USERS HAVE ALREADY BEEN INVITED FOR THE ELSE AT THIS BRACKET
                     }
@@ -406,8 +435,7 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
                             //MARK: - FALL THROUGH ERROR
                             if counter == filtered.count {
                                 self.unlockAndComplete()
-                            }
-                        
+                        }
                     }
                 }
             }
