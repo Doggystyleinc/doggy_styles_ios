@@ -20,6 +20,9 @@ target 'Project Doggystyle iOS' do
   #Facebook Authenticaion
   pod 'FBSDKLoginKit'
   
+  #Firebase notifications
+  pod 'FirebaseMessaging'
+  
   #Simple Requests
   pod 'Alamofire', '~> 5.4'
   

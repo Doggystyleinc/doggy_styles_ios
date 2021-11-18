@@ -13,7 +13,7 @@ class NotificationsSelector : UIView {
     var yourNotificationController : YourNotificationController?,
         leftConstraint : NSLayoutConstraint?
     
-    lazy var upcomingLabel : UIButton = {
+    lazy var newLabel : UIButton = {
         
         let ul = UIButton(type : .system)
         ul.translatesAutoresizingMaskIntoConstraints = false
@@ -30,7 +30,7 @@ class NotificationsSelector : UIView {
         
     }()
     
-    lazy var previousLabel : UIButton = {
+    lazy var readLabel : UIButton = {
         
         let ul = UIButton(type : .system)
         ul.translatesAutoresizingMaskIntoConstraints = false
@@ -72,21 +72,21 @@ class NotificationsSelector : UIView {
     
     func addViews() {
         
-        self.addSubview(self.upcomingLabel)
-        self.addSubview(self.previousLabel)
+        self.addSubview(self.newLabel)
+        self.addSubview(self.readLabel)
         self.addSubview(self.orangeView)
         
         let width = UIScreen.main.bounds.width - 60
         
-        self.upcomingLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 3).isActive = true
-        self.upcomingLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 3).isActive = true
-        self.upcomingLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -3).isActive = true
-        self.upcomingLabel.widthAnchor.constraint(equalToConstant: width / 2).isActive = true
+        self.newLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 3).isActive = true
+        self.newLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 3).isActive = true
+        self.newLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -3).isActive = true
+        self.newLabel.widthAnchor.constraint(equalToConstant: width / 2).isActive = true
         
-        self.previousLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -3).isActive = true
-        self.previousLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 3).isActive = true
-        self.previousLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -3).isActive = true
-        self.previousLabel.widthAnchor.constraint(equalToConstant: width / 2).isActive = true
+        self.readLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -3).isActive = true
+        self.readLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 3).isActive = true
+        self.readLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -3).isActive = true
+        self.readLabel.widthAnchor.constraint(equalToConstant: width / 2).isActive = true
         
         leftConstraint = self.orangeView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 3)
         self.leftConstraint?.isActive = true
@@ -111,8 +111,10 @@ class NotificationsSelector : UIView {
                 self.layoutIfNeeded()
             }
             
-            self.upcomingLabel.tintColor = coreOrangeColor
-            self.previousLabel.tintColor = coreBlackColor
+            self.newLabel.tintColor = coreOrangeColor
+            self.readLabel.tintColor = coreBlackColor
+            
+            self.yourNotificationController?.handleSelector(isNewMessages : true)
             
         case 2:
             
@@ -121,8 +123,11 @@ class NotificationsSelector : UIView {
                 self.layoutIfNeeded()
             }
             
-            self.upcomingLabel.tintColor = coreBlackColor
-            self.previousLabel.tintColor = coreOrangeColor
+            self.newLabel.tintColor = coreBlackColor
+            self.readLabel.tintColor = coreOrangeColor
+            
+            self.yourNotificationController?.handleSelector(isNewMessages : false)
+
             
         default: print("Never called")
             

@@ -14,11 +14,52 @@ import Firebase
 import GoogleMaps
 import GooglePlaces
 //import GoogleSignIn
+//        let notificationType = "referral_invite"
 
 //MARK: - SERVICE SINGLETON FOR CRUD OPERATIONS
 class Service : NSObject {
     
     static let shared = Service()
+    
+    func notificationSender(notificationType : String, fullPhoneNumber : String, completion : @escaping (_ isComplete : Bool) -> ()) {
+        
+        let databaseRef = Database.database().reference()
+        
+        let inviters_firstName = userProfileStruct.user_first_name ?? "nil",
+            inviters_lastName = userProfileStruct.user_last_name ?? "nil",
+            inviters_UID = userProfileStruct.users_ref_key ?? "nil",
+            inviters_email = userProfileStruct.users_email ?? "nil",
+            sendersProfileImage = userProfileStruct.users_profile_image_url ?? "nil",
+            timeStamp : Double = Date().timeIntervalSince1970
+        
+        //MARK: - UPDATE THE USERS NOTIFICATOINS VALUES
+        let notificationRef = databaseRef.child("notifications").child(fullPhoneNumber).childByAutoId()
+        
+        let notificationSenderFirstName = inviters_firstName,
+            notificationSenderLastName = inviters_lastName,
+            notificationSenderInviteDate = timeStamp,
+            notificationSenderInviteUUID = inviters_UID,
+            notificationSenderEmail = inviters_email,
+            hasSeen = false,
+            childKey = notificationRef.key ?? "nil",
+            
+            notificationValues : [String : Any] = ["notification_type" : notificationType,
+                                                   "notification_first_name" : notificationSenderFirstName,
+                                                   "notification_last_name" : notificationSenderLastName,
+                                                   "notification_time_stamp" : notificationSenderInviteDate,
+                                                   "notification_UID" : notificationSenderInviteUUID,
+                                                   "notification_email" : notificationSenderEmail,
+                                                   "notification_has_read" : hasSeen,
+                                                   "notification_profile_image" : sendersProfileImage,
+                                                   "child_key" : childKey
+                                                   
+            ]
+        
+        notificationRef.updateChildValues(notificationValues, withCompletionBlock: { error, ref in
+            //MARK: - FALL THROUGH ERROR
+            completion(true)
+        })
+    }
     
     func locationChecker(preferredLatitude : Double?, preferredLongitude : Double?, completion : @escaping (_ foundLocation : Bool, _ latitude : Double, _ longitude : Double, _ address : String, _ website : String, _ distanceInMeters : Double)->()) {
         
@@ -233,18 +274,23 @@ class Service : NSObject {
                             return
                         }
                         
-                        let found_grooming_location = user_grooming_locational_data["found_grooming_location"] as? Bool ?? false
+                        let filteredNumber = users_full_phone_number.replacingOccurrences(of: " ", with: "")
                         
-                        if found_grooming_location == true {
-                            completion(true, "Success", 200)
-                        } else {
+                        Service.shared.notificationSender(notificationType: "welcome_aboard", fullPhoneNumber: filteredNumber) { notificationCompletion in
                             
-                            //MARK: - DID NOT FIND GROOMING LOCATION, SO ADD IT TO THE REQUESTS FOR VOTERS
-                            let requestRef = databaseRef.child("requested_locations_per_user").child(firebase_uid)
+                            let found_grooming_location = user_grooming_locational_data["found_grooming_location"] as? Bool ?? false
                             
-                            let values : [String : Any] = ["client_location_request" : user_grooming_locational_data]
-                            requestRef.updateChildValues(values) { error, ref in
+                            if found_grooming_location == true {
                                 completion(true, "Success", 200)
+                            } else {
+                                
+                                //MARK: - DID NOT FIND GROOMING LOCATION, SO ADD IT TO THE REQUESTS FOR VOTERS
+                                let requestRef = databaseRef.child("requested_locations_per_user").child(firebase_uid)
+                                
+                                let values : [String : Any] = ["client_location_request" : user_grooming_locational_data]
+                                requestRef.updateChildValues(values) { error, ref in
+                                    completion(true, "Success", 200)
+                                }
                             }
                         }
                     }
@@ -548,7 +594,13 @@ extension Service {
                 let uploaded_document_url = JSON["uploaded_document_url"] as? String ?? "nil"
                 let user_grooming_locational_data = JSON["user_grooming_locational_data"] as? [String : Any] ?? ["nil":"nil"]
                 let user_notification_settings = JSON["user_notification_settings"] as? [String : Any] ?? ["nil":"nil"]
+                
+                let users_push_token = JSON["users_push_token"] as? String ?? "nil"
+                let users_device_UDID = JSON["users_device_UDID"] as? String ?? "nil"
 
+                userProfileStruct.usersPushToken = users_push_token
+                userProfileStruct.deviceUDID = users_device_UDID
+                
                 userProfileStruct.users_firebase_uid = users_firebase_uid
                 userProfileStruct.user_first_name = user_first_name
                 
@@ -573,7 +625,7 @@ extension Service {
                 userProfileStruct.uploaded_document_url = uploaded_document_url
                 userProfileStruct.user_grooming_locational_data = user_grooming_locational_data
                 userProfileStruct.user_notification_settings = user_notification_settings
-
+                
                 let referralGrab = databaseRef.child("referral_codes").child(userUID).child("users_referral_code")
                 
                 referralGrab.observeSingleEvent(of: .value) { snap in

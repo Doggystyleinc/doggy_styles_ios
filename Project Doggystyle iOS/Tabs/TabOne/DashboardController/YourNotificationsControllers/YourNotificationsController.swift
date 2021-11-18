@@ -15,9 +15,9 @@ class NotificationModel : NSObject {
         notification_email : String?,
         notification_has_read : Bool?,
         notification_profile_image : String?,
-        notification_parent_key : String?
+        child_key : String?
             
-    init(JSON : [String : Any], notification_parent_key_grab : String) {
+    init(JSON : [String : Any]) {
         
         self.notification_type = JSON["notification_type"] as? String ?? "nil"
         self.notification_first_name = JSON["notification_first_name"] as? String ?? "nil"
@@ -27,8 +27,7 @@ class NotificationModel : NSObject {
         self.notification_email = JSON["notification_email"] as? String ?? "nil"
         self.notification_has_read = JSON["notification_has_read"] as? Bool ?? false
         self.notification_profile_image = JSON["notification_profile_image"] as? String ?? "nil"
-        
-        self.notification_parent_key = notification_parent_key_grab
+        self.child_key = JSON["child_key"] as? String ?? "nil"
 
     }
 }
@@ -40,6 +39,13 @@ import Firebase
 class YourNotificationController : UIViewController {
     
     let databaseRef = Database.database().reference()
+    
+    enum SelectedState {
+        case new
+        case read
+    }
+    
+    var selectedState = SelectedState.new
     
     lazy var backButton : UIButton = {
         
@@ -111,9 +117,8 @@ class YourNotificationController : UIViewController {
     }
     
     func handleEmptyState() {
-        //SHOW EMPTY ANIMATION HERE MAYBE?
-        self.selectorSwitch.isHidden = true
-        self.headerLabel.text = "Empty :("
+        //MARK: - SHOW EMPTY ANIMATION HERE IF APPLICABLE, TEXT NO STATE FOR NOW
+        self.selectorSwitch.isHidden = false
 
         DispatchQueue.main.async {
             self.yourNotificationsCollectionView.reloadData()
@@ -123,7 +128,6 @@ class YourNotificationController : UIViewController {
     func handleNotificationState() {
         
         self.selectorSwitch.isHidden = false
-        self.headerLabel.text = "Your Notifications"
         DispatchQueue.main.async {
             self.yourNotificationsCollectionView.reloadData()
         }
@@ -140,25 +144,42 @@ class YourNotificationController : UIViewController {
             
             if snapJSON.exists() {
             
-            self.yourNotificationsCollectionView.notificationsArray.removeAll()
-            
+                self.yourNotificationsCollectionView.notificationsArray.removeAll()
+                self.yourNotificationsCollectionView.notificationsNewArray.removeAll()
+                self.yourNotificationsCollectionView.notificationsReadArray.removeAll()
+
             for child in snapJSON.children.allObjects as! [DataSnapshot] {
                 
                 let JSON = child.value as? [String : AnyObject] ?? [:]
-                
-                let parentKey = ref.parent?.key ?? "nil"
-                let refKey = ref.key ?? "nil"
                
-                let post = NotificationModel(JSON: JSON, notification_parent_key_grab: refKey)
+                let post = NotificationModel(JSON: JSON)
                 
-                self.yourNotificationsCollectionView.notificationsArray.append(post)
-            
-            }
+                let notification_has_read = JSON["notification_has_read"] as? Bool ?? false
+                
+                if notification_has_read == false {
+                    self.yourNotificationsCollectionView.notificationsNewArray.append(post)
+                } else {
+                    self.yourNotificationsCollectionView.notificationsReadArray.append(post)
+                }
+                }
+                
+                if self.selectedState == .new {
+                    self.yourNotificationsCollectionView.notificationsArray = self.yourNotificationsCollectionView.notificationsNewArray
+                } else {
+                    self.yourNotificationsCollectionView.notificationsArray = self.yourNotificationsCollectionView.notificationsReadArray
+                }
+                
             //MARK: - LOOP END
             completion(true)
             
             //MARK: - NO DATA HERE EXISTS YET
             } else if !snapJSON.exists() {
+                self.yourNotificationsCollectionView.notificationsArray.removeAll()
+                self.yourNotificationsCollectionView.notificationsNewArray.removeAll()
+                self.yourNotificationsCollectionView.notificationsReadArray.removeAll()
+                DispatchQueue.main.async {
+                    self.yourNotificationsCollectionView.reloadData()
+                }
                 completion(false)
             }
         }
@@ -191,6 +212,50 @@ class YourNotificationController : UIViewController {
         self.yourNotificationsCollectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.yourNotificationsCollectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         
+    }
+    
+    @objc func handleSelector(isNewMessages : Bool) {
+        
+        if isNewMessages {
+            
+            self.selectedState = .new
+            
+            self.yourNotificationsCollectionView.notificationsArray.removeAll()
+            self.yourNotificationsCollectionView.notificationsArray = self.yourNotificationsCollectionView.notificationsNewArray
+            
+            self.yourNotificationsCollectionView.alpha = 0
+            UIView.animate(withDuration: 0.25) {
+                self.yourNotificationsCollectionView.alpha = 1
+            }
+     
+        } else {
+            
+            self.selectedState = .read
+
+            self.yourNotificationsCollectionView.notificationsArray.removeAll()
+            self.yourNotificationsCollectionView.notificationsArray = self.yourNotificationsCollectionView.notificationsReadArray
+            
+            self.yourNotificationsCollectionView.alpha = 0
+            UIView.animate(withDuration: 0.25) {
+                self.yourNotificationsCollectionView.alpha = 1
+            }
+        }
+        
+        DispatchQueue.main.async {
+            self.yourNotificationsCollectionView.reloadData()
+        }
+    }
+    
+    @objc func handleCellReadFlag(childKey : String, users_full_phone_number : String) {
+        
+        let filteredNumber = users_full_phone_number.replacingOccurrences(of: " ", with: "")
+        
+        let path = self.databaseRef.child("notifications").child(filteredNumber).child(childKey)
+        let values : [String : Any] = ["notification_has_read" : true]
+        
+        path.updateChildValues(values) { error, ref in
+            print("should auto update due to the listener")
+        }
     }
     
     @objc func handleBackButton() {

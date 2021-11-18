@@ -16,12 +16,10 @@ var doggyProfileDataSource = [DoggyProfileDataSource]()
 class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
     
     enum StateListener {
-        
         case YesGroomerLocationYesDoggyProfile
         case YesGroomerLocationNoDoggyProfile
         case NoGroomerLocationNoDoggyProfile
         case NoGroomerLocationYesDoggyProfile
-        
     }
     
     var observingRefOne = Database.database().reference(),
@@ -287,16 +285,19 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
                     }
                 }
                 
-                self.notificationBubble.isHidden = false
-                self.notificationBubble.text = "\(counter)"
-                counter = 0
-                print("here 1")
+                if counter == 0 {
+                    self.notificationBubble.isHidden = true
+                    self.notificationBubble.text = ""
+                } else {
+                    self.notificationBubble.isHidden = false
+                    self.notificationBubble.text = "\(counter)"
+                    counter = 0
+                }
                 
                 //MARK: - NO DATA HERE EXISTS YET
             } else if !snapJSON.exists() {
                 self.notificationBubble.isHidden = true
                 counter = 0
-                print("here 2?")
             }
         }
     }
