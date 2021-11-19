@@ -517,7 +517,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         alert.passedMmessage = message
         alert.passedButtonSelections = passedButtons
         alert.customAlertCallBackProtocol = self
-        alert.passedIconName = .paw //leave commented if no header icon is needed
+        alert.passedIconName = .paw
         alert.modalPresentationStyle = .overCurrentContext
         self.navigationController?.present(alert, animated: true, completion: nil)
         

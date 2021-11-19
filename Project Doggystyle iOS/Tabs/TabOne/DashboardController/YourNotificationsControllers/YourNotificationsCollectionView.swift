@@ -11,6 +11,7 @@ import UIKit
 class YourNotificationsCollectionView : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
     private let yourNotifications = "yourNotifications"
+    var shouldHideFooter : Bool = false
     
     var yourNotificationsController : YourNotificationController?,
         notificationsArray = [NotificationModel](),

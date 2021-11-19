@@ -281,9 +281,20 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         self.addViews()
         self.fillValues()
         self.observePendingAndDoggyDollarsAmount()
-        
-        self.perform(#selector(self.handleReferralPopup), with: nil, afterDelay: 1.0)
+        self.handleInviteRewardsController()
     
+    }
+    
+    func handleInviteRewardsController() {
+        
+        //MARK: - HAS ALREADY SEEN THE INVITE ADS
+        if let _ = UserDefaults.standard.object(forKey: "invite_10_dogs") as? Bool {
+            print("user has seen the invites screen already")
+        } else {
+            //MARK: - HAs NOT SEEN INVITE ADS
+            UserDefaults.standard.set(true, forKey:"invite_10_dogs")
+            self.perform(#selector(self.handleReferralPopup), with: nil, afterDelay: 1.0)
+        }
     }
     
     func observePendingAndDoggyDollarsAmount() {

@@ -116,6 +116,7 @@ class YourReferralSelectorSwitch : UIView {
             self.rewardsLabel.tintColor = coreBlackColor
             self.yourReferralContainer?.isPendingSelected = true
             self.yourReferralContainer?.runDataEngine()
+            self.yourReferralContainer?.yourReferralCollection.shouldHideFooter = true
             
         case 2:
             
@@ -128,6 +129,7 @@ class YourReferralSelectorSwitch : UIView {
             self.rewardsLabel.tintColor = coreOrangeColor
             self.yourReferralContainer?.isPendingSelected = false
             self.yourReferralContainer?.runDataEngine()
+            self.yourReferralContainer?.yourReferralCollection.shouldHideFooter = false
 
             
         default: print("Never called")

@@ -14,7 +14,8 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
     let logo = LogoImageView(frame: .zero),
         containerView = UIView(frame: .zero),
         phoneNumberKit = PhoneNumberKit(),
-        mainLoadingScreen = MainLoadingScreen()
+        mainLoadingScreen = MainLoadingScreen(),
+        databaseRef = Database.database().reference()
     
     var lastKeyboardHeight : CGFloat = 0.0,
         contentOffSet : CGFloat = 0.0,
@@ -448,7 +449,7 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         
         return tc
     }()
-
+    
     lazy var showHideEyeButton : UIButton = {
         
         let cbf = UIButton(type: .system)
@@ -473,8 +474,96 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         self.addViews()
         self.fillValues()
         self.setupObserversAndContentTypes()
-     
+        self.scrollView.isHidden = true
+        self.presentPasswordReset()
+        
     }
+    
+    lazy var tempBackButton : UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.backgroundColor = .clear
+        cbf.tintColor = UIColor.dsOrange
+        cbf.contentMode = .scaleAspectFill
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 24, style: .solid)
+        cbf.setTitle(String.fontAwesomeIcon(name: .chevronLeft), for: .normal)
+        cbf.addTarget(self, action: #selector(self.handleBackButton), for: UIControl.Event.touchUpInside)
+        return cbf
+        
+    }()
+    
+    
+    let currentPasswordLabel : UILabel = {
+        
+        let hl = UILabel()
+        hl.translatesAutoresizingMaskIntoConstraints = false
+        hl.backgroundColor = .clear
+        hl.text = "Current password"
+        hl.font = UIFont(name: dsHeaderFont, size: 24)
+        hl.numberOfLines = 2
+        hl.adjustsFontSizeToFitWidth = true
+        hl.textAlignment = .left
+        
+        return hl
+    }()
+    
+    lazy var currentPasswordTextfield: UITextField = {
+        
+        let etfc = UITextField()
+        let placeholder = NSAttributedString(string: "Current password", attributes: [NSAttributedString.Key.foregroundColor: dsFlatBlack.withAlphaComponent(0.4),
+                                                                                      NSAttributedString.Key.font: UIFont(name: rubikRegular, size: 16)!])
+        etfc.attributedPlaceholder = placeholder
+        etfc.translatesAutoresizingMaskIntoConstraints = false
+        etfc.textAlignment = .left
+        etfc.textColor = coreBlackColor
+        etfc.font = UIFont(name: rubikRegular, size: 16)
+        etfc.allowsEditingTextAttributes = false
+        etfc.autocorrectionType = .no
+        etfc.delegate = self
+        etfc.backgroundColor = coreWhiteColor
+        etfc.keyboardAppearance = UIKeyboardAppearance.light
+        etfc.returnKeyType = UIReturnKeyType.done
+        etfc.keyboardType = .alphabet
+        etfc.layer.masksToBounds = true
+        etfc.layer.cornerRadius = 8
+        etfc.leftViewMode = .always
+        etfc.layer.borderColor = UIColor.clear.cgColor
+        etfc.layer.borderWidth = 1
+        etfc.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+        etfc.clipsToBounds = false
+        etfc.layer.masksToBounds = false
+        etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
+        etfc.layer.shadowOpacity = 0.05
+        etfc.layer.shadowOffset = CGSize(width: 2, height: 3)
+        etfc.layer.shadowRadius = 9
+        etfc.layer.shouldRasterize = false
+        etfc.isSecureTextEntry = true
+        etfc.setRightPaddingPoints(50)
+        
+        return etfc
+        
+    }()
+    
+    lazy var passwordAuthButton : UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.setTitle("Submit", for: UIControl.State.normal)
+        cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
+        cbf.titleLabel?.adjustsFontSizeToFitWidth = true
+        cbf.titleLabel?.numberOfLines = 1
+        cbf.titleLabel?.adjustsFontForContentSizeCategory = true
+        cbf.titleLabel?.textColor = coreBlackColor
+        cbf.backgroundColor = coreOrangeColor
+        cbf.layer.cornerRadius = 15
+        cbf.layer.masksToBounds = true
+        cbf.tintColor = coreWhiteColor
+        cbf.addTarget(self, action: #selector(self.handlePasswordReAuth), for: .touchUpInside)
+        
+        return cbf
+        
+    }()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -628,7 +717,36 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         self.confirmButton.leftAnchor.constraint(equalTo: self.passwordTextField.leftAnchor, constant: 0).isActive = true
         self.confirmButton.rightAnchor.constraint(equalTo: self.passwordTextField.rightAnchor, constant: 0).isActive = true
         self.confirmButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-       
+        
+    }
+    
+    func presentPasswordReset() {
+        
+        self.view.addSubview(self.tempBackButton)
+        self.view.addSubview(self.currentPasswordLabel)
+        self.view.addSubview(self.currentPasswordTextfield)
+        self.view.addSubview(self.passwordAuthButton)
+        
+        self.tempBackButton.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 17).isActive = true
+        self.tempBackButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 11).isActive = true
+        self.tempBackButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
+        self.tempBackButton.widthAnchor.constraint(equalToConstant: 54).isActive = true
+        
+        self.currentPasswordLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -180).isActive = true
+        self.currentPasswordLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.currentPasswordLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.currentPasswordLabel.sizeToFit()
+        
+        self.currentPasswordTextfield.topAnchor.constraint(equalTo: self.currentPasswordLabel.bottomAnchor, constant: 40).isActive = true
+        self.currentPasswordTextfield.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.currentPasswordTextfield.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.currentPasswordTextfield.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        self.passwordAuthButton.topAnchor.constraint(equalTo: self.currentPasswordTextfield.bottomAnchor, constant: 20).isActive = true
+        self.passwordAuthButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.passwordAuthButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.passwordAuthButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
     }
     
     @objc func fillValues() {
@@ -804,7 +922,7 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         
     }
     
-    //MARK: - HACKY WAY TO CHECK IF EMAIL EXISTS BEFORE WALKING THE USER THROUGH 5 SCRENS AND THEN LETTING THEM KNOW
+    //MARK: - HACKY WAY TO CHECK IF EMAIL EXISTS BEFORE WALKING THE USER THROUGH 5 SCREENS AND THEN LETTING THEM KNOW
     func checkForEmailValidation(emailAddress : String, completion : @escaping (_ doesUserExist : Bool)->()) {
         
         Auth.auth().fetchSignInMethods(forEmail: emailAddress) { providers, error in
@@ -819,14 +937,17 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
     
     @objc func handleConfirmButton() {
         
-        self.handleCustomPopUpAlert(title: "PROFILE", message: "Updating your profile is currently in BETA.", passedButtons: [Statics.OK])
+        guard let user_uid = Auth.auth().currentUser?.uid else {return}
         
         self.resignation()
+        
         UIDevice.vibrateLight()
         
         guard let firstName = firstNameTextField.text, let lastName = lastNameTextField.text, let mobileNumber = phoneNumberTextField.text, let emailText = emailTextField.text, let passwordText = passwordTextField.text else {
             return
         }
+        
+        self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
         
         self.scrollView.scrollToTop()
         
@@ -839,15 +960,53 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         let safeEmail = emailText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), safePassword = passwordText.trimmingCharacters(in: .whitespacesAndNewlines), safeMobile = mobileNumber.trimmingCharacters(in: .whitespacesAndNewlines)
         
         guard safeEmail.isValidEmail, safePassword.isValidPassword, phoneNumberKit.isValidPhoneNumber(safeMobile) else {
+            self.mainLoadingScreen.cancelMainLoadingScreen()
             return
         }
         
         self.checkForEmailValidation(emailAddress: safeEmail) { doesUserAlreadyExist in
             
             if doesUserAlreadyExist == true {
+                self.mainLoadingScreen.cancelMainLoadingScreen()
                 self.handleCustomPopUpAlert(title: "EMAIL EXISTS", message: "Doggystyle already has a registered email address under \(safeEmail).", passedButtons: [Statics.OK])
             } else {
-                self.handleCustomPopUpAlert(title: "CHECK", message: "Email cannot be saved without verification", passedButtons: [Statics.OK])
+                
+                do {
+                    let phoneNumber = try self.phoneNumberKit.parse(safeMobile)
+                    let countryCode = "\(phoneNumber.countryCode)"
+                    let nationalNumber = "\(phoneNumber.nationalNumber)"
+                    
+                    let values : [String : Any] = ["user_first_name" : firstName, "user_last_name" : lastName, "users_phone_number" : mobileNumber, "users_email" : safeEmail]
+                    let ref = self.databaseRef.child("all_users").child(user_uid)
+                    
+                    ref.updateChildValues(values) { error, ref in
+                        
+                        let user = Auth.auth().currentUser
+                        
+                        user?.updateEmail(to: safeEmail, completion: { error in
+                            user?.updatePassword(to: safePassword, completion: { errorTwo in
+                                
+                                self.mainLoadingScreen.cancelMainLoadingScreen()
+                                
+                                UIDevice.vibrateLight()
+                                
+                                userProfileStruct.user_first_name = firstName
+                                userProfileStruct.user_last_name = lastName
+                                userProfileStruct.users_full_name = "\(firstName) \(lastName)"
+                                userProfileStruct.users_country_code = countryCode
+                                userProfileStruct.users_email = safeEmail
+                                userProfileStruct.users_phone_number = nationalNumber
+                                userProfileStruct.users_full_phone_number = "\(countryCode) \(nationalNumber)"
+                                
+                                self.handleBackButton()
+                            })
+                        })
+                    }
+                    
+                } catch {
+                    self.mainLoadingScreen.cancelMainLoadingScreen()
+                    self.handleCustomPopUpAlert(title: "ERROR", message: "Something went wrong. Please try again. ", passedButtons: [Statics.OK])
+                }
             }
         }
     }
@@ -882,9 +1041,7 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
             nextTextField.becomeFirstResponder()
         } else {
             textField.resignFirstResponder()
-            
             self.scrollView.scrollToTop()
-            self.handleConfirmButton()
         }
         return false
     }
@@ -893,6 +1050,56 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         let pinNumberVC = PinNumberVerificationEntryController()
         let navVC = UINavigationController(rootViewController: pinNumberVC)
         navigationController?.present(navVC, animated: true)
+    }
+    
+    @objc func handlePasswordReAuth() {
+        
+        //MARK: - QUICK BLOCKS HERE
+        guard let currentPassword = self.currentPasswordTextfield.text else {return}
+        let trim = currentPassword.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trim.count <= 0 {return}
+        
+        if trim.isValidPassword {
+            self.currentPasswordTextfield.layer.borderColor = UIColor .clear.cgColor
+            self.handlePasswordAuth(passedPassword: trim)
+        } else {
+            self.currentPasswordTextfield.layer.borderColor = coreRedColor.cgColor
+        }
+    }
+    
+    @objc func handlePasswordAuth(passedPassword : String) {
+        
+        //MARK: - REQUIRES AUTHENTICATION
+        guard let _ = Auth.auth().currentUser?.uid else {return}
+        
+        self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
+        
+        let user = Auth.auth().currentUser
+        let currentEmail = Auth.auth().currentUser?.email ?? "nil"
+        
+        if currentEmail == "nil" {return}
+        
+        let credential = EmailAuthProvider.credential(withEmail: currentEmail, password: passedPassword)
+        
+        user?.reauthenticate(with: credential, completion: { auth, error in
+            if let error = error {
+                print(error)
+                self.mainLoadingScreen.cancelMainLoadingScreen()
+                self.handleCustomPopUpAlert(title: "ERROR", message: "Please check your password and try again.", passedButtons: [Statics.OK])
+            } else {
+                
+                self.mainLoadingScreen.cancelMainLoadingScreen()
+                
+                //MARK: - HIDE THE POPUP
+                self.currentPasswordLabel.isHidden = true
+                self.currentPasswordTextfield.isHidden = true
+                self.passwordAuthButton.isHidden = true
+                self.tempBackButton.isHidden = true
+                
+                //MARK: - ENABLE THE MAIN CONTROLLER
+                self.scrollView.isHidden = false
+            }
+        })
     }
     
     @objc func handleBackButton() {

@@ -13,7 +13,9 @@ class YourReferralCollectionView : UICollectionView, UICollectionViewDelegateFlo
     
     private let yourReferralID = "yourReferralID"
     private let footerID = "footerID"
-
+    
+    var shouldHideFooter : Bool = true
+    
     var yourReferralContainer : YourReferralContainer?
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
@@ -48,10 +50,15 @@ class YourReferralCollectionView : UICollectionView, UICollectionViewDelegateFlo
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: self.footerID, for: indexPath) as! ReferralPendingInvitesFeeder
-            return footerView
         
+        if self.shouldHideFooter == false {
+            footerView.isHidden = true
+        } else {
+            footerView.isHidden = false
+        }
+        return footerView
     }
-   
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return self.yourReferralContainer?.pendingUsersMonetaryValueModel.count ?? 0
@@ -71,18 +78,18 @@ class YourReferralCollectionView : UICollectionView, UICollectionViewDelegateFlo
         cell.contentView.isUserInteractionEnabled = false
         
         if let model = self.yourReferralContainer?.pendingUsersMonetaryValueModel {
-
-            if model.count > 0 {
-
-            let feeder = model[indexPath.item]
-            let recipient_family_name = feeder.recipient_family_name ?? "Private"
-            let recipient_given_name = feeder.recipient_given_name ?? ""
-            let timeStamp = feeder.time_stamp ?? 0.0
             
-            cell.fireTimerCounter(passedTimeStamp: timeStamp)
-            cell.nameLabel.text = "\(recipient_given_name) \(recipient_family_name)"
-
-        }
+            if model.count > 0 {
+                
+                let feeder = model[indexPath.item]
+                let recipient_family_name = feeder.recipient_family_name ?? "Private"
+                let recipient_given_name = feeder.recipient_given_name ?? ""
+                let timeStamp = feeder.time_stamp ?? 0.0
+                
+                cell.fireTimerCounter(passedTimeStamp: timeStamp)
+                cell.nameLabel.text = "\(recipient_given_name) \(recipient_family_name)"
+                
+            }
             
         }
         
@@ -123,7 +130,7 @@ class YourReferralFeeder : UICollectionViewCell {
         cv.layer.shouldRasterize = false
         cv.layer.cornerRadius = 15
         
-       return cv
+        return cv
     }()
     
     let nameLabel : UILabel = {
@@ -169,7 +176,7 @@ class YourReferralFeeder : UICollectionViewCell {
         
         self.containerView.addSubview(self.nameLabel)
         self.containerView.addSubview(self.costLabel)
-
+        
         self.containerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
         self.containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
         self.containerView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30).isActive = true
@@ -188,28 +195,28 @@ class YourReferralFeeder : UICollectionViewCell {
     }
     
     @objc func fireTimerCounter(passedTimeStamp : Double) {
+        
+        let passedDate = Date(timeIntervalSince1970: passedTimeStamp)
+        let diffComponents = Calendar.current.dateComponents([.day], from: Date(), to: passedDate)
+        
+        if let hours = diffComponents.day {
             
-            let passedDate = Date(timeIntervalSince1970: passedTimeStamp)
-            let diffComponents = Calendar.current.dateComponents([.day], from: Date(), to: passedDate)
-
-            if let hours = diffComponents.day {
+            let safeHours = abs(hours)
+            
+            if safeHours > 30 {
                 
-                let safeHours = abs(hours)
+                self.containerView.backgroundColor = coreBackgroundWhite
+                self.costLabel.text = "Expired"
+                self.nameLabel.textColor = coreBlackColor.withAlphaComponent(0.5)
+                self.costLabel.textColor = coreBlackColor.withAlphaComponent(0.5)
                 
-                if safeHours > 30 {
-                    
-                    self.containerView.backgroundColor = coreBackgroundWhite
-                    self.costLabel.text = "Expired"
-                    self.nameLabel.textColor = coreBlackColor.withAlphaComponent(0.5)
-                    self.costLabel.textColor = coreBlackColor.withAlphaComponent(0.5)
-
-                } else {
-                    
-                    self.containerView.backgroundColor = coreWhiteColor
-                    self.costLabel.text = "+ $5.00"
-                    self.nameLabel.textColor = coreBlackColor
-                    self.costLabel.textColor = coreBlackColor
-                    
+            } else {
+                
+                self.containerView.backgroundColor = coreWhiteColor
+                self.costLabel.text = "+ $5.00"
+                self.nameLabel.textColor = coreBlackColor
+                self.costLabel.textColor = coreBlackColor
+                
             }
         }
     }
@@ -236,7 +243,7 @@ class ReferralPendingInvitesFeeder : UICollectionViewCell {
         cv.layer.shouldRasterize = false
         cv.layer.cornerRadius = 15
         
-       return cv
+        return cv
     }()
     
     let descriptionLabel : UILabel = {
@@ -265,7 +272,7 @@ class ReferralPendingInvitesFeeder : UICollectionViewCell {
         
         self.addSubview(self.containerView)
         self.addSubview(self.descriptionLabel)
-
+        
         self.containerView.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0).isActive = true
         self.containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0).isActive = true
         self.containerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 1.5).isActive = true
@@ -275,7 +282,7 @@ class ReferralPendingInvitesFeeder : UICollectionViewCell {
         self.descriptionLabel.leftAnchor.constraint(equalTo: self.containerView.leftAnchor, constant: 30).isActive = true
         self.descriptionLabel.rightAnchor.constraint(equalTo: self.containerView.rightAnchor, constant: -30).isActive = true
         self.descriptionLabel.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor, constant: -10).isActive = true
-
+        
     }
     
     required init?(coder: NSCoder) {
