@@ -13,14 +13,13 @@ import UIKit
 import Firebase
 import GoogleMaps
 import GooglePlaces
-//import GoogleSignIn
-//        let notificationType = "referral_invite"
 
 //MARK: - SERVICE SINGLETON FOR CRUD OPERATIONS
 class Service : NSObject {
     
     static let shared = Service()
     
+    //MARK: - ADDS ONE TO THE APPLICATIONS NOTIFICATION SYSTEM AS WELL AS THROUGH THE CLOUD MESSAGING SYSTEM ATTACHED AS AN EXTENSION
     func notificationSender(notificationType : String, fullPhoneNumber : String, completion : @escaping (_ isComplete : Bool) -> ()) {
         
         let databaseRef = Database.database().reference()
@@ -56,8 +55,20 @@ class Service : NSObject {
             ]
         
         notificationRef.updateChildValues(notificationValues, withCompletionBlock: { error, ref in
+            
             //MARK: - FALL THROUGH ERROR
-            completion(true)
+            switch notificationType {
+            
+            case "referral_invite" : completion(true)
+            case "welcome_aboard" : completion(true)
+            default: completion(true)
+                
+            }
+            //MARK: - ADD THE NOTIFICATION SENDER AS NECESSARY WITH THE ABOVE SWITCH
+            
+            //PushNotificationManager.sendPushNotification(title: "TEST", body: "THIS IS A TEST: BODY", recipients_user_uid: "jvsWMqMe9MhdAHXJkx7rxOtINUD2") { success, error in
+            //print("Sent the notification with success flag: \(success) and an error flag of: \(error)")
+            //}
         })
     }
     
@@ -597,7 +608,7 @@ extension Service {
                 
                 let users_push_token = JSON["users_push_token"] as? String ?? "nil"
                 let users_device_UDID = JSON["users_device_UDID"] as? String ?? "nil"
-
+                
                 userProfileStruct.usersPushToken = users_push_token
                 userProfileStruct.deviceUDID = users_device_UDID
                 

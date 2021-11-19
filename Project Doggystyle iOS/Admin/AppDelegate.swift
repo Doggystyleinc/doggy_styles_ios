@@ -15,7 +15,6 @@ import FBSDKCoreKit
 import NotificationCenter
 import AVFoundation
 
-
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate, MessagingDelegate, UNUserNotificationCenterDelegate {
     
@@ -49,6 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
         UNUserNotificationCenter.current().requestAuthorization(options: authOptions, completionHandler: { _, _ in
+            print("NOTIFICATION AUTH - APPROVAL HIT")
         })
         
         application.registerForRemoteNotifications()
@@ -99,7 +99,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                     
                     if secondToken.count > 10 {
                         
-                        guard let userUid = Auth.auth().currentUser?.uid else { return }
+                        guard let userUid = Auth.auth().currentUser?.uid else {
+                            print("Blocked - can not update the UDID/PUSH TOKEN since the user does not have AUTHENTICATION")
+                            return
+                        }
+                        
                         let dataBaseRef = Database.database().reference()
                         
                         let value : [String : Any] = ["users_push_token" : secondToken, "users_device_UDID" : stringAsNS]
@@ -111,6 +115,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                             if error != nil {
                                 print("Error with storing/updating user token",error?.localizedDescription as Any)
                             }
+                            
+                            //MARK: - SUCCESS
+                            print("Success - Updated the DATABASE (PUSH TOKEN)")
                         })
                     }
                 }

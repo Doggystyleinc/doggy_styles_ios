@@ -46,7 +46,7 @@ class HomeViewController: UITabBarController, CLLocationManagerDelegate, CustomA
         
         //MARK: - EXTENSION - CHECKS FOR SERVICE AND THROWS A NO SERVICE FLAG IS SERVICE IS DOWN
         NetworkMonitor.shared.startMonitoring()
-        
+       
     }
     
     override func viewWillAppear(_ animated: Bool) {
