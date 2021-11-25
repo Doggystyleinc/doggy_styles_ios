@@ -179,6 +179,10 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         NotificationCenter.default.addObserver(self, selector: #selector(self.presentAppointmentsController), name: NSNotification.Name(Statics.CALL_BOOK_NOW), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.callDataEngine), name: NSNotification.Name(Statics.RUN_DATA_ENGINE), object: nil)
         
+        //MARK: - CHECK FOR FACE ID
+        Biometrics.shared.biometricAuth { complete in
+            print("print \(complete)")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

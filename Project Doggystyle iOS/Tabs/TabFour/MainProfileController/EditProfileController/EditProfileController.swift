@@ -846,6 +846,7 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         self.phoneNumberTextField.resignFirstResponder()
         self.emailTextField.resignFirstResponder()
         self.passwordTextField.resignFirstResponder()
+        self.currentPasswordTextfield.resignFirstResponder()
     }
     
     //MARK: - FIRST NAME TEXT FIELD
@@ -964,50 +965,41 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
             return
         }
         
-        self.checkForEmailValidation(emailAddress: safeEmail) { doesUserAlreadyExist in
+        do {
+            let phoneNumber = try self.phoneNumberKit.parse(safeMobile)
+            let countryCode = "\(phoneNumber.countryCode)"
+            let nationalNumber = "\(phoneNumber.nationalNumber)"
             
-            if doesUserAlreadyExist == true {
-                self.mainLoadingScreen.cancelMainLoadingScreen()
-                self.handleCustomPopUpAlert(title: "EMAIL EXISTS", message: "Doggystyle already has a registered email address under \(safeEmail).", passedButtons: [Statics.OK])
-            } else {
+            let values : [String : Any] = ["user_first_name" : firstName, "user_last_name" : lastName, "users_phone_number" : mobileNumber, "users_email" : safeEmail]
+            let ref = self.databaseRef.child("all_users").child(user_uid)
+            
+            ref.updateChildValues(values) { error, ref in
                 
-                do {
-                    let phoneNumber = try self.phoneNumberKit.parse(safeMobile)
-                    let countryCode = "\(phoneNumber.countryCode)"
-                    let nationalNumber = "\(phoneNumber.nationalNumber)"
-                    
-                    let values : [String : Any] = ["user_first_name" : firstName, "user_last_name" : lastName, "users_phone_number" : mobileNumber, "users_email" : safeEmail]
-                    let ref = self.databaseRef.child("all_users").child(user_uid)
-                    
-                    ref.updateChildValues(values) { error, ref in
+                let user = Auth.auth().currentUser
+                
+                user?.updateEmail(to: safeEmail, completion: { error in
+                    user?.updatePassword(to: safePassword, completion: { errorTwo in
                         
-                        let user = Auth.auth().currentUser
+                        self.mainLoadingScreen.cancelMainLoadingScreen()
                         
-                        user?.updateEmail(to: safeEmail, completion: { error in
-                            user?.updatePassword(to: safePassword, completion: { errorTwo in
-                                
-                                self.mainLoadingScreen.cancelMainLoadingScreen()
-                                
-                                UIDevice.vibrateLight()
-                                
-                                userProfileStruct.user_first_name = firstName
-                                userProfileStruct.user_last_name = lastName
-                                userProfileStruct.users_full_name = "\(firstName) \(lastName)"
-                                userProfileStruct.users_country_code = countryCode
-                                userProfileStruct.users_email = safeEmail
-                                userProfileStruct.users_phone_number = nationalNumber
-                                userProfileStruct.users_full_phone_number = "\(countryCode) \(nationalNumber)"
-                                
-                                self.handleBackButton()
-                            })
-                        })
-                    }
-                    
-                } catch {
-                    self.mainLoadingScreen.cancelMainLoadingScreen()
-                    self.handleCustomPopUpAlert(title: "ERROR", message: "Something went wrong. Please try again. ", passedButtons: [Statics.OK])
-                }
+                        UIDevice.vibrateLight()
+                        
+                        userProfileStruct.user_first_name = firstName
+                        userProfileStruct.user_last_name = lastName
+                        userProfileStruct.users_full_name = "\(firstName) \(lastName)"
+                        userProfileStruct.users_country_code = countryCode
+                        userProfileStruct.users_email = safeEmail
+                        userProfileStruct.users_phone_number = nationalNumber
+                        userProfileStruct.users_full_phone_number = "\(countryCode) \(nationalNumber)"
+                        
+                        self.handleBackButton()
+                    })
+                })
             }
+            
+        } catch {
+            self.mainLoadingScreen.cancelMainLoadingScreen()
+            self.handleCustomPopUpAlert(title: "ERROR", message: "Something went wrong. Please try again. ", passedButtons: [Statics.OK])
         }
     }
     
@@ -1076,6 +1068,9 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         
         let user = Auth.auth().currentUser
         let currentEmail = Auth.auth().currentUser?.email ?? "nil"
+        
+        self.resignation()
+        self.scrollView.scrollToTop()
         
         if currentEmail == "nil" {return}
         

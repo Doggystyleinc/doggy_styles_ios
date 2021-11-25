@@ -62,7 +62,12 @@ var friends_array_phone_number = [String](),
     lightGrey = UIColor(hex: 0xD8D8D8),
     selectionGrey = UIColor(hex: 0xF3F3F3),
     starGold = UIColor(hex: 0xFBBB00),
+    chatTimeGrey = UIColor(hex: 0xABAAB1),
+    placeHolderGrey = UIColor(hex: 0xC6C5CD),
+    completeGreen = UIColor(hex: 0x30BE76),
+
     
+
     //FOR THE CHAT CONTROLLER, WHEN A USER SWIPES LEFT TO EXPOSE THE REPLY ARROW
     globalIsReplyExpanded : Bool = false,
     

@@ -163,6 +163,9 @@
 		E361FBFC26CF078100026DE3 /* PetsApointmentCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */; };
 		E361FBFF26D0182B00026DE3 /* SelectPackageCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FBFE26D0182B00026DE3 /* SelectPackageCollection.swift */; };
 		E361FC0126D04CB700026DE3 /* SelectServiceDropDownCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E361FC0026D04CB700026DE3 /* SelectServiceDropDownCollection.swift */; };
+		E362C0A5274AFC380012E919 /* BiometricData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E362C0A4274AFC380012E919 /* BiometricData.swift */; };
+		E362C0A8274BE7270012E919 /* ChatCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E362C0A7274BE7270012E919 /* ChatCollectionView.swift */; };
+		E362C0AA274BF14B0012E919 /* AccessoryInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E362C0A9274BF14B0012E919 /* AccessoryInputView.swift */; };
 		E3636FDD26E692B500E5B76E /* UnavailbleAptScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3636FDC26E692B500E5B76E /* UnavailbleAptScreen.swift */; };
 		E3636FE726E6A51200E5B76E /* SorryDog.png in Resources */ = {isa = PBXBuildFile; fileRef = E3636FE426E6A51100E5B76E /* SorryDog.png */; };
 		E3636FE826E6A51200E5B76E /* SorryDog@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3636FE526E6A51100E5B76E /* SorryDog@2x.png */; };
@@ -453,6 +456,9 @@
 		E361FBFB26CF078100026DE3 /* PetsApointmentCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetsApointmentCollection.swift; sourceTree = "<group>"; };
 		E361FBFE26D0182B00026DE3 /* SelectPackageCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectPackageCollection.swift; sourceTree = "<group>"; };
 		E361FC0026D04CB700026DE3 /* SelectServiceDropDownCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectServiceDropDownCollection.swift; sourceTree = "<group>"; };
+		E362C0A4274AFC380012E919 /* BiometricData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricData.swift; sourceTree = "<group>"; };
+		E362C0A7274BE7270012E919 /* ChatCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCollectionView.swift; sourceTree = "<group>"; };
+		E362C0A9274BF14B0012E919 /* AccessoryInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessoryInputView.swift; sourceTree = "<group>"; };
 		E3636FDC26E692B500E5B76E /* UnavailbleAptScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnavailbleAptScreen.swift; sourceTree = "<group>"; };
 		E3636FE426E6A51100E5B76E /* SorryDog.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SorryDog.png; sourceTree = "<group>"; };
 		E3636FE526E6A51100E5B76E /* SorryDog@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SorryDog@2x.png"; sourceTree = "<group>"; };
@@ -822,6 +828,7 @@
 				CDE870E82652E1640082551B /* LaunchScreen.storyboard */,
 				CDE870DD2652E1610082551B /* AppDelegate.swift */,
 				CDE870DF2652E1610082551B /* SceneDelegate.swift */,
+				E362C0A4274AFC380012E919 /* BiometricData.swift */,
 			);
 			path = Admin;
 			sourceTree = "<group>";
@@ -1141,6 +1148,16 @@
 			path = AppointmentOneControllers;
 			sourceTree = "<group>";
 		};
+		E362C0A6274BE6DE0012E919 /* ChatUnionControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E37D20D02717D88000BF859A /* SupportChatController.swift */,
+				E362C0A7274BE7270012E919 /* ChatCollectionView.swift */,
+				E362C0A9274BF14B0012E919 /* AccessoryInputView.swift */,
+			);
+			path = ChatUnionControllers;
+			sourceTree = "<group>";
+		};
 		E369559926CAE8DD00806D73 /* TabTwo */ = {
 			isa = PBXGroup;
 			children = (
@@ -1251,8 +1268,8 @@
 		E37D20CD2717CF0100BF859A /* ContactUsController */ = {
 			isa = PBXGroup;
 			children = (
+				E362C0A6274BE6DE0012E919 /* ChatUnionControllers */,
 				E37D20CE2717CF1A00BF859A /* ContactUsProfileController.swift */,
-				E37D20D02717D88000BF859A /* SupportChatController.swift */,
 			);
 			path = ContactUsController;
 			sourceTree = "<group>";
@@ -1982,6 +1999,7 @@
 				E326573326B215DF004A15F6 /* EmptyStateOne.swift in Sources */,
 				CD6DD0162680DDC900BC376B /* SlideThree.swift in Sources */,
 				CD319F6B26790AD900F48E3C /* DeleteLaterViewController.swift in Sources */,
+				E362C0A8274BE7270012E919 /* ChatCollectionView.swift in Sources */,
 				E361FC0126D04CB700026DE3 /* SelectServiceDropDownCollection.swift in Sources */,
 				CD6DD005267B9DAF00BC376B /* DSContainerView.swift in Sources */,
 				E36EE57826B877770009A0EF /* NotificationsSelector.swift in Sources */,
@@ -1996,6 +2014,7 @@
 				CD6DD02226839ED600BC376B /* DSTextField.swift in Sources */,
 				E397405826D2DCE50084742F /* SelectCustomServices.swift in Sources */,
 				CD6DCFF6267A820700BC376B /* Pet.swift in Sources */,
+				E362C0AA274BF14B0012E919 /* AccessoryInputView.swift in Sources */,
 				E397406226D423A30084742F /* AppointmentThree.swift in Sources */,
 				CDE8711C2652E3030082551B /* TextField+Ext.swift in Sources */,
 				E37D20DC271A53CA00BF859A /* ReferralMonetaryController.swift in Sources */,
@@ -2047,6 +2066,7 @@
 				CD6DD008267FC0F500BC376B /* MyPetsController.swift in Sources */,
 				E357D2F226E2AB0200CDF90E /* PaymentMethod.swift in Sources */,
 				CDE871512652E66A0082551B /* HomeController.swift in Sources */,
+				E362C0A5274AFC380012E919 /* BiometricData.swift in Sources */,
 				E3636FEB26E6A9F200E5B76E /* AvailableAptScreen.swift in Sources */,
 				CD203BFC2667FAB300335D93 /* ServicesController.swift in Sources */,
 				E3A0AD5926BDD29400E813D5 /* NewDogFiveCollectionview.swift in Sources */,

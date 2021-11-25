@@ -1,0 +1,359 @@
+//
+//  SupportChatController.swift
+//  Project Doggystyle iOS
+//
+//  Created by Charlie Arcodia on 10/13/21.
+//
+
+import Foundation
+import UIKit
+
+class SupportChatController : UIViewController {
+    
+    var heightConstraint: NSLayoutConstraint?,
+        footerOffset: CGFloat = 60.0,
+        canBecomeResponder: Bool = true,
+        isResponder: Bool = false,
+        isKeyboardShowing : Bool = false,
+        shouldAdjustForKeyboard : Bool = false,
+        hasViewBeenLaidOut : Bool = false
+    
+    lazy var headerContainer : UIView = {
+        
+        let hc = UIView()
+        hc.translatesAutoresizingMaskIntoConstraints = false
+        hc.backgroundColor = .clear
+        
+        return hc
+    }()
+    
+    lazy var backButton : UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.backgroundColor = .clear
+        cbf.tintColor = coreOrangeColor
+        cbf.contentMode = .scaleAspectFill
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 22, style: .solid)
+        cbf.setTitle(String.fontAwesomeIcon(name: .chevronLeft), for: .normal)
+        cbf.addTarget(self, action: #selector(self.handleBackButton), for: UIControl.Event.touchUpInside)
+        return cbf
+        
+    }()
+    
+    let headerLabel : UILabel = {
+        
+        let hl = UILabel()
+        hl.translatesAutoresizingMaskIntoConstraints = false
+        hl.backgroundColor = .clear
+        hl.text = "Chatting with Sophie"
+        hl.font = UIFont(name: dsHeaderFont, size: 24)
+        hl.numberOfLines = 2
+        hl.adjustsFontSizeToFitWidth = true
+        hl.textAlignment = .left
+        hl.textColor = dsFlatBlack
+        
+        return hl
+    }()
+    
+    let subHeaderLabel : UILabel = {
+        
+        let hl = UILabel()
+        hl.translatesAutoresizingMaskIntoConstraints = false
+        hl.backgroundColor = .clear
+        hl.text = "Appt #9475; Rex & Jolene"
+        hl.font = UIFont(name: rubikMedium, size: 18)
+        hl.numberOfLines = 2
+        hl.adjustsFontSizeToFitWidth = true
+        hl.textAlignment = .left
+        hl.textColor = dsFlatBlack
+        
+        return hl
+    }()
+    
+    let completeLabel : UILabel = {
+        
+        let hl = UILabel()
+        hl.translatesAutoresizingMaskIntoConstraints = false
+        hl.backgroundColor = .clear
+        hl.text = "Appointment Complete"
+        hl.font = UIFont(name: dsSubHeaderFont, size: 16)
+        hl.numberOfLines = 1
+        hl.adjustsFontSizeToFitWidth = true
+        hl.textAlignment = .left
+        hl.textColor = completeGreen
+        
+        return hl
+    }()
+    
+    
+    lazy var chatMainCollection : ChatCollectionView = {
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        let cmc = ChatCollectionView(frame: .zero, collectionViewLayout: layout)
+        cmc.supportChatController = self
+        
+        return cmc
+    }()
+    
+    lazy var customInputAccessoryView: AccessoryInputView = {
+        let cia = AccessoryInputView()
+        cia.supportChatController = self
+        return cia
+    }()
+    
+    var transparentHeader : UIView = {
+        
+        let th = UIView()
+        th.translatesAutoresizingMaskIntoConstraints = false
+        th.backgroundColor = coreWhiteColor
+        th.layer.masksToBounds = true
+        th.isUserInteractionEnabled = false
+        
+        return th
+    }()
+    
+    override var canBecomeFirstResponder: Bool {
+        return self.canBecomeResponder
+    }
+    
+    override var inputAccessoryView: UIView? {
+        return self.customInputAccessoryView
+    }
+    
+    override var isFirstResponder: Bool {
+        return self.isResponder
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.view.backgroundColor = coreBackgroundWhite
+        self.addViews()
+        
+        self.becomeFirstResponder()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        self.shouldAdjustForKeyboard = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        self.shouldAdjustForKeyboard = true
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if self.hasViewBeenLaidOut == true {return}
+        self.hasViewBeenLaidOut = true
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = headerContainer.bounds
+        gradientLayer.colors = [coreBackgroundWhite.cgColor,
+                                coreBackgroundWhite.cgColor,
+                                coreBackgroundWhite.cgColor,
+                                coreBackgroundWhite.cgColor,
+                                coreBackgroundWhite.withAlphaComponent(0.7).cgColor
+                                
+        ]
+        
+        self.headerContainer.layer.insertSublayer(gradientLayer, at: 0)
+        
+        let gradientLayerTwo = CAGradientLayer()
+        gradientLayerTwo.frame = self.customInputAccessoryView.bounds
+        gradientLayerTwo.colors = [coreBackgroundWhite.withAlphaComponent(0.7).cgColor,
+                                   coreBackgroundWhite.cgColor,
+                                   coreBackgroundWhite.cgColor,
+                                   coreBackgroundWhite.cgColor
+                                   
+        ]
+        
+        self.customInputAccessoryView.layer.insertSublayer(gradientLayerTwo, at: 0)
+        
+    }
+    
+    func addViews() {
+        
+        self.view.addSubview(self.chatMainCollection)
+        self.view.addSubview(self.customInputAccessoryView)
+        
+        self.view.addSubview(self.headerContainer)
+        self.view.addSubview(self.backButton)
+        self.view.addSubview(self.headerLabel)
+        self.view.addSubview(self.subHeaderLabel)
+        self.view.addSubview(self.completeLabel)
+        
+        self.headerContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
+        self.headerContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.headerContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.headerContainer.heightAnchor.constraint(equalToConstant: 220).isActive = true
+        self.headerContainer.isUserInteractionEnabled = false
+        
+        self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
+        self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 11).isActive = true
+        self.backButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
+        self.backButton.widthAnchor.constraint(equalToConstant: 54).isActive = true
+        
+        self.headerLabel.topAnchor.constraint(equalTo: self.backButton.bottomAnchor, constant: 10).isActive = true
+        self.headerLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.headerLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.headerLabel.sizeToFit()
+        
+        self.subHeaderLabel.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 8).isActive = true
+        self.subHeaderLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.subHeaderLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.subHeaderLabel.sizeToFit()
+        
+        self.chatMainCollection.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 0).isActive = true
+        self.chatMainCollection.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.chatMainCollection.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.chatMainCollection.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        
+        self.heightConstraint = self.customInputAccessoryView.heightAnchor.constraint(equalToConstant: 70)
+        self.heightConstraint?.isActive = true
+        self.customInputAccessoryView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        self.customInputAccessoryView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.customInputAccessoryView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        
+        self.completeLabel.topAnchor.constraint(equalTo: self.subHeaderLabel.bottomAnchor, constant: 10).isActive = true
+        self.completeLabel.leftAnchor.constraint(equalTo: self.subHeaderLabel.leftAnchor).isActive = true
+        self.completeLabel.rightAnchor.constraint(equalTo: self.subHeaderLabel.rightAnchor, constant: 0).isActive = true
+        self.completeLabel.sizeToFit()
+        
+    }
+    
+    //MARK: - KEYBOARD PRESENTATION
+    @objc func handleKeyboardShow(notification : Notification) {
+        
+        self.adjustContentForKeyboard(shown: true, notification: notification as NSNotification)
+        
+        let userInfo:NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardFrame:NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardRectangle = keyboardFrame.cgRectValue
+        
+        if keyboardRectangle.height > 200 {
+            if self.isKeyboardShowing == true {return}
+            self.isKeyboardShowing = true
+            
+            UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut) {
+                self.customInputAccessoryView.textViewBottomConstraint?.constant = -15
+                self.customInputAccessoryView.updateHeight()
+                self.customInputAccessoryView.updateConstraints()
+            } completion: { complete in
+                print("up")
+            }
+        }
+    }
+    
+    //MARK: - KEYBOARD DISMISS
+    @objc func handleKeyboardHide(notification : Notification) {
+        
+        self.isKeyboardShowing = false
+        
+        self.adjustContentForKeyboard(shown: false, notification: notification as NSNotification)
+        
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut) {
+            self.customInputAccessoryView.textViewBottomConstraint?.constant = -20
+            self.customInputAccessoryView.updateHeight()
+            self.customInputAccessoryView.updateConstraints()
+        } completion: { complete in
+            print("up")
+        }
+    }
+    
+    //MARK: - CONTENT ADJUSTMENT
+    func adjustContentForKeyboard(shown: Bool, notification: NSNotification) {
+        
+        //MARK: - KEYBOARD HEIGHT
+        let userInfo:NSDictionary = notification.userInfo! as NSDictionary
+        let keyboardFrame:NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardRectangle = keyboardFrame.cgRectValue
+        
+        //MARK: - KEYBOARD DURATION
+        let durationKey = UIResponder.keyboardAnimationDurationUserInfoKey
+        let duration = notification.userInfo![durationKey] as! Double
+        
+        //MARK: - KEYBOARD FRAME
+        let frameKey = UIResponder.keyboardFrameEndUserInfoKey
+        let keyboardFrameValue = notification.userInfo![frameKey] as! NSValue
+        print("keyboardFrameValue: \(keyboardFrameValue)")
+        
+        //MARK: - KEYBOARD CURVE
+        let curveKey = UIResponder.keyboardAnimationCurveUserInfoKey
+        let curveValue = notification.userInfo![curveKey] as! Int
+        let curve = UIView.AnimationCurve(rawValue: curveValue)!
+        print("curve: \(curve)")
+        
+        guard shouldAdjustForKeyboard else { return }
+        
+        let keyboardHeight = shown ? keyboardRectangle.height : self.customInputAccessoryView.frame.height
+        if self.chatMainCollection.contentInset.bottom == keyboardHeight {
+            return
+        }
+        
+        let distanceFromBottom = self.chatMainCollection.bottomOffset().y - self.chatMainCollection.contentOffset.y
+        
+        var insets = self.chatMainCollection.contentInset
+        insets.bottom = keyboardHeight
+        
+        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut, animations: {
+            
+            self.chatMainCollection.contentInset = insets
+            self.chatMainCollection.scrollIndicatorInsets = insets
+            
+            if distanceFromBottom < 10 {
+                self.chatMainCollection.contentOffset = self.chatMainCollection.bottomOffset()
+            }
+        }, completion: nil)
+        
+        shown ? self.chatMainCollection.scrollToBottom() : self.chatMainCollection.scrollToTop()
+    }
+    
+    func hideFirstResponder() {
+        if !self.customInputAccessoryView.commentTextView.isFirstResponder {
+            self.isResponder = true
+            self.canBecomeResponder = false
+            self.customInputAccessoryView.isHidden = true
+            self.reloadInputViews()
+        } else {
+            self.customInputAccessoryView.commentTextView.becomeFirstResponder()
+            self.isResponder = true
+            self.canBecomeResponder = false
+            self.customInputAccessoryView.isHidden = true
+            self.reloadInputViews()
+        }
+    }
+    
+    func showFirstResponder() {
+        if !self.customInputAccessoryView.commentTextView.isFirstResponder {
+            self.customInputAccessoryView.isHidden = false
+            self.isResponder = false
+            self.canBecomeResponder = true
+            self.customInputAccessoryView.commentTextView.becomeFirstResponder()
+            self.reloadInputViews()
+        } else {
+            self.customInputAccessoryView.isHidden = false
+            self.isResponder = false
+            self.canBecomeResponder = true
+            self.customInputAccessoryView.commentTextView.becomeFirstResponder()
+            self.reloadInputViews()
+        }
+    }
+    
+    @objc func handleBackButton() {
+        self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+}

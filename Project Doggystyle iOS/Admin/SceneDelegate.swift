@@ -29,9 +29,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
          GroomerTimeLineController
          ApointmentReportController
          CancelAptController
+         SupportChatController
          */
         
-        let decisionController = DecisionController()
+        let decisionController = SupportChatController()
         let navigationController = UINavigationController(rootViewController: decisionController)
         
         navigationController.navigationBar.isHidden = true
