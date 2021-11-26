@@ -465,20 +465,7 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.view.backgroundColor = .dsViewBackground
-        self.navigationController?.navigationBar.isHidden = true
-        
-        self.addViews()
-        self.fillValues()
-        self.setupObserversAndContentTypes()
-        self.scrollView.isHidden = true
-        self.presentPasswordReset()
-        
-    }
-    
+    //MARK: - COMPONENTS FOR THE POPUP, SHOULD PROB BE SUBCLASSED DUE TO THE SIZE
     lazy var tempBackButton : UIButton = {
         
         let cbf = UIButton(type: .system)
@@ -488,21 +475,34 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         cbf.contentMode = .scaleAspectFill
         cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 24, style: .solid)
         cbf.setTitle(String.fontAwesomeIcon(name: .chevronLeft), for: .normal)
-        cbf.addTarget(self, action: #selector(self.handleBackButton), for: UIControl.Event.touchUpInside)
+        cbf.addTarget(self, action: #selector(self.handlePopupDismissButton), for: UIControl.Event.touchUpInside)
         return cbf
         
     }()
-    
     
     let currentPasswordLabel : UILabel = {
         
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
-        hl.text = "Current password"
+        hl.text = "Confirm password"
         hl.font = UIFont(name: dsHeaderFont, size: 24)
-        hl.numberOfLines = 2
+        hl.numberOfLines = 1
         hl.adjustsFontSizeToFitWidth = true
+        hl.textAlignment = .left
+        
+        return hl
+    }()
+    
+    let currentPasswordSubLabel : UILabel = {
+        
+        let hl = UILabel()
+        hl.translatesAutoresizingMaskIntoConstraints = false
+        hl.backgroundColor = .clear
+        hl.text = "For security purposes, please enter your password below in order to make changes to your profile!"
+        hl.font = UIFont(name: rubikRegular, size: 16)
+        hl.numberOfLines = -1
+        hl.adjustsFontSizeToFitWidth = false
         hl.textAlignment = .left
         
         return hl
@@ -511,8 +511,8 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
     lazy var currentPasswordTextfield: UITextField = {
         
         let etfc = UITextField()
-        let placeholder = NSAttributedString(string: "Current password", attributes: [NSAttributedString.Key.foregroundColor: dsFlatBlack.withAlphaComponent(0.4),
-                                                                                      NSAttributedString.Key.font: UIFont(name: rubikRegular, size: 16)!])
+        let placeholder = NSAttributedString(string: "Password", attributes: [NSAttributedString.Key.foregroundColor: dsFlatBlack.withAlphaComponent(0.4),
+                                                                              NSAttributedString.Key.font: UIFont(name: rubikRegular, size: 16)!])
         etfc.attributedPlaceholder = placeholder
         etfc.translatesAutoresizingMaskIntoConstraints = false
         etfc.textAlignment = .left
@@ -549,7 +549,7 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.setTitle("Submit", for: UIControl.State.normal)
+        cbf.setTitle("Confirm changes", for: UIControl.State.normal)
         cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
         cbf.titleLabel?.adjustsFontSizeToFitWidth = true
         cbf.titleLabel?.numberOfLines = 1
@@ -565,6 +565,30 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         
     }()
     
+    var popupContainer : UIView = {
+        
+        let ppc = UIView()
+        ppc.translatesAutoresizingMaskIntoConstraints = false
+        ppc.backgroundColor = coreBackgroundWhite
+        ppc.isHidden = true
+        
+        return ppc
+    }()
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.view.backgroundColor = .dsViewBackground
+        self.navigationController?.navigationBar.isHidden = true
+        
+        self.addViews()
+        self.fillValues()
+        self.setupObserversAndContentTypes()
+        self.presentPasswordReset()
+        
+    }
+  
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
@@ -638,6 +662,7 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         self.dsCompanyLogoImage.centerYAnchor.constraint(equalTo: self.backButton.centerYAnchor, constant: 0).isActive = true
         self.dsCompanyLogoImage.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
         self.dsCompanyLogoImage.heightAnchor.constraint(equalToConstant: 26).isActive = true
+        self.dsCompanyLogoImage.sizeToFit()
         
         self.headerLabel.topAnchor.constraint(equalTo: self.backButton.bottomAnchor, constant: 42).isActive = true
         self.headerLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
@@ -722,27 +747,40 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
     
     func presentPasswordReset() {
         
-        self.view.addSubview(self.tempBackButton)
-        self.view.addSubview(self.currentPasswordLabel)
-        self.view.addSubview(self.currentPasswordTextfield)
-        self.view.addSubview(self.passwordAuthButton)
+        self.view.addSubview(self.popupContainer)
+        
+        self.popupContainer.addSubview(self.tempBackButton)
+        self.popupContainer.addSubview(self.currentPasswordLabel)
+        self.popupContainer.addSubview(self.currentPasswordSubLabel)
+        self.popupContainer.addSubview(self.currentPasswordTextfield)
+        self.popupContainer.addSubview(self.passwordAuthButton)
+        
+        self.popupContainer.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.popupContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        self.popupContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        self.popupContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         self.tempBackButton.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 17).isActive = true
         self.tempBackButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 11).isActive = true
         self.tempBackButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
         self.tempBackButton.widthAnchor.constraint(equalToConstant: 54).isActive = true
         
-        self.currentPasswordLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -180).isActive = true
+        self.currentPasswordLabel.topAnchor.constraint(equalTo: self.tempBackButton.bottomAnchor, constant: 40).isActive = true
         self.currentPasswordLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.currentPasswordLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.currentPasswordLabel.sizeToFit()
         
-        self.currentPasswordTextfield.topAnchor.constraint(equalTo: self.currentPasswordLabel.bottomAnchor, constant: 40).isActive = true
+        self.currentPasswordSubLabel.topAnchor.constraint(equalTo: self.currentPasswordLabel.bottomAnchor, constant: 5).isActive = true
+        self.currentPasswordSubLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.currentPasswordSubLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.currentPasswordSubLabel.sizeToFit()
+        
+        self.currentPasswordTextfield.topAnchor.constraint(equalTo: self.currentPasswordSubLabel.bottomAnchor, constant: 20).isActive = true
         self.currentPasswordTextfield.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.currentPasswordTextfield.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.currentPasswordTextfield.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        self.passwordAuthButton.topAnchor.constraint(equalTo: self.currentPasswordTextfield.bottomAnchor, constant: 20).isActive = true
+        self.passwordAuthButton.topAnchor.constraint(equalTo: self.currentPasswordTextfield.bottomAnchor, constant: 60).isActive = true
         self.passwordAuthButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.passwordAuthButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.passwordAuthButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -938,6 +976,35 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
     
     @objc func handleConfirmButton() {
         
+        self.resignation()
+        
+        UIDevice.vibrateLight()
+        
+        guard let firstName = firstNameTextField.text, let lastName = lastNameTextField.text, let mobileNumber = phoneNumberTextField.text, let emailText = emailTextField.text, let passwordText = passwordTextField.text else {
+            return
+        }
+        
+        self.scrollView.scrollToTop()
+        
+        self.firstNameTextField.layer.borderColor = !firstName.isEmpty ? UIColor.clear.cgColor : UIColor.dsError.cgColor
+        self.lastNameTextField.layer.borderColor = !lastName.isEmpty ? UIColor.clear.cgColor : UIColor.dsError.cgColor
+        self.emailTextField.layer.borderColor = emailText.isValidEmail ? UIColor.clear.cgColor : UIColor.dsError.cgColor
+        self.phoneNumberTextField.layer.borderColor = phoneNumberKit.isValidPhoneNumber(mobileNumber) ? UIColor.clear.cgColor : UIColor.dsError.cgColor
+        self.passwordTextField.layer.borderColor = passwordText.isValidPassword ? UIColor.clear.cgColor : UIColor.dsError.cgColor
+        
+        let safeEmail = emailText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), safePassword = passwordText.trimmingCharacters(in: .whitespacesAndNewlines), safeMobile = mobileNumber.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard safeEmail.isValidEmail, safePassword.isValidPassword, phoneNumberKit.isValidPhoneNumber(safeMobile) else {
+            return
+        }
+        
+        self.showConfirmationPopup(shouldShow: true)
+
+    }
+    
+    //MARK: - STORE THE DATA IN THE DATABASE ONCE REAPPROVAL WAS HIT NICE
+    func runLogic() {
+        
         guard let user_uid = Auth.auth().currentUser?.uid else {return}
         
         self.resignation()
@@ -947,8 +1014,6 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         guard let firstName = firstNameTextField.text, let lastName = lastNameTextField.text, let mobileNumber = phoneNumberTextField.text, let emailText = emailTextField.text, let passwordText = passwordTextField.text else {
             return
         }
-        
-        self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
         
         self.scrollView.scrollToTop()
         
@@ -964,26 +1029,28 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
             self.mainLoadingScreen.cancelMainLoadingScreen()
             return
         }
-        
+       
         do {
             let phoneNumber = try self.phoneNumberKit.parse(safeMobile)
             let countryCode = "\(phoneNumber.countryCode)"
             let nationalNumber = "\(phoneNumber.nationalNumber)"
-            
+
+            self.showConfirmationPopup(shouldShow: true)
+
             let values : [String : Any] = ["user_first_name" : firstName, "user_last_name" : lastName, "users_phone_number" : mobileNumber, "users_email" : safeEmail]
             let ref = self.databaseRef.child("all_users").child(user_uid)
-            
+
             ref.updateChildValues(values) { error, ref in
-                
+
                 let user = Auth.auth().currentUser
-                
+
                 user?.updateEmail(to: safeEmail, completion: { error in
                     user?.updatePassword(to: safePassword, completion: { errorTwo in
-                        
+
                         self.mainLoadingScreen.cancelMainLoadingScreen()
-                        
+
                         UIDevice.vibrateLight()
-                        
+
                         userProfileStruct.user_first_name = firstName
                         userProfileStruct.user_last_name = lastName
                         userProfileStruct.users_full_name = "\(firstName) \(lastName)"
@@ -991,12 +1058,12 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
                         userProfileStruct.users_email = safeEmail
                         userProfileStruct.users_phone_number = nationalNumber
                         userProfileStruct.users_full_phone_number = "\(countryCode) \(nationalNumber)"
-                        
+
                         self.handleBackButton()
                     })
                 })
             }
-            
+
         } catch {
             self.mainLoadingScreen.cancelMainLoadingScreen()
             self.handleCustomPopUpAlert(title: "ERROR", message: "Something went wrong. Please try again. ", passedButtons: [Statics.OK])
@@ -1078,23 +1145,33 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         
         user?.reauthenticate(with: credential, completion: { auth, error in
             if let error = error {
-                print(error)
+                print(error.localizedDescription as Any)
                 self.mainLoadingScreen.cancelMainLoadingScreen()
                 self.handleCustomPopUpAlert(title: "ERROR", message: "Please check your password and try again.", passedButtons: [Statics.OK])
             } else {
                 
-                self.mainLoadingScreen.cancelMainLoadingScreen()
-                
                 //MARK: - HIDE THE POPUP
-                self.currentPasswordLabel.isHidden = true
-                self.currentPasswordTextfield.isHidden = true
-                self.passwordAuthButton.isHidden = true
-                self.tempBackButton.isHidden = true
-                
-                //MARK: - ENABLE THE MAIN CONTROLLER
+                self.currentPasswordTextfield.text = ""
+                self.popupContainer.isHidden = true
                 self.scrollView.isHidden = false
+                self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
+                self.runLogic()
             }
         })
+    }
+    
+    //MARK: - HANDLE POPUP DISMISS
+    @objc func handlePopupDismissButton() {
+        self.showConfirmationPopup(shouldShow: false)
+    }
+    
+    //MARK: - MANAGES THE OPUP FOR PASSWORD CONFIRMATION
+    @objc func showConfirmationPopup(shouldShow : Bool) {
+        if shouldShow {
+            self.popupContainer.isHidden = false
+        } else {
+            self.popupContainer.isHidden = true
+        }
     }
     
     @objc func handleBackButton() {

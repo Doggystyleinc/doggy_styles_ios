@@ -10,13 +10,19 @@ import UIKit
 
 class SupportChatController : UIViewController {
     
+    enum ControllerState {
+        case inProgress
+        case complete
+    }
+    
     var heightConstraint: NSLayoutConstraint?,
         footerOffset: CGFloat = 60.0,
         canBecomeResponder: Bool = true,
         isResponder: Bool = false,
         isKeyboardShowing : Bool = false,
         shouldAdjustForKeyboard : Bool = false,
-        hasViewBeenLaidOut : Bool = false
+        hasViewBeenLaidOut : Bool = false,
+        controllerState = ControllerState.inProgress
     
     lazy var headerContainer : UIView = {
         
@@ -306,6 +312,21 @@ class SupportChatController : UIViewController {
         self.contactHelpCenterButton.heightAnchor.constraint(equalToConstant: 22).isActive = true
         self.contactHelpCenterButton.layer.cornerRadius = 11
 
+    }
+    
+    //MARK: - UPDATED THE UI ACCORDING TO THE CONTROLLERS STATE, IN PROGRESS OR COMPLETE
+    func stateListener() {
+        
+        switch self.controllerState {
+        case .inProgress :
+            self.showFirstResponder()
+            self.completionContainer.isHidden = true
+            self.completeLabel.isHidden = true
+        case .complete :
+            self.hideFirstResponder()
+            self.completionContainer.isHidden = false
+            self.completeLabel.isHidden = false
+        }
     }
 
     //MARK: - KEYBOARD LISTENER
