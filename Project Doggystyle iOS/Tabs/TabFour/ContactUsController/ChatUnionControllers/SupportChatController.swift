@@ -86,7 +86,6 @@ class SupportChatController : UIViewController {
         return hl
     }()
     
-    
     lazy var chatMainCollection : ChatCollectionView = {
         
         let layout = UICollectionViewFlowLayout()
@@ -114,6 +113,58 @@ class SupportChatController : UIViewController {
         return th
     }()
     
+    var completionContainer : UIView = {
+        
+        let cc = UIView()
+        cc.translatesAutoresizingMaskIntoConstraints = false
+        cc.backgroundColor = coreWhiteColor
+        cc.isUserInteractionEnabled = true
+        
+       return cc
+    }()
+    
+    lazy var aptCompleteButton : UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.setTitle("  Appointment complete. Chat closed.  ", for: UIControl.State.normal)
+        cbf.titleLabel?.font = UIFont.init(name: rubikRegular, size: 12)
+        cbf.titleLabel?.adjustsFontSizeToFitWidth = true
+        cbf.titleLabel?.numberOfLines = 1
+        cbf.titleLabel?.adjustsFontForContentSizeCategory = true
+        cbf.titleLabel?.textColor = coreOrangeColor
+        cbf.backgroundColor = dividerGrey
+        cbf.layer.cornerRadius = 15
+        cbf.layer.masksToBounds = true
+        cbf.tintColor = coreOrangeColor
+        cbf.layer.masksToBounds = true
+        cbf.addTarget(self, action: #selector(self.handleAptCompleteButton), for: .touchUpInside)
+        
+        return cbf
+        
+    }()
+    
+    lazy var contactHelpCenterButton : UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.setTitle("Contact our Help Center", for: UIControl.State.normal)
+        cbf.titleLabel?.font = UIFont.init(name: rubikRegular, size: 12)
+        cbf.titleLabel?.adjustsFontSizeToFitWidth = true
+        cbf.titleLabel?.numberOfLines = 1
+        cbf.titleLabel?.adjustsFontForContentSizeCategory = true
+        cbf.titleLabel?.textColor = coreOrangeColor
+        cbf.backgroundColor = coreOrangeColor.withAlphaComponent(0.2)
+        cbf.layer.cornerRadius = 15
+        cbf.layer.masksToBounds = true
+        cbf.tintColor = coreOrangeColor
+        cbf.layer.masksToBounds = true
+        cbf.addTarget(self, action: #selector(self.handleContactHelpCenter), for: .touchUpInside)
+        
+        return cbf
+    }()
+    
+    //MARK: - ACCESSORY VIEWS
     override var canBecomeFirstResponder: Bool {
         return self.canBecomeResponder
     }
@@ -125,17 +176,13 @@ class SupportChatController : UIViewController {
     override var isFirstResponder: Bool {
         return self.isResponder
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
-        
-        self.becomeFirstResponder()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        self.handleObservers()
         
     }
     
@@ -144,9 +191,10 @@ class SupportChatController : UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
+    //MARK: - REMOVE THE INPUT ACCESSORY VIEW (PREVENTS IT FROM STICKING WHEN CONTROLLER IS DISMISSED)
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        self.shouldAdjustForKeyboard = false
+        self.hideFirstResponder()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -154,12 +202,13 @@ class SupportChatController : UIViewController {
         self.shouldAdjustForKeyboard = true
     }
     
+    //MARK: - HEADER AND FOOTER GRADIENT
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         if self.hasViewBeenLaidOut == true {return}
         self.hasViewBeenLaidOut = true
-        
+
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = headerContainer.bounds
         gradientLayer.colors = [coreBackgroundWhite.cgColor,
@@ -185,8 +234,10 @@ class SupportChatController : UIViewController {
         
     }
     
+    //MARK: - VIEW LAYOUT
     func addViews() {
         
+        //MARK: - GENERAL LAYOUT
         self.view.addSubview(self.chatMainCollection)
         self.view.addSubview(self.customInputAccessoryView)
         
@@ -196,6 +247,11 @@ class SupportChatController : UIViewController {
         self.view.addSubview(self.subHeaderLabel)
         self.view.addSubview(self.completeLabel)
         
+        //MARK: - COMPLETED CONTAINER
+        self.view.addSubview(self.completionContainer)
+        self.completionContainer.addSubview(self.aptCompleteButton)
+        self.completionContainer.addSubview(self.contactHelpCenterButton)
+
         self.headerContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
         self.headerContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.headerContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
@@ -233,6 +289,29 @@ class SupportChatController : UIViewController {
         self.completeLabel.rightAnchor.constraint(equalTo: self.subHeaderLabel.rightAnchor, constant: 0).isActive = true
         self.completeLabel.sizeToFit()
         
+        self.completionContainer.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
+        self.completionContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.completionContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.completionContainer.heightAnchor.constraint(equalToConstant: 88).isActive = true
+        
+        self.aptCompleteButton.centerYAnchor.constraint(equalTo: self.completionContainer.centerYAnchor, constant: -16).isActive = true
+        self.aptCompleteButton.leftAnchor.constraint(equalTo: self.completionContainer.leftAnchor, constant: 80).isActive = true
+        self.aptCompleteButton.rightAnchor.constraint(equalTo: self.completionContainer.rightAnchor, constant: -80).isActive = true
+        self.aptCompleteButton.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        self.aptCompleteButton.layer.cornerRadius = 11
+        
+        self.contactHelpCenterButton.centerYAnchor.constraint(equalTo: self.completionContainer.centerYAnchor, constant: 16).isActive = true
+        self.contactHelpCenterButton.leftAnchor.constraint(equalTo: self.completionContainer.leftAnchor, constant: 80).isActive = true
+        self.contactHelpCenterButton.rightAnchor.constraint(equalTo: self.completionContainer.rightAnchor, constant: -80).isActive = true
+        self.contactHelpCenterButton.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        self.contactHelpCenterButton.layer.cornerRadius = 11
+
+    }
+
+    //MARK: - KEYBOARD LISTENER
+    func handleObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     //MARK: - KEYBOARD PRESENTATION
@@ -288,14 +367,12 @@ class SupportChatController : UIViewController {
         
         //MARK: - KEYBOARD FRAME
         let frameKey = UIResponder.keyboardFrameEndUserInfoKey
-        let keyboardFrameValue = notification.userInfo![frameKey] as! NSValue
-        print("keyboardFrameValue: \(keyboardFrameValue)")
+        let _ = notification.userInfo![frameKey] as! NSValue
         
         //MARK: - KEYBOARD CURVE
         let curveKey = UIResponder.keyboardAnimationCurveUserInfoKey
         let curveValue = notification.userInfo![curveKey] as! Int
-        let curve = UIView.AnimationCurve(rawValue: curveValue)!
-        print("curve: \(curve)")
+        let _ = UIView.AnimationCurve(rawValue: curveValue)!
         
         guard shouldAdjustForKeyboard else { return }
         
@@ -343,14 +420,24 @@ class SupportChatController : UIViewController {
             self.isResponder = false
             self.canBecomeResponder = true
             self.customInputAccessoryView.commentTextView.becomeFirstResponder()
+            self.becomeFirstResponder()
             self.reloadInputViews()
         } else {
             self.customInputAccessoryView.isHidden = false
             self.isResponder = false
             self.canBecomeResponder = true
             self.customInputAccessoryView.commentTextView.becomeFirstResponder()
+            self.becomeFirstResponder()
             self.reloadInputViews()
         }
+    }
+    
+    @objc func handleContactHelpCenter() {
+        print("help center")
+    }
+    
+    @objc func handleAptCompleteButton() {
+        print("complete button")
     }
     
     @objc func handleBackButton() {

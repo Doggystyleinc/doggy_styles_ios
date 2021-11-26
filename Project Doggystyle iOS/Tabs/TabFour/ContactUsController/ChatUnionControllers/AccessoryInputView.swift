@@ -40,8 +40,8 @@ class AccessoryInputView : UIView, UITextViewDelegate {
         let cbf = UIButton()
         cbf.translatesAutoresizingMaskIntoConstraints = false
         cbf.backgroundColor = .clear
-        cbf.contentMode = .scaleAspectFill
-        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 18, style: .solid)
+        cbf.contentMode = .scaleAspectFit
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 15, style: .solid)
         cbf.setTitle(String.fontAwesomeIcon(name: .paperPlane), for: .normal)
         cbf.setTitleColor(dsFlatBlack, for: .normal)
         cbf.addTarget(self, action: #selector(self.handleSendButton), for: UIControl.Event.touchUpInside)
@@ -147,7 +147,7 @@ class AccessoryInputView : UIView, UITextViewDelegate {
                     self.textViewYConstraint!.constant = self.textViewContentSize().height
                 }
                 
-//                self.supportChatController?.heightConstraint?.constant = 40.0 + self.textViewContentSize().height
+                self.supportChatController?.heightConstraint?.constant = 40.0 + self.textViewContentSize().height
                 
                 self.layoutIfNeeded()
                 self.supportChatController?.reloadInputViews()
