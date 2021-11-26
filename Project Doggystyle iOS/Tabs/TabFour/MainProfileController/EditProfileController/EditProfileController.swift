@@ -395,7 +395,7 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.setTitle("Save Changes", for: UIControl.State.normal)
+        cbf.setTitle("Next", for: UIControl.State.normal)
         cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
         cbf.titleLabel?.adjustsFontSizeToFitWidth = true
         cbf.titleLabel?.numberOfLines = 1
@@ -570,7 +570,7 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         let ppc = UIView()
         ppc.translatesAutoresizingMaskIntoConstraints = false
         ppc.backgroundColor = coreBackgroundWhite
-        ppc.isHidden = true
+        ppc.alpha = 0.0
         
         return ppc
     }()
@@ -1113,7 +1113,7 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
     
     @objc func handlePasswordReAuth() {
         
-        //MARK: - QUICK BLOCKS HERE
+        //MARK: - HANDLE RE-AUTH
         guard let currentPassword = self.currentPasswordTextfield.text else {return}
         let trim = currentPassword.trimmingCharacters(in: .whitespacesAndNewlines)
         if trim.count <= 0 {return}
@@ -1152,7 +1152,7 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
                 
                 //MARK: - HIDE THE POPUP
                 self.currentPasswordTextfield.text = ""
-                self.popupContainer.isHidden = true
+                self.showConfirmationPopup(shouldShow: false)
                 self.scrollView.isHidden = false
                 self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
                 self.runLogic()
@@ -1165,12 +1165,16 @@ class EditProfileController: UIViewController, UITextFieldDelegate, UIScrollView
         self.showConfirmationPopup(shouldShow: false)
     }
     
-    //MARK: - MANAGES THE OPUP FOR PASSWORD CONFIRMATION
+    //MARK: - MANAGES THE POPUP FOR PASSWORD CONFIRMATION
     @objc func showConfirmationPopup(shouldShow : Bool) {
         if shouldShow {
-            self.popupContainer.isHidden = false
+            UIView.animate(withDuration: 0.15) {
+                self.popupContainer.alpha = 1.0
+            }
         } else {
-            self.popupContainer.isHidden = true
+            UIView.animate(withDuration: 0.15) {
+                self.popupContainer.alpha = 0.0
+            }
         }
     }
     

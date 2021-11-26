@@ -502,14 +502,22 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         
         guard let code = self.referralTextField.text else {return}
         
+        //MARK: - NO INPUT
         if code.count <= 0 {
             self.referralTextField.layer.borderColor = coreRedColor.cgColor
             self.handleCustomPopUpAlert(title: "Empty", message: "Please enter a Referral Code of your choice. We recommend at least 10 characters long.", passedButtons: [Statics.OK])
+        //MARK: - SHORT INPUT
         } else if code.count < 5 {
             self.referralTextField.layer.borderColor = coreRedColor.cgColor
             self.handleCustomPopUpAlert(title: "Empty", message: "Please make sure your Referral Code is at least 5 characters.", passedButtons: [Statics.OK])
         } else {
+            //MARK: - CHECK THE NAUGHTY WORDS LIST
+            if !NSFWComparisonArray.contains(code) {
             self.handleCustomPopUpAlert(title: "Looks Good!", message: "Just so you know, this code can not be changed. Would you like to go with \(code)", passedButtons: [Statics.SAVE, Statics.CANCEL])
+            } else {
+                //MARK: - SUCCESS
+                self.handleCustomPopUpAlert(title: "Ruh roh! Some words aren’t allowed on Doggystyle", message: "Please enter another referral code, we aim to keep a friendly environment here at Doggystyle - for both humans and pups.", passedButtons: [Statics.OK])
+            }
         }
     }
     

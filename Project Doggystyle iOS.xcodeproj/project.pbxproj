@@ -289,6 +289,7 @@
 		E3B87A292729F064009139C5 /* WifiAddressHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B87A282729F064009139C5 /* WifiAddressHelper.swift */; };
 		E3B87A2B273066BD009139C5 /* NotificationCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B87A2A273066BD009139C5 /* NotificationCollectionView.swift */; };
 		E3B87A3027307DBF009139C5 /* EditProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B87A2F27307DBF009139C5 /* EditProfileController.swift */; };
+		E3C0FE6E27519B74005CFEA7 /* NSFW+TEXT.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C0FE6D27519B74005CFEA7 /* NSFW+TEXT.swift */; };
 		E3C5DC6526E6705B007C4A55 /* ConfirmBookingCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C5DC6426E6705B007C4A55 /* ConfirmBookingCollection.swift */; };
 		E3C766CD271F5EB900735655 /* ShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766CC271F5EB900735655 /* ShareExtension.swift */; };
 		E3C766CF271F608300735655 /* ReferralContactsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766CE271F608300735655 /* ReferralContactsContainer.swift */; };
@@ -584,6 +585,7 @@
 		E3B87A282729F064009139C5 /* WifiAddressHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiAddressHelper.swift; sourceTree = "<group>"; };
 		E3B87A2A273066BD009139C5 /* NotificationCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCollectionView.swift; sourceTree = "<group>"; };
 		E3B87A2F27307DBF009139C5 /* EditProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileController.swift; sourceTree = "<group>"; };
+		E3C0FE6D27519B74005CFEA7 /* NSFW+TEXT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSFW+TEXT.swift"; sourceTree = "<group>"; };
 		E3C5DC6426E6705B007C4A55 /* ConfirmBookingCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmBookingCollection.swift; sourceTree = "<group>"; };
 		E3C766CC271F5EB900735655 /* ShareExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtension.swift; sourceTree = "<group>"; };
 		E3C766CE271F608300735655 /* ReferralContactsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralContactsContainer.swift; sourceTree = "<group>"; };
@@ -894,6 +896,7 @@
 				E3C766CC271F5EB900735655 /* ShareExtension.swift */,
 				E3C766E62723547C00735655 /* TwilioTextMessage.swift */,
 				E335B4D727471EC300B15F27 /* PushNotificationManager.swift */,
+				E3C0FE6D27519B74005CFEA7 /* NSFW+TEXT.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -2005,6 +2008,7 @@
 				E36EE57826B877770009A0EF /* NotificationsSelector.swift in Sources */,
 				E3636FDD26E692B500E5B76E /* UnavailbleAptScreen.swift in Sources */,
 				E326573A26B218B0004A15F6 /* NewDogThree.swift in Sources */,
+				E3C0FE6E27519B74005CFEA7 /* NSFW+TEXT.swift in Sources */,
 				E357D2ED26E05AE900CDF90E /* SelectPackageContainer.swift in Sources */,
 				CDE870DE2652E1610082551B /* AppDelegate.swift in Sources */,
 				E38B7FDE26C45C6D0013D72D /* NewDogOnceCollection.swift in Sources */,
