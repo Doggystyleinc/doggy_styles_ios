@@ -30,9 +30,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
          ApointmentReportController
          CancelAptController
          SupportChatController
+         LocationFinder
          */
         
-        let decisionController = DecisionController()
+        let decisionController = LocationFinder()
         let navigationController = UINavigationController(rootViewController: decisionController)
         
         navigationController.navigationBar.isHidden = true

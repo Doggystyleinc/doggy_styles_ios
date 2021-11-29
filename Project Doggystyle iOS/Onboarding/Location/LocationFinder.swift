@@ -254,6 +254,16 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         return bc
     }()
     
+    let flagshipContainer : UIView = {
+        
+        let bc = UIView()
+        bc.translatesAutoresizingMaskIntoConstraints = false
+        bc.backgroundColor = .red
+        bc.isUserInteractionEnabled = true
+        
+        return bc
+    }()
+    
     let orangeCheckIcon : UIImageView = {
         
         let dcl = UIImageView()
@@ -425,6 +435,53 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         return cb
     }()
     
+    let hipHopDogImage : UIImageView = {
+        
+        let si = UIImageView()
+        si.translatesAutoresizingMaskIntoConstraints = false
+        si.backgroundColor = UIColor .blue.withAlphaComponent(0.2)
+        si.contentMode = .scaleAspectFit
+        let image = UIImage(named: "hip_hop_dog")?.withRenderingMode(.alwaysOriginal)
+        si.image = image
+        si.isUserInteractionEnabled = false
+        si.contentMode = .center
+        return si
+    }()
+    
+    let flagshipLabel : UILabel = {
+        
+        let thl = UILabel()
+        thl.translatesAutoresizingMaskIntoConstraints = false
+        thl.textAlignment = .center
+        thl.text = "Good news! Until we can start servicing you mobile, book at our flagship location that’s within 8 minutes of your house"
+        thl.font = UIFont(name: rubikMedium, size: 16)
+        thl.numberOfLines = -1
+        thl.adjustsFontSizeToFitWidth = false
+        thl.textColor = styledGray
+        return thl
+        
+    }()
+    
+    lazy var showAddressButton : UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.setTitle("  Show address  ", for: UIControl.State.normal)
+        cbf.titleLabel?.font = UIFont.init(name: dsSubHeaderFont, size: 16)
+        cbf.titleLabel?.adjustsFontSizeToFitWidth = true
+        cbf.titleLabel?.numberOfLines = 1
+        cbf.titleLabel?.adjustsFontForContentSizeCategory = true
+        cbf.titleLabel?.textColor = boldLightGreyColor
+        cbf.backgroundColor = .clear
+        cbf.layer.cornerRadius = 15
+        cbf.layer.masksToBounds = true
+        cbf.tintColor = boldLightGreyColor
+        cbf.addTarget(self, action: #selector(self.handleShowAddress), for: .touchUpInside)
+        
+        return cbf
+        
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -433,13 +490,16 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.fillValues()
         
         self.placesClient = GMSPlacesClient.shared()
-        self.searchStates = .idle
-        self.listener()
+       
         
         self.successContainer.isHidden = true
         self.errorContainer.isHidden = true
+        self.flagshipContainer.isHidden = true
         
         self.handleLocationServicesAuthorization()
+        
+        self.searchStates = .successFlagShip
+        self.listener()
         
     }
     
@@ -452,7 +512,8 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.view.addSubview(self.searchResultsTableView)
         self.view.addSubview(self.errorContainer)
         self.view.addSubview(self.successContainer)
-        
+        self.view.addSubview(self.flagshipContainer)
+
         self.view.addSubview(self.currentUserContainerButton)
         self.currentUserContainerButton.addSubview(self.userCurrentLocationButton)
         self.currentUserContainerButton.addSubview(self.userCurrentLocationIcon)
@@ -473,6 +534,10 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.successContainer.addSubview(self.confirmButton)
         self.successContainer.addSubview(self.getStyledLabel)
         
+        self.flagshipContainer.addSubview(self.hipHopDogImage)
+        self.flagshipContainer.addSubview(self.flagshipLabel)
+        self.flagshipContainer.addSubview(self.showAddressButton)
+
         self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
         self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 15).isActive = true
         self.backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
@@ -527,6 +592,11 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.successContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.successContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.successContainer.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        
+        self.flagshipContainer.topAnchor.constraint(equalTo: self.userCurrentLocationButton.bottomAnchor, constant: 0).isActive = true
+        self.flagshipContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.flagshipContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.flagshipContainer.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         
         self.locationSupportedLabel.topAnchor.constraint(equalTo: self.successContainer.topAnchor, constant: 0).isActive = true
         self.locationSupportedLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 25).isActive = true
@@ -586,6 +656,24 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.confirmLocationButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.confirmLocationButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
+        self.flagshipLabel.sizeToFit()
+        self.flagshipLabel.leftAnchor.constraint(equalTo: self.flagshipContainer.leftAnchor, constant: 20).isActive = true
+        self.flagshipLabel.rightAnchor.constraint(equalTo: self.flagshipContainer.rightAnchor, constant: -20).isActive = true
+        self.flagshipLabel.bottomAnchor.constraint(equalTo: self.showAddressButton.topAnchor, constant: -5).isActive = true
+        self.flagshipLabel.backgroundColor = .purple
+
+        self.hipHopDogImage.topAnchor.constraint(equalTo: self.searchTextField.bottomAnchor, constant: 4).isActive = true
+        self.hipHopDogImage.leftAnchor.constraint(equalTo: self.flagshipContainer.leftAnchor, constant: 0).isActive = true
+        self.hipHopDogImage.rightAnchor.constraint(equalTo: self.flagshipContainer.rightAnchor, constant: 0).isActive = true
+        self.hipHopDogImage.bottomAnchor.constraint(equalTo: self.flagshipLabel.topAnchor, constant: 0).isActive = true
+        
+        self.showAddressButton.bottomAnchor.constraint(equalTo: self.confirmButton.topAnchor, constant: -3).isActive = true
+        self.showAddressButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.showAddressButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.showAddressButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        
+        self.showAddressButton.backgroundColor = .green
+
     }
     
     func fillValues() {
@@ -703,25 +791,33 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
             self.mapView.isHidden = false
             self.errorContainer.isHidden = true
             self.successContainer.isHidden = true
+            self.flagshipContainer.isHidden = true
         case .error:
             self.mapView.isHidden = true
             self.errorContainer.isHidden = false
             self.successContainer.isHidden = true
             self.currentUserContainerButton.isHidden = true
             self.confirmLocationButton.isHidden = true
+            self.flagshipContainer.isHidden = true
+
         case .successMobile:
             self.mapView.isHidden = true
             self.errorContainer.isHidden = true
             self.successContainer.isHidden = false
             self.currentUserContainerButton.isHidden = true
             self.confirmLocationButton.isHidden = true
+            self.flagshipContainer.isHidden = true
+
         case .successFlagShip:
             print("Show the UI for flagship")
             self.mapView.isHidden = true
             self.errorContainer.isHidden = true
             self.successContainer.isHidden = true
             self.currentUserContainerButton.isHidden = true
-            self.confirmLocationButton.isHidden = true
+            self.confirmButton.setTitle("Continue to book at Flagship!", for: .normal)
+            self.confirmLocationButton.isHidden = false
+            self.flagshipContainer.isHidden = false
+            //MARK: - NEW UI FOR THE FLAGSHIP BACKEND
         }
     }
     
@@ -743,6 +839,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         let safeText = searchTextField.trimmingCharacters(in: .whitespacesAndNewlines)
         
         self.successContainer.isHidden = true
+        self.flagshipContainer.isHidden = true
         self.userCurrentLocationIcon.isHidden = false
         self.userCurrentLocationButton.isHidden = false
         
@@ -926,6 +1023,7 @@ extension LocationFinder {
             self.mapView.clear()
         }
         
+        self.flagshipContainer.isHidden = true
         self.successContainer.isHidden = true
         self.errorContainer.isHidden = true
         self.confirmLocationButton.isHidden = true
@@ -959,7 +1057,7 @@ extension LocationFinder {
                 } else {
                     //MARK: - NO LOCATIONAL MATCH - UPDATE VOTERS AND CHECK THE FLAGSHIPS
                     Service.shared.flagshipChecker(preferredLatitude: latitude, preferredLongitude: longitude) { foundLocation, latitude, longitude, address, website, distanceInMeters in
-                        //MARK: - WE HAVE A FLAGSHIP HERE
+                        //MARK: - WE HAVE A FLAGSHIP HERE WITH NO MOBILE GROOMING LOCATION AVAILABLE
                         if foundLocation {
                             self.searchStates = .successFlagShip
                             let user_grooming_locational_data : [String : Any] = ["user_flagship_locational_data" : true, "found_grooming_location" : false, "latitude" : latitude, "longitude" : longitude, "address" : address, "website" : website, "distance_in_meters" : distanceInMeters]
@@ -1109,6 +1207,18 @@ extension LocationFinder {
         
         self.dismiss(animated: true, completion: nil)
         
+    }
+    
+    @objc func handleShowAddress() {
+        //MARK: - LOCATIONAL DATA FOR HAS A GROOMING LOCATION
+        let locational_data = userProfileStruct.user_grooming_locational_data ?? ["nil" : "nil"]
+        let hasFlagshipAddress = locational_data["address"] as? String ?? "nil"
+        
+        if hasFlagshipAddress == "nil" {
+            
+        } else {
+            self.handleCustomPopUpAlert(title: "Address", message: "\(hasFlagshipAddress)", passedButtons: [Statics.OK])
+        }
     }
 }
 
