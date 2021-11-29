@@ -157,6 +157,57 @@ class HomeViewController: UITabBarController, CLLocationManagerDelegate, CustomA
         }
     }
     
+//    let starterKey = "this_is_a_random_starter_key"
+//
+//    //MARK: - GETTING THE USERS VALUES WHEN LOADING THE CHAT CONTROLLER, NOT SENDING IT HERE IN CASE THEY CHANGE IT.
+//    let ref = self.databaseRef.child("customer_support").child("support_chat").child(starterKey).childByAutoId()
+//
+    func uploadUserChatImage(imageToUpload : UIImage, completion : @escaping (_ isComplete : Bool) -> ()) {
+        
+        guard let userUid = Auth.auth().currentUser?.uid else {return}
+        guard let imageDataToUpload = imageToUpload.jpegData(compressionQuality: 0.35) else {return}
+
+        let randomString = NSUUID().uuidString
+        let imageRef = self.storageRef.child("chat_images").child(userUid).child(randomString)
+
+        imageRef.putData(imageDataToUpload, metadata: nil) { (metaDataPass, error) in
+
+            if error != nil {
+                completion(false);
+                return
+            }
+
+            imageRef.downloadURL(completion: { (urlGRab, error) in
+
+                if error != nil {
+                    completion(false);
+                    return
+                }
+
+                if let uploadUrl = urlGRab?.absoluteString {
+
+                    
+                    let refUploadPath = self.databaseRef.child("customer_support").child("support_chat").child("this_is_a_random_starter_key").childByAutoId()
+
+                    let parent_key = refUploadPath.key ?? "nil"
+                    
+                    let time_stamp : Double = Date().timeIntervalSince1970
+
+                    let values : [String : Any] = ["time_stamp" : time_stamp, "type_of_message" : "media_message", "message" : "nil", "senders_firebase_uid" : userUid, "message_parent_key" : parent_key, "users_selected_image_url" : uploadUrl]
+                    
+                    refUploadPath.updateChildValues(values, withCompletionBlock: { (error, ref) in
+                        if error != nil {
+                            completion(false);
+                            return
+                        } else {
+                            completion(true);
+                        }
+                    })
+                }
+            })
+        }
+    }
+    
     @objc func checkForLocationServices() {
         
         if CLLocationManager.locationServicesEnabled() {

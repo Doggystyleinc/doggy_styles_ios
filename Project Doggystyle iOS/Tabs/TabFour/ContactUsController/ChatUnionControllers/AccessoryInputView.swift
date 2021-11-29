@@ -63,6 +63,20 @@ class AccessoryInputView : UIView, UITextViewDelegate {
         
     }()
     
+    lazy var addImageButton : UIButton = {
+        
+        let cbf = UIButton()
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.backgroundColor = .clear
+        cbf.contentMode = .scaleAspectFit
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
+        cbf.setTitle(String.fontAwesomeIcon(name: .image), for: .normal)
+        cbf.setTitleColor(dsFlatBlack, for: .normal)
+        cbf.addTarget(self, action: #selector(self.handleImagePickerButton), for: UIControl.Event.touchUpInside)
+        return cbf
+        
+    }()
+    
     override var intrinsicContentSize: CGSize {
         return self.textViewContentSize()
     }
@@ -78,7 +92,7 @@ class AccessoryInputView : UIView, UITextViewDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = .clear
+        self.backgroundColor = coreBackgroundWhite
         self.translatesAutoresizingMaskIntoConstraints = false
         self.autoresizingMask = .flexibleHeight
         self.sizeToFit()
@@ -93,13 +107,19 @@ class AccessoryInputView : UIView, UITextViewDelegate {
         self.addSubview(self.commentTextView)
         self.addSubview(self.sendButton)
         self.addSubview(self.placeHolderLabel)
+        self.addSubview(self.addImageButton)
         
+        self.addImageButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -22).isActive = true
+        self.addImageButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20).isActive = true
+        self.addImageButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        self.addImageButton.widthAnchor.constraint(equalToConstant: 25).isActive = true
+
         self.commentTextView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
         self.textViewYConstraint = self.commentTextView.heightAnchor.constraint(equalToConstant: 40)
         self.textViewYConstraint?.isActive = true
         self.textViewBottomConstraint = self.commentTextView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20)
         self.textViewBottomConstraint?.isActive = true
-        self.commentTextView.leftAnchor.constraint(equalTo:  self.leftAnchor, constant: 30).isActive = true
+        self.commentTextView.leftAnchor.constraint(equalTo: self.addImageButton.rightAnchor, constant: 20).isActive = true
         
         self.commentTextView.textContainerInset = UIEdgeInsets(top: 11, left: 17, bottom: 5, right: 40)
         
@@ -113,6 +133,10 @@ class AccessoryInputView : UIView, UITextViewDelegate {
         self.placeHolderLabel.rightAnchor.constraint(equalTo: self.sendButton.leftAnchor, constant: -30).isActive = true
         self.placeHolderLabel.sizeToFit()
         
+    }
+    
+    @objc func handleImagePickerButton() {
+        self.supportChatController?.handleImagePicker()
     }
     
     func updateHeight() {
@@ -158,6 +182,7 @@ class AccessoryInputView : UIView, UITextViewDelegate {
     }
     
     @objc func handleSendButton() {
+        self.supportChatController?.handleSendButton()
     }
     
     required init?(coder: NSCoder) {

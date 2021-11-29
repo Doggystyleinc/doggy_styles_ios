@@ -10,6 +10,8 @@ import UIKit
 
 class ContactUsProfileController : UIViewController, CustomAlertCallBackProtocol {
     
+    var homeController : HomeViewController?
+    
     lazy var backButton : UIButton = {
         
         let cbf = UIButton(type: .system)
@@ -206,6 +208,7 @@ class ContactUsProfileController : UIViewController, CustomAlertCallBackProtocol
     @objc func handleChatController() {
         
         let chatController = SupportChatController()
+        chatController.homeController = self.homeController
         let nav = UINavigationController(rootViewController: chatController)
         nav.navigationBar.isHidden = true
         nav.modalPresentationStyle = .fullScreen

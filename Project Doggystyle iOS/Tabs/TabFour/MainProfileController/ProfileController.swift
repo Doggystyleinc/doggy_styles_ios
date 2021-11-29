@@ -324,6 +324,7 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
     @objc func handleContactUs() {
         
         let contactUsProfileController = ContactUsProfileController()
+        contactUsProfileController.homeController = self.homeController
         let nav = UINavigationController(rootViewController: contactUsProfileController)
         nav.navigationController?.navigationBar.isHidden = true
         nav.modalPresentationStyle = .fullScreen

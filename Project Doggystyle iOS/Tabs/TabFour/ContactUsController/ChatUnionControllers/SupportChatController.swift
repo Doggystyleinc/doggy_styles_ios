@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Firebase
 
 class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
     
@@ -22,7 +23,12 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         isKeyboardShowing : Bool = false,
         shouldAdjustForKeyboard : Bool = false,
         hasViewBeenLaidOut : Bool = false,
-        controllerState = ControllerState.inProgress
+        controllerState = ControllerState.inProgress,
+        homeController : HomeViewController?,
+        otherUIDS : [String]?
+    
+    let mainLoadingScreen = MainLoadingScreen(),
+        databaseRef = Database.database().reference()
     
     lazy var headerContainer : UIView = {
         
@@ -88,6 +94,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.textColor = completeGreen
+        hl.isHidden = true
         
         return hl
     }()
@@ -125,6 +132,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         cc.translatesAutoresizingMaskIntoConstraints = false
         cc.backgroundColor = coreWhiteColor
         cc.isUserInteractionEnabled = true
+        cc.isHidden = true
         
        return cc
     }()
@@ -179,9 +187,9 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         return self.customInputAccessoryView
     }
     
-    override var isFirstResponder: Bool {
-        return self.isResponder
-    }
+//    override var isFirstResponder: Bool {
+//        return self.isResponder
+//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -189,7 +197,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
         self.handleObservers()
-        
+  
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -226,19 +234,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         ]
         
         self.headerContainer.layer.insertSublayer(gradientLayer, at: 0)
-        
-        let gradientLayerTwo = CAGradientLayer()
-        gradientLayerTwo.frame = self.customInputAccessoryView.bounds
-        gradientLayerTwo.colors = [coreBackgroundWhite.withAlphaComponent(0.7).cgColor,
-                                   coreBackgroundWhite.cgColor,
-                                   coreBackgroundWhite.cgColor,
-                                   coreBackgroundWhite.cgColor
-                                   
-        ]
-        
-        self.customInputAccessoryView.layer.insertSublayer(gradientLayerTwo, at: 0)
-        self.stateListener()
-        
+      
     }
     
     //MARK: - VIEW LAYOUT
@@ -422,7 +418,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
     }
     
     //MARK: - HIDES THE ACCESSORY VIEW
-    func hideFirstResponder() {
+    @objc func hideFirstResponder() {
         if !self.customInputAccessoryView.commentTextView.isFirstResponder {
             self.isResponder = true
             self.canBecomeResponder = false
@@ -438,7 +434,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
     }
     
     //MARK: - SHOWS THE ACCESSORY VIEW
-    func showFirstResponder() {
+   @objc func showFirstResponder() {
         if !self.customInputAccessoryView.commentTextView.isFirstResponder {
             self.customInputAccessoryView.isHidden = false
             self.isResponder = false
@@ -446,6 +442,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
             self.customInputAccessoryView.commentTextView.becomeFirstResponder()
             self.becomeFirstResponder()
             self.reloadInputViews()
+            self.customInputAccessoryView.reloadInputViews()
         } else {
             self.customInputAccessoryView.isHidden = false
             self.isResponder = false
@@ -453,6 +450,8 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
             self.customInputAccessoryView.commentTextView.becomeFirstResponder()
             self.becomeFirstResponder()
             self.reloadInputViews()
+            self.customInputAccessoryView.reloadInputViews()
+
         }
     }
     
@@ -483,6 +482,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         
     }
     
+    //MARK: -- ON SELECTION FOR CUSTOM POPUP
     func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
         
         switch type {
@@ -490,6 +490,15 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         default: print("Should not hit")
             
         }
+    }
+    
+    func handleImagePicker() {
+        //MARK: - REQUIRES HOMECONTROLLER SO THE IMAGE CAN UPLOAD IF THE USER BAILS FROM THE CHAT
+        if self.homeController == nil {return}
+        
+            self.hideFirstResponder()
+            self.customInputAccessoryView.isHidden = true
+            self.checkForGalleryAuth()
     }
     
     //MARK: - AUDIO CALL
@@ -500,4 +509,172 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
     @objc func handleBackButton() {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
+    
+    @objc func handleSendButton() {
+        
+        guard let user_uid = Auth.auth().currentUser?.uid else {return}
+        guard let text = self.customInputAccessoryView.commentTextView.text else {return}
+        let cleanText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if cleanText.count <= 0 {return}
+        
+        //CLEAN
+        self.customInputAccessoryView.commentTextView.text = ""
+        self.customInputAccessoryView.sendButton.isUserInteractionEnabled = false
+        
+        //ALL CLEAR HERE NOW
+        let time_stamp : Double = Date().timeIntervalSince1970
+        
+        let starterKey = "this_is_a_random_starter_key"
+        
+
+        //MARK: - GETTING THE USERS VALUES WHEN LOADING THE CHAT CONTROLLER, NOT SENDING IT HERE IN CASE THEY CHANGE IT.
+        let ref = self.databaseRef.child("customer_support").child("support_chat").child(starterKey).childByAutoId()
+        let parent_key = ref.key ?? "nil"
+
+        let values : [String : Any] = ["time_stamp" : time_stamp, "type_of_message" : "text", "message" : cleanText, "senders_firebase_uid" : user_uid, "message_parent_key" : parent_key]
+        
+        ref.updateChildValues(values) { error, ref in
+
+            print("message sent successfully")
+            self.customInputAccessoryView.sendButton.isUserInteractionEnabled = true
+            
+            if self.otherUIDS != nil {
+                
+                guard let safeIDS = self.otherUIDS else {return}
+                
+                for i in safeIDS {
+                    PushNotificationManager.sendPushNotification(title: "Message", body: "cleanText", recipients_user_uid: i) { success, error in
+                        print("notification sent")
+                    }
+                }
+            }
+        }
+    }
 }
+
+
+import Foundation
+import UIKit
+import AVFoundation
+import MobileCoreServices
+import Photos
+
+extension SupportChatController : UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    @objc func checkForGalleryAuth() {
+        
+        UIDevice.vibrateLight()
+        
+        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+        switch photoAuthorizationStatus {
+        
+        case .authorized:
+            self.openGallery()
+            
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization({
+                (newStatus) in
+                
+                if newStatus ==  PHAuthorizationStatus.authorized {
+                    self.openGallery()
+                }
+            })
+            
+        case .restricted:
+            self.handleCustomPopUpAlert(title: "PERMISSIONS", message: "Please allow Photo Library Permissions in the Settings application.", passedButtons: [Statics.OK])
+        case .denied:
+            self.handleCustomPopUpAlert(title: "PERMISSIONS", message: "Please allow Photo Library Permissions in the Settings application.", passedButtons: [Statics.OK])
+        default :
+            self.handleCustomPopUpAlert(title: "PERMISSIONS", message: "Please allow Photo Library Permissions in the Settings application.", passedButtons: [Statics.OK])
+        }
+    }
+    
+    func openCameraOptions() {
+        
+        DispatchQueue.main.async {
+            
+            let ip = UIImagePickerController()
+            ip.sourceType = .camera
+            ip.mediaTypes = [kUTTypeImage as String]
+            ip.allowsEditing = true
+            ip.delegate = self
+            
+            if let topViewController = UIApplication.getTopMostViewController() {
+                topViewController.present(ip, animated: true) {
+                }
+            }
+        }
+    }
+    
+    func openGallery() {
+        
+        DispatchQueue.main.async {
+            
+            let imagePicker = UIImagePickerController()
+            imagePicker.allowsEditing = true
+            imagePicker.sourceType = .photoLibrary
+            imagePicker.delegate = self
+            
+            if let topViewController = UIApplication.getTopMostViewController() {
+                topViewController.present(imagePicker, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        
+        picker.dismiss(animated: true) {
+            self.showFirstResponder()
+            self.customInputAccessoryView.isHidden = false
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        picker.dismiss(animated: true) {
+            
+            let mediaType = info[.mediaType] as! CFString
+            
+            switch mediaType {
+            
+            case kUTTypeImage :
+                
+                if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+                    
+                    self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
+                    self.homeController?.uploadUserChatImage(imageToUpload: editedImage) { complete in
+                        self.mainLoadingScreen.cancelMainLoadingScreen()
+                        UIDevice.vibrateLight()
+                        self.customInputAccessoryView.isHidden = false
+                        self.perform(#selector(self.showFirstResponder), with: nil, afterDelay: 1.0)
+                    }
+                    
+                } else if let originalImage = info[.originalImage] as? UIImage  {
+                    self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
+
+                    self.homeController?.uploadUserChatImage(imageToUpload: originalImage) { complete in
+                        self.mainLoadingScreen.cancelMainLoadingScreen()
+                        UIDevice.vibrateLight()
+                        self.customInputAccessoryView.isHidden = false
+                        self.perform(#selector(self.showFirstResponder), with: nil, afterDelay: 1.0)
+                    }
+                    
+                } else {
+                    print("Failed grabbing the photo")
+                }
+                
+            default : print("SHOULD NOT HIT FOR THE CAMERA PICKER")
+                
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
