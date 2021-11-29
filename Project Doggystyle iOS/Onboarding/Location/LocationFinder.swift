@@ -16,7 +16,8 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
     enum SearchStates {
         case idle
         case error
-        case success
+        case successMobile
+        case successFlagShip
     }
     
     var placesHeightAnchor : NSLayoutConstraint?,
@@ -110,7 +111,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
     }()
     
     lazy var searchTextField : CustomTextFieldMaps = {
-
+        
         let etfc = CustomTextFieldMaps()
         etfc.translatesAutoresizingMaskIntoConstraints = false
         let placeholder = NSAttributedString(string: "Enter address", attributes: [NSAttributedString.Key.foregroundColor: dsFlatBlack.withAlphaComponent(0.4)])
@@ -126,14 +127,14 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         etfc.keyboardAppearance = UIKeyboardAppearance.light
         etfc.returnKeyType = UIReturnKeyType.done
         etfc.leftViewMode = .always
-
+        
         let image = UIImage(named: "magnifyingGlass")?.withRenderingMode(.alwaysOriginal)
         let imageView = UIImageView()
         imageView.contentMode = .center
         etfc.contentMode = .center
         imageView.image = image
         etfc.leftView = imageView
-
+        
         etfc.clipsToBounds = false
         etfc.layer.masksToBounds = false
         etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
@@ -143,9 +144,9 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         etfc.layer.shouldRasterize = false
         etfc.layer.cornerRadius = 10
         etfc.addTarget(self, action: #selector(handleSearchTextFieldChange(textField:)), for: .editingChanged)
-
+        
         return etfc
-
+        
     }()
     
     lazy var errorLabel : UILabel = {
@@ -287,9 +288,9 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         let cbf = UIButton(type: .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
         if globalLocationTrajectory == .fromOnboarding {
-        cbf.setTitle("Create doggy profile", for: UIControl.State.normal)
+            cbf.setTitle("Create doggy profile", for: UIControl.State.normal)
         } else {
-        cbf.setTitle("Save changes", for: UIControl.State.normal)
+            cbf.setTitle("Save changes", for: UIControl.State.normal)
         }
         cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
         cbf.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -708,10 +709,17 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
             self.successContainer.isHidden = true
             self.currentUserContainerButton.isHidden = true
             self.confirmLocationButton.isHidden = true
-        case .success:
+        case .successMobile:
             self.mapView.isHidden = true
             self.errorContainer.isHidden = true
             self.successContainer.isHidden = false
+            self.currentUserContainerButton.isHidden = true
+            self.confirmLocationButton.isHidden = true
+        case .successFlagShip:
+            print("Show the UI for flagship")
+            self.mapView.isHidden = true
+            self.errorContainer.isHidden = true
+            self.successContainer.isHidden = true
             self.currentUserContainerButton.isHidden = true
             self.confirmLocationButton.isHidden = true
         }
@@ -941,22 +949,32 @@ extension LocationFinder {
             
             Service.shared.locationChecker(preferredLatitude: latitude, preferredLongitude: longitude) { foundLocation, latitude, longitude, address, website, distanceInMeters  in
                 
-                //MARK: - HERE WE A LOCATIONAL MATCH
                 if foundLocation {
-                    self.searchStates = .success
-                    let user_grooming_locational_data : [String : Any] = ["found_grooming_location" : true, "latitude" : latitude, "longitude" : longitude, "address" : address, "website" : website, "distance_in_meters" : distanceInMeters]
+                    //MARK: - HERE WE HAVE A LOCATIONAL MATCH FOR A SERVICEABLE BUILDING
+                    self.searchStates = .successMobile
+                    let user_grooming_locational_data : [String : Any] = ["user_flagship_locational_data" : false, "found_grooming_location" : true, "latitude" : latitude, "longitude" : longitude, "address" : address, "website" : website, "distance_in_meters" : distanceInMeters]
                     userOnboardingStruct.user_grooming_locational_data = user_grooming_locational_data
                     self.listener()
                     self.mainLoadingScreen.cancelMainLoadingScreen()
-                    
-                    //MARK: - NO LOCATIONAL MATCH - UPDATE VOTERS
                 } else {
-                    self.searchStates = .error
-                    let user_grooming_locational_data : [String : Any] = ["found_grooming_location" : false, "latitude" : latitude, "longitude" : longitude, "address" : address, "website" : website, "distance_in_meters" : distanceInMeters]
-                    userOnboardingStruct.user_grooming_locational_data = user_grooming_locational_data
-                    self.listener()
-                    self.mainLoadingScreen.cancelMainLoadingScreen()
-                    
+                    //MARK: - NO LOCATIONAL MATCH - UPDATE VOTERS AND CHECK THE FLAGSHIPS
+                    Service.shared.flagshipChecker(preferredLatitude: latitude, preferredLongitude: longitude) { foundLocation, latitude, longitude, address, website, distanceInMeters in
+                        //MARK: - WE HAVE A FLAGSHIP HERE
+                        if foundLocation {
+                            self.searchStates = .successFlagShip
+                            let user_grooming_locational_data : [String : Any] = ["user_flagship_locational_data" : true, "found_grooming_location" : false, "latitude" : latitude, "longitude" : longitude, "address" : address, "website" : website, "distance_in_meters" : distanceInMeters]
+                            userOnboardingStruct.user_grooming_locational_data = user_grooming_locational_data
+                            self.listener()
+                            self.mainLoadingScreen.cancelMainLoadingScreen()
+                        } else {
+                            //MARK: - NO FLAGSHIP AND NO LOCATIONAL DATA
+                            self.searchStates = .error
+                            let user_grooming_locational_data : [String : Any] = ["user_flagship_locational_data" : false, "found_grooming_location" : false, "latitude" : latitude, "longitude" : longitude, "address" : address, "website" : website, "distance_in_meters" : distanceInMeters]
+                            userOnboardingStruct.user_grooming_locational_data = user_grooming_locational_data
+                            self.listener()
+                            self.mainLoadingScreen.cancelMainLoadingScreen()
+                        }
+                    }
                 }
             }
         }
@@ -993,12 +1011,12 @@ extension LocationFinder {
             navigationController.modalPresentationStyle = .fullScreen
             navigationController.navigationBar.isHidden = true
             self.navigationController?.present(navigationController, animated: true, completion: nil)
-        
-            }
+            
+        }
     }
     
     @objc func loadAllTheLogic() {
-       
+        
         if globalLocationTrajectory == .fromSettings {
             self.handleLocationUpdater { isComplete in
                 if isComplete {
@@ -1019,7 +1037,7 @@ extension LocationFinder {
     }
     
     func handleLocationUpdater(completion : @escaping (_ isComplete : Bool)->()) {
-
+        
         guard let user_uid = Auth.auth().currentUser?.uid else {return}
         let path = self.databaseRef.child("all_users").child(user_uid)
         
@@ -1029,11 +1047,11 @@ extension LocationFinder {
         guard let user_grooming_locational_data = userOnboardingStruct.user_grooming_locational_data else {return}
         
         let values : [String : Any] = [
-                                        "chosen_grooming_location_name" : chosen_grooming_location_name,
-                                        "chosen_grooming_location_latitude" : chosen_grooming_location_latitude,
-                                        "chosen_grooming_location_longitude" : chosen_grooming_location_longitude,
-                                        "user_grooming_locational_data" : user_grooming_locational_data
-                                        ]
+            "chosen_grooming_location_name" : chosen_grooming_location_name,
+            "chosen_grooming_location_latitude" : chosen_grooming_location_latitude,
+            "chosen_grooming_location_longitude" : chosen_grooming_location_longitude,
+            "user_grooming_locational_data" : user_grooming_locational_data
+        ]
         
         userProfileStruct.chosen_grooming_location_name = chosen_grooming_location_name
         userProfileStruct.chosen_grooming_location_latitude = chosen_grooming_location_latitude
@@ -1069,7 +1087,7 @@ extension LocationFinder {
                     //MARK: - IF THE USER HAS FOUND A GROOMING LOCATION, TAKE THEM TO THE DOGGY PROFILE SCREEN : HOMEVIEWCONTROLLER
                     if self.searchStates == .error {
                         self.presentHomeController()
-                    } else if self.searchStates == .success {
+                    } else if self.searchStates == .successMobile || self.searchStates == .successFlagShip {
                         self.handlePresentDogProfileController()
                     }
                 }
@@ -1096,11 +1114,11 @@ extension LocationFinder {
 
 //MARK: - HERE WE CAN TELL IF THE DOGGY PROFILE SHOULD DISMISS OR PRESENT THE HOME CONTROLLER
 public enum GroomLocationFollowOnRoute {
-
+    
     case fromRegistration
     case fromApplication
     case fromSettings
-
+    
 }
 
 var groomLocationFollowOnRoute = GroomLocationFollowOnRoute.fromApplication

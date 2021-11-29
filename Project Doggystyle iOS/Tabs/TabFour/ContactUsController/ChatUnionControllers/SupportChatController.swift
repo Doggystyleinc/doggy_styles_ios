@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class SupportChatController : UIViewController {
+class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
     
     enum ControllerState {
         case inProgress
@@ -129,11 +129,11 @@ class SupportChatController : UIViewController {
        return cc
     }()
     
-    lazy var aptCompleteButton : UIButton = {
+    let aptCompleteButton : UIButton = {
         
-        let cbf = UIButton(type: .system)
+        let cbf = UIButton(type : .system)
         cbf.translatesAutoresizingMaskIntoConstraints = false
-        cbf.setTitle("  Appointment complete. Chat closed.  ", for: UIControl.State.normal)
+        cbf.setTitle("    Appointment complete. Chat closed.    ", for: UIControl.State.normal)
         cbf.titleLabel?.font = UIFont.init(name: rubikRegular, size: 12)
         cbf.titleLabel?.adjustsFontSizeToFitWidth = true
         cbf.titleLabel?.numberOfLines = 1
@@ -144,7 +144,7 @@ class SupportChatController : UIViewController {
         cbf.layer.masksToBounds = true
         cbf.tintColor = coreOrangeColor
         cbf.layer.masksToBounds = true
-        cbf.addTarget(self, action: #selector(self.handleAptCompleteButton), for: .touchUpInside)
+        cbf.isUserInteractionEnabled = false
         
         return cbf
         
@@ -202,7 +202,7 @@ class SupportChatController : UIViewController {
         super.viewWillDisappear(true)
         self.hideFirstResponder()
     }
-    
+   
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         self.shouldAdjustForKeyboard = true
@@ -237,6 +237,7 @@ class SupportChatController : UIViewController {
         ]
         
         self.customInputAccessoryView.layer.insertSublayer(gradientLayerTwo, at: 0)
+        self.stateListener()
         
     }
     
@@ -261,7 +262,7 @@ class SupportChatController : UIViewController {
         self.headerContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
         self.headerContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.headerContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.headerContainer.heightAnchor.constraint(equalToConstant: 220).isActive = true
+        self.headerContainer.heightAnchor.constraint(equalToConstant: 200).isActive = true
         self.headerContainer.isUserInteractionEnabled = false
         
         self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
@@ -274,7 +275,7 @@ class SupportChatController : UIViewController {
         self.headerLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.headerLabel.sizeToFit()
         
-        self.subHeaderLabel.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 8).isActive = true
+        self.subHeaderLabel.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 5).isActive = true
         self.subHeaderLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.subHeaderLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.subHeaderLabel.sizeToFit()
@@ -301,8 +302,8 @@ class SupportChatController : UIViewController {
         self.completionContainer.heightAnchor.constraint(equalToConstant: 88).isActive = true
         
         self.aptCompleteButton.centerYAnchor.constraint(equalTo: self.completionContainer.centerYAnchor, constant: -16).isActive = true
-        self.aptCompleteButton.leftAnchor.constraint(equalTo: self.completionContainer.leftAnchor, constant: 80).isActive = true
-        self.aptCompleteButton.rightAnchor.constraint(equalTo: self.completionContainer.rightAnchor, constant: -80).isActive = true
+        self.aptCompleteButton.leftAnchor.constraint(equalTo: self.completionContainer.leftAnchor, constant: 70).isActive = true
+        self.aptCompleteButton.rightAnchor.constraint(equalTo: self.completionContainer.rightAnchor, constant: -70).isActive = true
         self.aptCompleteButton.heightAnchor.constraint(equalToConstant: 22).isActive = true
         self.aptCompleteButton.layer.cornerRadius = 11
         
@@ -420,6 +421,7 @@ class SupportChatController : UIViewController {
         shown ? self.chatMainCollection.scrollToBottom() : self.chatMainCollection.scrollToTop()
     }
     
+    //MARK: - HIDES THE ACCESSORY VIEW
     func hideFirstResponder() {
         if !self.customInputAccessoryView.commentTextView.isFirstResponder {
             self.isResponder = true
@@ -435,6 +437,7 @@ class SupportChatController : UIViewController {
         }
     }
     
+    //MARK: - SHOWS THE ACCESSORY VIEW
     func showFirstResponder() {
         if !self.customInputAccessoryView.commentTextView.isFirstResponder {
             self.customInputAccessoryView.isHidden = false
@@ -453,12 +456,45 @@ class SupportChatController : UIViewController {
         }
     }
     
-    @objc func handleContactHelpCenter() {
-        print("help center")
+    //MARK: - MOBILE (DEVICE) AUDIO CALL
+    @objc func handlePhoneCall() {
+        
+        UIDevice.vibrateLight()
+        
+        if let url = URL(string: "tel://\(Statics.SUPPORT_PHONE_NUMBER)"),
+           UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        } else {
+            self.handleCustomPopUpAlert(title: "Restriction", message: "This device is unable to make phone calls.", passedButtons: [Statics.OK])
+        }
     }
     
-    @objc func handleAptCompleteButton() {
-        print("complete button")
+    //MARK: - CUSTOM POP UP
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        alert.passedIconName = .paw
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        case Statics.OK: print(Statics.OK)
+        default: print("Should not hit")
+            
+        }
+    }
+    
+    //MARK: - AUDIO CALL
+    @objc func handleContactHelpCenter() {
+        self.handlePhoneCall()
     }
     
     @objc func handleBackButton() {

@@ -157,6 +157,92 @@ class Service : NSObject {
         }
     }
     
+    //MARK: - CHECKS THE FLAGSHIPS LOCATIONAL DATA TO SEE IF IT'S A MATCH
+    func flagshipChecker(preferredLatitude : Double?, preferredLongitude : Double?, completion : @escaping (_ foundLocation : Bool, _ latitude : Double, _ longitude : Double, _ address : String, _ website : String, _ distanceInMeters : Double)->()) {
+        
+        let databaseRef = Database.database().reference()
+        
+        var isFound : Bool = false
+        
+        var counter : Int = 0,
+            observingRefOne = Database.database().reference(),
+            handleOne = DatabaseHandle()
+        
+        if preferredLatitude == nil || preferredLongitude == nil {
+            completion(true, 0.0, 0.0, "nil", "nil", 0.0)
+        } else {
+            
+            guard let safePreferredLatitude = preferredLatitude else {return}
+            guard let safePreferredLongitude = preferredLongitude else {return}
+            
+            let clients_preferred_location = CLLocation(latitude: safePreferredLatitude, longitude: safePreferredLongitude)
+            
+            let clients_preferred_location_coordinates = clients_preferred_location
+            
+            let ref = databaseRef.child("flagship_locations")
+            
+            ref.observeSingleEvent(of: .value) { snapCount in
+                
+                if snapCount.exists() {
+                    
+                    let snapChildrenCount = Int(snapCount.childrenCount)
+                    
+                    observingRefOne = databaseRef.child("flagship_locations")
+                    
+                    handleOne = observingRefOne.observe(.childAdded, with: { snapLoop in
+                        
+                        if isFound == true {return}
+                        
+                        if let JSON = snapLoop.value as? [String : Any] {
+                            
+                            counter += 1
+                            
+                            let latitude = JSON["latitude"] as? Double ?? 0.0
+                            let longitude = JSON["longitude"] as? Double ?? 0.0
+                            let address = JSON["address"] as? String ?? "nil"
+                            let website = JSON["website"] as? String ?? "nil"
+                            
+                            let doggystyle_services_preferred_location = CLLocation(latitude: latitude, longitude: longitude)
+                            
+                            let differenceInMeters = abs(clients_preferred_location_coordinates.distance(from: doggystyle_services_preferred_location))
+                            
+                            let threeMileThresholdInMeters = 4828.03
+                            
+                            if differenceInMeters > threeMileThresholdInMeters {
+                                print("not servicing \(address) because the client is \(differenceInMeters) meters away which is greater than the threshold of \(threeMileThresholdInMeters) - they can be found at \(website)")
+                                
+                                if counter >= snapChildrenCount {
+                                    //MARK: - HERE NO BUILDING WAS FOUND, SO WE HAVE TO ADD THEM TO A WAIT LIST AND SEE IF SOME MORE PEOPLE VOTE ON THEIR LOCATION TO HAVE IT ADDED
+                                    completion(false, safePreferredLatitude, safePreferredLongitude, "nil", "nil", differenceInMeters)
+                                    observingRefOne.removeObserver(withHandle: handleOne)
+                                    return
+                                }
+                                
+                            } else {
+                                print("MATCH FOUND! We are servicing \(address) because the client is \(differenceInMeters) meters away which is less than the threshold of \(threeMileThresholdInMeters) - they can be found at \(website)")
+                                isFound = true
+                                counter = snapChildrenCount
+                                observingRefOne.removeObserver(withHandle: handleOne)
+                                
+                                completion(true, latitude, longitude, address, website, differenceInMeters)
+                                return
+                            }
+                            
+                        } else {
+                            observingRefOne.removeObserver(withHandle: handleOne)
+                            completion(false, 0.0, 0.0, "nil", "nil", 0.0)
+                        }
+                        
+                    })
+                    
+                } else {
+                    observingRefOne.removeObserver(withHandle: handleOne)
+                    completion(false, 0.0, 0.0, "nil", "nil", 0.0)
+                }
+            }
+        }
+    }
+    
     func handleFirebaseLogout() {
         
         do {
