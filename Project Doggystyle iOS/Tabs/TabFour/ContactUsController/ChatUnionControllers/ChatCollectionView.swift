@@ -58,30 +58,67 @@ class ChatCollectionView : UICollectionView, UICollectionViewDelegateFlowLayout,
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return 10
+        let chatArray = self.supportChatController?.chatObjectArray.count ?? 0
+        return chatArray
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: UIScreen.main.bounds.width, height: 120)
-        
+        if let feeder = self.supportChatController?.chatObjectArray {
+            
+                let indexed = feeder[indexPath.item],
+                    textToSize = indexed.message ?? "",
+                size = CGSize(width: UIScreen.main.bounds.width - 100, height: 2000),
+                options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+
+            let estimatedFrame = NSString(string: textToSize).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font : UIFont(name: rubikRegular, size: 14)!], context: nil)
+            let estimatedHeight = estimatedFrame.height
+            
+            print("HEIGHT:- ", estimatedHeight)
+            
+            return CGSize(width: UIScreen.main.bounds.width, height: estimatedHeight + 85)
+            
+        } else {
+            return CGSize(width: UIScreen.main.bounds.width, height: 0)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        if let feeder = self.supportChatController?.chatObjectArray {
+            
+            if feeder.count > 0 {
+                
+            let indexed = feeder[indexPath.item]
+            
+            let type_of_message = indexed.type_of_message ?? "nil"
+            
+            switch type_of_message {
+
+            case "text" :
+            let cell = self.dequeueReusableCell(withReuseIdentifier: self.chatMainID, for: indexPath) as! ChatMainFeeder
+            cell.chatCollectionView = self
+            cell.chatObjectArray = indexed
+            return cell
+                 
+            default :
+            let cell = self.dequeueReusableCell(withReuseIdentifier: self.chatMainID, for: indexPath) as! ChatMainFeeder
+            cell.chatCollectionView = self
+            cell.chatObjectArray = indexed
+            return cell
+            }
+        }
+    }
         
-        let cell = self.dequeueReusableCell(withReuseIdentifier: self.chatMainID, for: indexPath) as! ChatMainFeeder
-        
-        cell.chatCollectionView = self
-        
-        return cell
+        return UICollectionViewCell()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
+        return 5
     }
     
     required init?(coder: NSCoder) {
@@ -92,6 +129,44 @@ class ChatCollectionView : UICollectionView, UICollectionViewDelegateFlowLayout,
 class ChatMainFeeder : UICollectionViewCell {
     
     var chatCollectionView : ChatCollectionView?
+    
+    var chatObjectArray : ChatSupportModel? {
+        
+        didSet {
+            
+            if let users_profile_image_url = chatObjectArray?.users_profile_image_url {
+                if let message = chatObjectArray?.message {
+                    if let senders_firebase_uid = chatObjectArray?.senders_firebase_uid {
+
+                    self.messageLabel.text = message
+                    self.profilePhoto.loadImageGeneralUse(users_profile_image_url) { complete in
+                        print("photo loaded")
+                    }
+
+                    let frameHeight = self.chatBubble.frame.height
+                    
+                    print("frame height is: \(frameHeight)")
+                    
+                    if frameHeight >= 70 {
+                        self.chatBubble.layer.cornerRadius = 35
+                    } else {
+                        self.chatBubble.layer.cornerRadius = 12
+                    }
+                    
+                        guard let user_uid = Auth.auth().currentUser?.uid else {return}
+                        
+                        if user_uid != senders_firebase_uid {
+                            self.chatBubble.backgroundColor = coreOrangeColor
+                            self.messageLabel.textColor = coreWhiteColor
+                        } else {
+                            self.chatBubble.backgroundColor = dividerGrey
+                            self.messageLabel.textColor = coreBlackColor
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     let profilePhoto : UIImageView = {
         
@@ -108,10 +183,10 @@ class ChatMainFeeder : UICollectionViewCell {
         
         let cb = UIView()
         cb.translatesAutoresizingMaskIntoConstraints = false
-        //cb.backgroundColor = dividerGrey
         cb.backgroundColor = coreOrangeColor
         cb.isUserInteractionEnabled = false
         cb.layer.masksToBounds = true
+        cb.backgroundColor = .red
         
        return cb
     }()
@@ -126,6 +201,8 @@ class ChatMainFeeder : UICollectionViewCell {
         thl.numberOfLines = 1
         thl.adjustsFontSizeToFitWidth = false
         thl.textColor = chatTimeGrey
+        thl.backgroundColor = .purple
+
         return thl
         
     }()
@@ -135,21 +212,21 @@ class ChatMainFeeder : UICollectionViewCell {
         let thl = UILabel()
         thl.translatesAutoresizingMaskIntoConstraints = false
         thl.textAlignment = .left
-        thl.text = "Hi Moses, you can go ahead and bring Rex to the van!"
+        thl.text = ""
         thl.font = UIFont(name: rubikRegular, size: 14)
         thl.numberOfLines = -1
         thl.adjustsFontSizeToFitWidth = false
         thl.textColor = coreWhiteColor
+        thl.backgroundColor = .brown
+
         return thl
         
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        self.backgroundColor = .clear
+        self.backgroundColor = .green
         self.addViews()
-        
     }
     
     func addViews() {
@@ -164,16 +241,15 @@ class ChatMainFeeder : UICollectionViewCell {
         self.profilePhoto.heightAnchor.constraint(equalToConstant: 30).isActive = true
         self.profilePhoto.widthAnchor.constraint(equalToConstant: 30).isActive = true
         self.profilePhoto.layer.cornerRadius = 15
+       
+        self.timeLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
+        self.timeLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -2).isActive = true
+        self.timeLabel.sizeToFit()
         
         self.chatBubble.leftAnchor.constraint(equalTo: self.profilePhoto.rightAnchor, constant: 20).isActive = true
         self.chatBubble.topAnchor.constraint(equalTo: self.profilePhoto.topAnchor, constant: 0).isActive = true
         self.chatBubble.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -30).isActive = true
-        self.chatBubble.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        self.chatBubble.layer.cornerRadius = 35
-        
-        self.timeLabel.rightAnchor.constraint(equalTo: self.chatBubble.rightAnchor, constant: 0).isActive = true
-        self.timeLabel.topAnchor.constraint(equalTo: self.chatBubble.bottomAnchor, constant: 12).isActive = true
-        self.timeLabel.sizeToFit()
+        self.chatBubble.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25).isActive = true
         
         self.messageLabel.topAnchor.constraint(equalTo: self.chatBubble.topAnchor, constant: 19).isActive = true
         self.messageLabel.leftAnchor.constraint(equalTo: self.chatBubble.leftAnchor, constant: 19).isActive = true

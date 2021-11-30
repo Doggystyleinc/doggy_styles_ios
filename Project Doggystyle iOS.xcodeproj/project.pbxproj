@@ -250,6 +250,7 @@
 		E390FDB02755654D0017FE8A /* goodnewsdog.png in Resources */ = {isa = PBXBuildFile; fileRef = E390FDAD2755654D0017FE8A /* goodnewsdog.png */; };
 		E390FDB12755654D0017FE8A /* goodnewsdog@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E390FDAE2755654D0017FE8A /* goodnewsdog@2x.png */; };
 		E390FDB22755654D0017FE8A /* goodnewsdog@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E390FDAF2755654D0017FE8A /* goodnewsdog@3x.png */; };
+		E390FDB42755A4E30017FE8A /* SupportChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E390FDB32755A4E30017FE8A /* SupportChatModel.swift */; };
 		E396B91F26FD33B90087F106 /* house_nav_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E396B91C26FD33B80087F106 /* house_nav_icon@2x.png */; };
 		E396B92026FD33B90087F106 /* house_nav_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E396B91D26FD33B90087F106 /* house_nav_icon@3x.png */; };
 		E396B92126FD33B90087F106 /* house_nav_icon@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = E396B91E26FD33B90087F106 /* house_nav_icon@1x.png */; };
@@ -549,6 +550,7 @@
 		E390FDAD2755654D0017FE8A /* goodnewsdog.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = goodnewsdog.png; sourceTree = "<group>"; };
 		E390FDAE2755654D0017FE8A /* goodnewsdog@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "goodnewsdog@2x.png"; sourceTree = "<group>"; };
 		E390FDAF2755654D0017FE8A /* goodnewsdog@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "goodnewsdog@3x.png"; sourceTree = "<group>"; };
+		E390FDB32755A4E30017FE8A /* SupportChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportChatModel.swift; sourceTree = "<group>"; };
 		E396B91C26FD33B80087F106 /* house_nav_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "house_nav_icon@2x.png"; sourceTree = "<group>"; };
 		E396B91D26FD33B90087F106 /* house_nav_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "house_nav_icon@3x.png"; sourceTree = "<group>"; };
 		E396B91E26FD33B90087F106 /* house_nav_icon@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "house_nav_icon@1x.png"; sourceTree = "<group>"; };
@@ -1163,6 +1165,7 @@
 				E37D20D02717D88000BF859A /* SupportChatController.swift */,
 				E362C0A7274BE7270012E919 /* ChatCollectionView.swift */,
 				E362C0A9274BF14B0012E919 /* AccessoryInputView.swift */,
+				E390FDB32755A4E30017FE8A /* SupportChatModel.swift */,
 			);
 			path = ChatUnionControllers;
 			sourceTree = "<group>";
@@ -1237,8 +1240,8 @@
 			isa = PBXGroup;
 			children = (
 				E3B87A2E27307DB0009139C5 /* EditProfileController */,
-				E3B11AB9268FCBB200B5B6F8 /* ProfileController.swift */,
 				E3B11ABB268FCBC900B5B6F8 /* ProfileCollectionView.swift */,
+				E3B11AB9268FCBB200B5B6F8 /* ProfileController.swift */,
 				E3B11ABD268FCBE300B5B6F8 /* ProfileCollectionFeeder.swift */,
 				E3B11ABF268FCC0400B5B6F8 /* ProfilePhotoUploadExt.swift */,
 			);
@@ -1978,6 +1981,7 @@
 				CD6DCFFC267A8DD200BC376B /* DSRegularLabel.swift in Sources */,
 				E334FB9A270BD328003F24D5 /* NewDogBuilder.swift in Sources */,
 				E357D2FA26E2BDBB00CDF90E /* CreditCardController.swift in Sources */,
+				E390FDB42755A4E30017FE8A /* SupportChatModel.swift in Sources */,
 				E36EE56626B793FB0009A0EF /* MainDashboardCollectionView.swift in Sources */,
 				CD6DD01A2680FC4100BC376B /* GrabDeviceID.swift in Sources */,
 				E3D53F3F26AA2200003B4317 /* SearchLocationFeeder.swift in Sources */,

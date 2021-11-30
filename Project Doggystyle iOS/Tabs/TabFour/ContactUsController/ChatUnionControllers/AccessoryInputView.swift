@@ -135,6 +135,17 @@ class AccessoryInputView : UIView, UITextViewDelegate {
         
     }
     
+    func resetAfterSend() {
+        self.commentTextView.text = ""
+        UIView.animate(withDuration: 0.2) {
+            self.textViewYConstraint?.constant = 40
+            self.supportChatController?.heightConstraint?.constant = 70
+            self.layoutIfNeeded()
+            self.supportChatController?.view.layoutIfNeeded()
+            self.reloadInputViews()
+        }
+    }
+    
     @objc func handleImagePickerButton() {
         self.supportChatController?.handleImagePicker()
     }
