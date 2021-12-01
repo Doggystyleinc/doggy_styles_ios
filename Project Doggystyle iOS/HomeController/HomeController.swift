@@ -157,7 +157,7 @@ class HomeViewController: UITabBarController, CLLocationManagerDelegate, CustomA
         }
     }
    
-    func uploadUserChatImage(imageToUpload : UIImage, completion : @escaping (_ isComplete : Bool) -> ()) {
+    func uploadUserChatImage(imageToUpload : UIImage, imageHeight : Double, imageWidth : Double, completion : @escaping (_ isComplete : Bool) -> ()) {
         
         guard let userUid = Auth.auth().currentUser?.uid else {return}
         guard let imageDataToUpload = imageToUpload.jpegData(compressionQuality: 0.35) else {return}
@@ -185,9 +185,9 @@ class HomeViewController: UITabBarController, CLLocationManagerDelegate, CustomA
 
                     let parent_key = refUploadPath.key ?? "nil"
                     
-                    let time_stamp : Double = Date().timeIntervalSince1970
+                    let time_stamp : Double = NSDate().timeIntervalSince1970
 
-                    let values : [String : Any] = ["time_stamp" : time_stamp, "type_of_message" : "media_message", "message" : "nil", "senders_firebase_uid" : userUid, "message_parent_key" : parent_key, "users_selected_image_url" : uploadUrl]
+                    let values : [String : Any] = ["time_stamp" : time_stamp, "type_of_message" : "media_message", "message" : "nil", "senders_firebase_uid" : userUid, "message_parent_key" : parent_key, "users_selected_image_url" : uploadUrl, "image_height" : imageHeight, "image_width" : imageWidth]
                     
                     refUploadPath.updateChildValues(values, withCompletionBlock: { (error, ref) in
                         if error != nil {

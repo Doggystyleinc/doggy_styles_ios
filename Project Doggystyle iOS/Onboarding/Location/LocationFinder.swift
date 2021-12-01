@@ -491,14 +491,14 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
         self.placesClient = GMSPlacesClient.shared()
        
-        
+      
         self.successContainer.isHidden = true
         self.errorContainer.isHidden = true
         self.flagshipContainer.isHidden = true
         
         self.handleLocationServicesAuthorization()
         
-        self.searchStates = .successFlagShip
+        self.searchStates = .idle
         self.listener()
         
     }

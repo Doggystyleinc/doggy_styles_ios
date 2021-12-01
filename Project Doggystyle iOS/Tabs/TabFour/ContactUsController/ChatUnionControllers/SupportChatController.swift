@@ -34,7 +34,9 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         
         let hc = UIView()
         hc.translatesAutoresizingMaskIntoConstraints = false
-        hc.backgroundColor = .clear
+        hc.backgroundColor = coreBackgroundWhite.withAlphaComponent(0.0)
+        hc.layer.masksToBounds = true
+        hc.clipsToBounds = true
         
         return hc
     }()
@@ -193,8 +195,13 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         
         self.view.backgroundColor = coreBackgroundWhite
         self.addViews()
-        self.handleDataSource()
         self.handleObservers()
+        self.handleDataSource()
+        self.customInputAccessoryView.commentTextView.becomeFirstResponder()
+        
+        //MARK: - FORCE LAYOUTSUBVIEWS
+        self.view.layoutIfNeeded()
+        self.view.setNeedsLayout()
         
     }
     
@@ -212,27 +219,27 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         self.shouldAdjustForKeyboard = true
+        self.chatMainCollection.scrollToBottom(animated: true)
+        self.showFirstResponder()
     }
     
     //MARK: - HEADER AND FOOTER GRADIENT
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+
         if self.hasViewBeenLaidOut == true {return}
         self.hasViewBeenLaidOut = true
-        
+
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = headerContainer.bounds
-        gradientLayer.colors = [coreBackgroundWhite.cgColor,
-                                coreBackgroundWhite.cgColor,
-                                coreBackgroundWhite.cgColor,
-                                coreBackgroundWhite.cgColor,
-                                coreBackgroundWhite.withAlphaComponent(0.7).cgColor
-                                
+        gradientLayer.colors = [
+            coreBackgroundWhite.withAlphaComponent(0.5).cgColor,
+            coreBackgroundWhite.withAlphaComponent(0.6).cgColor,
+            coreBackgroundWhite.withAlphaComponent(0.7).cgColor
+
         ]
-        
-        self.headerContainer.layer.insertSublayer(gradientLayer, at: 0)
-        
+        print("layer has gradient attatched with frame: \(headerContainer.bounds)")
+//        self.headerContainer.layer.insertSublayer(gradientLayer, at: 0)
     }
     
     //MARK: - VIEW LAYOUT
@@ -274,7 +281,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         self.subHeaderLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.subHeaderLabel.sizeToFit()
         
-        self.chatMainCollection.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 40).isActive = true
+        self.chatMainCollection.topAnchor.constraint(equalTo: self.subHeaderLabel.topAnchor, constant: 0).isActive = true
         self.chatMainCollection.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.chatMainCollection.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.chatMainCollection.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
@@ -314,7 +321,6 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         
         self.runDataEngine { isComplete in
             if isComplete == true {
-                print("official count is: \(self.chatObjectArray.count)")
                 self.handleSuccess()
             } else {
                 self.handleFailureNoMessage()
@@ -334,11 +340,10 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
             //MARK: - CLEAR THE DATASOURCE SINCE WE HAVE OPEN SCOKETS LISTENING AND THE COUNTER
             self.chatObjectArray.removeAll()
             counter = 0
-
+            
             //MARK: - MESSAGES EXISTS
             if snap.exists() {
                 let childrenCount = Int(snap.childrenCount)
-               
                 
                 for child in snap.children.allObjects as! [DataSnapshot] {
                     counter += 1
@@ -347,9 +352,11 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
                     let senders_firebase_uid = JSON["senders_firebase_uid"] as? String ?? "nil"
                     let message = JSON["message"] as? String ?? "nil"
                     let message_parent_key = JSON["message_parent_key"] as? String ?? "nil"
-                    let time_stamp = JSON["time_stamp"] as? String ?? "nil"
+                    let time_stamp = JSON["time_stamp"] as? Double ?? 0.0
                     let type_of_message = JSON["type_of_message"] as? String ?? "nil"
                     let users_selected_image_url = JSON["users_selected_image_url"] as? String ?? "nil"
+                    let image_height = JSON["image_height"] as? Double ?? 0.0
+                    let image_width = JSON["image_width"] as? Double ?? 0.0
                     
                     let ref = self.databaseRef.child("all_users").child(senders_firebase_uid)
                     
@@ -376,7 +383,9 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
                                                            "user_first_name" : user_first_name,
                                                            "user_last_name" : user_last_name,
                                                            "users_email" : users_email,
-                                                           "users_profile_image_url" : users_profile_image_url]
+                                                           "users_profile_image_url" : users_profile_image_url,
+                                                           "image_height" : image_height,
+                                                           "image_width" : image_width]
                             
                             //MARK: - LOAD THE DATA INTO THE MODEL
                             let post = ChatSupportModel(JSON: object)
@@ -384,15 +393,15 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
                             
                             //MARK: - SORT THE DICTIONARY BY THE TIME STAMP
                             self.chatObjectArray.sort(by: { (timeOne, timeTwo) -> Bool in
-                                 
-                                 if let timeOne = timeOne.time_stamp {
-                                      if let timeTwo = timeTwo.time_stamp {
-                                           return timeOne >  timeTwo
-                                      }
-                                 }
-                                 
-                                 return true
-                                 
+                                
+                                if let timeOne = timeOne.time_stamp {
+                                    if let timeTwo = timeTwo.time_stamp {
+                                        return timeOne < timeTwo
+                                    }
+                                }
+                                
+                                return true
+                                
                             })
                             
                             if childrenCount == counter {
@@ -531,7 +540,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         let distanceFromBottom = self.chatMainCollection.bottomOffset().y - self.chatMainCollection.contentOffset.y
         
         var insets = self.chatMainCollection.contentInset
-        insets.bottom = keyboardHeight
+        insets.bottom = keyboardHeight - 30.0
         
         UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut, animations: {
             
@@ -542,8 +551,6 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
                 self.chatMainCollection.contentOffset = self.chatMainCollection.bottomOffset()
             }
         }, completion: nil)
-        
-        //        shown ? self.chatMainCollection.scrollToBottom() : self.chatMainCollection.scrollToTop()
     }
     
     //MARK: - HIDES THE ACCESSORY VIEW
@@ -611,7 +618,13 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
     func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
         
         switch type {
-        case Statics.OK: print(Statics.OK)
+        case Statics.OK:
+            
+            self.customInputAccessoryView.sendButton.isUserInteractionEnabled = true
+            self.chatMainCollection.scrollToBottom(animated: true)
+            self.customInputAccessoryView.commentTextView.text = ""
+            self.customInputAccessoryView.placeHolderLabel.isHidden = false
+            
         default: print("Should not hit")
             
         }
@@ -635,6 +648,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
+    //MARK: - SEND MESSAGE BUTTON
     @objc func handleSendButton() {
         
         guard let user_uid = Auth.auth().currentUser?.uid else {return}
@@ -643,37 +657,54 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         
         if cleanText.count <= 0 {return}
         
-        //CLEAN
-        self.customInputAccessoryView.resetAfterSend()
-        self.customInputAccessoryView.sendButton.isUserInteractionEnabled = false
+        var containsNSFWText : Bool = false
         
-        //ALL CLEAR HERE NOW
-        let time_stamp : Double = Date().timeIntervalSince1970
+        //MARK: - START LOOP
+        for word in cleanText.split(separator: " ") {
+          
+            if NSFWComparisonArray.contains(word.lowercased()) {
+                containsNSFWText = true
+            } else {
+                containsNSFWText = false
+            }
+        }
         
-        let starterKey = "this_is_a_random_starter_key"
-        
-        
-        //MARK: - GETTING THE USERS VALUES WHEN LOADING THE CHAT CONTROLLER, NOT SENDING IT HERE IN CASE THEY CHANGE IT.
-        let ref = self.databaseRef.child("customer_support").child("support_chat").child(starterKey).childByAutoId()
-        let parent_key = ref.key ?? "nil"
-        
-        let values : [String : Any] = ["time_stamp" : time_stamp, "type_of_message" : "text", "message" : cleanText, "senders_firebase_uid" : user_uid, "message_parent_key" : parent_key]
-        
-        ref.updateChildValues(values) { error, ref in
+        //MARK: - END LOOP
+        if !containsNSFWText {
+            //CLEAN
+            self.customInputAccessoryView.resetAfterSend()
+            self.customInputAccessoryView.sendButton.isUserInteractionEnabled = false
             
-            print("message sent successfully")
-            self.customInputAccessoryView.sendButton.isUserInteractionEnabled = true
+            //ALL CLEAR HERE NOW
+            let time_stamp : Double = NSDate().timeIntervalSince1970
             
-            if self.otherUIDS != nil {
+            let starterKey = "this_is_a_random_starter_key"
+            
+            //MARK: - GETTING THE USERS VALUES WHEN LOADING THE CHAT CONTROLLER, NOT SENDING IT HERE IN CASE THEY CHANGE IT.
+            let ref = self.databaseRef.child("customer_support").child("support_chat").child(starterKey).childByAutoId()
+            let parent_key = ref.key ?? "nil"
+            
+            let values : [String : Any] = ["time_stamp" : time_stamp, "type_of_message" : "text", "message" : cleanText, "senders_firebase_uid" : user_uid, "message_parent_key" : parent_key]
+            
+            ref.updateChildValues(values) { error, ref in
                 
-                guard let safeIDS = self.otherUIDS else {return}
+                self.customInputAccessoryView.sendButton.isUserInteractionEnabled = true
+                self.chatMainCollection.scrollToBottom(animated: true)
+                self.customInputAccessoryView.placeHolderLabel.isHidden = false
                 
-                for i in safeIDS {
-                    PushNotificationManager.sendPushNotification(title: "Message", body: "cleanText", recipients_user_uid: i) { success, error in
-                        print("notification sent")
+                if self.otherUIDS != nil {
+                    
+                    guard let safeIDS = self.otherUIDS else {return}
+                    
+                    for i in safeIDS {
+                        PushNotificationManager.sendPushNotification(title: "Message", body: "cleanText", recipients_user_uid: i) { success, error in
+                            print("notification sent")
+                        }
                     }
                 }
             }
+        } else {
+            self.handleCustomPopUpAlert(title: "Ruh roh!", message: "Please enter another message, we aim to keep a friendly environment here at Doggystyle - for both humans and pups.", passedButtons: [Statics.OK])
         }
     }
 }
@@ -767,22 +798,29 @@ extension SupportChatController : UIImagePickerControllerDelegate, UINavigationC
                 if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
                     
                     self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
-                    self.homeController?.uploadUserChatImage(imageToUpload: editedImage) { complete in
+                    
+                    let height = Double(editedImage.size.height)
+                    let width = Double(editedImage.size.width)
+                    
+                    self.homeController?.uploadUserChatImage(imageToUpload: editedImage, imageHeight: height, imageWidth: width, completion: { complete in
                         self.mainLoadingScreen.cancelMainLoadingScreen()
                         UIDevice.vibrateLight()
                         self.customInputAccessoryView.isHidden = false
                         self.perform(#selector(self.showFirstResponder), with: nil, afterDelay: 1.0)
-                    }
+                    })
                     
                 } else if let originalImage = info[.originalImage] as? UIImage  {
                     self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
                     
-                    self.homeController?.uploadUserChatImage(imageToUpload: originalImage) { complete in
+                    let height = Double(originalImage.size.height)
+                    let width = Double(originalImage.size.width)
+                    
+                    self.homeController?.uploadUserChatImage(imageToUpload: originalImage, imageHeight: height, imageWidth: width, completion: { complete in
                         self.mainLoadingScreen.cancelMainLoadingScreen()
                         UIDevice.vibrateLight()
                         self.customInputAccessoryView.isHidden = false
                         self.perform(#selector(self.showFirstResponder), with: nil, afterDelay: 1.0)
-                    }
+                    })
                     
                 } else {
                     print("Failed grabbing the photo")

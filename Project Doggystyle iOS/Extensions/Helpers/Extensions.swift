@@ -112,6 +112,151 @@ public enum LocationTrajectory {
 
 var globalLocationTrajectory = LocationTrajectory.fromOnboarding
 
+
+extension Date {
+    
+    func collectionDate() -> String {
+        
+        let currentDate = Date()
+        let nameFormatter = DateFormatter()
+        
+        nameFormatter.dateFormat = "EEEE"
+        
+        let secondsBetween: TimeInterval = currentDate.timeIntervalSince(self as Date)
+        let numberOfDays = Int(secondsBetween / 86400)
+        
+        let passedWeekDayName = nameFormatter.string(from: self)
+        let currentWeekDayName = nameFormatter.string(from: currentDate)
+        
+        
+        if currentWeekDayName == passedWeekDayName && numberOfDays == 0 {
+            
+            return "Today"
+            
+        } else if numberOfDays <= 7 {
+            
+            return passedWeekDayName
+            
+        } else {
+            
+            nameFormatter.dateFormat = "MMM dd, yyyy"
+            let name = nameFormatter.string(from: self)
+            return name
+        }
+    }
+}
+
+
+func getReadableDate(timeStamp: TimeInterval) -> String? {
+    let date = Date(timeIntervalSince1970: timeStamp)
+    let dateFormatter = DateFormatter()
+    
+    if Calendar.current.isDateInTomorrow(date) {
+        return "Tomorrow"
+    } else if Calendar.current.isDateInYesterday(date) {
+        return "Yesterday"
+    } else if dateFallsInCurrentWeek(date: date) {
+        if Calendar.current.isDateInToday(date) {
+            dateFormatter.dateFormat = "h:mm a"
+            return dateFormatter.string(from: date)
+        } else {
+            dateFormatter.dateFormat = "EEEE"
+            return dateFormatter.string(from: date)
+        }
+    } else {
+        dateFormatter.dateFormat = "MMM d, yyyy"
+        return dateFormatter.string(from: date)
+    }
+}
+
+func dateFallsInCurrentWeek(date: Date) -> Bool {
+    let currentWeek = Calendar.current.component(Calendar.Component.weekOfYear, from: Date())
+    let datesWeek = Calendar.current.component(Calendar.Component.weekOfYear, from: date)
+    return (currentWeek == datesWeek)
+}
+
+extension Date {
+    
+    func timePassed() -> String {
+        
+        print("SELF", self)
+        
+        let currentDate = Date()
+        let nameFormatter = DateFormatter()
+        
+        nameFormatter.dateFormat = "EEEE"
+        nameFormatter.locale = Locale(identifier: "en_US_POSIX")
+        
+        let secondsBetween: TimeInterval = currentDate.timeIntervalSince(self as Date)
+        let numberOfDays = Int(secondsBetween / 86400)
+        print("numberOfDays", numberOfDays)
+
+        let currentWeekDayName = nameFormatter.string(from: currentDate)
+        let passedWeekDayName = nameFormatter.string(from: self)
+        
+        //CHECK FOR TODAY - GIVE EXACT TIME
+        if currentWeekDayName == passedWeekDayName {
+            
+            nameFormatter.amSymbol = "am"
+            nameFormatter.pmSymbol = "pm"
+            nameFormatter.dateFormat = "hh:mm a"
+            let name = nameFormatter.string(from: self)
+            print("name on the return is: \(name)")
+            return name
+            
+            //CHECK FOR THE LAST WEEK - GIVE WEEK DAY NAME
+        } else if numberOfDays <= 7 {
+            
+            return passedWeekDayName
+            
+            //IF BEYOND A WEEK, GIVE THE FULL DATE
+        } else {
+            nameFormatter.dateFormat = "MMM dd, yyyy"
+            let name = nameFormatter.string(from: self)
+            return name
+        }
+    }
+}
+
+extension Date {
+    
+    func timePassedFullFormat() -> String {
+        
+        let currentDate = Date()
+        let nameFormatter = DateFormatter()
+        
+        nameFormatter.dateFormat = "EEEE"
+        nameFormatter.locale = Locale(identifier: "en_US_POSIX")
+
+        let secondsBetween: TimeInterval = currentDate.timeIntervalSince(self as Date)
+        let numberOfDays = Int(secondsBetween / 86400)
+        
+        let currentWeekDayName = nameFormatter.string(from: currentDate)
+        let passedWeekDayName = nameFormatter.string(from: self)
+        
+        //CHECK FOR TODAY - GIVE EXACT TIME
+        if currentWeekDayName == passedWeekDayName {
+            
+            nameFormatter.amSymbol = "am"
+            nameFormatter.pmSymbol = "pm"
+            nameFormatter.dateFormat = "hh:mm a"
+            let name = nameFormatter.string(from: self)
+            return name
+            
+            //CHECK FOR THE LAST WEEK - GIVE WEEK DAY NAME
+        } else if numberOfDays <= 7 {
+            
+            return passedWeekDayName
+            
+            //IF BEYOND A WEEK, GIVE THE FULL DATE
+        } else {
+            nameFormatter.dateFormat = "MMM dd, yyyy"
+            let name = nameFormatter.string(from: self)
+            return name
+        }
+    }
+}
+
 extension UIScrollView {
     
     func scrollToTop() {
@@ -1345,40 +1490,6 @@ extension Date {
         let stringerDate = "\(year)\(stringmonth)\(stringDay)"
         
         return stringerDate
-    }
-}
-
-extension Date {
-    
-    func collectionDate() -> String {
-        
-        let currentDate = Date()
-        let nameFormatter = DateFormatter()
-        
-        nameFormatter.dateFormat = "EEEE"
-        
-        let secondsBetween: TimeInterval = currentDate.timeIntervalSince(self as Date)
-        let numberOfDays = Int(secondsBetween / 86400)
-        
-        let passedWeekDayName = nameFormatter.string(from: self)
-        let currentWeekDayName = nameFormatter.string(from: currentDate)
-        
-        
-        if currentWeekDayName == passedWeekDayName && numberOfDays == 0 {
-            
-            return "Today"
-            
-        } else if numberOfDays <= 7 {
-            
-            return passedWeekDayName
-            
-            //IF BEYOND A WEEK, GIVE THE FULL DATE
-        } else {
-            
-            nameFormatter.dateFormat = "MMM dd, yyyy"
-            let name = nameFormatter.string(from: self)
-            return name
-        }
     }
 }
 
