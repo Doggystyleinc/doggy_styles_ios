@@ -307,12 +307,15 @@
 		E3C766E3272335C100735655 /* YourReferralContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766E2272335C100735655 /* YourReferralContainer.swift */; };
 		E3C766E5272336DB00735655 /* YourReferralSelectorSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766E4272336DB00735655 /* YourReferralSelectorSwitch.swift */; };
 		E3C766E72723547C00735655 /* TwilioTextMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C766E62723547C00735655 /* TwilioTextMessage.swift */; };
+		E3D461F0275D3C9100B4FDE7 /* ChatMainFeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D461EF275D3C9100B4FDE7 /* ChatMainFeeder.swift */; };
+		E3D461F2275D3CA300B4FDE7 /* ChatMediaFeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D461F1275D3CA300B4FDE7 /* ChatMediaFeeder.swift */; };
 		E3D53F3B26AA21D0003B4317 /* LocationFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D53F3A26AA21D0003B4317 /* LocationFinder.swift */; };
 		E3D53F3D26AA21EC003B4317 /* SearchLocationTableview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D53F3C26AA21EC003B4317 /* SearchLocationTableview.swift */; };
 		E3D53F3F26AA2200003B4317 /* SearchLocationFeeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D53F3E26AA2200003B4317 /* SearchLocationFeeder.swift */; };
 		E3E9F7E426BC62CE00C3A57A /* Doggy_filler_photo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3E9F7E126BC62CD00C3A57A /* Doggy_filler_photo@2x.png */; };
 		E3E9F7E526BC62CE00C3A57A /* Doggy_filler_photo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3E9F7E226BC62CD00C3A57A /* Doggy_filler_photo@3x.png */; };
 		E3E9F7E626BC62CE00C3A57A /* Doggy_filler_photo.png in Resources */ = {isa = PBXBuildFile; fileRef = E3E9F7E326BC62CE00C3A57A /* Doggy_filler_photo.png */; };
+		E3EC880A275D428400BFCE63 /* DataPostStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EC8809275D428400BFCE63 /* DataPostStructures.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -607,12 +610,15 @@
 		E3C766E2272335C100735655 /* YourReferralContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourReferralContainer.swift; sourceTree = "<group>"; };
 		E3C766E4272336DB00735655 /* YourReferralSelectorSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourReferralSelectorSwitch.swift; sourceTree = "<group>"; };
 		E3C766E62723547C00735655 /* TwilioTextMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwilioTextMessage.swift; sourceTree = "<group>"; };
+		E3D461EF275D3C9100B4FDE7 /* ChatMainFeeder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMainFeeder.swift; sourceTree = "<group>"; };
+		E3D461F1275D3CA300B4FDE7 /* ChatMediaFeeder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMediaFeeder.swift; sourceTree = "<group>"; };
 		E3D53F3A26AA21D0003B4317 /* LocationFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationFinder.swift; sourceTree = "<group>"; };
 		E3D53F3C26AA21EC003B4317 /* SearchLocationTableview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocationTableview.swift; sourceTree = "<group>"; };
 		E3D53F3E26AA2200003B4317 /* SearchLocationFeeder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocationFeeder.swift; sourceTree = "<group>"; };
 		E3E9F7E126BC62CD00C3A57A /* Doggy_filler_photo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Doggy_filler_photo@2x.png"; sourceTree = "<group>"; };
 		E3E9F7E226BC62CD00C3A57A /* Doggy_filler_photo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Doggy_filler_photo@3x.png"; sourceTree = "<group>"; };
 		E3E9F7E326BC62CE00C3A57A /* Doggy_filler_photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Doggy_filler_photo.png; sourceTree = "<group>"; };
+		E3EC8809275D428400BFCE63 /* DataPostStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPostStructures.swift; sourceTree = "<group>"; };
 		E3FEDDA826DD69F9002BB51C /* Project Doggystyle iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Project Doggystyle iOS.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -905,6 +911,7 @@
 				E3C766E62723547C00735655 /* TwilioTextMessage.swift */,
 				E335B4D727471EC300B15F27 /* PushNotificationManager.swift */,
 				E3C0FE6D27519B74005CFEA7 /* NSFW+TEXT.swift */,
+				E3EC8809275D428400BFCE63 /* DataPostStructures.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1162,10 +1169,8 @@
 		E362C0A6274BE6DE0012E919 /* ChatUnionControllers */ = {
 			isa = PBXGroup;
 			children = (
-				E37D20D02717D88000BF859A /* SupportChatController.swift */,
-				E362C0A7274BE7270012E919 /* ChatCollectionView.swift */,
-				E362C0A9274BF14B0012E919 /* AccessoryInputView.swift */,
-				E390FDB32755A4E30017FE8A /* SupportChatModel.swift */,
+				E3D461F4275D3CF800B4FDE7 /* SupportControllers */,
+				E3D461EE275D3C8000B4FDE7 /* ChatCollectionFeeders */,
 			);
 			path = ChatUnionControllers;
 			sourceTree = "<group>";
@@ -1284,6 +1289,7 @@
 			isa = PBXGroup;
 			children = (
 				E362C0A6274BE6DE0012E919 /* ChatUnionControllers */,
+				E3D461F3275D3CEE00B4FDE7 /* ChatModel */,
 				E37D20CE2717CF1A00BF859A /* ContactUsProfileController.swift */,
 			);
 			path = ContactUsController;
@@ -1575,6 +1581,33 @@
 				E3C766D027207DF100735655 /* ReferralProgramCollectionView.swift */,
 			);
 			path = ReferralContactsControllers;
+			sourceTree = "<group>";
+		};
+		E3D461EE275D3C8000B4FDE7 /* ChatCollectionFeeders */ = {
+			isa = PBXGroup;
+			children = (
+				E3D461EF275D3C9100B4FDE7 /* ChatMainFeeder.swift */,
+				E3D461F1275D3CA300B4FDE7 /* ChatMediaFeeder.swift */,
+			);
+			path = ChatCollectionFeeders;
+			sourceTree = "<group>";
+		};
+		E3D461F3275D3CEE00B4FDE7 /* ChatModel */ = {
+			isa = PBXGroup;
+			children = (
+				E390FDB32755A4E30017FE8A /* SupportChatModel.swift */,
+			);
+			path = ChatModel;
+			sourceTree = "<group>";
+		};
+		E3D461F4275D3CF800B4FDE7 /* SupportControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E37D20D02717D88000BF859A /* SupportChatController.swift */,
+				E362C0A7274BE7270012E919 /* ChatCollectionView.swift */,
+				E362C0A9274BF14B0012E919 /* AccessoryInputView.swift */,
+			);
+			path = SupportControllers;
 			sourceTree = "<group>";
 		};
 		E3D53F3826AA21A6003B4317 /* LoginRegistration */ = {
@@ -1977,6 +2010,7 @@
 				E326571D26B1B7FD004A15F6 /* MapViewSubclass.swift in Sources */,
 				E36EE57B26B87B2E0009A0EF /* YourNotificationsCollectionView.swift in Sources */,
 				CD6DD00E267FC86000BC376B /* RefurAFriendController.swift in Sources */,
+				E3D461F2275D3CA300B4FDE7 /* ChatMediaFeeder.swift in Sources */,
 				E397405D26D40B6F0084742F /* AppointmentTwoContainer.swift in Sources */,
 				CD6DCFFC267A8DD200BC376B /* DSRegularLabel.swift in Sources */,
 				E334FB9A270BD328003F24D5 /* NewDogBuilder.swift in Sources */,
@@ -2069,6 +2103,7 @@
 				E36EE54626B7036B0009A0EF /* NewDogEntry.swift in Sources */,
 				E38BA2E3273DAE8E001FF3DC /* GroomingTimeline.swift in Sources */,
 				E334FBAB270E461A003F24D5 /* LocationBroadcaster.swift in Sources */,
+				E3EC880A275D428400BFCE63 /* DataPostStructures.swift in Sources */,
 				E3C766E5272336DB00735655 /* YourReferralSelectorSwitch.swift in Sources */,
 				CDE871502652E66A0082551B /* DecisionController.swift in Sources */,
 				CD203C002667FACC00335D93 /* ProfileViewController.swift in Sources */,
@@ -2094,6 +2129,7 @@
 				E3B11AC2268FCC4600B5B6F8 /* Extensions.swift in Sources */,
 				E38B7FE026C469600013D72D /* NewDogSearchSubView.swift in Sources */,
 				E3C766E1272333E300735655 /* YourReferralCollectionView.swift in Sources */,
+				E3D461F0275D3C9100B4FDE7 /* ChatMainFeeder.swift in Sources */,
 				CD6DD051268B9E8400BC376B /* ServiceSingleton.swift in Sources */,
 				E326573826B21898004A15F6 /* NewDogTwo.swift in Sources */,
 				CD6DCFF4267A648400BC376B /* ServiceOfTheWeekView.swift in Sources */,

@@ -343,7 +343,8 @@ class ServicesFeeder : UICollectionViewCell {
     @objc func handleMainContainerTaps(sender : UITapGestureRecognizer) {
         
         if let tappableArea = sender.view {
-            self.servicesCollectionview?.handleSelection(sender:tappableArea)
+//            self.servicesCollectionview?.handleSelection(sender:tappableArea)
+            print("disabling taps until we get descriptions: \(tappableArea)")
         }
     }
     

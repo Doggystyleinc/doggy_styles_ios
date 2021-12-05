@@ -231,15 +231,12 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         self.hasViewBeenLaidOut = true
 
         let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = headerContainer.bounds
+        gradientLayer.frame = self.headerContainer.bounds
         gradientLayer.colors = [
-            coreBackgroundWhite.withAlphaComponent(0.5).cgColor,
-            coreBackgroundWhite.withAlphaComponent(0.6).cgColor,
-            coreBackgroundWhite.withAlphaComponent(0.7).cgColor
-
+            coreBackgroundWhite.withAlphaComponent(1.0).cgColor,
+            coreBackgroundWhite.withAlphaComponent(0.9).cgColor,
         ]
-        print("layer has gradient attatched with frame: \(headerContainer.bounds)")
-//        self.headerContainer.layer.insertSublayer(gradientLayer, at: 0)
+        self.headerContainer.layer.insertSublayer(gradientLayer, at: 0)
     }
     
     //MARK: - VIEW LAYOUT
@@ -281,7 +278,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         self.subHeaderLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.subHeaderLabel.sizeToFit()
         
-        self.chatMainCollection.topAnchor.constraint(equalTo: self.subHeaderLabel.topAnchor, constant: 0).isActive = true
+        self.chatMainCollection.topAnchor.constraint(equalTo: self.headerLabel.topAnchor, constant: 0).isActive = true
         self.chatMainCollection.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.chatMainCollection.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.chatMainCollection.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true

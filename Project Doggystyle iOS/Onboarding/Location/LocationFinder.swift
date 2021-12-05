@@ -258,7 +258,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
         let bc = UIView()
         bc.translatesAutoresizingMaskIntoConstraints = false
-        bc.backgroundColor = .red
+        bc.backgroundColor = .clear
         bc.isUserInteractionEnabled = true
         
         return bc
@@ -445,6 +445,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         si.image = image
         si.isUserInteractionEnabled = false
         si.contentMode = .center
+        si.backgroundColor = .clear
         return si
     }()
     
@@ -471,15 +472,14 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         cbf.titleLabel?.adjustsFontSizeToFitWidth = true
         cbf.titleLabel?.numberOfLines = 1
         cbf.titleLabel?.adjustsFontForContentSizeCategory = true
-        cbf.titleLabel?.textColor = boldLightGreyColor
+        cbf.titleLabel?.textColor =  boldLightGreyColor.withAlphaComponent(0.25)
         cbf.backgroundColor = .clear
         cbf.layer.cornerRadius = 15
         cbf.layer.masksToBounds = true
-        cbf.tintColor = boldLightGreyColor
+        cbf.tintColor = boldLightGreyColor.withAlphaComponent(0.25)
         cbf.addTarget(self, action: #selector(self.handleShowAddress), for: .touchUpInside)
         
         return cbf
-        
     }()
     
     override func viewDidLoad() {
@@ -581,7 +581,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.errorLabel.leftAnchor.constraint(equalTo: self.errorContainer.leftAnchor, constant: 30).isActive = true
         self.errorLabel.rightAnchor.constraint(equalTo: self.errorContainer.rightAnchor, constant: -30).isActive = true
         self.errorLabel.bottomAnchor.constraint(equalTo: self.whatsappButton.topAnchor, constant: -10).isActive = true
-        errorLabel.sizeToFit()
+        self.errorLabel.sizeToFit()
         
         self.errorImage.bottomAnchor.constraint(equalTo: self.errorLabel.topAnchor, constant: -25).isActive = true
         self.errorImage.topAnchor.constraint(equalTo: self.uhOhLabel.bottomAnchor, constant: 25).isActive = true
@@ -660,20 +660,17 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.flagshipLabel.leftAnchor.constraint(equalTo: self.flagshipContainer.leftAnchor, constant: 20).isActive = true
         self.flagshipLabel.rightAnchor.constraint(equalTo: self.flagshipContainer.rightAnchor, constant: -20).isActive = true
         self.flagshipLabel.bottomAnchor.constraint(equalTo: self.showAddressButton.topAnchor, constant: -5).isActive = true
-        self.flagshipLabel.backgroundColor = .purple
 
-        self.hipHopDogImage.topAnchor.constraint(equalTo: self.searchTextField.bottomAnchor, constant: 4).isActive = true
+        self.hipHopDogImage.topAnchor.constraint(equalTo: self.searchTextField.bottomAnchor, constant: 0).isActive = true
         self.hipHopDogImage.leftAnchor.constraint(equalTo: self.flagshipContainer.leftAnchor, constant: 0).isActive = true
         self.hipHopDogImage.rightAnchor.constraint(equalTo: self.flagshipContainer.rightAnchor, constant: 0).isActive = true
-        self.hipHopDogImage.bottomAnchor.constraint(equalTo: self.flagshipLabel.topAnchor, constant: 0).isActive = true
+        self.hipHopDogImage.sizeToFit()
         
         self.showAddressButton.bottomAnchor.constraint(equalTo: self.confirmButton.topAnchor, constant: -3).isActive = true
         self.showAddressButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.showAddressButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.showAddressButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         
-        self.showAddressButton.backgroundColor = .green
-
     }
     
     func fillValues() {
@@ -1214,9 +1211,13 @@ extension LocationFinder {
         let locational_data = userProfileStruct.user_grooming_locational_data ?? ["nil" : "nil"]
         let hasFlagshipAddress = locational_data["address"] as? String ?? "nil"
         
+        print(hasFlagshipAddress, " :HAS")
+        
         if hasFlagshipAddress == "nil" {
-            
+            print("has flagship")
         } else {
+            print("Address")
+
             self.handleCustomPopUpAlert(title: "Address", message: "\(hasFlagshipAddress)", passedButtons: [Statics.OK])
         }
     }

@@ -9,6 +9,11 @@ import Foundation
 import LocalAuthentication
 import UIKit
 
+//        //MARK: - CHECK FOR FACE ID
+//        Biometrics.shared.biometricAuth { complete in
+//            print("print \(complete)")
+//        }
+
 class Biometrics : NSObject {
 
     static let shared = Biometrics()

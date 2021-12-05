@@ -385,7 +385,6 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         
     }
     
-    
     @objc func handleEditProfileController() {
         
         let editProfileController = EditProfileController()
@@ -402,6 +401,8 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         let nav = UINavigationController(rootViewController: locationFinder)
         nav.modalPresentationStyle = .fullScreen
         globalLocationTrajectory = .fromSettings
+        nav.navigationBar.isHidden = true
+        nav.navigationController?.navigationBar.isHidden = true
         navigationController?.present(nav, animated: true)
     }
 }
