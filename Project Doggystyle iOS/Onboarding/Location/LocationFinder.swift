@@ -322,6 +322,31 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         
     }()
     
+    lazy var confirmButtonForFlagShip : UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.setTitle("Continue to book at Flagship!", for: UIControl.State.normal)
+        cbf.titleLabel?.font = UIFont.init(name: dsHeaderFont, size: 18)
+        cbf.titleLabel?.adjustsFontSizeToFitWidth = true
+        cbf.titleLabel?.numberOfLines = 1
+        cbf.titleLabel?.adjustsFontForContentSizeCategory = true
+        cbf.titleLabel?.textColor = coreWhiteColor
+        cbf.backgroundColor = coreOrangeColor
+        cbf.layer.cornerRadius = 14
+        cbf.layer.masksToBounds = false
+        cbf.tintColor = coreWhiteColor
+        cbf.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
+        cbf.layer.shadowOpacity = 0.05
+        cbf.layer.shadowOffset = CGSize(width: 2, height: 3)
+        cbf.layer.shadowRadius = 9
+        cbf.layer.shouldRasterize = false
+        cbf.addTarget(self, action: #selector(self.handleFlagshipConfirmation), for: UIControl.Event.touchUpInside)
+        
+        return cbf
+        
+    }()
+    
     lazy var confirmLocationButton : UIButton = {
         
         let cbf = UIButton(type: .system)
@@ -537,7 +562,8 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.flagshipContainer.addSubview(self.hipHopDogImage)
         self.flagshipContainer.addSubview(self.flagshipLabel)
         self.flagshipContainer.addSubview(self.showAddressButton)
-
+        self.flagshipContainer.addSubview(self.confirmButtonForFlagShip)
+        
         self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
         self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 15).isActive = true
         self.backButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
@@ -670,6 +696,11 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
         self.showAddressButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.showAddressButton.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.showAddressButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        
+        self.confirmButtonForFlagShip.bottomAnchor.constraint(equalTo: self.successContainer.bottomAnchor, constant: -20).isActive = true
+        self.confirmButtonForFlagShip.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.confirmButtonForFlagShip.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        self.confirmButtonForFlagShip.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
     }
     
@@ -811,8 +842,7 @@ class LocationFinder : UIViewController, UITextFieldDelegate, CLLocationManagerD
             self.errorContainer.isHidden = true
             self.successContainer.isHidden = true
             self.currentUserContainerButton.isHidden = true
-            self.confirmButton.setTitle("Continue to book at Flagship!", for: .normal)
-            self.confirmLocationButton.isHidden = false
+            self.confirmLocationButton.isHidden = true
             self.flagshipContainer.isHidden = false
             //MARK: - NEW UI FOR THE FLAGSHIP BACKEND
         }
@@ -1056,8 +1086,9 @@ extension LocationFinder {
                     Service.shared.flagshipChecker(preferredLatitude: latitude, preferredLongitude: longitude) { foundLocation, latitude, longitude, address, website, distanceInMeters in
                         //MARK: - WE HAVE A FLAGSHIP HERE WITH NO MOBILE GROOMING LOCATION AVAILABLE
                         if foundLocation {
+                            print("in found location here...")
                             self.searchStates = .successFlagShip
-                            let user_grooming_locational_data : [String : Any] = ["user_flagship_locational_data" : true, "found_grooming_location" : false, "latitude" : latitude, "longitude" : longitude, "address" : address, "website" : website, "distance_in_meters" : distanceInMeters]
+                            let user_grooming_locational_data : [String : Any] = ["user_flagship_locational_data" : true, "found_grooming_location" : true, "latitude" : latitude, "longitude" : longitude, "address" : address, "website" : website, "distance_in_meters" : distanceInMeters]
                             userOnboardingStruct.user_grooming_locational_data = user_grooming_locational_data
                             self.listener()
                             self.mainLoadingScreen.cancelMainLoadingScreen()
@@ -1201,9 +1232,7 @@ extension LocationFinder {
     }
     
     @objc func handleBackButton() {
-        
         self.dismiss(animated: true, completion: nil)
-        
     }
     
     @objc func handleShowAddress() {
@@ -1220,6 +1249,11 @@ extension LocationFinder {
 
             self.handleCustomPopUpAlert(title: "Address", message: "\(hasFlagshipAddress)", passedButtons: [Statics.OK])
         }
+    }
+    
+    
+    @objc func handleFlagshipConfirmation() {
+        self.loadAllTheLogic()
     }
 }
 

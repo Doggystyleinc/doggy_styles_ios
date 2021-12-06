@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSFaceIDUsageDescription</key>
-	<string>We strongly suggest enabling Face-ID to keep your Doggystyle account safe.</string>
-	<key>NSContactsUsageDescription</key>
-	<string>Doggystyle would like access to your contacts so you can take advantage of the referral program. We do not store or save any contact information on our servers.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -79,8 +75,12 @@
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Please allow access to upload media.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Doggystyle would like access to your contacts so you can take advantage of the referral program. We do not store or save any contact information on our servers.</string>
 	<key>NSDocumentsFolderUsageDescription</key>
 	<string>Please allow access to upload documents.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>We strongly suggest enabling Face-ID to keep your Doggystyle account safe.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>We will help you locate services nearby.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

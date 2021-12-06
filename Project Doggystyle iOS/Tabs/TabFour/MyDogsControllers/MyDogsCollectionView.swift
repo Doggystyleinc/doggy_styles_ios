@@ -114,8 +114,9 @@ class MyDogsCollectionView : UICollectionView, UICollectionViewDelegateFlowLayou
         
         let selectedButtonCell = sender.superview as! UICollectionViewCell
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
-        
         print(indexPath)
+        
+        self.myDogsCollectionContainer?.handleCustomPopUpAlert(title: "🚧CONSTRUCTION🚧", message: "Editing your puppies profile will be available shortly.", passedButtons: [Statics.OK])
     }
     
     

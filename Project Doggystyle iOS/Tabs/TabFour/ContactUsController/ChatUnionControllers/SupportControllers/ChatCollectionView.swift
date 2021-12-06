@@ -38,10 +38,11 @@ class ChatCollectionView : UICollectionView, UICollectionViewDelegateFlowLayout,
         self.canCancelContentTouches = false
         self.contentInsetAdjustmentBehavior = .never
         self.delaysContentTouches = true
-//        self.contentInset = UIEdgeInsets(top: 200, left: 0, bottom: 0, right: 0)
+        self.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 0, right: 0)
         self.register(ChatMainFeeder.self, forCellWithReuseIdentifier: self.chatMainID)
         self.register(ChatMediaFeeder.self, forCellWithReuseIdentifier: self.chatMediaID)
-        
+        self.register(UICollectionViewCell.self, forCellWithReuseIdentifier: self.defaultID)
+
     }
     
     override func layoutSubviews() {
@@ -140,6 +141,13 @@ class ChatCollectionView : UICollectionView, UICollectionViewDelegateFlowLayout,
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 5
+    }
+    
+    @objc func handleLongPress(sender: UIButton) {
+        
+        if let imageFromButton : UIImage = sender.backgroundImage(for: .normal) {
+            self.supportChatController?.handleImageSave(sender : imageFromButton)
+        }
     }
     
     required init?(coder: NSCoder) {

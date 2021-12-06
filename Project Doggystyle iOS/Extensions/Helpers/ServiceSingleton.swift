@@ -39,7 +39,7 @@ final class ServiceHTTP : NSObject {
         
         //create the url with NSURL
         let url = URL(string: "https://doggystyle-backend.herokuapp.com/\(slug)")!
-        
+
         //create the session object
         let session = URLSession.shared
         
@@ -51,6 +51,8 @@ final class ServiceHTTP : NSObject {
             request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted) // pass dictionary to data object and set it as request body
         } catch let error {
             print(error.localizedDescription)
+            print("six:")
+
             completion(nil, error)
         }
         
@@ -61,23 +63,32 @@ final class ServiceHTTP : NSObject {
         //create dataTask using the session object to send data to the server
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
+            print("one:")
+            
             guard error == nil else {
                 completion(nil, error)
                 return
             }
-            
+            print("two:")
+
             guard let data = data else {
                 completion(nil, NSError(domain: "dataNilError", code: -100001, userInfo: nil))
                 return
             }
-            
+            print("three:")
+
             do {
                 guard let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] else {
                     completion(nil, NSError(domain: "invalidJSONTypeError", code: -100009, userInfo: nil))
                     return
                 }
+                
+                print("four:")
+
                 completion(json, nil)
             } catch let error {
+                print("five:")
+
                 print(error.localizedDescription)
                 completion(nil, error)
             }

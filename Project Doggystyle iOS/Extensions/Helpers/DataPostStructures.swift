@@ -11,7 +11,7 @@ import Firebase
 
 class DataPostStructures : NSObject {
     
-    let shared = DataPostStructures()
+    static let shared = DataPostStructures()
     
     //MARK: - MOBILE GROOMING DATA POST (ONE TIME POST OR FOR UPDATING)
     func postMobileGroomingServiceLocations(completion : @escaping ( _ isComplete : Bool)->()) {
@@ -22,7 +22,7 @@ class DataPostStructures : NSObject {
         
         let dicTwo : [String : Any] = ["address" : "8 York St, Toronto, ON M5J 2Y2, Canada", "latitude" : 43.64023365065314, "longitude" : -79.38089629984559, "website" : "https://www.waterclubcondo.ca/"]
         
-        let values : [Int : Any] = [1 : dicOne, 2 : dicTwo]
+        let values = ["1" : dicOne, "2" : dicTwo]
         
         let ref = databaseRef.child("service_locations")
         
@@ -38,7 +38,7 @@ class DataPostStructures : NSObject {
         
         let dicOne : [String : Any] = ["address" : "2527 Yonge St, Toronto, ON M4P 2H9, Canada, Canada", "latitude" : 43.71279880646641, "longitude" : -79.39932257379911, "website" : "https://artofsmile.ca"]
        
-        let values : [Int : Any] = [1 : dicOne]
+        let values = ["1" : dicOne]
         
         let ref = databaseRef.child("flagship_locations")
         
@@ -58,6 +58,18 @@ class DataPostStructures : NSObject {
         
         ref.updateChildValues(values) { error, ref in
             completion(true)
+        }
+    }
+    
+    //MARK: - CALL TO BACKFILL THE DATABASE INCASE OF A DATA WIPE, NEW DATABASE ETC 
+    func postAllDummyNodes() {
+        
+        DataPostStructures.shared.postMobileGroomingServiceLocations { complete in
+            DataPostStructures.shared.postFlagShipGroomingServiceLocations { complete in
+                DataPostStructures.shared.postSecretKeys { complete in
+                    print("data structs updated")
+                }
+            }
         }
     }
 }

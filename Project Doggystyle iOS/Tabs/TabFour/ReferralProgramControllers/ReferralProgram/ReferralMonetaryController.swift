@@ -544,7 +544,7 @@ class ReferralMonetaryController : UIViewController, CustomAlertCallBackProtocol
         } else {
             
             if referralCode != "nil" {
-                ShareFunctionHelper.handleShareSheet(passedURLString: referralCode, passedView: self.view) { activityViewController in
+                ShareFunctionHelper.handleShareSheet(passedImage: nil, passedURLString: referralCode, passedView: self.view) { activityViewController in
                     self.navigationController?.present(activityViewController, animated: true, completion: nil)
                 }
             }

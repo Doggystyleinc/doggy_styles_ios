@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class MyDogsCollectionContainer : UIViewController {
+class MyDogsCollectionContainer : UIViewController, CustomAlertCallBackProtocol {
     
     var homeViewController : HomeViewController?
     
@@ -102,5 +102,29 @@ class MyDogsCollectionContainer : UIViewController {
         
         self.navigationController?.popViewController(animated: true)
         
+    }
+    
+    @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
+        
+        let alert = AlertController()
+        alert.passedTitle = title
+        alert.passedMmessage = message
+        alert.passedButtonSelections = passedButtons
+        alert.customAlertCallBackProtocol = self
+        alert.passedIconName = .infoCircle
+        alert.modalPresentationStyle = .overCurrentContext
+        self.navigationController?.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {
+        
+        switch type {
+        
+        case Statics.OK: print(Statics.OK)
+            
+        default: print("Should not hit")
+            
+        }
     }
 }

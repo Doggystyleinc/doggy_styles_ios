@@ -50,7 +50,7 @@ class AlertController : UIViewController {
         thl.translatesAutoresizingMaskIntoConstraints = false
         thl.textAlignment = .center
         thl.font = UIFont(name: rubikBold, size: 18)
-        thl.numberOfLines = 1
+        thl.numberOfLines = 2
         thl.adjustsFontSizeToFitWidth = true
         thl.textColor = dsFlatBlack
         return thl
@@ -166,7 +166,7 @@ class AlertController : UIViewController {
         self.headerLabel.topAnchor.constraint(equalTo: self.headerIcon.bottomAnchor, constant: 20).isActive = true
         self.headerLabel.leftAnchor.constraint(equalTo: self.mainContainer.leftAnchor, constant: 20).isActive = true
         self.headerLabel.rightAnchor.constraint(equalTo: self.mainContainer.rightAnchor, constant: -20).isActive = true
-        self.headerLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        self.headerLabel.sizeToFit()
 
         self.descriptionLabel.topAnchor.constraint(equalTo: self.headerLabel.bottomAnchor, constant: 10).isActive = true
         self.descriptionLabel.leftAnchor.constraint(equalTo: self.mainContainer.leftAnchor, constant: 41).isActive = true

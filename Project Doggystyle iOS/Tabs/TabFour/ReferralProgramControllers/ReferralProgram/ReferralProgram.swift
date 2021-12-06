@@ -502,6 +502,21 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
         
         guard let code = self.referralTextField.text else {return}
         
+        var containsNSFWText : Bool = false
+        
+        //MARK: - START LOOP
+        for word in code.split(separator: " ") {
+          
+            if NSFWComparisonArray.contains(word.lowercased()) {
+                containsNSFWText = true
+            } else {
+                containsNSFWText = false
+            }
+        }
+        
+        //MARK: - SAFE FROM NAUGHTY WORDS
+        if containsNSFWText == false {
+        
         //MARK: - NO INPUT
         if code.count <= 0 {
             self.referralTextField.layer.borderColor = coreRedColor.cgColor
@@ -511,13 +526,11 @@ class ReferralProgram : UIViewController, UITextFieldDelegate, CustomAlertCallBa
             self.referralTextField.layer.borderColor = coreRedColor.cgColor
             self.handleCustomPopUpAlert(title: "Empty", message: "Please make sure your Referral Code is at least 5 characters.", passedButtons: [Statics.OK])
         } else {
-            //MARK: - CHECK THE NAUGHTY WORDS LIST
-            if !NSFWComparisonArray.contains(code) {
             self.handleCustomPopUpAlert(title: "Looks Good!", message: "Just so you know, this code can not be changed. Would you like to go with \(code)", passedButtons: [Statics.SAVE, Statics.CANCEL])
-            } else {
-                //MARK: - SUCCESS
-                self.handleCustomPopUpAlert(title: "Ruh roh! Some words aren’t allowed on Doggystyle", message: "Please enter another referral code, we aim to keep a friendly environment here at Doggystyle - for both humans and pups.", passedButtons: [Statics.OK])
-            }
+        }
+            
+        } else {
+            self.handleCustomPopUpAlert(title: "Ruh roh! Some words aren’t allowed on Doggystyle", message: "Please enter another referral code, we aim to keep a friendly environment here at Doggystyle - for both humans and pups.", passedButtons: [Statics.OK])
         }
     }
     

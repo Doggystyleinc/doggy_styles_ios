@@ -909,6 +909,7 @@ class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollVie
                     self.mainLoadingScreen.callMainLoadingScreen(lottiAnimationName: Statics.PAW_ANIMATION)
                     
                     ServiceHTTP.shared.twilioGetRequest(function_call: "request_for_pin", users_country_code: countryCode, users_phone_number: nationalNumber, delivery_method: "sms", entered_code: "nil") { object, error in
+                        //MARK: GET REQUEST THROGUH TWILIO WHICH ACCEPTS MULTIPLE PARAMETS, PLEASE CHECK THE SHARED EXTENSION
                         if error == nil {
                             DispatchQueue.main.async {
                                 
@@ -956,6 +957,8 @@ class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollVie
     
     @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
         
+        DispatchQueue.main.async {
+        
         let alert = AlertController()
         alert.passedTitle = title
         alert.passedMmessage = message
@@ -966,6 +969,7 @@ class RegistrationController: UIViewController, UITextFieldDelegate, UIScrollVie
         alert.modalPresentationStyle = .overCurrentContext
         self.navigationController?.present(alert, animated: true, completion: nil)
         
+        }
     }
     
     func onSelectionPassBack(buttonTitleForSwitchStatement type: String) {

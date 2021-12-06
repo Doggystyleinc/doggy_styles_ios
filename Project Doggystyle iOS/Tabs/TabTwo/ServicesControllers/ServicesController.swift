@@ -126,22 +126,26 @@ final class ServicesController: UIViewController, CustomAlertCallBackProtocol {
     }
     
     @objc func presentAppointmentsController() {
-        
-        let locational_data = userProfileStruct.user_grooming_locational_data ?? ["nil" : "nil"]
-        let hasGroomingLocation = locational_data["found_grooming_location"] as? Bool ?? false
-        
-        let hasDogCount = doggyProfileDataSource.count
-        if hasDogCount > 0 {
-            if hasGroomingLocation == true {
-                self.homeController?.presentBookingController()
-            } else {
-                self.handleCustomPopUpAlert(title: "INFORMATION NEEDED", message: "Before booking an appointment, you will need a serviceable location as well as your puppy added.", passedButtons: [Statics.GOT_IT])
-           }
-            
-        } else {
-            self.handleCustomPopUpAlert(title: "INFORMATION NEEDED", message: "Before booking an appointment, you will need a serviceable location as well as your puppy added.", passedButtons: [Statics.GOT_IT])
-        }
+        self.handleCustomPopUpAlert(title: "🚧CONSTRUCTION🚧", message: "Booking will be available shortly.", passedButtons: [Statics.OK])
     }
+    
+//    @objc func presentAppointmentsController() {
+//
+//        let locational_data = userProfileStruct.user_grooming_locational_data ?? ["nil" : "nil"]
+//        let hasGroomingLocation = locational_data["found_grooming_location"] as? Bool ?? false
+//
+//        let hasDogCount = doggyProfileDataSource.count
+//        if hasDogCount > 0 {
+//            if hasGroomingLocation == true {
+//                self.homeController?.presentBookingController()
+//            } else {
+//                self.handleCustomPopUpAlert(title: "INFORMATION NEEDED", message: "Before booking an appointment, you will need a serviceable location as well as your puppy added.", passedButtons: [Statics.GOT_IT])
+//           }
+//
+//        } else {
+//            self.handleCustomPopUpAlert(title: "INFORMATION NEEDED", message: "Before booking an appointment, you will need a serviceable location as well as your puppy added.", passedButtons: [Statics.GOT_IT])
+//        }
+//    }
     
     @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
         

@@ -226,10 +226,10 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
     //MARK: - HEADER AND FOOTER GRADIENT
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-
+        
         if self.hasViewBeenLaidOut == true {return}
         self.hasViewBeenLaidOut = true
-
+        
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = self.headerContainer.bounds
         gradientLayer.colors = [
@@ -423,6 +423,8 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
     }
     
     @objc func handleSuccess() {
+        
+        if self.chatObjectArray.count <= 0 {return}
         
         DispatchQueue.main.async {
             self.chatMainCollection.reloadData()
@@ -658,7 +660,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         
         //MARK: - START LOOP
         for word in cleanText.split(separator: " ") {
-          
+            
             if NSFWComparisonArray.contains(word.lowercased()) {
                 containsNSFWText = true
             } else {
@@ -702,6 +704,19 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
             }
         } else {
             self.handleCustomPopUpAlert(title: "Ruh roh!", message: "Please enter another message, we aim to keep a friendly environment here at Doggystyle - for both humans and pups.", passedButtons: [Statics.OK])
+        }
+    }
+    
+    @objc func handleImageSave(sender : UIImage) {
+        
+        ShareFunctionHelper.handleShareSheet(passedImage: sender, passedURLString: "nil", passedView: self.view) { viewController in
+            self.navigationController?.present(viewController, animated: true, completion: nil)
+            
+            viewController.completionWithItemsHandler = {(s, ok, items, error) in
+           
+            print("cancelled")
+                
+            }
         }
     }
 }

@@ -53,6 +53,8 @@ class MainLoadingScreen : NSObject {
     
     func cancelMainLoadingScreen() {
         
+        DispatchQueue.main.async {
+        
         UIView.animate(withDuration: 0.5) {
             
             self.smokeView.alpha = 0
@@ -65,6 +67,8 @@ class MainLoadingScreen : NSObject {
             self.smokeView.removeFromSuperview()
             self.keyWindow.removeFromSuperview()
             self.loadingAnimation.removeFromSuperview()
+            
+        }
             
         }
     }

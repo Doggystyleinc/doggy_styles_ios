@@ -18,71 +18,42 @@ class ChatMediaFeeder : UICollectionViewCell {
         didSet {
             
             let users_profile_image_url = chatObjectArray?.users_profile_image_url ?? "nil"
-                if let users_selected_image_url = chatObjectArray?.users_selected_image_url {
-                    if let _ = chatObjectArray?.image_height {
-                        if let _ = chatObjectArray?.image_width {
-                            if let time_stamp = chatObjectArray?.time_stamp {
-                                
-                                let convertedDate = Date(timeIntervalSince1970: time_stamp).timePassed()
-                                self.timeLabel.text = "\(convertedDate)"
-                                
-                                if users_profile_image_url != "nil" {
-
+            if let users_selected_image_url = chatObjectArray?.users_selected_image_url {
+                if let _ = chatObjectArray?.image_height {
+                    if let _ = chatObjectArray?.image_width {
+                        if let time_stamp = chatObjectArray?.time_stamp {
+                            
+                            let convertedDate = Date(timeIntervalSince1970: time_stamp).timePassed()
+                            self.timeLabel.text = "\(convertedDate)"
+                            
+                            //MARK: - PROFILE IMAGE
+                            if users_profile_image_url != "nil" {
                                 self.profilePhoto.loadImageGeneralUse(users_profile_image_url) { complete in
                                     print("photo loaded")
                                 }
-                                } else {
-                                    let image = UIImage(named: "Temp Placeholder")?.withRenderingMode(.alwaysOriginal)
-                                    self.profilePhoto.image = image
+                            } else {
+                                let image = UIImage(named: "Temp Placeholder")?.withRenderingMode(.alwaysOriginal)
+                                self.profilePhoto.image = image
+                            }
+                            
+                            self.portraitImageView.isHidden = false
+                            self.landscapeImageView.isHidden = true
+                            self.squareImageView.isHidden = true
+                            
+                            //MARK: - LOAD MAIN IMAGE INTO A UIBUTTON
+                            let imageView = UIImageView()
+                            imageView.loadImageGeneralUse(users_selected_image_url) { complete in
+                                if let image = imageView.image {
+                                    self.portraitImageView.setBackgroundImage(image, for: .normal)
+                                    print("in here?")
                                 }
-                                
-                                self.portraitImageView.isHidden = false
-                                self.landscapeImageView.isHidden = true
-                                self.squareImageView.isHidden = true
-                                self.portraitImageView.loadImageGeneralUse(users_selected_image_url) { complete in
-                                   print("portrait image has loaded")
-                                }
-                                
-                                //MARK: - PORTRAIT IMAGE
-//                                if image_height > image_width {
-//
-//                                    self.portraitImageView.isHidden = false
-//                                    self.landscapeImageView.isHidden = true
-//                                    self.squareImageView.isHidden = true
-//
-//                                    self.portraitImageView.loadImageGeneralUse(users_selected_image_url) { complete in
-//                                        print("portrait image has loaded")
-//                                    }
-//
-//                                    //MARK: - LANDSCAPE IMAGE
-//                                } else if image_height < image_width {
-//
-//                                    self.portraitImageView.isHidden = true
-//                                    self.landscapeImageView.isHidden = false
-//                                    self.squareImageView.isHidden = true
-//
-//                                    self.landscapeImageView.loadImageGeneralUse(users_selected_image_url) { complete in
-//                                        print("portrait image has loaded")
-//                                    }
-//
-//                                    //MARK: - SQUARE IMAGE
-//                                } else if image_height == image_width {
-//
-//                                    self.portraitImageView.isHidden = true
-//                                    self.landscapeImageView.isHidden = true
-//                                    self.squareImageView.isHidden = false
-//
-//                                    self.squareImageView.loadImageGeneralUse(users_selected_image_url) { complete in
-//                                        print("portrait image has loaded")
-//                                    }
-//                                }
                             }
                         }
                     }
                 }
             }
         }
-    
+    }
     
     var containerView : UIView = {
         
@@ -106,15 +77,16 @@ class ChatMediaFeeder : UICollectionViewCell {
     }()
     
     //MARK: 4:5 RATIO FOR SCALING
-    let portraitImageView : UIImageView = {
+    lazy var portraitImageView : UIButton = {
         
-        let dcl = UIImageView()
+        let dcl = UIButton()
         dcl.translatesAutoresizingMaskIntoConstraints = false
         dcl.backgroundColor = coreOrangeColor.withAlphaComponent(0.2)
         dcl.contentMode = .scaleAspectFill
         dcl.clipsToBounds = true
         dcl.layer.cornerRadius = 10
-        dcl.isUserInteractionEnabled = false
+        dcl.isUserInteractionEnabled = true
+        dcl.addTarget(self, action: #selector(self.handleLongimageTouch(sender:)), for: .touchUpInside)
         
         return dcl
     }()
@@ -176,7 +148,7 @@ class ChatMediaFeeder : UICollectionViewCell {
         self.addSubview(self.containerView)
         
         self.containerView.addSubview(self.profilePhoto)
-        self.containerView.addSubview(self.portraitImageView)
+        self.addSubview(self.portraitImageView)
         self.containerView.addSubview(self.landscapeImageView)
         self.containerView.addSubview(self.squareImageView)
         self.containerView.addSubview(self.timeLabel)
@@ -233,11 +205,51 @@ class ChatMediaFeeder : UICollectionViewCell {
          
          */
         
+    }
+    
+    @objc func handleLongimageTouch(sender : UIButton) {
+        
+        UIDevice.vibrateLight()
+        self.chatCollectionView?.handleLongPress(sender : sender)
         
     }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
+//MARK: - PORTRAIT IMAGE
+//                                if image_height > image_width {
+//
+//                                    self.portraitImageView.isHidden = false
+//                                    self.landscapeImageView.isHidden = true
+//                                    self.squareImageView.isHidden = true
+//
+//                                    self.portraitImageView.loadImageGeneralUse(users_selected_image_url) { complete in
+//                                        print("portrait image has loaded")
+//                                    }
+//
+//                                    //MARK: - LANDSCAPE IMAGE
+//                                } else if image_height < image_width {
+//
+//                                    self.portraitImageView.isHidden = true
+//                                    self.landscapeImageView.isHidden = false
+//                                    self.squareImageView.isHidden = true
+//
+//                                    self.landscapeImageView.loadImageGeneralUse(users_selected_image_url) { complete in
+//                                        print("portrait image has loaded")
+//                                    }
+//
+//                                    //MARK: - SQUARE IMAGE
+//                                } else if image_height == image_width {
+//
+//                                    self.portraitImageView.isHidden = true
+//                                    self.landscapeImageView.isHidden = true
+//                                    self.squareImageView.isHidden = false
+//
+//                                    self.squareImageView.loadImageGeneralUse(users_selected_image_url) { complete in
+//                                        print("portrait image has loaded")
+//                                    }
+//                                }
