@@ -357,6 +357,7 @@ class Service : NSObject {
                         "users_sign_in_method" : "email",
                         "users_sign_up_date" : timeStamp,
                         "is_groomer" : is_groomer,
+                        "is_user_admin" : false,
                         "is_users_terms_and_conditions_accepted" : true,
                         
                         "users_ref_key" : ref_key,
@@ -696,6 +697,7 @@ extension Service {
                 
                 let users_push_token = JSON["users_push_token"] as? String ?? "nil"
                 let users_device_UDID = JSON["users_device_UDID"] as? String ?? "nil"
+                let is_user_admin = JSON["is_user_admin"] as? Bool ?? false
                 
                 userProfileStruct.usersPushToken = users_push_token
                 userProfileStruct.deviceUDID = users_device_UDID
@@ -712,7 +714,8 @@ extension Service {
                 
                 userProfileStruct.users_sign_up_date = users_sign_up_date
                 userProfileStruct.is_groomer = is_groomer
-                
+                userProfileStruct.is_user_admin = is_user_admin
+
                 userProfileStruct.users_ref_key = users_ref_key
                 
                 userProfileStruct.chosen_grooming_location_name = chosen_grooming_location_name
@@ -724,7 +727,7 @@ extension Service {
                 userProfileStruct.uploaded_document_url = uploaded_document_url
                 userProfileStruct.user_grooming_locational_data = user_grooming_locational_data
                 userProfileStruct.user_notification_settings = user_notification_settings
-                
+
                 let referralGrab = databaseRef.child("referral_codes").child(userUID).child("users_referral_code")
                 
                 referralGrab.observeSingleEvent(of: .value) { snap in

@@ -280,6 +280,12 @@
 		E39C665C26A899F0004A0E93 /* Rubik-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E39C664326A89940004A0E93 /* Rubik-SemiBoldItalic.ttf */; };
 		E39C665F26A8CEEF004A0E93 /* paw_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = E39C665E26A8CEEF004A0E93 /* paw_animation.json */; };
 		E39FDE2126C1F7CF004C089D /* DashboardDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39FDE2026C1F7CE004C089D /* DashboardDatasource.swift */; };
+		E3A028D72763DA9300245BE5 /* TruckTrackerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A028D62763DA9300245BE5 /* TruckTrackerController.swift */; };
+		E3A028D92763DB5D00245BE5 /* TruckTrackerMapSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A028D82763DB5D00245BE5 /* TruckTrackerMapSubview.swift */; };
+		E3A028DB2763E41900245BE5 /* TruckTrackerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A028DA2763E41900245BE5 /* TruckTrackerModel.swift */; };
+		E3A028DF2763F22800245BE5 /* map_van@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3A028DC2763F22700245BE5 /* map_van@1x.png */; };
+		E3A028E02763F22800245BE5 /* map_van@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3A028DD2763F22800245BE5 /* map_van@2x.png */; };
+		E3A028E12763F22800245BE5 /* map_van@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = E3A028DE2763F22800245BE5 /* map_van@3x.png */; };
 		E3A0AD5426BDAA2000E813D5 /* NewDogFour.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A0AD5326BDAA2000E813D5 /* NewDogFour.swift */; };
 		E3A0AD5626BDC8BD00E813D5 /* NewDogFive.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A0AD5526BDC8BD00E813D5 /* NewDogFive.swift */; };
 		E3A0AD5926BDD29400E813D5 /* NewDogFiveCollectionview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A0AD5826BDD29400E813D5 /* NewDogFiveCollectionview.swift */; };
@@ -583,6 +589,12 @@
 		E39C664E26A89944004A0E93 /* Rubik-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Italic.ttf"; sourceTree = "<group>"; };
 		E39C665E26A8CEEF004A0E93 /* paw_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = paw_animation.json; sourceTree = "<group>"; };
 		E39FDE2026C1F7CE004C089D /* DashboardDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDatasource.swift; sourceTree = "<group>"; };
+		E3A028D62763DA9300245BE5 /* TruckTrackerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TruckTrackerController.swift; sourceTree = "<group>"; };
+		E3A028D82763DB5D00245BE5 /* TruckTrackerMapSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TruckTrackerMapSubview.swift; sourceTree = "<group>"; };
+		E3A028DA2763E41900245BE5 /* TruckTrackerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TruckTrackerModel.swift; sourceTree = "<group>"; };
+		E3A028DC2763F22700245BE5 /* map_van@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map_van@1x.png"; sourceTree = "<group>"; };
+		E3A028DD2763F22800245BE5 /* map_van@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map_van@2x.png"; sourceTree = "<group>"; };
+		E3A028DE2763F22800245BE5 /* map_van@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map_van@3x.png"; sourceTree = "<group>"; };
 		E3A0AD5326BDAA2000E813D5 /* NewDogFour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogFour.swift; sourceTree = "<group>"; };
 		E3A0AD5526BDC8BD00E813D5 /* NewDogFive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogFive.swift; sourceTree = "<group>"; };
 		E3A0AD5826BDD29400E813D5 /* NewDogFiveCollectionview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDogFiveCollectionview.swift; sourceTree = "<group>"; };
@@ -840,6 +852,7 @@
 		CDE870F22652E1E30082551B /* Admin */ = {
 			isa = PBXGroup;
 			children = (
+				E3A028D52763DA7C00245BE5 /* AdminTruckTracker */,
 				CDE870EB2652E1640082551B /* Info.plist */,
 				CDE870E82652E1640082551B /* LaunchScreen.storyboard */,
 				CDE870DD2652E1610082551B /* AppDelegate.swift */,
@@ -1245,8 +1258,8 @@
 			isa = PBXGroup;
 			children = (
 				E3B87A2E27307DB0009139C5 /* EditProfileController */,
-				E3B11ABB268FCBC900B5B6F8 /* ProfileCollectionView.swift */,
 				E3B11AB9268FCBB200B5B6F8 /* ProfileController.swift */,
+				E3B11ABB268FCBC900B5B6F8 /* ProfileCollectionView.swift */,
 				E3B11ABD268FCBE300B5B6F8 /* ProfileCollectionFeeder.swift */,
 				E3B11ABF268FCC0400B5B6F8 /* ProfilePhotoUploadExt.swift */,
 			);
@@ -1266,6 +1279,9 @@
 		E37D20C227173B1700BF859A /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E3A028DC2763F22700245BE5 /* map_van@1x.png */,
+				E3A028DD2763F22800245BE5 /* map_van@2x.png */,
+				E3A028DE2763F22800245BE5 /* map_van@3x.png */,
 				E390FDAD2755654D0017FE8A /* goodnewsdog.png */,
 				E390FDAE2755654D0017FE8A /* goodnewsdog@2x.png */,
 				E390FDAF2755654D0017FE8A /* goodnewsdog@3x.png */,
@@ -1430,6 +1446,16 @@
 				E39C665E26A8CEEF004A0E93 /* paw_animation.json */,
 			);
 			path = Animations;
+			sourceTree = "<group>";
+		};
+		E3A028D52763DA7C00245BE5 /* AdminTruckTracker */ = {
+			isa = PBXGroup;
+			children = (
+				E3A028D62763DA9300245BE5 /* TruckTrackerController.swift */,
+				E3A028D82763DB5D00245BE5 /* TruckTrackerMapSubview.swift */,
+				E3A028DA2763E41900245BE5 /* TruckTrackerModel.swift */,
+			);
+			path = AdminTruckTracker;
 			sourceTree = "<group>";
 		};
 		E3A0AD5726BDD22200E813D5 /* NewDogFive */ = {
@@ -1789,6 +1815,7 @@
 				E326571426AF24EF004A15F6 /* cpmbo1 shutterstock_355672793 1.png in Resources */,
 				E36EE57626B876500009A0EF /* profile_doggy.png in Resources */,
 				E39C665726A899F0004A0E93 /* Rubik-LightItalic.ttf in Resources */,
+				E3A028E12763F22800245BE5 /* map_van@3x.png in Resources */,
 				E39C665F26A8CEEF004A0E93 /* paw_animation.json in Resources */,
 				E37D20E0271DDB8A00BF859A /* referral box dog@2x.png in Resources */,
 				E39C665826A899F0004A0E93 /* Rubik-Medium.ttf in Resources */,
@@ -1811,6 +1838,7 @@
 				E396B92126FD33B90087F106 /* house_nav_icon@1x.png in Resources */,
 				E38BA2DF273DA207001FF3DC /* mradorable@2x.png in Resources */,
 				CDE870F42652E1FB0082551B /* ConcertOne-Regular.ttf in Resources */,
+				E3A028E02763F22800245BE5 /* map_van@2x.png in Resources */,
 				E326572826B20884004A15F6 /* emptydoggyprofile.png in Resources */,
 				E36EE54C26B77CBC0009A0EF /* dsComboShutterstock530718881@2x.png in Resources */,
 				E38BA2E1273DA207001FF3DC /* mradorable@3x.png in Resources */,
@@ -1846,6 +1874,7 @@
 				E36EE54E26B77CBC0009A0EF /* dsComboShutterstock530718881.png in Resources */,
 				E396B92726FD33C50087F106 /* bone_nav_icon@1x.png in Resources */,
 				CDE871042652E2080082551B /* Roboto-MediumItalic.ttf in Resources */,
+				E3A028DF2763F22800245BE5 /* map_van@1x.png in Resources */,
 				E36EE54D26B77CBC0009A0EF /* dsComboShutterstock530718881@3x.png in Resources */,
 				E357D2F726E2B93400CDF90E /* Apple Pay Icon@2x.png in Resources */,
 				E376FDF026AB4E4300902C36 /* ios_doggystyle_icon87.jpg in Resources */,
@@ -2001,11 +2030,13 @@
 				CDCCD0B2265D7CC1007ABECF /* HowToEnableLocationView.swift in Sources */,
 				CDE8711F2652E3030082551B /* Firebase+Ext.swift in Sources */,
 				E397405B26D2E27F0084742F /* AppointmentTwo.swift in Sources */,
+				E3A028D92763DB5D00245BE5 /* TruckTrackerMapSubview.swift in Sources */,
 				E39FDE2126C1F7CF004C089D /* DashboardDatasource.swift in Sources */,
 				CD203BF72667D3B900335D93 /* PDFViewController.swift in Sources */,
 				CDCCD0B8265EB884007ABECF /* User.swift in Sources */,
 				E3C766E72723547C00735655 /* TwilioTextMessage.swift in Sources */,
 				CD6DD0182680DE2E00BC376B /* WelcomeController.swift in Sources */,
+				E3A028DB2763E41900245BE5 /* TruckTrackerModel.swift in Sources */,
 				CD6DD0142680DDC900BC376B /* SlideOne.swift in Sources */,
 				E326571D26B1B7FD004A15F6 /* MapViewSubclass.swift in Sources */,
 				E36EE57B26B87B2E0009A0EF /* YourNotificationsCollectionView.swift in Sources */,
@@ -2039,6 +2070,7 @@
 				E335B4D827471EC300B15F27 /* PushNotificationManager.swift in Sources */,
 				E361FBFF26D0182B00026DE3 /* SelectPackageCollection.swift in Sources */,
 				E38B7FE226C5A1F80013D72D /* DogTreatHelper.swift in Sources */,
+				E3A028D72763DA9300245BE5 /* TruckTrackerController.swift in Sources */,
 				E36EE56A26B872790009A0EF /* YourNotificationsController.swift in Sources */,
 				CD319F782679435900F48E3C /* DSNavButton.swift in Sources */,
 				E37D20D12717D88000BF859A /* SupportChatController.swift in Sources */,
@@ -2299,7 +2331,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Project Doggystyle iOS/Project Doggystyle iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.5;
+				CURRENT_PROJECT_VERSION = 1.1.6;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2321,7 +2353,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Project Doggystyle iOS/Project Doggystyle iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.5;
+				CURRENT_PROJECT_VERSION = 1.1.6;
 				DEVELOPMENT_TEAM = STQP84FTBY;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = "Project Doggystyle iOS/Admin/Info.plist";

@@ -62,6 +62,7 @@ struct UserProfileStruct {
         user_created_referral_code_grab : String?,
         user_notification_settings : [String : Any]?,
         usersPushToken : String?,
-        deviceUDID : String?
+        deviceUDID : String?,
+        is_user_admin : Bool?
 
 }

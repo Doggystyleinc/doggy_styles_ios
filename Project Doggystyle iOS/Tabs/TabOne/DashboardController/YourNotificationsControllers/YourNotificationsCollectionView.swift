@@ -38,7 +38,7 @@ class YourNotificationsCollectionView : UICollectionView, UICollectionViewDelega
         self.canCancelContentTouches = false
         self.contentInsetAdjustmentBehavior = .never
         self.delaysContentTouches = true
-        self.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 90, right: 0)
+        self.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 10, right: 0)
         
         self.register(YourNotificationsFeeder.self, forCellWithReuseIdentifier: self.yourNotifications)
         self.register(YourNotificationsMediaFeeder.self, forCellWithReuseIdentifier: self.yourMediaNotificationsID)
@@ -79,10 +79,10 @@ class YourNotificationsCollectionView : UICollectionView, UICollectionViewDelega
         
         if feeder.notification_type != Statics.NOTIFICATION_MEDIA_MESSAGE {
             
-            let size = CGSize(width: UIScreen.main.bounds.width - 70, height: 2000),
+            let size = CGSize(width: UIScreen.main.bounds.width - 129, height: 2000),
                 options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin),
                 estimatedFrame = NSString(string: textMessage).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font : UIFont(name: rubikRegular, size: 16)!], context: nil),
-                estimatedHeight = estimatedFrame.height + 95.0
+                estimatedHeight = estimatedFrame.height + 70.0
             
             return CGSize(width: UIScreen.main.bounds.width, height: estimatedHeight)
             
@@ -353,6 +353,9 @@ class YourNotificationsFeeder : UICollectionViewCell {
         self.subHeaderLabel.leftAnchor.constraint(equalTo: self.headerLabel.leftAnchor, constant: 0).isActive = true
         self.subHeaderLabel.rightAnchor.constraint(equalTo: self.headerLabel.rightAnchor, constant: 0).isActive = true
         self.subHeaderLabel.bottomAnchor.constraint(equalTo: self.footerContainer.bottomAnchor, constant: 0).isActive = true
+        
+        
+        
         
     }
     

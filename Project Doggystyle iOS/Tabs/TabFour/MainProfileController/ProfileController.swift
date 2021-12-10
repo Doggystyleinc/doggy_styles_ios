@@ -40,6 +40,27 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         return dcl
     }()
     
+    lazy var adminMapViewer : UIButton = {
+        
+        let dcl = UIButton(type: .system)
+        dcl.translatesAutoresizingMaskIntoConstraints = false
+        dcl.backgroundColor = .clear
+        dcl.titleLabel?.font = UIFont.fontAwesome(ofSize: 20, style: .solid)
+        dcl.setTitle(String.fontAwesomeIcon(name: .mapPin), for: .normal)
+        dcl.tintColor = coreOrangeColor
+        dcl.addTarget(self, action: #selector(self.handleTruckTrackerController), for: .touchUpInside)
+        
+        let is_user_admin = userProfileStruct.`is_user_admin` ?? false
+        
+        if is_user_admin {
+            dcl.isHidden = false
+        } else {
+            dcl.isHidden = true
+        }
+        
+        return dcl
+    }()
+  
     lazy var profileImageView : UIImageView = {
         
         let pv = UIImageView()
@@ -154,6 +175,8 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
     func addViews() {
         
         self.view.addSubview(self.notificationIcon)
+        self.view.addSubview(self.adminMapViewer)
+
         self.view.addSubview(self.dsCompanyLogoImage)
         
         self.view.addSubview(self.containerView)
@@ -169,6 +192,11 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
         self.notificationIcon.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.notificationIcon.heightAnchor.constraint(equalToConstant: 44).isActive = true
         self.notificationIcon.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        
+        self.adminMapViewer.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
+        self.adminMapViewer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
+        self.adminMapViewer.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        self.adminMapViewer.widthAnchor.constraint(equalToConstant: 44).isActive = true
         
         self.dsCompanyLogoImage.centerYAnchor.constraint(equalTo: self.notificationIcon.centerYAnchor, constant: 0).isActive = true
         self.dsCompanyLogoImage.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
@@ -362,6 +390,17 @@ class ProfileController : UIViewController, CustomAlertCallBackProtocol {
             self.navigationController?.pushViewController(myDogsCollectionContainer, animated: true)
             
         }
+    }
+    
+    //MARK: - MAP ADMIN VIEWER
+    @objc func handleTruckTrackerController() {
+        
+        let truckController = TruckTracker()
+        let nav = UINavigationController(rootViewController: truckController)
+        nav.modalPresentationStyle = .fullScreen
+        nav.navigationBar.isHidden = true
+        self.navigationController?.present(nav, animated: true, completion: nil)
+        
     }
     
     @objc func handleNotificationManagementController() {

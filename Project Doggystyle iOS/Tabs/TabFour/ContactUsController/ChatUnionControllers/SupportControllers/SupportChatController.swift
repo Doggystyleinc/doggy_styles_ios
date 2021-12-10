@@ -269,7 +269,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         self.headerContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
         self.headerContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.headerContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.headerContainer.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        self.headerContainer.heightAnchor.constraint(equalToConstant: 185).isActive = true
         self.headerContainer.isUserInteractionEnabled = false
         
         self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
@@ -657,7 +657,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
     }
     
     func handleImagePicker() {
-        //MARK: - REQUIRES HOMECONTROLLER SO THE IMAGE CAN UPLOAD IF THE USER BAILS FROM THE CHAT
+        //MARK: - REQUIRES HOMECONTROLLER SO THE IMAGE CAN UPLOAD IF THE USER BAILS FROM THE CHAT DURING THE UPLOAD PROCESS
         if self.homeController == nil {return}
         
         self.messageType = .image

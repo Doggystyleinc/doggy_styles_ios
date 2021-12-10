@@ -58,15 +58,24 @@ class LocationBroadcaster : NSObject, CLLocationManagerDelegate {
             let user_first_name = userProfileStruct.user_first_name ?? "no first name"
             let user_last_name = userProfileStruct.user_last_name ?? "no last name"
             let users_firebase_uid = userProfileStruct.users_firebase_uid ?? "no UID"
+            let users_profile_image = userProfileStruct.users_profile_image_url ?? "nil"
+
             let users_ref_key = ref.key ?? "no key"
             
-            let values : [String : Any] = ["raw_speed" : rawSpeed, "speed_mph" :  speedToMPH, "speed_kph" : speedToKPH,
-                                           "longitude" : longitude, "latitude" : latitude, "altitude_feet" : altitudeInFeet,
+            let values : [String : Any] = ["raw_speed" : rawSpeed,
+                                           "speed_mph" :  speedToMPH,
+                                           "speed_kph" : speedToKPH,
+                                           "longitude" : longitude,
+                                           "latitude" : latitude,
+                                           "altitude_feet" : altitudeInFeet,
                                            "altitude_meters" : altitudeInMeters,
                                            "user_first_name" : user_first_name,
                                            "user_last_name" : user_last_name,
                                            "users_firebase_uid" : users_firebase_uid,
-                                           "users_ref_key" : users_ref_key, "is_groomer" : false]
+                                           "users_ref_key" : users_ref_key,
+                                           "is_groomer" : false,
+                                           "users_profile_image_url" : users_profile_image
+            ]
             
             ref.updateChildValues(values)
             

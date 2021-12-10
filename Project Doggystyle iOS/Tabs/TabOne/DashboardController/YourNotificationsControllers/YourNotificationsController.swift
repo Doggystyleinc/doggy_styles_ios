@@ -19,7 +19,6 @@ class NotificationModel : NSObject {
         notification_text_message : String?,
         notification_media_message : String?
    
-    
     init(JSON : [String : Any]) {
         
         self.notification_type = JSON["notification_type"] as? String ?? "nil"
@@ -174,7 +173,7 @@ class YourNotificationController : UIViewController {
                 }
                 
                 //MARK: - SORT THE DICTIONARY BY THE TIME STAMP
-                self.yourNotificationsCollectionView.notificationsNewArray.sort(by: { (timeOne, timeTwo) -> Bool in
+                self.yourNotificationsCollectionView.notificationsArray.sort(by: { (timeOne, timeTwo) -> Bool in
                     
                     if let timeOne = timeOne.notification_time_stamp {
                         if let timeTwo = timeTwo.notification_time_stamp {
@@ -183,18 +182,7 @@ class YourNotificationController : UIViewController {
                     }
                     return true
                 })
-                
-                //MARK: - SORT THE DICTIONARY BY THE TIME STAMP
-                self.yourNotificationsCollectionView.notificationsReadArray.sort(by: { (timeOne, timeTwo) -> Bool in
-                    
-                    if let timeOne = timeOne.notification_time_stamp {
-                        if let timeTwo = timeTwo.notification_time_stamp {
-                            return timeOne > timeTwo
-                        }
-                    }
-                    return true
-                })
-                
+              
             //MARK: - LOOP END
             completion(true)
             
@@ -249,6 +237,17 @@ class YourNotificationController : UIViewController {
             self.yourNotificationsCollectionView.notificationsArray.removeAll()
             self.yourNotificationsCollectionView.notificationsArray = self.yourNotificationsCollectionView.notificationsNewArray
             
+            //MARK: - SORT THE DICTIONARY BY THE TIME STAMP
+            self.yourNotificationsCollectionView.notificationsArray.sort(by: { (timeOne, timeTwo) -> Bool in
+                
+                if let timeOne = timeOne.notification_time_stamp {
+                    if let timeTwo = timeTwo.notification_time_stamp {
+                        return timeOne > timeTwo
+                    }
+                }
+                return true
+            })
+            
             self.yourNotificationsCollectionView.alpha = 0
             UIView.animate(withDuration: 0.25) {
                 self.yourNotificationsCollectionView.alpha = 1
@@ -260,6 +259,17 @@ class YourNotificationController : UIViewController {
 
             self.yourNotificationsCollectionView.notificationsArray.removeAll()
             self.yourNotificationsCollectionView.notificationsArray = self.yourNotificationsCollectionView.notificationsReadArray
+            
+            //MARK: - SORT THE DICTIONARY BY THE TIME STAMP
+            self.yourNotificationsCollectionView.notificationsArray.sort(by: { (timeOne, timeTwo) -> Bool in
+                
+                if let timeOne = timeOne.notification_time_stamp {
+                    if let timeTwo = timeTwo.notification_time_stamp {
+                        return timeOne > timeTwo
+                    }
+                }
+                return true
+            })
             
             self.yourNotificationsCollectionView.alpha = 0
             UIView.animate(withDuration: 0.25) {
