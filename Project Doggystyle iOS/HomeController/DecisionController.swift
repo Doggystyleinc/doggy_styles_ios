@@ -33,7 +33,7 @@ final class DecisionController: UIViewController {
         NetworkMonitor.shared.startMonitoring()
         self.addViews()
         self.authenticationCheck()
-        
+       
     }
     
     override func viewWillLayoutSubviews() {

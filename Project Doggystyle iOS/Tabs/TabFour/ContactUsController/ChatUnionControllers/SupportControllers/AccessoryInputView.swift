@@ -20,7 +20,7 @@ class AccessoryInputView : UIView, UITextViewDelegate {
         tf.backgroundColor = coreWhiteColor
         tf.textColor =  coreBlackColor
         tf.layer.masksToBounds = true
-        tf.font = UIFont(name: rubikRegular, size: 14)
+        tf.font = UIFont(name: rubikRegular, size: 16)
         tf.delegate = self
         tf.returnKeyType = UIReturnKeyType.default
         tf.keyboardAppearance = UIKeyboardAppearance.default

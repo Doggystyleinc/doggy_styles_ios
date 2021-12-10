@@ -27,22 +27,27 @@ class ChatMainFeeder : UICollectionViewCell {
 
                             self.messageLabel.text = message
                             
+                            self.profilePhoto.setBackgroundImage(UIImage(), for: .normal)
+                            self.profilePhoto.setTitle("", for: .normal)
+                            
+                            //MARK: - PROFILE PHOTO LOAD
                             if users_profile_image_url != "nil" {
-                            self.profilePhoto.loadImageGeneralUse(users_profile_image_url) { complete in
-                            }
+                                let imageView = UIImageView()
+                                imageView.loadImageGeneralUse(users_profile_image_url) { complete in
+                                    guard let image = imageView.image else {return}
+                                    self.profilePhoto.setBackgroundImage(image, for: .normal)
+                                }
+                                
                             } else {
-                                let image = UIImage(named: "Temp Placeholder")?.withRenderingMode(.alwaysOriginal)
-                                self.profilePhoto.image = image
+                                
+                                self.profilePhoto.titleLabel?.font = UIFont.fontAwesome(ofSize: 15, style: .solid)
+                                self.profilePhoto.setTitle(String.fontAwesomeIcon(name: .dog), for: .normal)
+                                self.profilePhoto.setTitleColor(coreWhiteColor, for: .normal)
                             }
                             
-                            let _ = self.chatBubble.frame.height
-                           
-                            DispatchQueue.main.async {
-                                self.chatBubble.layer.cornerRadius = 51.3 / 2
-                            }
                             
+                            //MARK: - CONTAINER COLOR BASED OFF OF SENDER UID
                             guard let user_uid = Auth.auth().currentUser?.uid else {return}
-                            
                             if user_uid == senders_firebase_uid {
                                 self.chatBubble.backgroundColor = coreOrangeColor
                                 self.messageLabel.textColor = coreWhiteColor
@@ -56,11 +61,11 @@ class ChatMainFeeder : UICollectionViewCell {
             }
         }
     
-    let profilePhoto : UIImageView = {
+    let profilePhoto : UIButton = {
         
-        let dcl = UIImageView()
+        let dcl = UIButton()
         dcl.translatesAutoresizingMaskIntoConstraints = false
-        dcl.backgroundColor = coreOrangeColor.withAlphaComponent(0.2)
+        dcl.backgroundColor = lightGrey
         dcl.contentMode = .scaleAspectFill
         dcl.layer.masksToBounds = true
         
@@ -145,18 +150,30 @@ class ChatMainFeeder : UICollectionViewCell {
         self.messageLabel.bottomAnchor.constraint(equalTo: self.chatBubble.bottomAnchor, constant: -10).isActive = true
         self.messageLabel.rightAnchor.constraint(equalTo: self.chatBubble.rightAnchor, constant: -10).isActive = true
         
+       
     }
     
     func deployColorsForDebugging() {
         self.messageLabel.backgroundColor = .purple
         self.timeLabel.backgroundColor = .green
         self.backgroundColor = .lightGray
-        
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
         self.chatBubble.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        
+        let frameHeight = self.chatBubble.frame.height
+        
+        DispatchQueue.main.async {
+            
+            if frameHeight < 45.0 {
+                self.chatBubble.layer.cornerRadius = frameHeight / 2.0
+            } else {
+                self.chatBubble.layer.cornerRadius = 30.0
+            }
+        }
     }
     
     required init?(coder: NSCoder) {

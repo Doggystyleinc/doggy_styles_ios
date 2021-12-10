@@ -15,8 +15,11 @@ class NotificationModel : NSObject {
         notification_email : String?,
         notification_has_read : Bool?,
         notification_profile_image : String?,
-        child_key : String?
-            
+        child_key : String?,
+        notification_text_message : String?,
+        notification_media_message : String?
+   
+    
     init(JSON : [String : Any]) {
         
         self.notification_type = JSON["notification_type"] as? String ?? "nil"
@@ -28,6 +31,8 @@ class NotificationModel : NSObject {
         self.notification_has_read = JSON["notification_has_read"] as? Bool ?? false
         self.notification_profile_image = JSON["notification_profile_image"] as? String ?? "nil"
         self.child_key = JSON["child_key"] as? String ?? "nil"
+        self.notification_text_message = JSON["notification_text_message"] as? String ?? "nil"
+        self.notification_media_message = JSON["notification_media_message"] as? String ?? "nil"
 
     }
 }
@@ -134,11 +139,10 @@ class YourNotificationController : UIViewController {
     }
     
     func loadDataEngine(completion : @escaping (_ isComplete : Bool) -> ()) {
-        
-        let usersFullPhoneNumber = userProfileStruct.users_full_phone_number ?? "nil"
-        let replacementNumber = usersFullPhoneNumber.replacingOccurrences(of: " ", with: "")
+       
+        guard let user_uid = Auth.auth().currentUser?.uid else {return}
 
-        let ref = self.databaseRef.child("notifications").child(replacementNumber)
+        let ref = self.databaseRef.child("notifications").child(user_uid)
         
         ref.observe(.value) { snapJSON in
             
@@ -168,6 +172,28 @@ class YourNotificationController : UIViewController {
                 } else {
                     self.yourNotificationsCollectionView.notificationsArray = self.yourNotificationsCollectionView.notificationsReadArray
                 }
+                
+                //MARK: - SORT THE DICTIONARY BY THE TIME STAMP
+                self.yourNotificationsCollectionView.notificationsNewArray.sort(by: { (timeOne, timeTwo) -> Bool in
+                    
+                    if let timeOne = timeOne.notification_time_stamp {
+                        if let timeTwo = timeTwo.notification_time_stamp {
+                            return timeOne > timeTwo
+                        }
+                    }
+                    return true
+                })
+                
+                //MARK: - SORT THE DICTIONARY BY THE TIME STAMP
+                self.yourNotificationsCollectionView.notificationsReadArray.sort(by: { (timeOne, timeTwo) -> Bool in
+                    
+                    if let timeOne = timeOne.notification_time_stamp {
+                        if let timeTwo = timeTwo.notification_time_stamp {
+                            return timeOne > timeTwo
+                        }
+                    }
+                    return true
+                })
                 
             //MARK: - LOOP END
             completion(true)
@@ -248,9 +274,9 @@ class YourNotificationController : UIViewController {
     
     @objc func handleCellReadFlag(childKey : String, users_full_phone_number : String) {
         
-        let filteredNumber = users_full_phone_number.replacingOccurrences(of: " ", with: "")
+        guard let user_uid = Auth.auth().currentUser?.uid else {return}
         
-        let path = self.databaseRef.child("notifications").child(filteredNumber).child(childKey)
+        let path = self.databaseRef.child("notifications").child(user_uid).child(childKey)
         let values : [String : Any] = ["notification_has_read" : true]
         
         path.updateChildValues(values) { error, ref in

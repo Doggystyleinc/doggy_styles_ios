@@ -488,8 +488,8 @@ struct Statics {
     static let  APP_STORE_URL : String = "https://"
     static let  GOOGLE_SIGN_IN : String = "google"
     static let  EMAIL_SIGN_IN : String = "email"
-    static let DOGGYSTYLE_STYLIST_APP_URL : String = "https://apps.apple.com/us/app/doggystylist/id1577824638"
-    static let DOGGYSTYLE_CONSUMER_APP_URL : String = "https://apps.apple.com/us/app/doggystylist/id1577824638"
+    static let  DOGGYSTYLE_STYLIST_APP_URL : String = "https://apps.apple.com/us/app/doggystylist/id1577824638"
+    static let  DOGGYSTYLE_CONSUMER_APP_URL : String = "https://apps.apple.com/us/app/doggystylist/id1577824638"
 
     //MARK: - ANIMATIONS FROM LOTTI JSON
     static let PAW_ANIMATION : String = "paw_animation"
@@ -517,8 +517,11 @@ struct Statics {
     static let RELOAD_DOGGY_PROFILE_SETTINGS : String = "RELOAD_DOGGY_PROFILE_SETTINGS"
     static let SUPPORT_PHONE_NUMBER : String = "6475988823"
     
-    
-    
+    //MARK: - NOTIFICATIONS
+    static let NOTIFICATION_REFERRAL_INVITE : String = "referral_invite"
+    static let NOTIFICATION_WELCOME_ABOARD: String = "welcome_aboard"
+    static let NOTIFICATION_TEXT_MESSAGE: String = "text_message"
+    static let NOTIFICATION_MEDIA_MESSAGE: String = "media_message"
     
 }
 

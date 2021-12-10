@@ -344,10 +344,11 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
                             refStamp.updateChildValues(values) { error, ref in
                                 
                                 //SEND THE RECIPIENT A NOTIFICATION
-                                Service.shared.notificationSender(notificationType: "referral_invite", fullPhoneNumber: fullPhoneNumber) { complete in
-                                    
-                                     self.sendTextMessage(passedCountryCode: "1", passedPhoneNumber: phoneNumber, passedReferralCode: referral_code, inviteesName: "\(inviters_firstName) \(inviters_lastName)")
-                                    
+                                Service.shared.notificationSender(notificationType: Statics.NOTIFICATION_REFERRAL_INVITE, userUID: inviters_UID, textMessage: "nil", imageURL: "nil") { complete in
+                                  
+                                     let countryCode = userProfileStruct.users_country_code ?? "1"
+                                     self.sendTextMessage(typeOfMessage: "referral", stringMessage: "nil", passedCountryCode: countryCode, passedPhoneNumber: phoneNumber, passedReferralCode: referral_code, inviteesName: "\(inviters_firstName) \(inviters_lastName)")
+
                                 }
                             }
                         } //MARK: - THESE USERS HAVE ALREADY BEEN INVITED FOR THE ELSE AT THIS BRACKET
@@ -405,8 +406,10 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
 
                             //MARK: - INCREASE THE COUNT AFTER THE DATABASE HAS BEEN UPDATED THEN COMPLETE OUT
                             counter += 1
-
-                            self.sendTextMessage(passedCountryCode: "1", passedPhoneNumber: phoneNumber, passedReferralCode: referral_code, inviteesName: "\(inviters_firstName) \(inviters_lastName)")
+                        
+                        let countryCode = userProfileStruct.users_country_code ?? "1"
+                        
+                            self.sendTextMessage(typeOfMessage: "referral", stringMessage: "nil", passedCountryCode: countryCode, passedPhoneNumber: phoneNumber, passedReferralCode: referral_code, inviteesName: "\(inviters_firstName) \(inviters_lastName)")
 
                             //MARK: - FALL THROUGH ERROR
                             if counter == filtered.count {
@@ -471,11 +474,9 @@ class ReferralContactsContainer : UIViewController, UITextFieldDelegate, CustomA
         
     }
     
-    func sendTextMessage(passedCountryCode : String, passedPhoneNumber : String, passedReferralCode : String, inviteesName : String) {
+    func sendTextMessage(typeOfMessage : String, stringMessage : String, passedCountryCode : String, passedPhoneNumber : String, passedReferralCode : String, inviteesName : String) {
         
-        let stringMessage = "Woof! Woof! \(inviteesName) has invited you to the Doggystyle iOS application (Groomers for Dirty Dogs) - Please use the following referral code during registration: \(passedReferralCode). Get it now: \(Statics.DOGGYSTYLE_CONSUMER_APP_URL)"
-        
-        TextMessageHTTP.shared.twilioSendTextMessage(users_country_code: passedCountryCode, users_phone_number: passedPhoneNumber, stringMessage: stringMessage) { response, error in
+        TextMessageHTTP.shared.twilioSendTextMessage(type_of_message: typeOfMessage, users_country_code: passedCountryCode, users_phone_number: passedPhoneNumber, stringMessage: stringMessage) { response, error in
             print("Text message response: ", response)
         }
     }

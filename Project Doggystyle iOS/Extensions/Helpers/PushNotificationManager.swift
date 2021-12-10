@@ -16,8 +16,14 @@ final class PushNotificationManager: NSObject {
     static func sendPushNotification(title : String, body : String, recipients_user_uid : String, completion : @escaping (_ success : Any?, _ error : Any?) -> ()) {
         
         //MARK: - GUARD HERE JUST INCASE THE IMPORRIBLE BECOMES POSSIBLE
-        if title.count == 0 {return}
-        if body.count == 0 {return}
+        if title.count == 0 {
+            completion(false, nil)
+            return
+        }
+        if body.count == 0 {
+            completion(false, nil)
+            return
+        }
         
         let databaseRef = Database.database().reference()
         
@@ -25,14 +31,21 @@ final class PushNotificationManager: NSObject {
         guard let _ = Auth.auth().currentUser?.uid else { return }
         
         databaseRef.child("all_users").child(recipients_user_uid).observeSingleEvent(of: .value, with: { (snap : DataSnapshot) in
-            
+            print("opush 1.5")
+
             guard let dic = snap.value as? [String : AnyObject] else { return }
             
             let pushToken = dic["users_push_token"] as? String ?? "nil"
             let sendersName = dic["user_first_name"] as? String ?? "nil"
             
-            if pushToken == "nil" {return}
-            if sendersName == "nil" {return}
+            if pushToken == "nil" {
+                completion(false, nil)
+                return
+            }
+            if sendersName == "nil" {
+                completion(false, nil)
+                return
+            }
             
             let token = pushToken
             

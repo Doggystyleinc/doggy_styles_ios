@@ -26,14 +26,19 @@ class ChatMediaFeeder : UICollectionViewCell {
                             let convertedDate = Date(timeIntervalSince1970: time_stamp).timePassed()
                             self.timeLabel.text = "\(convertedDate)"
                             
-                            //MARK: - PROFILE IMAGE
+                            //MARK: - PROFILE PHOTO LOAD
                             if users_profile_image_url != "nil" {
-                                self.profilePhoto.loadImageGeneralUse(users_profile_image_url) { complete in
-                                    print("photo loaded")
+                                let imageView = UIImageView()
+                                imageView.loadImageGeneralUse(users_profile_image_url) { complete in
+                                    guard let image = imageView.image else {return}
+                                    self.profilePhoto.setBackgroundImage(image, for: .normal)
                                 }
+                                
                             } else {
-                                let image = UIImage(named: "Temp Placeholder")?.withRenderingMode(.alwaysOriginal)
-                                self.profilePhoto.image = image
+                                
+                                self.profilePhoto.titleLabel?.font = UIFont.fontAwesome(ofSize: 15, style: .solid)
+                                self.profilePhoto.setTitle(String.fontAwesomeIcon(name: .dog), for: .normal)
+                                self.profilePhoto.setTitleColor(coreWhiteColor, for: .normal)
                             }
                             
                             self.portraitImageView.isHidden = false
@@ -44,8 +49,8 @@ class ChatMediaFeeder : UICollectionViewCell {
                             let imageView = UIImageView()
                             imageView.loadImageGeneralUse(users_selected_image_url) { complete in
                                 if let image = imageView.image {
-                                    self.portraitImageView.setBackgroundImage(image, for: .normal)
-                                    print("in here?")
+                                    self.portraitImageView.imageView?.contentMode = .scaleAspectFill
+                                    self.portraitImageView.setImage(image, for: .normal)
                                 }
                             }
                         }
@@ -65,11 +70,11 @@ class ChatMediaFeeder : UICollectionViewCell {
         
     }()
     
-    let profilePhoto : UIImageView = {
+    let profilePhoto : UIButton = {
         
-        let dcl = UIImageView()
+        let dcl = UIButton()
         dcl.translatesAutoresizingMaskIntoConstraints = false
-        dcl.backgroundColor = coreOrangeColor.withAlphaComponent(0.2)
+        dcl.backgroundColor = lightGrey
         dcl.contentMode = .scaleAspectFill
         dcl.layer.masksToBounds = true
         
@@ -82,7 +87,7 @@ class ChatMediaFeeder : UICollectionViewCell {
         let dcl = UIButton()
         dcl.translatesAutoresizingMaskIntoConstraints = false
         dcl.backgroundColor = coreOrangeColor.withAlphaComponent(0.2)
-        dcl.contentMode = .scaleAspectFill
+        dcl.imageView?.contentMode = .scaleAspectFit
         dcl.clipsToBounds = true
         dcl.layer.cornerRadius = 10
         dcl.isUserInteractionEnabled = true
@@ -124,7 +129,7 @@ class ChatMediaFeeder : UICollectionViewCell {
         let thl = UILabel()
         thl.translatesAutoresizingMaskIntoConstraints = false
         thl.textAlignment = .right
-        thl.text = "09:27 am"
+        thl.text = ""
         thl.font = UIFont(name: rubikRegular, size: 11)
         thl.numberOfLines = 1
         thl.adjustsFontSizeToFitWidth = false
@@ -167,7 +172,7 @@ class ChatMediaFeeder : UICollectionViewCell {
         self.portraitImageView.leftAnchor.constraint(equalTo: self.profilePhoto.rightAnchor, constant: 20).isActive = true
         self.portraitImageView.topAnchor.constraint(equalTo: self.profilePhoto.topAnchor, constant: 0).isActive = true
         self.portraitImageView.heightAnchor.constraint(equalToConstant: 195).isActive = true
-        self.portraitImageView.widthAnchor.constraint(equalToConstant: 156).isActive = true
+        self.portraitImageView.widthAnchor.constraint(equalToConstant: 195).isActive = true
         
         self.landscapeImageView.leftAnchor.constraint(equalTo: self.profilePhoto.rightAnchor, constant: 20).isActive = true
         self.landscapeImageView.topAnchor.constraint(equalTo: self.profilePhoto.topAnchor, constant: 0).isActive = true
@@ -182,28 +187,6 @@ class ChatMediaFeeder : UICollectionViewCell {
         self.timeLabel.rightAnchor.constraint(equalTo: self.portraitImageView.rightAnchor, constant: 0).isActive = true
         self.timeLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -2).isActive = true
         self.timeLabel.sizeToFit()
-        
-        //MARK: - RATIO
-        /*
-         
-         Since
-         3 : 2 = 195 : X
-         
-         Then we know
-         2/3 = X/195
-         
-         Multiplying both sides by 195 cancels on the right
-         195 × (2/3) = (X/195) × 195
-         195 × (2/3) = X
-         
-         Then solving for X
-         X = 195 × (2/3)
-         X = 130
-         
-         Therefore
-         3 : 2 = 195 : 130
-         
-         */
         
     }
     

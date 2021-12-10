@@ -20,7 +20,7 @@ class Service : NSObject {
     static let shared = Service()
     
     //MARK: - ADDS ONE TO THE APPLICATIONS NOTIFICATION SYSTEM AS WELL AS THROUGH THE CLOUD MESSAGING SYSTEM ATTACHED AS AN EXTENSION
-    func notificationSender(notificationType : String, fullPhoneNumber : String, completion : @escaping (_ isComplete : Bool) -> ()) {
+    func notificationSender(notificationType : String, userUID : String, textMessage : String?, imageURL : String?, completion : @escaping (_ isComplete : Bool) -> ()) {
         
         let databaseRef = Database.database().reference()
         
@@ -32,7 +32,7 @@ class Service : NSObject {
             timeStamp : Double = Date().timeIntervalSince1970
         
         //MARK: - UPDATE THE USERS NOTIFICATOINS VALUES
-        let notificationRef = databaseRef.child("notifications").child(fullPhoneNumber).childByAutoId()
+        let notificationRef = databaseRef.child("notifications").child(userUID).childByAutoId()
         
         let notificationSenderFirstName = inviters_firstName,
             notificationSenderLastName = inviters_lastName,
@@ -41,6 +41,9 @@ class Service : NSObject {
             notificationSenderEmail = inviters_email,
             hasSeen = false,
             childKey = notificationRef.key ?? "nil",
+            notificationTextMessage = textMessage ?? "nil",
+            notificationMediaURL = imageURL ?? "nil",
+
             
             notificationValues : [String : Any] = ["notification_type" : notificationType,
                                                    "notification_first_name" : notificationSenderFirstName,
@@ -50,8 +53,9 @@ class Service : NSObject {
                                                    "notification_email" : notificationSenderEmail,
                                                    "notification_has_read" : hasSeen,
                                                    "notification_profile_image" : sendersProfileImage,
-                                                   "child_key" : childKey
-                                                   
+                                                   "child_key" : childKey,
+                                                   "notification_text_message" : notificationTextMessage,
+                                                   "notification_media_message" : notificationMediaURL
             ]
         
         notificationRef.updateChildValues(notificationValues, withCompletionBlock: { error, ref in
@@ -371,9 +375,7 @@ class Service : NSObject {
                             return
                         }
                         
-                        let filteredNumber = users_full_phone_number.replacingOccurrences(of: " ", with: "")
-                        
-                        Service.shared.notificationSender(notificationType: "welcome_aboard", fullPhoneNumber: filteredNumber) { notificationCompletion in
+                            Service.shared.notificationSender(notificationType: Statics.NOTIFICATION_WELCOME_ABOARD, userUID: firebase_uid, textMessage: "nil", imageURL: "nil") { notificationCompletion in
                             
                             let found_grooming_location = user_grooming_locational_data["found_grooming_location"] as? Bool ?? false
                             

@@ -157,7 +157,7 @@ class HomeViewController: UITabBarController, CLLocationManagerDelegate, CustomA
         }
     }
    
-    func uploadUserChatImage(imageToUpload : UIImage, imageHeight : Double, imageWidth : Double, completion : @escaping (_ isComplete : Bool) -> ()) {
+    func uploadUserChatImage(imageToUpload : UIImage, imageHeight : Double, imageWidth : Double, completion : @escaping (_ isComplete : Bool, _ imageURL : String) -> ()) {
         
         guard let userUid = Auth.auth().currentUser?.uid else {return}
         guard let imageDataToUpload = imageToUpload.jpegData(compressionQuality: 0.35) else {return}
@@ -168,14 +168,14 @@ class HomeViewController: UITabBarController, CLLocationManagerDelegate, CustomA
         imageRef.putData(imageDataToUpload, metadata: nil) { (metaDataPass, error) in
 
             if error != nil {
-                completion(false);
+                completion(false, "nil");
                 return
             }
 
             imageRef.downloadURL(completion: { (urlGRab, error) in
 
                 if error != nil {
-                    completion(false);
+                    completion(false, "nil");
                     return
                 }
 
@@ -191,10 +191,10 @@ class HomeViewController: UITabBarController, CLLocationManagerDelegate, CustomA
                     
                     refUploadPath.updateChildValues(values, withCompletionBlock: { (error, ref) in
                         if error != nil {
-                            completion(false);
+                            completion(false, "nil");
                             return
                         } else {
-                            completion(true);
+                            completion(true, uploadUrl);
                         }
                     })
                 }

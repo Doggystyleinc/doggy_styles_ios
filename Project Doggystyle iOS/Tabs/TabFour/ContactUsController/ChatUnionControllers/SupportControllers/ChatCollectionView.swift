@@ -38,7 +38,7 @@ class ChatCollectionView : UICollectionView, UICollectionViewDelegateFlowLayout,
         self.canCancelContentTouches = false
         self.contentInsetAdjustmentBehavior = .never
         self.delaysContentTouches = true
-        self.contentInset = UIEdgeInsets(top: 100, left: 0, bottom: 0, right: 0)
+        self.contentInset = UIEdgeInsets(top: 110, left: 0, bottom: 0, right: 0)
         self.register(ChatMainFeeder.self, forCellWithReuseIdentifier: self.chatMainID)
         self.register(ChatMediaFeeder.self, forCellWithReuseIdentifier: self.chatMediaID)
         self.register(UICollectionViewCell.self, forCellWithReuseIdentifier: self.defaultID)
@@ -85,17 +85,16 @@ class ChatCollectionView : UICollectionView, UICollectionViewDelegateFlowLayout,
                 
                 let indexed = feeder[indexPath.item],
                     textToSize = indexed.message ?? "",
-                    size = CGSize(width: UIScreen.main.bounds.width - 60, height: 2000),
+                    size = CGSize(width: UIScreen.main.bounds.width - (94 + 40), height: 2000),
                     options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
                 
                 let estimatedFrame = NSString(string: textToSize).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font : UIFont(name: rubikRegular, size: 14)!], context: nil)
                 let estimatedHeight = estimatedFrame.height
                 
-                return CGSize(width: UIScreen.main.bounds.width, height: estimatedHeight + 65)
+                return CGSize(width: UIScreen.main.bounds.width, height: estimatedHeight + 55)
                 
             //MARK: - MEDIA MESSAGES
             } else {
-                
                 return CGSize(width: UIScreen.main.bounds.width, height: 227)
             }
             

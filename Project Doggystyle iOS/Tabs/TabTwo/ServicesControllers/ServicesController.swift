@@ -126,7 +126,7 @@ final class ServicesController: UIViewController, CustomAlertCallBackProtocol {
     }
     
     @objc func presentAppointmentsController() {
-        self.handleCustomPopUpAlert(title: "🚧CONSTRUCTION🚧", message: "Booking will be available shortly.", passedButtons: [Statics.OK])
+            self.handleCustomPopUpAlert(title: "🚧CONSTRUCTION🚧", message: "Booking will be available shortly.", passedButtons: [Statics.OK])
     }
     
 //    @objc func presentAppointmentsController() {

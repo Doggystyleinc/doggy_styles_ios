@@ -16,6 +16,11 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         case complete
     }
     
+    enum MessageType {
+        case text
+        case image
+    }
+    
     var heightConstraint: NSLayoutConstraint?,
         footerOffset: CGFloat = 60.0,
         canBecomeResponder: Bool = true,
@@ -24,8 +29,12 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         hasViewBeenLaidOut : Bool = false,
         controllerState = ControllerState.inProgress,
         homeController : HomeViewController?,
-        otherUIDS : [String]?,
-        chatObjectArray = [ChatSupportModel]()
+        chatObjectArray = [ChatSupportModel](),
+        counterForScrolling : Int = 0,
+        groupUserIDS = [String](),
+        messageType = MessageType.text,
+        lastCommentSend : String = "nil",
+        lastImageSend : String = "nil"
     
     let mainLoadingScreen = MainLoadingScreen(),
         databaseRef = Database.database().reference()
@@ -60,7 +69,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
-        hl.text = "Chatting with Sophie"
+        hl.text = "Chatting with <#client>"
         hl.font = UIFont(name: dsHeaderFont, size: 24)
         hl.numberOfLines = 2
         hl.adjustsFontSizeToFitWidth = true
@@ -75,7 +84,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
-        hl.text = "Appt #9475; Rex & Jolene"
+        hl.text = "Appt <#apt>; <#name>"
         hl.font = UIFont(name: rubikMedium, size: 18)
         hl.numberOfLines = 2
         hl.adjustsFontSizeToFitWidth = true
@@ -197,7 +206,6 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         self.addViews()
         self.handleObservers()
         self.handleDataSource()
-        self.customInputAccessoryView.commentTextView.becomeFirstResponder()
         
         //MARK: - FORCE LAYOUTSUBVIEWS
         self.view.layoutIfNeeded()
@@ -221,6 +229,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         self.shouldAdjustForKeyboard = true
         self.chatMainCollection.scrollToBottom(animated: true)
         self.showFirstResponder()
+        print("and in here at all per message received?")
     }
     
     //MARK: - HEADER AND FOOTER GRADIENT
@@ -337,13 +346,14 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
             //MARK: - CLEAR THE DATASOURCE SINCE WE HAVE OPEN SCOKETS LISTENING AND THE COUNTER
             self.chatObjectArray.removeAll()
             counter = 0
+            errorFlag = false
             
             //MARK: - MESSAGES EXISTS
             if snap.exists() {
                 let childrenCount = Int(snap.childrenCount)
                 
                 for child in snap.children.allObjects as! [DataSnapshot] {
-                    counter += 1
+                    
                     let JSON = child.value as? [String : Any] ?? [:]
                     
                     let senders_firebase_uid = JSON["senders_firebase_uid"] as? String ?? "nil"
@@ -384,6 +394,10 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
                                                            "image_height" : image_height,
                                                            "image_width" : image_width]
                             
+                            if !self.groupUserIDS.contains(senders_firebase_uid) {
+                                self.groupUserIDS.append(senders_firebase_uid)
+                            }
+                            
                             //MARK: - LOAD THE DATA INTO THE MODEL
                             let post = ChatSupportModel(JSON: object)
                             self.chatObjectArray.append(post)
@@ -396,34 +410,40 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
                                         return timeOne < timeTwo
                                     }
                                 }
-                                
                                 return true
-                                
                             })
                             
+                            counter += 1
+
                             if childrenCount == counter {
                                 if errorFlag == true {
                                     completion(false)
                                 } else {
+                                    print("one")
                                     completion(true)
                                 }
                             }
                             
                         } else {
+                            print("two")
+
                             errorFlag = true
                             completion(false)
                         }
                     }
-                }
+                } //loop end
                 
             } else {
+                print("three")
+
                 completion(false)
             }
         }
     }
     
     @objc func handleSuccess() {
-        
+        print("GROUPIDS ARE: \(self.groupUserIDS)")
+        self.counterForScrolling += 1
         if self.chatObjectArray.count <= 0 {return}
         
         DispatchQueue.main.async {
@@ -432,6 +452,13 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         
         UIView.animate(withDuration: 0.5) {
             self.customInputAccessoryView.alpha = 1.0
+        }
+        
+        if self.counterForScrolling > 1 {
+            DispatchQueue.main.async {
+                UIDevice.vibrateLight()
+                self.perform(#selector(self.sendMessageCompletion), with: nil, afterDelay: 0.1)
+            }
         }
     }
     
@@ -633,6 +660,8 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         //MARK: - REQUIRES HOMECONTROLLER SO THE IMAGE CAN UPLOAD IF THE USER BAILS FROM THE CHAT
         if self.homeController == nil {return}
         
+        self.messageType = .image
+        
         self.hideFirstResponder()
         self.customInputAccessoryView.isHidden = true
         self.checkForGalleryAuth()
@@ -656,6 +685,9 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         
         if cleanText.count <= 0 {return}
         
+        self.messageType = .text
+        self.lastCommentSend = cleanText
+        
         var containsNSFWText : Bool = false
         
         //MARK: - START LOOP
@@ -670,11 +702,11 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         
         //MARK: - END LOOP
         if !containsNSFWText {
-            //CLEAN
+            //MARK: - CLEAN
             self.customInputAccessoryView.resetAfterSend()
             self.customInputAccessoryView.sendButton.isUserInteractionEnabled = false
             
-            //ALL CLEAR HERE NOW
+            //MARK: ALL CLEAR HERE NOW
             let time_stamp : Double = NSDate().timeIntervalSince1970
             
             let starterKey = "this_is_a_random_starter_key"
@@ -686,24 +718,57 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
             let values : [String : Any] = ["time_stamp" : time_stamp, "type_of_message" : "text", "message" : cleanText, "senders_firebase_uid" : user_uid, "message_parent_key" : parent_key]
             
             ref.updateChildValues(values) { error, ref in
-                
-                self.customInputAccessoryView.sendButton.isUserInteractionEnabled = true
-                self.chatMainCollection.scrollToBottom(animated: true)
-                self.customInputAccessoryView.placeHolderLabel.isHidden = false
-                
-                if self.otherUIDS != nil {
-                    
-                    guard let safeIDS = self.otherUIDS else {return}
-                    
-                    for i in safeIDS {
-                        PushNotificationManager.sendPushNotification(title: "Message", body: "cleanText", recipients_user_uid: i) { success, error in
-                            print("notification sent")
-                        }
-                    }
-                }
+              
+                self.notificationUpdater()
             }
         } else {
             self.handleCustomPopUpAlert(title: "Ruh roh!", message: "Please enter another message, we aim to keep a friendly environment here at Doggystyle - for both humans and pups.", passedButtons: [Statics.OK])
+        }
+    }
+    
+   @objc func sendMessageCompletion() {
+        
+        self.customInputAccessoryView.sendButton.isUserInteractionEnabled = true
+        self.chatMainCollection.scrollToBottom(animated: true)
+        self.customInputAccessoryView.placeHolderLabel.isHidden = false
+
+    }
+    
+    func notificationUpdater() {
+        
+        if self.groupUserIDS.count == 0 {return}
+        
+        guard let user_uid = Auth.auth().currentUser?.uid else {return}
+
+        let dataCopy = self.groupUserIDS.filter({$0 != user_uid})
+    
+        if dataCopy.count <= 0 {return}
+    
+        for i in dataCopy {
+            
+            let sendersFirstName = userProfileStruct.user_first_name ?? "nil"
+            let sendersLastName = userProfileStruct.user_last_name ?? "nil"
+            var fullname = "\(sendersFirstName) \(sendersLastName)"
+            
+            if sendersFirstName == "nil" || sendersLastName == "nil" {
+                fullname = "Dog Lover"
+            } else {
+                fullname = "\(sendersFirstName) \(sendersLastName)"
+            }
+            
+            if self.messageType == .text {
+                PushNotificationManager.sendPushNotification(title: fullname, body: self.lastCommentSend, recipients_user_uid: i) { complete, error in
+                    Service.shared.notificationSender(notificationType: Statics.NOTIFICATION_TEXT_MESSAGE, userUID: i, textMessage: self.lastCommentSend, imageURL: "nil") { notificationCompletion in
+                        print("NOTIFICATION SENT")
+                    }
+                }
+            } else {
+                PushNotificationManager.sendPushNotification(title: fullname, body: "🖇 Attachment", recipients_user_uid: i) { complete, error in
+                    Service.shared.notificationSender(notificationType: Statics.NOTIFICATION_MEDIA_MESSAGE, userUID: i, textMessage: "🖇 Attachment", imageURL: self.lastImageSend) { notificationCompletion in
+                        print("IMAGE SENT")
+                    }
+                }
+            }
         }
     }
     
@@ -713,9 +778,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
             self.navigationController?.present(viewController, animated: true, completion: nil)
             
             viewController.completionWithItemsHandler = {(s, ok, items, error) in
-           
             print("cancelled")
-                
             }
         }
     }
@@ -814,10 +877,12 @@ extension SupportChatController : UIImagePickerControllerDelegate, UINavigationC
                     let height = Double(editedImage.size.height)
                     let width = Double(editedImage.size.width)
                     
-                    self.homeController?.uploadUserChatImage(imageToUpload: editedImage, imageHeight: height, imageWidth: width, completion: { complete in
+                    self.homeController?.uploadUserChatImage(imageToUpload: editedImage, imageHeight: height, imageWidth: width, completion: { complete, imageURL in
                         self.mainLoadingScreen.cancelMainLoadingScreen()
                         UIDevice.vibrateLight()
                         self.customInputAccessoryView.isHidden = false
+                        self.lastImageSend = imageURL
+                        self.notificationUpdater()
                         self.perform(#selector(self.showFirstResponder), with: nil, afterDelay: 1.0)
                     })
                     
@@ -827,10 +892,12 @@ extension SupportChatController : UIImagePickerControllerDelegate, UINavigationC
                     let height = Double(originalImage.size.height)
                     let width = Double(originalImage.size.width)
                     
-                    self.homeController?.uploadUserChatImage(imageToUpload: originalImage, imageHeight: height, imageWidth: width, completion: { complete in
+                    self.homeController?.uploadUserChatImage(imageToUpload: originalImage, imageHeight: height, imageWidth: width, completion: { complete, imageURL in
                         self.mainLoadingScreen.cancelMainLoadingScreen()
                         UIDevice.vibrateLight()
                         self.customInputAccessoryView.isHidden = false
+                        self.lastImageSend = imageURL
+                        self.notificationUpdater()
                         self.perform(#selector(self.showFirstResponder), with: nil, afterDelay: 1.0)
                     })
                     

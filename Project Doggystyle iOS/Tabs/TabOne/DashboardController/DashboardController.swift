@@ -178,7 +178,7 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleNewDogFlow), name: NSNotification.Name(Statics.CALL_ADD_NEW_PUP), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.presentAppointmentsController), name: NSNotification.Name(Statics.CALL_BOOK_NOW), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.callDataEngine), name: NSNotification.Name(Statics.RUN_DATA_ENGINE), object: nil)
-        
+       
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -263,10 +263,8 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
     
     func loadNotificationListener() {
         
-        let usersFullPhoneNumber = userProfileStruct.users_full_phone_number ?? "nil"
-        let replacementNumber = usersFullPhoneNumber.replacingOccurrences(of: " ", with: "")
-
-        let ref = self.databaseRef.child("notifications").child(replacementNumber)
+        guard let user_uid = Auth.auth().currentUser?.uid else {return}
+        let ref = self.databaseRef.child("notifications").child(user_uid)
         
         var counter : Int = 0
         
