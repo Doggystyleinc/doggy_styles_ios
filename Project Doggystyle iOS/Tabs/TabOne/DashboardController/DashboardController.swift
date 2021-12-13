@@ -418,8 +418,9 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
             
             self.handleDatasourceFailure()
             
+        //WORKING BELOW IN HERE NOW, HAVE TO SHOW THE TOUR TRUCK WITH BOOK NOW BUTTON
         case .YesGroomerLocationYesDoggyProfile:
-            
+            print("landed in here now")
             self.emptyStateOne.isHidden = true
             self.emptyStateTwo.isHidden = true
             self.dashMainView.isHidden = false

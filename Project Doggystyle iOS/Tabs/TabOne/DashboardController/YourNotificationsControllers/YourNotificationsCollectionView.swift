@@ -107,9 +107,9 @@ class YourNotificationsCollectionView : UICollectionView, UICollectionViewDelega
             cell.notificationModel = feeder
             
             if feeder.notification_has_read == true {
-                cell.orangeCircle.backgroundColor = coreOrangeColor
+                cell.orangeCircle.layer.borderColor = coreGreenColor.cgColor
             } else {
-                cell.orangeCircle.backgroundColor = .clear
+                cell.orangeCircle.layer.borderColor = coreOrangeColor.cgColor
             }
             
             return cell
@@ -125,9 +125,9 @@ class YourNotificationsCollectionView : UICollectionView, UICollectionViewDelega
             cell.notificationModel = feeder
             
             if feeder.notification_has_read == true {
-                cell.orangeCircle.backgroundColor = coreOrangeColor
+                cell.orangeCircle.layer.borderColor = coreGreenColor.cgColor
             } else {
-                cell.orangeCircle.backgroundColor = .clear
+                cell.orangeCircle.layer.borderColor = coreOrangeColor.cgColor
             }
             
             return cell

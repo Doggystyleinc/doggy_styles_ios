@@ -17,7 +17,21 @@ class TruckTracker : UIViewController {
     var truckModelArray = [TruckTrackerModel](),
         secondLimiter : Int = 0,
         timer : Timer?,
-        updateInterval : Int = 5
+        updateInterval : Int = 15
+ 
+    lazy var backButton : UIButton = {
+        
+        let cbf = UIButton(type: .system)
+        cbf.translatesAutoresizingMaskIntoConstraints = false
+        cbf.backgroundColor = .clear
+        cbf.tintColor = UIColor.dsOrange
+        cbf.contentMode = .scaleAspectFill
+        cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 24, style: .solid)
+        cbf.setTitle(String.fontAwesomeIcon(name: .chevronLeft), for: .normal)
+        cbf.addTarget(self, action: #selector(self.handleBackButton), for: UIControl.Event.touchUpInside)
+        return cbf
+        
+    }()
     
     lazy var truckTrackerMapView : TruckTrackerMapSubview = {
         
@@ -67,10 +81,11 @@ class TruckTracker : UIViewController {
     }
     
     func addViews() {
-        
+
         self.view.addSubview(self.truckTrackerMapView)
         self.view.addSubview(self.activityIndicator)
         self.view.addSubview(self.updatingLabel)
+        self.view.addSubview(self.backButton)
 
         self.truckTrackerMapView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
         self.truckTrackerMapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
@@ -87,23 +102,35 @@ class TruckTracker : UIViewController {
         self.updatingLabel.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
         self.updatingLabel.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
         self.updatingLabel.sizeToFit()
+        
+        self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
+        self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true
+        self.backButton.heightAnchor.constraint(equalToConstant: 54).isActive = true
+        self.backButton.widthAnchor.constraint(equalToConstant: 54).isActive = true
 
+    }
+    
+    @objc func handleBackButton() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
         
-        //MARK: - CLEAN UP
+        //MARK: - CLEAN UP UPON DISMISSAL
         if self.timer != nil {
             self.timer?.invalidate()
             self.timer = nil
         }
+        
         NotificationCenter.default.removeObserver(self)
     }
     
     @objc func fireUpEngine() {
         
-        print("ENGINE UPDATING")
+        self.truckTrackerMapView.clear()
+        
+        //MARK: - ENGINE UPDATING
         self.activityIndicator.startAnimating()
         self.updatingLabel.isHidden = false
 
@@ -112,7 +139,7 @@ class TruckTracker : UIViewController {
         }
     }
     
-    //MARK: - POPULATES THE TRUCKS LOCATION ON THE MAP AS WELL AS CLIENTS
+    //MARK: - POPULATES THE TRUCKS LOCATION ON THE MAP AS WELL AS CLIENTS - SPECIFICALLY THE DATASOURCE
     func runDataEngine(completion : @escaping (_ isComplete : Bool)->()) {
         
         let ref = self.databaseRef.child("client_groomer_location_broadcaster")
@@ -182,7 +209,7 @@ class TruckTracker : UIViewController {
             
             //MARK: - IS A GROOMER SO SHOW THE VAN
             if isGroomer {
-                self.truckTrackerMapView.addCustomMarker(latitude: latitude, longitude: longitude, image: truckImage, header: usersName)
+                self.truckTrackerMapView.addCustomMarkerImageNormal(latitude: latitude, longitude: longitude, image: truckImage, header: usersName)
             } else {
                 //MARK: - IS NOT A GROOMER SO SHOW THE CLIENT IMAGE OR DEFAULT IF THEY DO NOT HAVE ONE
                 if users_profile_image_url == "nil" {

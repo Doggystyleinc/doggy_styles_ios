@@ -211,6 +211,7 @@ class Service : NSObject {
                             let differenceInMeters = abs(clients_preferred_location_coordinates.distance(from: doggystyle_services_preferred_location))
                             
                             let threeMileThresholdInMeters = 4828.03
+                            //duration of travel here
                             
                             if differenceInMeters > threeMileThresholdInMeters {
                                 print("not servicing \(address) because the client is \(differenceInMeters) meters away which is greater than the threshold of \(threeMileThresholdInMeters) - they can be found at \(website)")
@@ -284,7 +285,7 @@ class Service : NSObject {
     }
     
     
-    //MARK: - REGISTRATION: ERROR CODE 200 PROMPTS REGISTRATION SUCCESS WITH LOGIN FAILURE, SO CALL LOGIN FUNCTION AGAIN INDEPENDENTLY. 500 = REGISTRATION FAILED, CALL THIS FUNCTION AGAIN FROM SCRATCH.
+    //MARK: - REGISTRATION: ERROR CODE 200 PROMPTS REGISTRATION SUCCESS WITH LOGIN FAILURE, SO CALL LOGIN FUNCTION AGAIN INDEPENDENTLY. 500 = REGISTRATION FAILED, CALL THIS FUNCTION AGAIN FROM SCRATCH - also signs in the user to the database so we can removew the second sign in part.
     func FirebaseRegistrationAndLogin( completion : @escaping (_ registrationSuccess : Bool, _ response : String, _ responseCode : Int)->()) {
         let databaseRef = Database.database().reference()
         

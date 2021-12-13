@@ -73,6 +73,19 @@ class TruckTrackerMapSubview : GMSMapView, CLLocationManagerDelegate {
         marker.map = self
         
     }
+    
+    //REMOVED FOR VERSION 1 WHEN WE TOOK AWAY MAP TAPS.
+    func addCustomMarkerImageNormal(latitude : Double, longitude : Double, image : UIImage, header : String) {
+
+        let marker = GMSMarker()
+        marker.position = CLLocationCoordinate2DMake(latitude, longitude)
+        marker.title = header
+        marker.accessibilityLabel = "\(longitude)"
+        marker.isDraggable = false
+        marker.icon = image
+        marker.map = self
+        
+    }
  
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
