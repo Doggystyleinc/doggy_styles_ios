@@ -7,11 +7,14 @@
 
 import Foundation
 import UIKit
+import Firebase
 
 class MyDogsCollectionContainer : UIViewController, CustomAlertCallBackProtocol {
     
-    var homeViewController : HomeViewController?
-    
+    var homeViewController : HomeViewController?,
+        removalID : String = "nil",
+        removalDogsNameID : String = "nil"
+
     lazy var backButton : UIButton = {
         
         let cbf = UIButton(type: .system)
@@ -94,14 +97,11 @@ class MyDogsCollectionContainer : UIViewController, CustomAlertCallBackProtocol 
     }
     
     @objc func handleAddNewDog() {
-        
         self.homeViewController?.handleAddNewDogFlow()
     }
     
     @objc func handleBackButton() {
-        
         self.navigationController?.popViewController(animated: true)
-        
     }
     
     @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {
@@ -122,9 +122,37 @@ class MyDogsCollectionContainer : UIViewController, CustomAlertCallBackProtocol 
         switch type {
         
         case Statics.OK: print(Statics.OK)
+        case Statics.CANCEL: print(Statics.CANCEL)
+
+        case Statics.GOT_IT:
+            self.handleRemoval()
             
         default: print("Should not hit")
             
+        }
+    }
+  
+    func handleDogRemoval(passedChildAutoKey : String, dogsName : String) {
+        self.removalID = passedChildAutoKey
+        self.removalDogsNameID = dogsName
+        self.handleCustomPopUpAlert(title: "\(dogsName)", message: "Just so you know, removing \(dogsName) is permanent.", passedButtons: [Statics.GOT_IT, Statics.CANCEL])
+    }
+    
+    func handleRemoval() {
+        
+        guard let user_uid = Auth.auth().currentUser?.uid else {return}
+
+        Service.shared.removeDog(passedAutoID: self.removalID) { isComplete in
+            
+            if isComplete {
+                Service.shared.notificationSender(notificationType: Statics.NOTIFICATION_DOG_REMOVAL, userUID: user_uid, textMessage: "\(self.removalDogsNameID) has been removed.", imageURL: "nil") { notificationCompletion in
+                    self.handleBackButton()
+                }
+            } else {
+                Service.shared.notificationSender(notificationType: Statics.NOTIFICATION_DOG_REMOVAL, userUID: user_uid, textMessage: "\(self.removalDogsNameID) could not be removed Please try again.", imageURL: "nil") { notificationCompletion in
+                    self.handleBackButton()
+                }
+            }
         }
     }
 }

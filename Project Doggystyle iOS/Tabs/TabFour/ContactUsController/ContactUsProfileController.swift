@@ -198,7 +198,6 @@ class ContactUsProfileController : UIViewController, CustomAlertCallBackProtocol
         self.dogWithGlassesImage.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
         self.dogWithGlassesImage.topAnchor.constraint(equalTo: self.descriptionLabel.bottomAnchor, constant: 0).isActive = true
 
-
     }
     
     @objc func handleBackButton() {

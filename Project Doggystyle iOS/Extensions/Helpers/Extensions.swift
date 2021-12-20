@@ -179,8 +179,6 @@ extension Date {
     
     func timePassed() -> String {
         
-        print("SELF", self)
-        
         let currentDate = Date()
         let nameFormatter = DateFormatter()
         
@@ -201,7 +199,6 @@ extension Date {
             nameFormatter.pmSymbol = "pm"
             nameFormatter.dateFormat = "hh:mm a"
             let name = nameFormatter.string(from: self)
-            print("name on the return is: \(name)")
             return name
             
             //CHECK FOR THE LAST WEEK - GIVE WEEK DAY NAME
@@ -522,7 +519,7 @@ struct Statics {
     static let NOTIFICATION_WELCOME_ABOARD: String = "welcome_aboard"
     static let NOTIFICATION_TEXT_MESSAGE: String = "text_message"
     static let NOTIFICATION_MEDIA_MESSAGE: String = "media_message"
-    
+    static let NOTIFICATION_DOG_REMOVAL: String = "dog_removal"
 }
 
 extension UICollectionView {

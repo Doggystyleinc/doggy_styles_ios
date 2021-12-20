@@ -253,7 +253,6 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
         etfc.layer.cornerRadius = 10
         etfc.leftViewMode = .always
         etfc.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
-       
         etfc.clipsToBounds = false
         etfc.layer.masksToBounds = false
         etfc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
@@ -440,15 +439,14 @@ class NewDogOne : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
         self.contentView.addSubview(self.profileImageViewContainer)
         self.contentView.addSubview(self.profileImageView)
         self.contentView.addSubview(self.pencilIconButton)
-        self.contentView.addSubview(self.datePicker)
         
         self.contentView.addSubview(self.nameTextField)
         self.contentView.addSubview(self.breedTextField)
         self.contentView.addSubview(self.ageTextField)
-        
+        self.contentView.addSubview(self.datePicker)
         self.contentView.addSubview(self.nextButton)
         
-        self.view.addSubview(timeCover)
+        self.view.addSubview(self.timeCover)
         self.view.addSubview(self.newDogSearchBreedSubview)
         
         self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true

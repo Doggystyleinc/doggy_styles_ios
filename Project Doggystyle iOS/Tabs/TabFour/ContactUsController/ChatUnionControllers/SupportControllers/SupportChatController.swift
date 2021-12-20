@@ -756,6 +756,11 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
                 fullname = "\(sendersFirstName) \(sendersLastName)"
             }
             
+            let direct_messaging = userProfileStruct.user_notification_settings ?? ["nil" : "nil"]
+            let direct_messaging_enabled = direct_messaging["direct_messages"] as? Bool ?? false
+            
+            if direct_messaging_enabled == true {
+            
             if self.messageType == .text {
                 PushNotificationManager.sendPushNotification(title: fullname, body: self.lastCommentSend, recipients_user_uid: i) { complete, error in
                     Service.shared.notificationSender(notificationType: Statics.NOTIFICATION_TEXT_MESSAGE, userUID: i, textMessage: self.lastCommentSend, imageURL: "nil") { notificationCompletion in
@@ -768,6 +773,10 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
                         print("IMAGE SENT")
                     }
                 }
+            }
+            
+            } else {
+                print("notifications are not engaged for sending chats and direct messages")
             }
         }
     }

@@ -214,6 +214,9 @@ class YourNotificationsFeeder : UICollectionViewCell {
             } else if notification_type == Statics.NOTIFICATION_MEDIA_MESSAGE {
                 self.headerLabel.text = "\(notification_first_name) \(notification_last_name)"
 
+            } else if notification_type == Statics.NOTIFICATION_DOG_REMOVAL {
+                self.headerLabel.text = "\(notification_first_name) \(notification_last_name)"
+                self.subHeaderLabel.text = "\(notification_text_message)"
             } else {
                 print("this should not print out")
             }

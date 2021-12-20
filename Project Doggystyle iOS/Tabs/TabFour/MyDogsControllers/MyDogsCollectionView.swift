@@ -116,9 +116,17 @@ class MyDogsCollectionView : UICollectionView, UICollectionViewDelegateFlowLayou
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
         print(indexPath)
         
-        self.myDogsCollectionContainer?.handleCustomPopUpAlert(title: "🚧CONSTRUCTION🚧", message: "Editing your puppies profile will be available shortly.", passedButtons: [Statics.OK])
+        let feeder = doggyProfileDataSource[indexPath.item]
+        
+        let key = feeder.ref_key ?? "nil"
+        let dogsName = feeder.dog_builder_name ?? "nil"
+        
+        if key != "nil" && dogsName != "nil" {
+            self.myDogsCollectionContainer?.handleDogRemoval(passedChildAutoKey: key, dogsName: dogsName)
+        } else {
+            print("something went wrong here")
+        }
     }
-    
     
     @objc func handleAddNewDogButton(sender : UIButton) {
         
@@ -202,7 +210,7 @@ class MyDogsCollectionFeeder : UICollectionViewCell {
         cbf.backgroundColor = .clear
         cbf.contentMode = .scaleAspectFill
         cbf.titleLabel?.font = UIFont.fontAwesome(ofSize: 15, style: .solid)
-        cbf.setTitle(String.fontAwesomeIcon(name: .pencilAlt), for: .normal)
+        cbf.setTitle(String.fontAwesomeIcon(name: .times), for: .normal)
         cbf.setTitleColor(coreOrangeColor, for: .normal)
         cbf.addTarget(self, action: #selector(self.handleEditProfilePencil(sender:)), for: UIControl.Event.touchUpInside)
         return cbf

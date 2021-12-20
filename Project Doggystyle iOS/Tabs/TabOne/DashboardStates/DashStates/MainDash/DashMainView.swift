@@ -153,10 +153,6 @@ class DashMainView : UIView {
         return vi
     }()
     
-    
-    
-    
-    
     let tourTruckContainer : UIView = {
         
         let wc = UIView()

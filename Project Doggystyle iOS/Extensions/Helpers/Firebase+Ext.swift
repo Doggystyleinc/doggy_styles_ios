@@ -19,6 +19,22 @@ class Service : NSObject {
     
     static let shared = Service()
     
+    func removeDog(passedAutoID : String, completion : @escaping (_ isComplete : Bool)->()) {
+        
+        let databaseRef = Database.database().reference()
+        guard let user_uid = Auth.auth().currentUser?.uid else {return}
+        let path = databaseRef.child("doggy_profile_builder").child(user_uid).child(passedAutoID)
+        path.removeValue { error, ref in
+            
+            if error != nil {
+                completion(false)
+                return
+            } else {
+                completion(true)
+            }
+        }
+    }
+    
     //MARK: - ADDS ONE TO THE APPLICATIONS NOTIFICATION SYSTEM AS WELL AS THROUGH THE CLOUD MESSAGING SYSTEM ATTACHED AS AN EXTENSION
     func notificationSender(notificationType : String, userUID : String, textMessage : String?, imageURL : String?, completion : @escaping (_ isComplete : Bool) -> ()) {
         

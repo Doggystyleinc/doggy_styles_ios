@@ -13,7 +13,6 @@ import GooglePlaces
 class HomeViewController: UITabBarController, CLLocationManagerDelegate, CustomAlertCallBackProtocol {
     
     private let dashboardController = DashboardViewController(),
-                //appointmentController = AppointmentsViewController(),
                 profileController = ProfileController(),
                 servicesController = ServicesController()
     

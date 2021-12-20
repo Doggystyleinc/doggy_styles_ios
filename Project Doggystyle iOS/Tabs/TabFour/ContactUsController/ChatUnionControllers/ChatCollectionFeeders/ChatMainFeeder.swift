@@ -120,7 +120,6 @@ class ChatMainFeeder : UICollectionViewCell {
         super.init(frame: frame)
         self.backgroundColor = .clear
         self.addViews()
-//        self.deployColorsForDebugging()
     }
     
     func addViews() {
