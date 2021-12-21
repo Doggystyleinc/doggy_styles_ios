@@ -85,6 +85,8 @@ class ProfileCollectionSubview : UICollectionView, UICollectionViewDelegateFlowL
     
     @objc func handleSelection(sender: UIButton) {
         
+        print("final commit")
+        
         let selectedButtonCell = sender.superview as! UICollectionViewCell
         guard let indexPath = self.indexPath(for: selectedButtonCell) else {return}
         
