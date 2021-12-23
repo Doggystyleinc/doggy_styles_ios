@@ -10,7 +10,7 @@ import UIKit
 
 class ProfileCollectionSubview : UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
-    private let profileID = "profileID", arrayOfStaticLabels = ["My dogs", "Change my Location", "Payment Methods", "Notifications", "Contact Us", "Re-fur a Doggy"]
+    private let profileID = "profileID", arrayOfStaticLabels = ["My dogs", "Change my Location", "Notifications", "Contact Us", "Re-fur a Doggy"] //"Payment Methods" - add when payment is live
     
     var profileController : ProfileController?
     

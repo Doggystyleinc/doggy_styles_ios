@@ -69,7 +69,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
-        hl.text = "Chatting with <#client>"
+        hl.text = "Customer support"
         hl.font = UIFont(name: dsHeaderFont, size: 24)
         hl.numberOfLines = 2
         hl.adjustsFontSizeToFitWidth = true
@@ -90,6 +90,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
         hl.textColor = dsFlatBlack
+        hl.isHidden = true
         
         return hl
     }()
@@ -269,7 +270,7 @@ class SupportChatController : UIViewController, CustomAlertCallBackProtocol {
         self.headerContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
         self.headerContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
         self.headerContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-        self.headerContainer.heightAnchor.constraint(equalToConstant: 185).isActive = true
+        self.headerContainer.heightAnchor.constraint(equalToConstant: 165).isActive = true
         self.headerContainer.isUserInteractionEnabled = false
         
         self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true

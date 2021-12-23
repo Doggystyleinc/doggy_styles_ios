@@ -169,11 +169,12 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
         tv.isScrollEnabled = true
         tv.isEditable = false
         tv.isSelectable = true
+        tv.isHidden = true
         
         return tv
         
     }()
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

@@ -75,7 +75,8 @@ class DashMainView : UIView {
         
         cbf.setAttributedTitle(attributedStr, for: .normal)
         cbf.addTarget(self, action: #selector(self.handleBookingController), for: .touchUpInside)
-        
+        cbf.isHidden = true
+        cbf.alpha = 0
         return cbf
         
     }()
@@ -336,7 +337,10 @@ class DashMainView : UIView {
     }
     
     @objc func handleBookingController() {
-        self.dashboardController?.presentAppointmentsController()
+        
+        print("UNCOMMENT WHEN BOOKING IS LIVE")
+
+//        self.dashboardController?.presentAppointmentsController()
     }
     
     required init?(coder: NSCoder) {

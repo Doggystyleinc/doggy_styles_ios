@@ -18,7 +18,7 @@
  const delivery_method = req.body.delivery_method;
  
  request_for_authorization:
- const users_country_code = req.body.users_country_code; c
+ const users_country_code = req.body.users_country_code; 
  onst users_phone_number = req.body.users_phone_number;
  const entered_code = req.body.entered_code;
  */
@@ -63,19 +63,15 @@ final class ServiceHTTP : NSObject {
         //create dataTask using the session object to send data to the server
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
-            print("one:")
-            
             guard error == nil else {
                 completion(nil, error)
                 return
             }
-            print("two:")
 
             guard let data = data else {
                 completion(nil, NSError(domain: "dataNilError", code: -100001, userInfo: nil))
                 return
             }
-            print("three:")
 
             do {
                 guard let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] else {
@@ -83,11 +79,8 @@ final class ServiceHTTP : NSObject {
                     return
                 }
                 
-                print("four:")
-
                 completion(json, nil)
             } catch let error {
-                print("five:")
 
                 print(error.localizedDescription)
                 completion(nil, error)

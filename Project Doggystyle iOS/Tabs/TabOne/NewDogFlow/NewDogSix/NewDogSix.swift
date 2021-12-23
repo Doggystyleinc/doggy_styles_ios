@@ -94,6 +94,7 @@ class NewDogSix : UIViewController {
         
         cbf.setAttributedTitle(attributedStr, for: .normal)
         cbf.addTarget(self, action: #selector(self.handleBookNow), for: .touchUpInside)
+        cbf.alpha = 0 // uncomment when booking is live
         
         return cbf
         
