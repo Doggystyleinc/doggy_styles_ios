@@ -222,6 +222,9 @@ class NotificationManagement : UIViewController {
         self.footerViewCell.addSubview(self.otherNotificationsLabel)
         self.footerViewCell.addSubview(self.smsLabel)
         self.footerViewCell.addSubview(self.smsArrow)
+        
+        //MARK: - UNCOMMENT WHEN LIVE
+        self.footerViewCell.isHidden = true
 
         self.backButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: -10).isActive = true
         self.backButton.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 10).isActive = true

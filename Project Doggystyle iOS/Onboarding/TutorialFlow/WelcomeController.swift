@@ -117,10 +117,11 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
         let dcl = UIImageView()
         dcl.translatesAutoresizingMaskIntoConstraints = false
         dcl.backgroundColor = .clear
-        dcl.contentMode = .scaleAspectFill
+        dcl.contentMode = .scaleAspectFit
         dcl.isUserInteractionEnabled = false
-        let image = UIImage(named: "stylist_van_image")?.withRenderingMode(.alwaysOriginal)
+        let image = UIImage(named: "vehicle_image")?.withRenderingMode(.alwaysOriginal)
         dcl.image = image
+        dcl.clipsToBounds = true
         
         return dcl
     }()
@@ -218,7 +219,7 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
 
         self.pages.append(self.page1)
         self.pages.append(self.page2)
-        self.pages.append(self.page3)
+        //self.pages.append(self.page3)
         
         self.setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
         
@@ -229,7 +230,7 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
         self.pageControl.translatesAutoresizingMaskIntoConstraints = false
         self.pageControl.isHidden = true
         
-        self.page3.tutorialClass = self
+        //self.page3.tutorialClass = self
         self.page2.tutorialClass = self
         self.page1.tutorialClass = self
         
@@ -275,12 +276,12 @@ class WelcomePageController: UIPageViewController, UIPageViewControllerDataSourc
         self.welcomeLabel.topAnchor.constraint(equalTo: self.dsLogoImage.bottomAnchor, constant: 20).isActive = true
         self.welcomeLabel.leftAnchor.constraint(equalTo: self.dsLogoImage.leftAnchor, constant: 0).isActive = true
         self.welcomeLabel.rightAnchor.constraint(equalTo: self.topContainer.rightAnchor, constant: -30).isActive = true
-        self.welcomeLabel.sizeToFit()
+        self.welcomeLabel.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
-        self.vanImage.topAnchor.constraint(equalTo: self.dsLogoImage.bottomAnchor, constant: 0).isActive = true
-        self.vanImage.leftAnchor.constraint(equalTo: self.topContainer.leftAnchor, constant: 0).isActive = true
-        self.vanImage.rightAnchor.constraint(equalTo: self.topContainer.rightAnchor, constant: 0).isActive = true
-        self.vanImage.bottomAnchor.constraint(equalTo: self.topContainer.bottomAnchor, constant: -40).isActive = true
+        self.vanImage.topAnchor.constraint(equalTo: self.welcomeLabel.bottomAnchor, constant: 10).isActive = true
+        self.vanImage.leftAnchor.constraint(equalTo: self.topContainer.leftAnchor, constant: -10).isActive = true
+        self.vanImage.rightAnchor.constraint(equalTo: self.topContainer.rightAnchor, constant: 10).isActive = true
+        self.vanImage.bottomAnchor.constraint(equalTo: self.topContainer.bottomAnchor, constant: -10).isActive = true
         
         self.termsTextView.bottomAnchor.constraint(equalTo: self.bottomContainer.bottomAnchor, constant: -30).isActive = true
         self.termsTextView.leftAnchor.constraint(equalTo: self.bottomContainer.leftAnchor, constant: 30).isActive = true

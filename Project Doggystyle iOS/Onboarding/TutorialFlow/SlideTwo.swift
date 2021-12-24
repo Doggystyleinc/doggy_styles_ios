@@ -26,14 +26,19 @@ class SlideTwo: UIViewController, CAAnimationDelegate {
         self.addViews()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        print("appeared")
+    }
+    
     private func addViews() {
         
-//        self.view.addSubview(self.orangeContainer)
+        self.view.addSubview(self.orangeContainer)
         
-//        self.orangeContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
-//        self.orangeContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
-//        self.orangeContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
-//        self.orangeContainer.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 1.7).isActive = true
+        self.orangeContainer.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
+        self.orangeContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 0).isActive = true
+        self.orangeContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: 0).isActive = true
+        self.orangeContainer.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 1.7).isActive = true
         
     }
 }
