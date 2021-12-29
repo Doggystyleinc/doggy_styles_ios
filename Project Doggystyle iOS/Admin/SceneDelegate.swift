@@ -17,6 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         //MARK: - INITIAL ENTRY INTO THE APPLICATION
         guard let sceneWindow = (scene as? UIWindowScene) else { return }
+        print("APP STORE IGNITION")
         
         let window = UIWindow(windowScene: sceneWindow)
         window.makeKeyAndVisible()
