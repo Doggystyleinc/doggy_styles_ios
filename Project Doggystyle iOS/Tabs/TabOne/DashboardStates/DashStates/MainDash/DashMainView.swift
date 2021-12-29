@@ -255,7 +255,7 @@ class DashMainView : UIView {
         self.tourTruckContainer.addSubview(self.tourTruckLabelEmptyStateOne)
         self.tourTruckContainer.addSubview(self.tourTruckButton)
         self.tourTruckContainer.addSubview(self.dogImage)
-        
+       
         self.registeredPetCollection.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
         self.registeredPetCollection.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         self.registeredPetCollection.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true

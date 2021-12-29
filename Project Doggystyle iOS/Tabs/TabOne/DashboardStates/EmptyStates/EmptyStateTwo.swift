@@ -107,7 +107,7 @@ class EmptyStateTwo : UIView {
         cbf.layer.shadowOffset = CGSize(width: 2, height: 3)
         cbf.layer.shadowRadius = 9
         cbf.layer.shouldRasterize = false
-        cbf.addTarget(self.dashboardController, action: #selector(self.dashboardController?.handleTourTruckButton), for: UIControl.Event.touchUpInside)
+        cbf.addTarget(self.dashboardController, action: #selector(self.handleShowSneakPeek), for: UIControl.Event.touchUpInside)
         
         return cbf
         
@@ -136,6 +136,41 @@ class EmptyStateTwo : UIView {
         return vi
     }()
     
+    let sneakPeakContainer : UIView = {
+        
+        let wc = UIView()
+        wc.translatesAutoresizingMaskIntoConstraints = false
+        wc.backgroundColor = coreWhiteColor
+        wc.isUserInteractionEnabled = true
+        wc.layer.masksToBounds = true
+        wc.layer.cornerRadius = 20
+        wc.clipsToBounds = false
+        wc.layer.masksToBounds = false
+        wc.layer.shadowColor = coreBlackColor.withAlphaComponent(0.8).cgColor
+        wc.layer.shadowOpacity = 0.05
+        wc.layer.shadowOffset = CGSize(width: 2, height: 3)
+        wc.layer.shadowRadius = 9
+        wc.layer.shouldRasterize = false
+        wc.isHidden = true
+       
+        return wc
+        
+    }()
+    
+    lazy var sneakPeakImage : UIImageView = {
+        
+        let dcl = UIImageView()
+        dcl.translatesAutoresizingMaskIntoConstraints = false
+        dcl.backgroundColor = greyDateColor
+        dcl.contentMode = .scaleAspectFit
+        dcl.isUserInteractionEnabled = false
+        let image = UIImage(named: "ds_white_logo")?.withRenderingMode(.alwaysOriginal)
+        dcl.image = image
+        dcl.layer.cornerRadius = 15
+        dcl.isUserInteractionEnabled = true
+        dcl.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.touchSneakPeek)))
+        return dcl
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -157,8 +192,10 @@ class EmptyStateTwo : UIView {
         self.welcomeSubContainer.addSubview(self.headerLabelEmptyStateOne)
         self.welcomeSubContainer.addSubview(self.vehicleImage)
         self.welcomeSubContainer.addSubview(self.refurFriendButton)
-        //MARK:- END Empty State One
         
+        self.addSubview(self.sneakPeakContainer)
+        self.sneakPeakContainer.addSubview(self.sneakPeakImage)
+
         //MARK: - EMPTY STATE ONE BEGIN
         self.emptyStateOneContainer.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
         self.emptyStateOneContainer.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -90).isActive = true
@@ -201,6 +238,26 @@ class EmptyStateTwo : UIView {
         self.vehicleImage.rightAnchor.constraint(equalTo: self.welcomeSubContainer.rightAnchor, constant: -18).isActive = true
         self.vehicleImage.topAnchor.constraint(equalTo: self.headerLabelEmptyStateOne.bottomAnchor, constant: 8).isActive = true
         //MARK: - EMPTY STATE ONE END
+        
+        //THIRD SUB COMTAINER
+        self.sneakPeakContainer.topAnchor.constraint(equalTo: self.welcomeSubContainer.topAnchor, constant: 0).isActive = true
+        self.sneakPeakContainer.leftAnchor.constraint(equalTo: self.welcomeSubContainer.leftAnchor, constant: 0).isActive = true
+        self.sneakPeakContainer.rightAnchor.constraint(equalTo: self.welcomeSubContainer.rightAnchor, constant: 0).isActive = true
+        self.sneakPeakContainer.bottomAnchor.constraint(equalTo: self.welcomeSubContainer.bottomAnchor, constant: 0).isActive = true
+        
+        self.sneakPeakImage.topAnchor.constraint(equalTo: self.sneakPeakContainer.topAnchor, constant: 10).isActive = true
+        self.sneakPeakImage.leftAnchor.constraint(equalTo: self.sneakPeakContainer.leftAnchor, constant: 10).isActive = true
+        self.sneakPeakImage.rightAnchor.constraint(equalTo: self.sneakPeakContainer.rightAnchor, constant: -10).isActive = true
+        self.sneakPeakImage.bottomAnchor.constraint(equalTo: self.sneakPeakContainer.bottomAnchor, constant: -10).isActive = true
+        
+    }
+    
+    @objc func handleShowSneakPeek() {
+        self.sneakPeakContainer.isHidden = false
+    }
+    
+    @objc func touchSneakPeek() {
+        self.sneakPeakContainer.isHidden = true
     }
     
     required init?(coder: NSCoder) {

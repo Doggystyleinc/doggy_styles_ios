@@ -567,6 +567,14 @@ class DashboardViewController: UIViewController, CustomAlertCallBackProtocol {
     }
     
     @objc func handleTourTruckButton() {
+
+                //pop up over with truck image
+
+
+
+
+
+
         self.handleCustomPopUpAlert(title: "TRUCK TOUR", message: "Truck tour is currently under development. This feature will be available shortly.", passedButtons: [Statics.OK])
     }
     
