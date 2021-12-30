@@ -627,7 +627,7 @@ class NewDogTwo : UIViewController, UITextFieldDelegate, UIScrollViewDelegate, C
     
     @objc func handleInformationButton() {
         
-        self.handleCustomPopUpAlert(title: "FREQUENCY", message: "Frequency Description here TODO", passedButtons: [Statics.OK])
+        self.handleCustomPopUpAlert(title: "FREQUENCY", message: "Please select how often you would like to have your pup groomed. You can choose every 4 weeks or every 8 weeks.", passedButtons: [Statics.OK])
     }
     
     @objc func handleCustomPopUpAlert(title : String, message : String, passedButtons: [String]) {

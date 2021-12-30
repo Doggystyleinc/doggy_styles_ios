@@ -88,10 +88,12 @@ class TodaysDashView : UIView {
         let vi = UIImageView()
         vi.translatesAutoresizingMaskIntoConstraints = false
         vi.backgroundColor = .clear
-        vi.contentMode = .scaleAspectFit
+        vi.contentMode = .scaleAspectFill
         vi.isUserInteractionEnabled = false
         vi.backgroundColor = coreOrangeColor.withAlphaComponent(0.1)
         vi.layer.masksToBounds = true
+        let image = UIImage(named: "filler-one")?.withRenderingMode(.alwaysOriginal)
+        vi.image = image
         
         return vi
     }()
@@ -101,11 +103,12 @@ class TodaysDashView : UIView {
         let vi = UIImageView()
         vi.translatesAutoresizingMaskIntoConstraints = false
         vi.backgroundColor = .clear
-        vi.contentMode = .scaleAspectFit
+        vi.contentMode = .scaleAspectFill
         vi.isUserInteractionEnabled = false
         vi.backgroundColor = coreOrangeColor.withAlphaComponent(0.1)
         vi.layer.masksToBounds = true
-        
+        let image = UIImage(named: "filler-two")?.withRenderingMode(.alwaysOriginal)
+        vi.image = image
         return vi
     }()
     
@@ -114,7 +117,7 @@ class TodaysDashView : UIView {
         let hl = UILabel()
         hl.translatesAutoresizingMaskIntoConstraints = false
         hl.backgroundColor = .clear
-        hl.text = "Tue, Dec 3 2021"
+        hl.text = "Mon, Jan 3rd, 2022"
         hl.font = UIFont(name: dsSubHeaderFont, size: 18)
         hl.numberOfLines = 2
         hl.adjustsFontSizeToFitWidth = true
@@ -149,7 +152,7 @@ class TodaysDashView : UIView {
         hl.numberOfLines = 2
         hl.adjustsFontSizeToFitWidth = true
         hl.textAlignment = .left
-        hl.textColor = dividerGrey
+        hl.textColor = chatTimeGrey
         
         return hl
     }()

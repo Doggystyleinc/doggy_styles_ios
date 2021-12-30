@@ -340,7 +340,7 @@ class DashMainView : UIView {
         
         print("UNCOMMENT WHEN BOOKING IS LIVE")
 
-//        self.dashboardController?.presentAppointmentsController()
+        self.dashboardController?.presentAppointmentsController()
     }
     
     required init?(coder: NSCoder) {
